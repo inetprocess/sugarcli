@@ -1,0 +1,6 @@
+.*.sw*
+/composer.lock
+/composer.phar
+/vendor
+/test
+/Session.vim

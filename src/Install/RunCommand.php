@@ -1,0 +1,69 @@
+<?php
+namespace SugarCli\Install;
+/*
+ * Check command to verify that Sugar is present and installed.
+ */
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Logger\ConsoleLogger;
+
+use SugarCli\Install\Installer;
+
+class RunCommand extends Command
+{
+    protected function configure()
+    {
+        $this->setName("install:run")
+            ->setDescription('Extract and install SugarCRM.')
+            ->addArgument(
+                'path',
+                InputArgument::REQUIRED,
+                'Path to SugarCRM installation.')
+            ->addArgument(
+                'url',
+                InputArgument::REQUIRED,
+                'Public url for Sugar.')
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'Force installer to remove target directory if present.')
+            ->addOption(
+                'source',
+                's',
+                InputOption::VALUE_OPTIONAL,
+                'Path to SugarCRM installation package.',
+                'sugar.zip')
+            ->addOption(
+                'config',
+                'c',
+                InputOption::VALUE_OPTIONAL,
+                'PHP file to use as configuration for the installation.',
+                'config_si.php');
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        $logger = new ConsoleLogger($output);
+        $force = $input->getOption('force');
+        $installer = new Installer(
+            $input->getArgument('path'),
+            $input->getArgument('url'),
+            $input->getOption('source'),
+            $input->getOption('config'),
+            $logger
+        );
+        try {
+            $ret = $installer->run($force);
+            $output->writeln('Installation is sucessfully completed.');
+        } catch (InstallerException $e) {
+            $output->writeln('An error occured during the installation.');
+            $output->writeln($e->getMessage());
+            exit(14);
+        }
+    }
+}

@@ -1,0 +1,12 @@
+{
+    "require": {
+        "symfony/console": "~2",
+        "symfony/filesystem": "~2",
+        "psr/log": "~1"
+    },
+    "autoload": {
+        "psr-4": {
+            "SugarCli\\": "src/"
+        }
+    }
+}
