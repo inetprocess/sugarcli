@@ -1,17 +1,17 @@
 #!/usr/bin/env php
 <?php
 
+define('ROOT_DIR', dirname(__DIR__));
 // Load composer
-require_once(__DIR__. '/../vendor/autoload.php');
-#require_once(__DIR__. '/../src/SugarCLI/Install.php');
+require_once(ROOT_DIR. '/vendor/autoload.php');
+
 
 use Symfony\Component\Console\Application;
-use SugarCli\Install\CheckCommand;
-use SugarCli\Install\RunCommand;
 
 $app = new Application('SugarCRM command line', 'v0.1.0');
-$app->add(new CheckCommand);
-$app->add(new RunCommand);
+$app->add(new \SugarCli\Install\CheckCommand);
+$app->add(new \SugarCli\Install\RunCommand);
+$app->add(new \SugarCli\Install\GetConfigCommand);
 
 $app->run();
 
