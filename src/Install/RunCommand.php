@@ -11,7 +11,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
-use SugarCli\Install\Installer;
+use SugarCli\Sugar\Installer;
+use SugarCli\Sugar\InstallerException;
 
 class RunCommand extends Command
 {
@@ -61,8 +62,8 @@ class RunCommand extends Command
             $ret = $installer->run($force);
             $output->writeln('Installation is sucessfully completed.');
         } catch (InstallerException $e) {
-            $output->writeln('An error occured during the installation.');
-            $output->writeln($e->getMessage());
+            $logger->error('An error occured during the installation.');
+            $logger->error($e->getMessage());
             exit(14);
         }
     }

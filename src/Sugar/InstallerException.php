@@ -1,5 +1,5 @@
 <?php
-namespace SugarCli\Install;
+namespace SugarCli\Sugar;
 
 class InstallerException extends \RuntimeException
 {
