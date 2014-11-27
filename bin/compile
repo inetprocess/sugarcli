@@ -1,0 +1,70 @@
+#!/usr/bin/env php
+<?php
+
+define('ROOT_DIR', dirname(__DIR__));
+define('BUILD_TARGET', ROOT_DIR . '/sugarcli.phar');
+
+require ROOT_DIR . '/vendor/autoload.php';
+
+use Symfony\Component\Finder\Finder;
+
+function addFile($phar, $file) {
+    $path = str_replace( ROOT_DIR . '/', '', $file );
+    $content = file_get_contents($file);
+    print "addFile: $path = $file\n";
+
+    if ($path == 'bin/sugarcli') {
+        $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
+    }
+
+    $phar[$path] = $content;
+}
+
+
+if (file_exists(BUILD_TARGET)) {
+    unlink(BUILD_TARGET);
+}
+
+$phar = new \Phar(BUILD_TARGET, 0, 'sugarcli.phar');
+$phar->startBuffering();
+
+$finder = new Finder();
+
+$finder->files()
+    ->ignoreVCS(true)
+    ->name('*.php')
+    ->in(ROOT_DIR . '/src')
+    ->in(ROOT_DIR . '/vendor/composer')
+    ->in(ROOT_DIR . '/vendor/psr')
+    ->in(ROOT_DIR . '/vendor/symfony');
+
+foreach ($finder as $file) {
+    addFile($phar, $file);
+}
+
+$finder = new Finder();
+
+$finder->files()
+    ->ignoreVCS(true)
+    ->ignoreDotFiles(true)
+    ->in(ROOT_DIR . '/files');
+
+foreach ($finder as $file) {
+    addFile($phar, $file);
+}
+
+addFile($phar, ROOT_DIR . '/vendor/autoload.php');
+addFile($phar, ROOT_DIR . '/bin/sugarcli');
+
+$phar->setStub( <<<EOB
+#!/usr/bin/env php
+<?php
+Phar::mapPhar('sugarcli.phar');
+include 'phar://sugarcli.phar/bin/sugarcli';
+__HALT_COMPILER();
+EOB
+);
+
+$phar->stopBuffering();
+
+echo "Phar generated at " . BUILD_TARGET . "\n";
