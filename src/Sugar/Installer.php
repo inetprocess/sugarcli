@@ -129,8 +129,55 @@ class Installer
         $this->fs->remove($this->getConfigTarget());
     }
 
-    public function callUrl()
+    /**
+     * Call the url to run the Sugar silent install.
+     * @param timeout Default to 5 minutes.
+     */
+    public function callUrl($timeout = 300)
     {
+        $real_url = $this->url . "/install.php?goto=SilentInstall&cli=true";
+        $this->logger->notice("Calling {$real_url} to install Sugar.");
+        $context = stream_context_create(
+            array(
+                'http' => array(
+                    'timeout' => $timeout
+                )
+            )
+        );
+        $h = fopen($real_url, 'r', false, $context);
+        if ($h === false) {
+            throw new InstallerException("Could not connect to the specified url.");
+        }
+
+        $installer_res = '';
+        while (!feof($h)) {
+            $installer_res .= fread( $h, 1048576 );
+        }
+        $metadata = stream_get_meta_data($h);
+        if (fclose($h) === false) {
+            throw new InstallerException("Unable to close the url.");
+        }
+
+        if ($metadata['timed_out']) {
+            throw new InstallerException(
+                "The web installer took longer than {$timeout} to finish. It is probably still running."
+            );
+        }
+        // find the bottle message
+        if (preg_match('/<bottle>(.*)<\/bottle>/s', $installer_res, $msg) === 1) {
+            $this->logger->info("The web installer was successfully completed.");
+            $this->logger->info("Web installer: {$msg[1]}");
+        } elseif (preg_match('/Exit (.*)/s', $installer_res, $msg)) {
+            $this->logger->info("Web installer: {$msg[1]}");
+            throw new InstallerException(
+                "The web installer failed. Check your config_si.php file."
+            );
+        } else {
+            $this->logger->debug("Web installer: {$installer_res}");
+            throw new InstallerException(
+                "The web installer failed and return an unknown error. Check the install.log file on Sugar."
+            );
+        }
     }
 
     /**
