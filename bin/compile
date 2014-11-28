@@ -1,6 +1,12 @@
 #!/usr/bin/env php
 <?php
 
+if ( ini_get('phar.readonly') == '1' ) {
+    echo "usage: php -dphar.readonly=0 $argv[0]\n";
+    exit(1);
+}
+
+
 define('ROOT_DIR', dirname(__DIR__));
 define('BUILD_TARGET', ROOT_DIR . '/sugarcli.phar');
 
@@ -8,11 +14,13 @@ require ROOT_DIR . '/vendor/autoload.php';
 
 use Symfony\Component\Finder\Finder;
 
+// Remove path prefix and add to phar
 function addFile($phar, $file) {
     $path = str_replace( ROOT_DIR . '/', '', $file );
     $content = file_get_contents($file);
     print "addFile: $path = $file\n";
 
+    // Remove shebang
     if ($path == 'bin/sugarcli') {
         $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
     }
@@ -21,6 +29,7 @@ function addFile($phar, $file) {
 }
 
 
+// Remove existing phar file to rewrite it.
 if (file_exists(BUILD_TARGET)) {
     unlink(BUILD_TARGET);
 }
@@ -28,8 +37,8 @@ if (file_exists(BUILD_TARGET)) {
 $phar = new \Phar(BUILD_TARGET, 0, 'sugarcli.phar');
 $phar->startBuffering();
 
+// Find and include all php files.
 $finder = new Finder();
-
 $finder->files()
     ->ignoreVCS(true)
     ->name('*.php')
@@ -42,17 +51,18 @@ foreach ($finder as $file) {
     addFile($phar, $file);
 }
 
+// Find and include all res files.
 $finder = new Finder();
-
 $finder->files()
     ->ignoreVCS(true)
     ->ignoreDotFiles(true)
-    ->in(ROOT_DIR . '/files');
+    ->in(ROOT_DIR . '/res');
 
 foreach ($finder as $file) {
     addFile($phar, $file);
 }
 
+// Add autoload and bin
 addFile($phar, ROOT_DIR . '/vendor/autoload.php');
 addFile($phar, ROOT_DIR . '/bin/sugarcli');
 

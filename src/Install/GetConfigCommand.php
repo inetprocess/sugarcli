@@ -34,7 +34,7 @@ class GetConfigCommand extends Command
     {
         $fs = new Filesystem();
         $fs->copy(
-            ROOT_DIR . '/files/config_si.php',
+            __DIR__ . '/../../res/config_si.php',
             $input->getOption('config'),
             $input->getOption('force')
         );

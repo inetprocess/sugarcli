@@ -1,9 +1,8 @@
 #!/usr/bin/env php
 <?php
 
-define('ROOT_DIR', dirname(__DIR__));
 // Load composer
-require_once(ROOT_DIR. '/vendor/autoload.php');
+require_once(dirname(__DIR__) . '/vendor/autoload.php');
 
 
 use Symfony\Component\Console\Application;
