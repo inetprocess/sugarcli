@@ -12,6 +12,8 @@ $app->add(new \SugarCli\Install\CheckCommand);
 $app->add(new \SugarCli\Install\RunCommand);
 $app->add(new \SugarCli\Install\GetConfigCommand);
 
+$app->add(new \SugarCli\Clean\LangFilesCommand);
+
 $app->run();
 
 
