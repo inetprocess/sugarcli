@@ -1,6 +1,6 @@
 <?php
 namespace SugarCli\Install;
-/*
+/**
  * Check command to verify that Sugar is present and installed.
  */
 
