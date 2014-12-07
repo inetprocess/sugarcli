@@ -7,7 +7,7 @@ require_once(dirname(__DIR__) . '/vendor/autoload.php');
 
 use Symfony\Component\Console\Application;
 
-$app = new Application('SugarCRM command line', 'v0.1.0');
+$app = new Application('SugarCRM command line', '@sugarcli_version@');
 $app->add(new \SugarCli\Install\CheckCommand);
 $app->add(new \SugarCli\Install\RunCommand);
 $app->add(new \SugarCli\Install\GetConfigCommand);

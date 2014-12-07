@@ -13,6 +13,7 @@ define('BUILD_TARGET', ROOT_DIR . '/sugarcli.phar');
 require ROOT_DIR . '/vendor/autoload.php';
 
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\Process\Process;
 
 // Remove path prefix and add to phar
 function addFile($phar, $file) {
@@ -20,9 +21,17 @@ function addFile($phar, $file) {
     $content = file_get_contents($file);
     print "addFile: $path = $file\n";
 
-    // Remove shebang
+    // Remove shebang and set version.
     if ($path == 'bin/sugarcli') {
         $content = preg_replace('{^#!/usr/bin/env php\s*}', '', $content);
+
+        $version = 'unknown dev';
+        $process = new Process('git describe --tags HEAD', ROOT_DIR);
+        $process->run();
+        if ($process->isSuccessful()) {
+            $version = trim($process->getOutput());
+        }
+        $content = str_replace('@sugarcli_version@', $version, $content);
     }
 
     $phar[$path] = $content;
