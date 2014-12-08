@@ -27,7 +27,7 @@ class LangFilesCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = new ConsoleLogger($output);
+        $logger = $this->getHelper('logger');
         $path = $input->getArgument('path');
         if(!Util::is_extracted($path)) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');

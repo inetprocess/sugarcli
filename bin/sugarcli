@@ -1,19 +1,30 @@
 #!/usr/bin/env php
 <?php
 
+if (PHP_SAPI !== 'cli') {
+    echo 'Warning: sugarcli should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+    exit(1);
+}
+
+
 // Load composer
 require_once(dirname(__DIR__) . '/vendor/autoload.php');
 
-
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
+use SugarCli\LoggerHelper;
+
+$output = new ConsoleOutput();
 $app = new Application('SugarCRM command line', '@sugarcli_version@');
+
+$app->getHelperSet()->set(new LoggerHelper($output));
+
 $app->add(new \SugarCli\Install\CheckCommand);
 $app->add(new \SugarCli\Install\RunCommand);
 $app->add(new \SugarCli\Install\GetConfigCommand);
-
 $app->add(new \SugarCli\Clean\LangFilesCommand);
 
-$app->run();
+$app->run(null, $output);
 
 

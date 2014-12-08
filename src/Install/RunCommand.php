@@ -49,7 +49,7 @@ class RunCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = new ConsoleLogger($output);
+        $logger = $this->getHelper('logger');
         $force = $input->getOption('force');
         $installer = new Installer(
             $input->getArgument('path'),
