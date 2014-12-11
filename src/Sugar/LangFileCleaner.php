@@ -138,7 +138,9 @@ class LangFileCleaner
         // Add only if found real directories in the following paths.
         $search_paths = array(
             'custom/include/language',
-            'custom/modules/*/language',
+            // Do not mange modules languages for now. 
+            // We have issues with sugar 6.2.1
+            //'custom/modules/*/language',
         );
         $found_one = false;
         foreach ($search_paths as $sp) {
