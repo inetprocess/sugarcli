@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
 use SugarCli\Sugar\Util;
@@ -22,13 +23,25 @@ class LangFilesCommand extends Command
             ->addArgument(
                 'path',
                 InputArgument::REQUIRED,
-                'Path to sugarcrm instance');
+                'Path to sugarcrm instance')
+            ->addOption(
+                'no-sort',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not sort the files contents. It will still remove duplicates. Useful for testing.')
+            ->addOption(
+                'test',
+                't',
+                InputOption::VALUE_NONE,
+                'Try to rewrite the files without modifying the contents. Imply --no-sort.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = $this->getHelper('logger');
         $path = $input->getArgument('path');
+        $sort = !$input->getOption('no-sort');
+        $test = $input->getOption('test');
         if(!Util::is_extracted($path)) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
             exit(11);
@@ -38,6 +51,6 @@ class LangFilesCommand extends Command
             exit(12);
         }
         $cleaner = new LangFileCleaner($path, $logger);
-        $cleaner->clean();
+        $cleaner->clean($sort, $test);
     }
 }

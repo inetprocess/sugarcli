@@ -14,12 +14,27 @@ Or clone this git repository and use `./bin/sugarcli`.
 
 ## Building
 
-Clone the git repository and run `php -dphar.readonly=0 bin/compile`. It will build the `sugarcli.phar` at the top of the git project.
+Clone the git repository and run `php -dphar.readonly=0 bin/compile`.
+It will build the `sugarcli.phar` at the top of the git project.
 
 ## Usage
 
 `./sugarcli.phar --help`: This will give you the help and list of available commands.
 
+### Clean language files.
+
+#### Test run
+`./sugarcli.phar clean:langfiles --test path/to/sugar`
+This will parse the custom languages files from sugar. It should return the files as is.
+
+### Clean without sorting.
+`./sugarcli.phar clean:langfiles --no-sort path/to/sugar`
+This will clean the lang files by removing unecessary whitespaces and remove duplicates in variables definitions.
+
+### Clean and sort
+`./sugarcli.phar clean:langfiles path/to/sugar`
+This will clean and sort the language files.
+All defined variables will be sorted by name.
 
 ### Install a SugarCRM
 
