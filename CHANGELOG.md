@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.0
+-----
+    * Reworked langfile cleaner with php token parser. 
+
 1.1.0
 -----
     * `clean:langfiles` command.
