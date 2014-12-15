@@ -68,6 +68,40 @@ class LangFile
     }
 
     /**
+     * Log a warning if a variable name was already found.
+     * Also check for the global or local version of the same variable.
+     * @param var_name Name of the variable to check.
+     */
+    public function checkVarName($var_name)
+    {
+        if (empty($var_name)) {
+            return;
+        }
+        if (array_key_exists($var_name, $this->var_blocks)) {
+            $this->logger->warning("Found duplicate definition for $var_name.");
+        }
+        if (substr($var_name, 0, 8) == '$GLOBALS') {
+            // Replaces:
+            // $GLOBALS['test']  => $test
+            // $GLOBALS [ 'test' ] => $test
+            $reg = <<<'EOS'
+/\$GLOBALS\s*\[\s*'([^']+)'\s*\]/
+EOS;
+            $local_name = preg_replace($reg, '$\1', $var_name);
+            if (array_key_exists($local_name, $this->var_blocks)) {
+                $this->logger->warning("Found duplicate local definition for $var_name.");
+            }
+        } else {
+            // Replaces:
+            // $test => $GLOBAL['test']
+            $global_name = preg_replace('/\$(\w+)/', '$GLOBALS[\'\1\']', $var_name);
+            if (array_key_exists($global_name, $this->var_blocks)) {
+                $this->logger->warning("Found duplicate GLOBAL definition for $var_name.");
+            }
+        }
+    }
+
+    /**
      * Read the variable definition block from token iterator.
      * It will stop at the next semicolon, php close tag or end of list.
      */
@@ -101,7 +135,7 @@ class LangFile
                     $end_block = true;
                     if (!$this->test_mode && $token[self::T_VALUE] != "\n") {
                         // Set only one line return after a semicolon or close tag.
-                        $this->logger->notice("Removing spaces at line $line;");
+                        $this->logger->notice("Removing spaces at line $line.");
                         $token[self::T_VALUE] = "\n";
                     }
                 } else {
@@ -193,6 +227,8 @@ class LangFile
                 // Try to recreate the file as is.
                 $this->var_blocks[] = $var_value;
             } else {
+                // Warnings if key already exists.
+                $this->checkVarName($var_name);
                 $this->var_blocks[$var_name] = $var_value;
             }
         } else {

@@ -46,10 +46,6 @@ class LangFilesCommand extends Command
             $output->writeln('SugarCRM is not present in ' . $path . '.');
             exit(11);
         }
-        if(!Util::is_installed($path)) {
-            $output->writeln('SugarCRM is not installed in ' . $path . '.');
-            exit(12);
-        }
         $cleaner = new LangFileCleaner($path, $logger);
         $cleaner->clean($sort, $test);
     }
