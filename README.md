@@ -27,11 +27,11 @@ It will build the `sugarcli.phar` at the top of the git project.
 `./sugarcli.phar clean:langfiles --test path/to/sugar`
 This will parse the custom languages files from sugar. It should return the files as is.
 
-### Clean without sorting.
+#### Clean without sorting.
 `./sugarcli.phar clean:langfiles --no-sort path/to/sugar`
 This will clean the lang files by removing unecessary whitespaces and remove duplicates in variables definitions.
 
-### Clean and sort
+#### Clean and sort
 `./sugarcli.phar clean:langfiles path/to/sugar`
 This will clean and sort the language files.
 All defined variables will be sorted by name.

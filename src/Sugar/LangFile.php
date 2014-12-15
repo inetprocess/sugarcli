@@ -77,6 +77,7 @@ class LangFile
         $found_var = false;
         $found_equal = false;
         $found_semicolon = false;
+        $found_open_tag = false;
         $found_close_tag = false;
         $end_block = false;
         $var_name = '';
@@ -95,7 +96,7 @@ class LangFile
             $this->logger->debug('Found token ' . static::getTokenName($token) . " at line $line.");
 
             // Closing block allow only one whitespace.
-            if($found_semicolon || $found_close_tag) {
+            if($found_semicolon  || $found_open_tag || $found_close_tag) {
                 if ($token[self::T_KEY] == T_WHITESPACE) {
                     $end_block = true;
                     if (!$this->test_mode && $token[self::T_VALUE] != "\n") {
@@ -113,6 +114,9 @@ class LangFile
                     case T_COMMENT:
                     case T_DOC_COMMENT:
                     case T_WHITESPACE:
+                        break;
+                    case T_OPEN_TAG:
+                        $found_open_tag = true;
                         break;
                     // New variable
                     case T_VARIABLE:
@@ -206,13 +210,6 @@ class LangFile
         if (!$this->tokens->valid()) {
             $this->logger->info('File is empty.');
         }
-        $token = static::normalizeToken($this->tokens->current());       
-        if ($token[self::T_KEY] != T_OPEN_TAG) {
-            throw new \Exception('Invalid file not starting with a PHP open tag.');
-        }
-        $this->logger->debug('Found php open tag.');
-        $this->empty_blocks[] = $token[self::T_VALUE];
-        $this->tokens->next();
         while($this->tokens->valid()) {
             $this->logger->info('parsing next block');
             $this->parseNextBlock();
