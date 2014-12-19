@@ -27,4 +27,3 @@ $app->add(new \SugarCli\Clean\LangFilesCommand);
 
 $app->run(null, $output);
 
-

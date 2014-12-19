@@ -1,8 +1,8 @@
 <?php
-namespace SugarCli\Install;
 /**
  * Check command to verify that Sugar is present and installed.
  */
+namespace SugarCli\Install;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -59,12 +59,13 @@ class RunCommand extends Command
             $logger
         );
         try {
-            $ret = $installer->run($force);
+            $installer->run($force);
             $output->writeln('Installation is sucessfully completed.');
         } catch (InstallerException $e) {
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
-            exit(14);
+            return 14;
         }
     }
 }
+

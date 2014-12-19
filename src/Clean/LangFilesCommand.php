@@ -1,8 +1,8 @@
 <?php
-namespace SugarCli\Clean;
 /**
  * Check command to verify that Sugar is present and installed.
  */
+namespace SugarCli\Clean;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,7 +14,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use SugarCli\Sugar\Util;
 use SugarCli\Sugar\LangFileCleaner;
 
-class LangFilesCommand extends Command 
+class LangFilesCommand extends Command
 {
     protected function configure()
     {
@@ -42,11 +42,12 @@ class LangFilesCommand extends Command
         $path = $input->getArgument('path');
         $sort = !$input->getOption('no-sort');
         $test = $input->getOption('test');
-        if(!Util::is_extracted($path)) {
+        if (!Util::isExtracted($path)) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
-            exit(11);
+            return 11;
         }
         $cleaner = new LangFileCleaner($path, $logger);
         $cleaner->clean($sort, $test);
     }
 }
+

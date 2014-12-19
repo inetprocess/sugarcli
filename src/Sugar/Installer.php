@@ -56,14 +56,15 @@ class Installer
         $this->fs->mkdir($this->path, 0750);
     }
 
-    public static function junkParent($path) {
+    public static function junkParent($path)
+    {
         return preg_replace('/^\/?[^\/]+\/(.*)$/', '$1', $path);
     }
 
     /**
      * Extract the source archive into $this->path.
      * While extracting, we remove the top folder from the filename inside the archive.
-     * For example, a file 'SugarPro-Full-7.2.1/soap.php' will get extracted to 
+     * For example, a file 'SugarPro-Full-7.2.1/soap.php' will get extracted to
      * <install_path>/soap.php .
      */
     public function extract()
@@ -79,7 +80,7 @@ class Installer
         }
 
         $zip = new \ZipArchive();
-        if (($res = $zip->open($this->source)) !== true) {
+        if ($zip->open($this->source) !== true) {
             throw new InstallerException("Unable to open zip {$this->source}.");
         }
         $zip_paths = array();
@@ -88,11 +89,13 @@ class Installer
         }
         $target_paths = Installer::junkParent($zip_paths);
         foreach ($target_paths as $i => $name) {
-            if (empty($name)) continue;
+            if (empty($name)) {
+                continue;
+            }
 
             $target_path = $this->path . '/' . $name;
             // Check is name ends with '/' (directory name)
-            if (strpos($name, '/', strlen($name) - 1) === FALSE ) {
+            if (strpos($name, '/', strlen($name) - 1) === false ) {
                 // We have a file name
                 // We load each zipped file in memory.
                 // It is much faster than getting the Stream handle.
@@ -105,11 +108,11 @@ class Installer
                     throw new InstallerException("Error while writting to file {$target_path}.");
                 }
             } else {
-               // We have a dir name
-               $this->fs->mkdir($target_path);
+                // We have a dir name
+                $this->fs->mkdir($target_path);
             }
         }
-        
+
         if (!$zip->close()) {
             throw new InstallerException("Unable to close zip {$this->source}.");
         }
@@ -211,3 +214,4 @@ class Installer
 
     }
 }
+

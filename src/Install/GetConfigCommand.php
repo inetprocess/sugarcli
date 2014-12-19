@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 use Symfony\Component\Filesystem\Filesystem;
 
-class GetConfigCommand extends Command 
+class GetConfigCommand extends Command
 {
     protected function configure()
     {
@@ -40,3 +40,4 @@ class GetConfigCommand extends Command
         );
     }
 }
+

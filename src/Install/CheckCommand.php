@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use SugarCli\Sugar\Util;
 
-class CheckCommand extends Command 
+class CheckCommand extends Command
 {
     protected function configure()
     {
@@ -26,14 +26,15 @@ class CheckCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path = $input->getArgument('path');
-        if(!Util::is_extracted($path)) {
+        if (!Util::isExtracted($path)) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
-            exit(11);
+            return 11;
         }
-        if(!Util::is_installed($path)) {
+        if (!Util::isInstalled($path)) {
             $output->writeln('SugarCRM is not installed in ' . $path . '.');
-            exit(12);
+            return 12;
         }
         $output->writeln('SugarCRM is present and installed in ' . $path . '.');
     }
 }
+

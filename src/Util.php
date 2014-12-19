@@ -9,8 +9,8 @@ class Util
     {
         $dir = dir($path);
         $res = true;
-        while(false !== ($entry = $dir->read())) {
-            if($entry != '.' or $entry != '..') {
+        while (false !== ($entry = $dir->read())) {
+            if ($entry != '.' or $entry != '..') {
                 $res = false;
                 break;
             }
@@ -27,9 +27,9 @@ class Util
             ),
             RecursiveIteratorIterator::CHILD_FIRST
         );
-        foreach( $iter as $path) {
+        foreach ($iter as $path) {
             //remove file or folder
-            if($path->isFile()) {
+            if ($path->isFile()) {
                 unlink($path->getPathname());
             } else {
                 rmdir($path->getPathname());
@@ -37,5 +37,5 @@ class Util
         }
         return rmdir($dir);
     }
-
 }
+

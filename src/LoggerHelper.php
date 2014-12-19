@@ -35,3 +35,4 @@ class LoggerHelper extends ConsoleLogger implements HelperInterface
         return 'logger';
     }
 }
+
