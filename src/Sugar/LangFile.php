@@ -13,10 +13,6 @@ class LangFile
     const T_VALUE = 1;
     const T_LINE = 2;
 
-
-    public $file;
-
-    public $content;
     public $tokens;
 
     public $test_mode;
@@ -31,17 +27,12 @@ class LangFile
      * @param file Filename of the file to load.
      * @param test_mode If true will try to replicate the original file without any changes.
      */
-    public function __construct($file, $test_mode, $logger)
+    public function __construct($content, $test_mode, $logger)
     {
-        $this->file = $file;
         $this->test_mode = $test_mode;
         $this->logger = $logger;
 
-        $this->content = file_get_contents($file);
-        if ($this->content === false ) {
-            throw new \Exception('Unable to load the file contents of ' . $file . '.');
-        }
-        $this->tokens = new \ArrayIterator(token_get_all($this->content));
+        $this->tokens = new \ArrayIterator(token_get_all($content));
     }
 
     /**
@@ -119,18 +110,17 @@ EOS;
         $line = 0;
 
         // Loop through tokens until end of block or file.
-        while(!$end_block && $this->tokens->valid()) {
+        while (!$end_block && $this->tokens->valid()) {
             // Init loop variables
             $add_name = false;
-            $process_var = true;
 
             // Get normed token array
-            $token = static::normalizeToken($this->tokens->current());       
+            $token = static::normalizeToken($this->tokens->current());
             $line = max($token[self::T_LINE], $line);
             $this->logger->debug('Found token ' . static::getTokenName($token) . " at line $line.");
 
             // Closing block allow only one whitespace.
-            if($found_semicolon  || $found_open_tag || $found_close_tag) {
+            if ($found_semicolon  || $found_open_tag || $found_close_tag) {
                 if ($token[self::T_KEY] == T_WHITESPACE) {
                     $end_block = true;
                     if (!$this->test_mode && $token[self::T_VALUE] != "\n") {
@@ -246,7 +236,7 @@ EOS;
         if (!$this->tokens->valid()) {
             $this->logger->info('File is empty.');
         }
-        while($this->tokens->valid()) {
+        while ($this->tokens->valid()) {
             $this->logger->info('parsing next block');
             $this->parseNextBlock();
         }
@@ -257,5 +247,5 @@ EOS;
         $blocks = array_merge($this->empty_blocks, $this->var_blocks, $this->end_blocks);
         return implode('', $blocks);
     }
-
 }
+

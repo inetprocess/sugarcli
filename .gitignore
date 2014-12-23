@@ -1,7 +1,14 @@
+# Vim
 .*.sw*
+/Session.vim
+
+# Composer
 /composer.lock
 /composer.phar
 /vendor
-/test
-/Session.vim
+
+# Binaries
 /sugarcli.phar
+/phpunit.phar
+
+/test
