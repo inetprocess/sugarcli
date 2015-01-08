@@ -40,12 +40,12 @@ All defined variables will be sorted by name.
 
 #### Configure your installation
 `./sugarcli.phar install:config:get` will create a `config_si.php` in the current directory.
-This provides default settings for the installer. You will need to complete some require parameters 
+This provides default settings for the installer. You will need to complete some require parameters
 like db information, usernames and passwords. Required fields are in the form `<VALUE>`.
 
 #### Run the installer
 `./sugarcli.phar install:run [-f|--force] [-s|--source[="..."]] [-c|--config[="..."]] path url`
-You need to specify an installation path and the public url for your sugar installation. 
+You need to specify an installation path and the public url for your sugar installation.
 The installer will extract a SugarCRM installation package named sugar.zip or specified with the `--source` option.
 It will use the `--config` option to use for the installation.
 
