@@ -60,7 +60,7 @@ class RunCommand extends Command
         );
         try {
             $installer->run($force);
-            $output->writeln('Installation is sucessfully completed.');
+            $output->writeln('Installation was sucessfully completed.');
         } catch (InstallerException $e) {
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
