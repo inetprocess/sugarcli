@@ -1,5 +1,5 @@
 <?php
-namespace SugarCli;
+namespace SugarCli\Util;
 
 use Symfony\Component\Console\Helper\HelperInterface;
 use Symfony\Component\Console\Helper\HelperSet;

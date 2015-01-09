@@ -6,7 +6,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
 
 use SugarCli\Sugar\LangFile;
-use SugarCli\TestLogger;
+use SugarCli\Util\TestLogger;
 
 class LangFileTest extends \PHPUnit_Framework_TestCase
 {

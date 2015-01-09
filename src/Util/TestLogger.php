@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli;
+namespace SugarCli\Util;
 
 use Psr\Log\AbstractLogger;
 
