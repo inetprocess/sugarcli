@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.2.2
+-----
+    * install:config:get: Fix generating invalid config.
+
 1.2.1
 -----
     * clean:langfiles: Fix issue with spaces after php open tag.
