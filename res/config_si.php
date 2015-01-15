@@ -36,10 +36,11 @@ $sugar_config_si = array(
     'default_time_format' => 'H:i',
     'default_decimal_seperator' => '.',
     'default_export_charset' => 'UTF-8',
-    'default_language' => 'en_US',
+    'default_language' => 'en_us',
     'default_locale_name_format' => 's f l',
     'default_number_grouping_seperator' => ',',
     'export_delimiter' => ',',
 
     'setup_system_name' => 'SugarCRM - Commercial CRM',
 );
+
