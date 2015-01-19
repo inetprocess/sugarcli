@@ -189,6 +189,9 @@ class Installer
      */
     public function run($force = false)
     {
+        if (!is_readable($this->config)) {
+            throw new InstallerException("Missing or unreadable config_si file {$this->config}.");
+        }
         $this->logger->notice("Installing SugarCRM into {$this->path}...");
         if ($this->fs->exists($this->path)) {
             if (!$this->isPathEmpty()) {
