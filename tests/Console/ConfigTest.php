@@ -121,7 +121,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetValue()
     {
-        $conf = new Config(array(__DIR__ . '/yaml/complete.yaml'));
+        $conf = new Config(array(__DIR__ . '/yaml/../yaml/complete.yaml'));
         $conf->load();
         $this->assertEquals('toto', $conf->get('sugarcrm.path'));
         $this->assertEquals('titi', $conf->get('sugarcrm.url'));
@@ -158,6 +158,15 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array('sugarcrm.foo'),
             array('sugarcrm.path.foo'),
         );
+    }
+
+    /**
+     * @expectedException \SugarCli\Console\ConfigException
+     */
+    public function testNoLoad()
+    {
+        $config = new Config();
+        $config->get();
     }
 }
 

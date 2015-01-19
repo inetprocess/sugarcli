@@ -17,10 +17,12 @@ class Config implements ConfigurationInterface, HelperInterface
 
     protected $config_data = array();
 
+    protected $loaded = false;
+
     public $config_files = array();
 
 
-    public function __construct($config_files = array())
+    public function __construct(array $config_files = array())
     {
         $this->config_files = $config_files;
     }
@@ -40,6 +42,12 @@ class Config implements ConfigurationInterface, HelperInterface
         //Validate and merge configuration.
         $processor = new Processor();
         $this->config_data = $processor->processConfiguration($this, $parsed_confs);
+        $this->loaded = true;
+    }
+
+    public function isLoaded()
+    {
+        return $this->loaded;
     }
 
     /**
@@ -64,6 +72,9 @@ class Config implements ConfigurationInterface, HelperInterface
      */
     public function get($path = '', $test_only = false)
     {
+        if (!$this->isLoaded()) {
+            throw new ConfigException('Load configuration files before accessing the data.');
+        }
         $data = $this->config_data;
         $nodes = explode('.', $path);
         foreach ($nodes as $node) {
