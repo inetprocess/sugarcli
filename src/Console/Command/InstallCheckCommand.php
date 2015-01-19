@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-use SugarCli\Sugar\Util;
+use SugarCli\Sugar\Sugar;
 
 class InstallCheckCommand extends DefaultFromConfCommand
 {
@@ -27,11 +27,12 @@ class InstallCheckCommand extends DefaultFromConfCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path = $this->getDefaultOption($input, 'path');
-        if (!Util::isExtracted($path)) {
+        $sugar = new Sugar($path);
+        if (!$sugar->isExtracted()) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
             return 11;
         }
-        if (!Util::isInstalled($path)) {
+        if (!$sugar->isInstalled()) {
             $output->writeln('SugarCRM is not installed in ' . $path . '.');
             return 12;
         }
