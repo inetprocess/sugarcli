@@ -2,7 +2,7 @@
 /**
  * Check command to verify that Sugar is present and installed.
  */
-namespace SugarCli\Clean;
+namespace SugarCli\Console\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -14,16 +14,17 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use SugarCli\Sugar\Util;
 use SugarCli\Sugar\LangFileCleaner;
 
-class LangFilesCommand extends Command
+class CleanLangFilesCommand extends DefaultFromConfCommand
 {
+    protected function getDefaults()
+    {
+        return array('path' => 'sugarcrm.path');
+    }
+
     protected function configure()
     {
         $this->setName("clean:langfiles")
             ->setDescription('Sort php arrays in language files to make it easier for vcs programs.')
-            ->addArgument(
-                'path',
-                InputArgument::REQUIRED,
-                'Path to sugarcrm instance')
             ->addOption(
                 'no-sort',
                 null,
@@ -39,7 +40,7 @@ class LangFilesCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = $this->getHelper('logger');
-        $path = $input->getArgument('path');
+        $path = $this->getDefaultOption($input, 'path');
         $sort = !$input->getOption('no-sort');
         $test = $input->getOption('test');
         if (!Util::isExtracted($path)) {

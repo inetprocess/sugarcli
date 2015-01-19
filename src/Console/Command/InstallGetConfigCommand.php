@@ -1,5 +1,5 @@
 <?php
-namespace SugarCli\Install;
+namespace SugarCli\Console\Command;
 /**
  * Check command to verify that Sugar is present and installed.
  */
@@ -11,7 +11,7 @@ use Symfony\Component\Console\Input\InputOption;
 
 use Symfony\Component\Filesystem\Filesystem;
 
-class GetConfigCommand extends Command
+class InstallGetConfigCommand extends Command
 {
     protected function configure()
     {

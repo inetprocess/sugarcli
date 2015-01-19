@@ -1,5 +1,5 @@
 <?php
-namespace SugarCli\Install;
+namespace SugarCli\Console\Command;
 /**
  * Check command to verify that Sugar is present and installed.
  */
@@ -11,21 +11,22 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use SugarCli\Sugar\Util;
 
-class CheckCommand extends Command
+class InstallCheckCommand extends DefaultFromConfCommand
 {
+    protected function getDefaults()
+    {
+        return array('path' => 'sugarcrm.path');
+    }
+
     protected function configure()
     {
         $this->setName("install:check")
-            ->setDescription('Check if SugarCRM is installed and configured.')
-            ->addArgument(
-                'path',
-                InputArgument::REQUIRED,
-                'Path to SugarCRM installation.');
+            ->setDescription('Check if SugarCRM is installed and configured.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('path');
+        $path = $this->getDefaultOption($input, 'path');
         if (!Util::isExtracted($path)) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
             return 11;

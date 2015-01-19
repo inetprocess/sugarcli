@@ -2,9 +2,8 @@
 /**
  * Check command to verify that Sugar is present and installed.
  */
-namespace SugarCli\Install;
+namespace SugarCli\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
@@ -14,20 +13,20 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 use SugarCli\Sugar\Installer;
 use SugarCli\Sugar\InstallerException;
 
-class RunCommand extends Command
+class InstallRunCommand extends DefaultFromConfCommand
 {
+    protected function getDefaults()
+    {
+        return array(
+            'path' => 'sugarcrm.path',
+            'url' => 'sugarcrm.url',
+        );
+    }
+
     protected function configure()
     {
         $this->setName("install:run")
             ->setDescription('Extract and install SugarCRM.')
-            ->addArgument(
-                'path',
-                InputArgument::REQUIRED,
-                'Path to SugarCRM installation.')
-            ->addArgument(
-                'url',
-                InputArgument::REQUIRED,
-                'Public url for Sugar.')
             ->addOption(
                 'force',
                 'f',
@@ -36,13 +35,13 @@ class RunCommand extends Command
             ->addOption(
                 'source',
                 's',
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'Path to SugarCRM installation package.',
                 'sugar.zip')
             ->addOption(
                 'config',
                 'c',
-                InputOption::VALUE_OPTIONAL,
+                InputOption::VALUE_REQUIRED,
                 'PHP file to use as configuration for the installation.',
                 'config_si.php');
     }
@@ -52,8 +51,8 @@ class RunCommand extends Command
         $logger = $this->getHelper('logger');
         $force = $input->getOption('force');
         $installer = new Installer(
-            $input->getArgument('path'),
-            $input->getArgument('url'),
+            $this->getDefaultOption($input, 'path'),
+            $this->getDefaultOption($input, 'url'),
             $input->getOption('source'),
             $input->getOption('config'),
             $logger
