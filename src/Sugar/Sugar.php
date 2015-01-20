@@ -1,10 +1,14 @@
 <?php
+/**
+ * Class to manage a sugar instance.
+ */
 
 namespace SugarCli\Sugar;
 
 class Sugar
 {
     protected $path = null;
+    protected $config = null;
 
     public function __construct($path = null)
     {
@@ -18,6 +22,7 @@ class Sugar
 
     public function setPath($path)
     {
+        $this->clearCache();
         $this->path = $path;
     }
 
@@ -39,17 +44,30 @@ class Sugar
         return false;
     }
 
-    public function getSugarConfig()
+    public function clearCache()
     {
-        $path = $this->path;
-        if ($this->isExtracted($path) and is_file($path . '/config.php')) {
-            require($path . '/config.php');
-            if (isset($sugar_config) and is_array($sugar_config)) {
-                return $sugar_config;
-            }
-            throw new SugarException("Invalid sugarcrm configuration file at $path/config.php");
+        $this->config = null;
+    }
+
+    public function getSugarConfig($clear_cache = false)
+    {
+        if ($clear_cache) {
+            $this->clearCache();
         }
-        throw new SugarException("$path is not a valid sugar installation.");
+        if ($this->config == null) {
+            $path = $this->path;
+            if ($this->isExtracted($path) and is_file($path . '/config.php')) {
+                require($path . '/config.php');
+                if (isset($sugar_config) and is_array($sugar_config)) {
+                    $this->config = $sugar_config;
+                } else {
+                    throw new SugarException("Invalid sugarcrm configuration file at $path/config.php");
+                }
+            } else {
+                throw new SugarException("$path is not a valid sugar installation.");
+            }
+        }
+        return $this->config;
     }
 }
 
