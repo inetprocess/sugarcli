@@ -7,18 +7,6 @@ use Symfony\Component\Console\Helper\HelperSet;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
-    public function assertUnsortedArray($test, $expected, $actual)
-    {
-        foreach ($expected as $expected_key => $expected_value) {
-            $test->assertArrayHasKey($expected_key, $actual);
-            $actual_value = $actual[$expected_key];
-            if (is_array($actual_value)) {
-                $test->assertUnsortedArray($this, $expected_value, $actual_value);
-            } else {
-                $test->assertEquals($expected_value, $actual_value);
-            }
-        }
-    }
 
     /**
      * @dataProvider configProvider
@@ -29,7 +17,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $proc = new Processor();
 
         $res = $proc->processConfiguration($conf, array($input));
-        $this->assertUnsortedArray($this, $input, $res);
+        $this->assertEquals($input, $res);
 
 
     }
@@ -89,7 +77,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         }
         $config = new Config($yaml_files);
         $config->load();
-        $this->assertUnsortedArray($this, $expected, $config->get());
+        $this->assertEquals($expected, $config->get());
     }
 
     public function yamlProvider()
@@ -125,8 +113,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $conf->load();
         $this->assertEquals('toto', $conf->get('sugarcrm.path'));
         $this->assertEquals('titi', $conf->get('sugarcrm.url'));
-        $this->assertUnsortedArray(
-            $this,
+        $this->assertEquals(
             array('path' => 'toto', 'url' => 'titi'),
             $conf->get('sugarcrm')
         );
