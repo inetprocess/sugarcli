@@ -17,6 +17,22 @@ Or clone this git repository and use `./bin/sugarcli`.
 Clone the git repository and run `php -dphar.readonly=0 bin/compile`.
 It will build the `sugarcli.phar` at the top of the git project.
 
+## Configuration
+You can save some configurtions options in different location. The latter one will override the previous one.
+`/etc/sugarclirc`
+`$HOME/.sugarclirc`
+`./.sugarclirc`
+
+Command line parameters will override these configurations.
+
+### Example
+```yaml
+---
+sugarcrm:
+    path: path/to/sugar
+    url: http://external.url
+```
+
 ## Usage
 
 `./sugarcli.phar --help`: This will give you the help and list of available commands.

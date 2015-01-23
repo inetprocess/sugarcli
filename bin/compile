@@ -16,7 +16,8 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
 // Remove path prefix and add to phar
-function addFile($phar, $file) {
+function addFile($phar, $file)
+{
     $path = str_replace( ROOT_DIR . '/', '', $file );
     $content = file_get_contents($file);
     print "addFile: $path = $file\n";
@@ -53,6 +54,7 @@ $finder->files()
     ->name('*.php')
     ->in(ROOT_DIR . '/src')
     ->in(ROOT_DIR . '/vendor/composer')
+    ->in(ROOT_DIR . '/vendor/doctrine')
     ->in(ROOT_DIR . '/vendor/psr')
     ->in(ROOT_DIR . '/vendor/symfony');
 
@@ -87,3 +89,4 @@ EOB
 $phar->stopBuffering();
 
 echo "Phar generated at " . BUILD_TARGET . "\n";
+

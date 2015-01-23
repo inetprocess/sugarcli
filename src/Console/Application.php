@@ -3,7 +3,9 @@
 namespace SugarCli\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\OutputInterface;
 
 use SugarCli\Util\LoggerHelper;
 
@@ -38,6 +40,9 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\InstallRunCommand();
         $commands[] = new \SugarCli\Console\Command\InstallGetConfigCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
+        $commands[] = new \SugarCli\Console\Command\MetadataDumpCommand();
+        $commands[] = new \SugarCli\Console\Command\MetadataLoadCommand();
+        $commands[] = new \SugarCli\Console\Command\MetadataStatusCommand();
         return $commands;
     }
 
@@ -46,11 +51,13 @@ class Application extends BaseApplication
         $this->config_paths = $config_paths;
     }
 
-    public function run()
+    public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         $config = new Config($this->config_paths);
         $config->load();
-        $output = new ConsoleOutput();
+        if ($output == null) {
+            $output = new ConsoleOutput();
+        }
         $this->getHelperSet()->set(new LoggerHelper($output));
         $this->getHelperSet()->set($config);
 
