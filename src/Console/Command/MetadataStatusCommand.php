@@ -12,26 +12,14 @@ use SugarCli\Sugar\Metadata;
 use SugarCli\Sugar\SugarException;
 use SugarCli\Console\Application;
 
-class MetadataStatusCommand extends DefaultFromConfCommand
+class MetadataStatusCommand extends MetadataCommand
 {
-    protected function getDefaults()
-    {
-        return array('path' => 'sugarcrm.path');
-    }
-
     protected function configure()
     {
         $this->setName('metadata:status')
             ->setDescription('Show the state of the fields_meta_data table compared to the dump file.')
             ->setHelp(<<<EOH
 EOH
-            )
-            ->addOption(
-                'dump-file',
-                'd',
-                InputOption::VALUE_REQUIRED,
-                'Path to the location of the dump file. Can be relative to sugarcrm path.',
-                '../db/fields_meta_data.yaml'
             );
     }
 
@@ -92,7 +80,7 @@ EOH
 
         foreach ($fields as $field_data) {
             $data = array();
-            foreach ($field_data[Metadata::REMOTE] as $key => $value) {
+            foreach ($field_data[Metadata::MODIFIED] as $key => $value) {
                 $data[] = "$key: " . var_export($value, true);
             }
             $modified_data = "{ " . implode(', ', $data) . " }";
@@ -107,13 +95,7 @@ EOH
         $logger = $this->getHelper('logger');
 
         $path = $this->getDefaultOption($input, 'path');
-        $dump_file = $input->getOption('dump-file');
-
-        // Manage absolute or relative path.
-        $fsys = new FileSystem();
-        if (!$fsys->isAbsolutePath($dump_file)) {
-            $dump_file = $path . '/' . $dump_file;
-        }
+        $dump_file = $this->getMetadataOption($input);
 
         $style = new OutputFormatterStyle(null, null, array('bold'));
         $output->getFormatter()->setStyle('b', $style);

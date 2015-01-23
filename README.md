@@ -65,7 +65,6 @@ You need to specify an installation path and the public url for your sugar insta
 The installer will extract a SugarCRM installation package named sugar.zip or specified with the `--source` option.
 It will use the `--config` option to use for the installation.
 
-
 #### Examples
 ```
 ./sugarcli.phar install:config:get
@@ -73,3 +72,25 @@ nano config_si.php
 ./sugarcli.phar install:run -v ~/www/sugar7 http://myserver.example.org/sugar7 --source ~/sugar_package/SugarPro-Full-7.2.2.1.zip
 ```
 Use `-v` or `-vv` to add more verbose output.
+
+### Manage `fields_meta_data` table.
+By default the metadata definition file will be `<sugar_path>/../db/fields_meta_data.yaml`. 
+You can override it with the `--metadata-file` parameter for all the sub-commands.
+
+#### Status
+`sugarcli metadata:status -p path/to/sugar` 
+This will show which fields are differing between the definition file and the database.
+
+#### Write metadata to a file.
+`sugarcli metadata:dump`
+You can dump the current DB fields meta data contents into the definition file. 
+You can also use the `--add`, `--del`, `--update` flags to only add, delete or update fields.
+The fields specified after the command line will allow you to act only on specific fields.
+
+#### Load definition to the database.
+`sugarcli metadata:load`
+Load fields defined in the meta data file to update the database.
+
+
+
+

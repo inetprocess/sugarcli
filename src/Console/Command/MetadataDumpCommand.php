@@ -10,13 +10,8 @@ use Symfony\Component\Filesystem\Filesystem;
 use SugarCli\Sugar\Metadata;
 use SugarCli\Sugar\SugarException;
 
-class MetadataDumpCommand extends DefaultFromConfCommand
+class MetadataDumpCommand extends MetadataCommand
 {
-    protected function getDefaults()
-    {
-        return array('path' => 'sugarcrm.path');
-    }
-
     protected function configure()
     {
         $this->setName('metadata:dump')
@@ -24,13 +19,13 @@ class MetadataDumpCommand extends DefaultFromConfCommand
             ->setHelp(<<<EOH
 Manage the of the dump file based on the fields_meta_data table.
 EOH
-            )
-            ->addOption(
-                'dump-file',
-                'd',
-                InputOption::VALUE_REQUIRED,
-                'Path to where dump the file. Can be relative to sugarcrm path.',
-                '../db/fields_meta_data.yaml');
+            );
+        $descriptions = array(
+            'add' => 'Add new fields from the DB to the definition file.',
+            'del' => 'Delete fields not present in the DB from the metadata file.',
+            'update' => 'Update the metadata file for modified fields in the DB.'
+        );
+        $this->setDiffOptions($descriptions);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,22 +33,30 @@ EOH
         $logger = $this->getHelper('logger');
 
         $path = $this->getDefaultOption($input, 'path');
-        $dump_file = $input->getOption('dump-file');
+        $metadata_file = $this->getMetadataOption($input);
 
-        // Manage absolute or relative path.
-        $fs = new FileSystem();
-        if (!$fs->isAbsolutePath($dump_file)) {
-            $dump_file = $path . '/' . $dump_file;
-        }
+        $diff_opts = $this->getDiffOptions($input);
 
         try {
-            $meta = new Metadata($path, $logger);
-            $meta->dump($dump_file);
-            $output->writeln("Fields metadata dumped to $dump_file.");
+            $meta = new Metadata($path, $logger, $metadata_file);
+            $base = $meta->getFromFile();
+            $new = $meta->getFromDb();
+            $diff_res = $meta->diff(
+                $base,
+                $new,
+                $diff_opts['add'],
+                $diff_opts['del'],
+                $diff_opts['update'],
+                $diff_opts['fields']
+            );
+            $logger->info("Fields metadata loaded from DB.");
+
+            $meta->writeFile($diff_res);
+            $output->writeln("Updated file $metadata_file.");
         } catch (SugarException $e) {
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
-            return 15;
+            return Application::EXIT_SUGAR_ERROR;
         }
     }
 }

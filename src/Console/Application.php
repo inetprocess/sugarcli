@@ -25,7 +25,8 @@ class Application extends BaseApplication
     const EXIT_NOT_EXTRACTED = 11;
     const EXIT_NOT_INSTALLED = 12;
     const EXIT_INSTALL_ERROR = 13;
-    const EXIT_SUGAR_ERROR = 14;
+
+    const EXIT_UNKNOWN_SUGAR_ERROR = 20;
 
     public $config_paths = array();
 

@@ -5,18 +5,13 @@ namespace SugarCli\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 
+use SugarCli\Console\Application;
 use SugarCli\Sugar\Metadata;
 use SugarCli\Sugar\SugarException;
 
-class MetadataLoadCommand extends DefaultFromConfCommand
+class MetadataLoadCommand extends MetadataCommand
 {
-    protected function getDefaults()
-    {
-        return array('path' => 'sugarcrm.path');
-    }
-
     protected function configure()
     {
         $this->setName('metadata:loadfromfile')
@@ -28,11 +23,23 @@ execute sql queries to impact the database.
 EOH
             )
             ->addOption(
-                'dump-file',
-                'd',
-                InputOption::VALUE_REQUIRED,
-                'Path from where fields metadata can be loaded. Can be relative to sugarcrm path.',
-                '../db/fields_meta_data.yaml');
+                'sql',
+                's',
+                InputOption::VALUE_NONE,
+                'Print the sql queries that would have been executed.'
+            )
+            ->addOption(
+                'force',
+                'f',
+                InputOption::VALUE_NONE,
+                'Really execute the SQL queries to modify the database.'
+            );
+        $descriptions = array(
+            'add' => 'Add new fields from the file to the DB.',
+            'del' => 'Delete fields not present in the metadata file from the DB.',
+            'update' => 'Update the DB for modified fields in metadata file.'
+        );
+        $this->setDiffOptions($descriptions);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -40,22 +47,39 @@ EOH
         $logger = $this->getHelper('logger');
 
         $path = $this->getDefaultOption($input, 'path');
-        $dump_file = $input->getOption('dump-file');
+        $metadata_file = $this->getMetadataOption($input);
 
-        // Manage absolute or relative path.
-        $fs = new FileSystem();
-        if (!$fs->isAbsolutePath($dump_file)) {
-            $dump_file = $path . '/' . $dump_file;
-        }
+        $diff_opts = $this->getDiffOptions($input);
 
         try {
-            $meta = new Metadata($path, $logger);
-            $meta->replace($dump_file);
-            $output->writeln("Fields metadata loaded from $dump_file.");
+            $meta = new Metadata($path, $logger, $metadata_file);
+            $base = $meta->getFromDb();
+            $new = $meta->getFromFile();
+            $diff_res = $meta->diff(
+                $base,
+                $new,
+                $diff_opts['add'],
+                $diff_opts['del'],
+                $diff_opts['update'],
+                $diff_opts['fields']
+            );
+            $logger->info("Fields metadata loaded from $metadata_file.");
+
+            if ($input->getOption('sql')) {
+                $output->writeln($meta->getSqlQueries($diff_res));
+            }
+
+            if ($input->getOption('force')) {
+                $meta->executeQueries($diff_res);
+                $output->writeln("DB updated successfuly.");
+            } else {
+                $output->writeln('No action done. Use --force to execute the queries.');
+            }
+
         } catch (SugarException $e) {
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
-            return 15;
+            return Application::EXIT_SUGAR_ERROR;
         }
     }
 }
