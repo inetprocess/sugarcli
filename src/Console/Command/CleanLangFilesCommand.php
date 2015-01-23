@@ -13,6 +13,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 
 use SugarCli\Sugar\Sugar;
 use SugarCli\Sugar\LangFileCleaner;
+use SugarCli\Console\Application;
 
 class CleanLangFilesCommand extends DefaultFromConfCommand
 {
@@ -46,7 +47,7 @@ class CleanLangFilesCommand extends DefaultFromConfCommand
         $test = $input->getOption('test');
         if (!$sugar->isExtracted()) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
-            return 11;
+            return Application::EXIT_NOT_EXTRACTED;
         }
         $cleaner = new LangFileCleaner($path, $logger);
         $cleaner->clean($sort, $test);

@@ -10,6 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 use SugarCli\Sugar\Metadata;
 use SugarCli\Sugar\SugarException;
+use SugarCli\Console\Application;
 
 class MetadataStatusCommand extends DefaultFromConfCommand
 {
@@ -136,13 +137,13 @@ EOH
                 or !empty($diff[Metadata::UPDATE])
             )
             ) {
-                return 21;
+                return Application::EXIT_STATUS_MODIFICATIONS;
             }
 
         } catch (SugarException $e) {
             $logger->error('An error occured.');
             $logger->error($e->getMessage());
-            return 15;
+            return Application::EXIT_SUGAR_ERROR;
         }
 
     }
