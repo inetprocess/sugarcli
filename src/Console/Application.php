@@ -61,7 +61,7 @@ class Application extends BaseApplication
         $this->config_paths = $config_paths;
     }
 
-    public function run(InputInterface $input = null, OutputInterface $output = null)
+    public function configure(InputInterface $input = null, OutputInterface $output = null)
     {
         $config = new Config($this->config_paths);
         $config->load();
@@ -70,7 +70,11 @@ class Application extends BaseApplication
         }
         $this->getHelperSet()->set(new LoggerHelper($output));
         $this->getHelperSet()->set($config);
+    }
 
+    public function run(InputInterface $input = null, OutputInterface $output = null)
+    {
+        $this->configure($input, $output);
         return parent::run(null, $output);
     }
 }

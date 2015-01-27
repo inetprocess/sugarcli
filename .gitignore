@@ -2,6 +2,10 @@
 .*.sw*
 /Session.vim
 
+# phpunit
+/phpunit.phar
+/phpunit.xml
+
 # Composer
 /composer.lock
 /composer.phar
@@ -9,6 +13,8 @@
 
 # Binaries
 /sugarcli.phar
-/phpunit.phar
 
 /test
+
+.sugarcli_testrc
+.sugarclirc

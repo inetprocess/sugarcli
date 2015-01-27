@@ -15,4 +15,15 @@
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
     </logging>
 
+    <php>
+        <var name='TEST_DB_USER' value='@DB_USER@' />
+        <var name='TEST_DB_PASSWORD' value='@DB_PASSWORD@' />
+        <var name='TEST_DB_NAME' value='@DB_NAME@' />
+        <var name='TEST_DB_HOST' value='@DB_HOST@' />
+        <var name='TEST_DB_PORT' value='@DB_PORT@' />
+
+        <var name='TEST_SUGAR_PATH' value='@SUGAR_PATH@' />
+        <var name='TEST_SUGAR_URL' value='@SUGAR_URL@' />
+    </php>
+
 </phpunit>
