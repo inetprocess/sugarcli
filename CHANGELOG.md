@@ -1,9 +1,14 @@
 Changelog
 =========
 
+1.3.1
+------
+* `metadata:*`: Better error handling.
+* Tests: Facility for tests with database.
+
 1.3.0
 -----
-* use a config file for some parameters.
+* Use a config file for some parameters.
 * `metadata:*`: Manage `fields_meta_data` table.
 
 1.2.2
