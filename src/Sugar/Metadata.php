@@ -205,7 +205,7 @@ class Metadata extends Sugar
      */
     public function executeQueries(array $diff_res)
     {
-        $this->logger->debug('Exec sql queries.');
+        $this->logger->debug('Running sql queries.');
         $queries = $this->getQueries($diff_res);
         foreach ($queries as $query) {
             $query->execute();
@@ -231,11 +231,16 @@ class Metadata extends Sugar
      */
     public function writeFile(array $diff_res)
     {
-        $base = $this->getFromFile();
+        $base = array();
+        if (is_readable($this->metadata_file)) {
+            $base = $this->getFromFile();
+        }
         $merged_data = $this->getMergedMetadata($base, $diff_res);
         ksort($merged_data);
         $yaml = Yaml::dump(array_values($merged_data));
-        file_put_contents($this->metadata_file, $yaml);
+        if (@file_put_contents($this->metadata_file, $yaml) === false) {
+            throw new SugarException("Unable to dump metadata file to {$this->metadata_file}.");
+        }
     }
 }
 

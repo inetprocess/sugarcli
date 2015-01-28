@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use SugarCli\Console\Application;
+use SugarCli\Console\ExitCode;
 use SugarCli\Sugar\Metadata;
 use SugarCli\Sugar\SugarException;
 
@@ -51,6 +51,13 @@ EOH
 
         $diff_opts = $this->getDiffOptions($input);
 
+        if (!is_readable($metadata_file)) {
+            $logger->error("Unable to access metadata file {$metadata_file}.");
+            $output->writeln('');
+            $output->writeln("Use \"{$this->getProgramName()} metadata:dump\" first to dump the current table state.");
+            return ExitCode::EXIT_METADATA_NOT_FOUND;
+        }
+
         try {
             $meta = new Metadata($path, $logger, $metadata_file);
             $base = $meta->getFromDb();
@@ -77,9 +84,9 @@ EOH
             }
 
         } catch (SugarException $e) {
-            $logger->error('An error occured during the installation.');
+            $logger->error('An error occured while loading the metadata.');
             $logger->error($e->getMessage());
-            return Application::EXIT_SUGAR_ERROR;
+            return ExitCode::EXIT_UNKNOWN_SUGAR_ERROR;
         }
     }
 }

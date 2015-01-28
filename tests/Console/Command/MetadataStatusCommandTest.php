@@ -8,6 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 use SugarCli\Console\Application;
 use SugarCli\Sugar\TestCase;
+use SugarCli\Util\TestLogger;
 
 class MetadataStatusCommandTest extends MetadataTestCase
 {
@@ -17,9 +18,7 @@ class MetadataStatusCommandTest extends MetadataTestCase
      */
     public function testStatus()
     {
-        $app = new Application();
-        $app->configure();
-        $cmd = $app->find('metadata:status');
+        $cmd = $this->app->find('metadata:status');
         $tester = new CommandTester($cmd);
         $tester->execute(
             array(
@@ -36,6 +35,41 @@ class MetadataStatusCommandTest extends MetadataTestCase
         $this->assertRegExp("/$add/", $tester->getDisplay());
         $this->assertRegExp("/$del/", $tester->getDisplay());
         $this->assertRegExp("/$update/", $tester->getDisplay());
+
+        $ret = $tester->execute(
+            array(
+                'command' => $cmd->getName(),
+                '--path' => __DIR__.'/metadata/fake_sugar',
+                '--metadata-file' => $this->getYamlFilename(MetadataTestCase::METADATA_NEW),
+                '--quiet' => null,
+            )
+        );
+
+        $this->assertEquals(2, $ret);
+
+    }
+
+    /**
+     * @group db
+     */
+    public function testFailure()
+    {
+        $logger = new TestLogger();
+        $this->app->getHelperSet()->set($logger);
+        $cmd = $this->app->find('metadata:status');
+        $tester = new CommandTester($cmd);
+        $ret = $tester->execute(
+            array(
+                'command' => $cmd->getName(),
+                '--path' => __DIR__.'/metadata/fake_sugar',
+                '--metadata-file' => $this->getYamlFilename('unknown_file')
+            )
+        );
+
+        $expected_log = '[error] Unable to access metadata file ' . $this->getYamlFilename('unknown_file') . ".\n";
+        $this->assertEquals($expected_log, $logger->getLines());
+        $this->assertEquals(21, $ret);
+
     }
 }
 

@@ -8,6 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
 use SugarCli\Sugar\TestCase;
+use SugarCli\Util\TestLogger;
 
 class MetadataLoadCommandTest extends MetadataTestCase
 {
@@ -45,6 +46,9 @@ class MetadataLoadCommandTest extends MetadataTestCase
         $this->assertTablesEqual($this->getDataSet()->getTable('fields_meta_data'), $queryTable);
     }
 
+    /**
+     * @group db
+     */
     public function testSql()
     {
 
@@ -70,6 +74,9 @@ EOS;
         $this->assertEquals($expected_sql, $this->commandTester->getDisplay());
     }
 
+    /**
+     * @group db
+     */
     public function testForce()
     {
         $this->commandTester->execute(
@@ -89,6 +96,26 @@ EOS;
             ->createQueryTable('fields_meta_data', 'SELECT * FROM fields_meta_data ORDER BY BINARY id ASC');
 
         $this->assertTablesEqual($expected->getTable('fields_meta_data'), $queryTable);
+    }
+
+    /**
+     * @group db
+     */
+    public function testFailure()
+    {
+        $logger = new TestLogger();
+        $this->app->getHelperSet()->set($logger);
+        $ret = $this->commandTester->execute(
+            array(
+                'command' => 'metadata:load',
+                '--path' => __DIR__ . '/metadata/fake_sugar',
+                '--metadata-file' => $this->getYamlFilename('unknown_file'),
+            )
+        );
+        $expected_log = '[error] Unable to access metadata file ' . $this->getYamlFilename('unknown_file') . ".\n";
+        $this->assertEquals($expected_log, $logger->getLines());
+        $this->assertEquals(21, $ret);
+
     }
 }
 

@@ -78,5 +78,10 @@ abstract class MetadataCommand extends DefaultFromConfCommand
         }
         return $res;
     }
+
+    public function getProgramName()
+    {
+        return $_SERVER['argv'][0];
+    }
 }
 

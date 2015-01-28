@@ -6,33 +6,26 @@ use SugarCli\Util\TestLogger;
 
 class TestLoggerTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider loggerProvider
-     */
-    public function testLogger($expect, $level, $lines)
+    public function testLogger()
     {
         $logger = new TestLogger();
-        foreach ($lines as $line) {
-            $logger->log($line[0], $line[1]);
-        }
-        $this->assertEquals("$expect\n", $logger->getLines($level));
-    }
+        $logger->warning('foo');
+        $logger->info('test info');
+        $logger->debug('test debug');
+        $logger->warning('test warn');
 
-    public function loggerProvider()
-    {
-        $json = <<<EOF
-    [
-        [ "[warning] foo", "warning", [ [ "warning", "foo", [] ]] ],
-        [ "[debug] bar", "debug", [
-                [ "warning", "foo"],
-                [ "debug", "bar"],
-                [ "warning", "warn"]
-            ]
-        ]
-    ]
-EOF;
-        $test_data = json_decode($json);
-        return $test_data;
+        $expected_log_lines = array(
+            "[warning] foo\n",
+            "[info] test info\n",
+            "[debug] test debug\n",
+            "[warning] test warn\n",
+        );
+
+        $this->assertEquals(implode('', $expected_log_lines), $logger->getLines('debug'));
+        $warn = $expected_log_lines[0] . $expected_log_lines[3];
+        $this->assertEquals($warn, $logger->getLines('warning'));
+        $this->assertEquals($warn, $logger->getLines('notice'));
+        $this->assertEquals('', $logger->getLines('error'));
     }
 }
 

@@ -11,9 +11,9 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
-use SugarCli\Sugar\Sugar;
+use SugarCli\Console\ExitCode;
 use SugarCli\Sugar\LangFileCleaner;
-use SugarCli\Console\Application;
+use SugarCli\Sugar\Sugar;
 
 class CleanLangFilesCommand extends DefaultFromConfCommand
 {
@@ -47,7 +47,7 @@ class CleanLangFilesCommand extends DefaultFromConfCommand
         $test = $input->getOption('test');
         if (!$sugar->isExtracted()) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
-            return Application::EXIT_NOT_EXTRACTED;
+            return ExitCode::EXIT_NOT_EXTRACTED;
         }
         $cleaner = new LangFileCleaner($path, $logger);
         $cleaner->clean($sort, $test);

@@ -19,15 +19,6 @@ class Application extends BaseApplication
 {
     const CONFIG_NAME = 'sugarclirc';
 
-    // Exit codes.
-    const EXIT_STATUS_MODIFICATIONS = 1;
-
-    const EXIT_NOT_EXTRACTED = 11;
-    const EXIT_NOT_INSTALLED = 12;
-    const EXIT_INSTALL_ERROR = 13;
-
-    const EXIT_UNKNOWN_SUGAR_ERROR = 20;
-
     public $config_paths = array();
 
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')

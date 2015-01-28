@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
-use SugarCli\Console\Application;
+use SugarCli\Console\ExitCode;
 use SugarCli\Sugar\Installer;
 use SugarCli\Sugar\InstallerException;
 
@@ -64,7 +64,7 @@ class InstallRunCommand extends DefaultFromConfCommand
         } catch (InstallerException $e) {
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
-            return Application::EXIT_INSTALL_ERROR;
+            return ExitCode::EXIT_INSTALL_ERROR;
         }
     }
 }

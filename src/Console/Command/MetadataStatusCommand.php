@@ -10,7 +10,7 @@ use Symfony\Component\Filesystem\Filesystem;
 
 use SugarCli\Sugar\Metadata;
 use SugarCli\Sugar\SugarException;
-use SugarCli\Console\Application;
+use SugarCli\Console\ExitCode;
 
 class MetadataStatusCommand extends MetadataCommand
 {
@@ -36,7 +36,7 @@ EOH
         if (empty($fields)) {
             return;
         }
-        $prog_name = $_SERVER['argv'][0];
+        $prog_name = $this->getProgramName();
         $output->writeln('<b>New fields to add in db:</b>');
         $output->writeln("  (use \"{$prog_name} metadata:load --add\" to add the new fields in db)");
         $output->writeln("  (use \"{$prog_name} metadata:dump --del\" to remove field from the definition file)");
@@ -54,7 +54,7 @@ EOH
         if (empty($fields)) {
             return;
         }
-        $prog_name = $_SERVER['argv'][0];
+        $prog_name = $this->getProgramName();
         $output->writeln('<b>Fields to delete in db:</b>');
         $output->writeln("  (use \"{$prog_name} metadata:load --del\" to remove the fields from db)");
         $output->writeln("  (use \"{$prog_name} metadata:dump --add\" to add the fields to the definition file)");
@@ -72,7 +72,7 @@ EOH
         if (empty($fields)) {
             return;
         }
-        $prog_name = $_SERVER['argv'][0];
+        $prog_name = $this->getProgramName();
         $output->writeln('<b>Modified fields:</b>');
         $output->writeln("  (use \"{$prog_name} metadata:load --update\" to update the fields in db)");
         $output->writeln("  (use \"{$prog_name} metadata:dump --update\" to update the definition file)");
@@ -95,13 +95,20 @@ EOH
         $logger = $this->getHelper('logger');
 
         $path = $this->getDefaultOption($input, 'path');
-        $dump_file = $this->getMetadataOption($input);
+        $metadata_file = $this->getMetadataOption($input);
 
         $style = new OutputFormatterStyle(null, null, array('bold'));
         $output->getFormatter()->setStyle('b', $style);
 
+        if (!is_readable($metadata_file)) {
+            $logger->error("Unable to access metadata file {$metadata_file}.");
+            $output->writeln('');
+            $output->writeln("Use \"{$this->getProgramName()} metadata:dump\" first to dump the current table state.");
+            return ExitCode::EXIT_METADATA_NOT_FOUND;
+        }
+
         try {
-            $meta = new Metadata($path, $logger, $dump_file);
+            $meta = new Metadata($path, $logger, $metadata_file);
 
             $dump_fields = $meta->getFromFile();
             $db_fields = $meta->getFromDb();
@@ -119,13 +126,13 @@ EOH
                 or !empty($diff[Metadata::UPDATE])
             )
             ) {
-                return Application::EXIT_STATUS_MODIFICATIONS;
+                return ExitCode::EXIT_STATUS_MODIFICATIONS;
             }
 
         } catch (SugarException $e) {
             $logger->error('An error occured.');
             $logger->error($e->getMessage());
-            return Application::EXIT_SUGAR_ERROR;
+            return ExitCode::EXIT_UNKNOWN_SUGAR_ERROR;
         }
 
     }
