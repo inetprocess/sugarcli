@@ -3,22 +3,30 @@
 namespace SugarCli\Sugar;
 
 use SugarCli\Util\TestLogger;
+use SugarCli\Sugar\TestCase;
 
-class MetadataTest extends \PHPUnit_Framework_TestCase
+class MetadataTest extends TestCase
 {
-    /**
-     */
-    public function testDiff()
-    {
-        $logger = new TestLogger();
-        $meta = new Metadata(null, $logger);
-        $meta->setMetadataFile(__DIR__ . '/metadata/base.yaml');
-        $base = $meta->getFromFile();
-        $meta->setMetadataFile(__DIR__ . '/metadata/new.yaml');
-        $new = $meta->getFromFile();
+    protected $meta = null;
+    protected $base = null;
+    protected $new = null;
 
-        // Test 1
-        $diff = $meta->diff($base, $new);
+    public function setUp()
+    {
+        parent::setUp();
+
+        $logger = new TestLogger();
+        $this->meta = new Metadata(null, $logger);
+        $this->meta->setMetadataFile(__DIR__ . '/metadata/base.yaml');
+        $this->base = $this->meta->getFromFile();
+        $this->meta->setMetadataFile(__DIR__ . '/metadata/new.yaml');
+        $this->new = $this->meta->getFromFile();
+
+    }
+
+    public function testDiffFull()
+    {
+        $diff = $this->meta->diff($this->base, $this->new);
 
         $expected[Metadata::ADD]['field4']['id'] = 'field4';
         $expected[Metadata::ADD]['field4']['name'] = 'foobar';
@@ -31,23 +39,29 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $expected[Metadata::UPDATE]['field2'][Metadata::MODIFIED]['name'] = 'baz';
 
         $this->assertEquals($expected, $diff);
+    }
 
-        // Test merged data
-        $merged_data = $meta->getMergedMetadata($base, $diff);
-        $this->assertEquals($new, $merged_data);
+    public function testDiffMerge()
+    {
+        $diff = $this->meta->diff($this->base, $this->new);
+        $merged_data = $this->meta->getMergedMetadata($this->base, $diff);
+        $this->assertEquals($this->new, $merged_data);
+    }
 
-
-        //Test 2
-        $diff = $meta->diff($base, $new, false, false, false);
+    public function testDiffEmpty()
+    {
+        $diff = $this->meta->diff($this->base, $this->new, false, false, false);
         $expected = array(
             Metadata::ADD => array(),
             Metadata::DEL => array(),
             Metadata::UPDATE => array()
         );
         $this->assertEquals($expected, $diff);
+    }
 
-        //Test 3
-        $diff = $meta->diff($base, $new, true, false, true, array('field4', 'field1'));
+    public function testDiffFilter()
+    {
+        $diff = $this->meta->diff($this->base, $this->new, true, false, true, array('field4', 'field1'));
         $expected = array(
             Metadata::ADD => array(),
             Metadata::DEL => array(),
@@ -58,13 +72,40 @@ class MetadataTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $diff);
     }
 
+    public function testSorted()
+    {
+        $this->meta->setMetadataFile(__DIR__ . '/metadata/unsorted.yaml');
+        $unsorted = $this->meta->getFromFile();
+        $expected_array = <<<EOA
+array (
+  'field1' => 
+  array (
+    'id' => 'field1',
+    'name' => 'foo',
+  ),
+  'field2_test' => 
+  array (
+    'id' => 'field2_test',
+    'name' => 'bar',
+  ),
+  'field_test' => 
+  array (
+    'id' => 'field_test',
+    'name' => 'bar',
+  ),
+)
+EOA;
+
+        $this->assertEquals($expected_array, var_export($unsorted, true));
+    }
+
     /**
      * @todo Manage this test with a live sugar instance.
-    */
-    public function totestQueryBuilder()
+     * @group db
+     */
+    public function todoTestQueryBuilder()
     {
-        $sugar_path = 'XXXX';
-        $meta = new Metadata($sugar_path);
+        $meta = new Metadata(__DIR__);
         $meta->setMetadataFile(__DIR__ . '/metadata/base.yaml');
         $base = $meta->getFromFile();
         $meta->setMetadataFile(__DIR__ . '/metadata/new.yaml');

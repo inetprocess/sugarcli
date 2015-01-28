@@ -2,60 +2,15 @@
 
 namespace SugarCli\Console\Command;
 
+require_once(__DIR__ . '/MetadataTestCase.php');
+
 use Symfony\Component\Console\Tester\CommandTester;
 
 use SugarCli\Console\Application;
+use SugarCli\Sugar\TestCase;
 
-class MetadataStatusCommandTest extends \PHPUnit_Extensions_Database_TestCase
+class MetadataStatusCommandTest extends MetadataTestCase
 {
-
-    public function getConnection()
-    {
-        $dsn = 'mysql:';
-        $params[] = 'host=' . (empty($GLOBALS['TEST_DB_HOST']) ? 'localhost' : $GLOBALS['TEST_DB_HOST']);
-        if (!empty($GLOBALS['TEST_DB_PORT'])) {
-            $params[] = 'port=' . $GLOBALS['TEST_DB_PORT'];
-        }
-        $params[] = 'dbname=' . $GLOBALS['TEST_DB_NAME'];
-
-        $dsn .= implode(';', $params);
-
-        $pdo = new \PDO($dsn, $GLOBALS['TEST_DB_USER'], $GLOBALS['TEST_DB_PASSWORD']);
-        return $this->createDefaultDBConnection($pdo, $GLOBALS['TEST_DB_NAME']);
-    }
-
-    public function getDataSet()
-    {
-        $yaml = __DIR__ . '/metadata/db.yaml';
-        return new \PHPUnit_Extensions_Database_DataSet_YamlDataSet($yaml);
-    }
-
-    public function setUp()
-    {
-        parent::setUp();
-
-        $config = file_get_contents(__DIR__ . '/metadata/fake_sugar/config.tpl.php');
-        $config = str_replace(array(
-                '<DB_USER>',
-                '<DB_PASSWORD>',
-                '<DB_NAME>'
-            ),
-            array(
-                $GLOBALS['TEST_DB_USER'],
-                $GLOBALS['TEST_DB_PASSWORD'],
-                $GLOBALS['TEST_DB_NAME'],
-            ),
-            $config
-        );
-        file_put_contents(__DIR__ . '/metadata/fake_sugar/config.php', $config);
-    }
-
-    public function tearDown()
-    {
-        parent::tearDown();
-        unlink(__DIR__ . '/metadata/fake_sugar/config.php');
-    }
-
 
     /**
      * @group db
@@ -70,7 +25,7 @@ class MetadataStatusCommandTest extends \PHPUnit_Extensions_Database_TestCase
             array(
                 'command' => $cmd->getName(),
                 '--path' => __DIR__.'/metadata/fake_sugar',
-                '--metadata-file' => __DIR__ . '/metadata/new.yaml'
+                '--metadata-file' => $this->getYamlFilename(MetadataTestCase::METADATA_NEW)
             )
         );
 

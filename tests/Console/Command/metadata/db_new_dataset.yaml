@@ -1,0 +1,112 @@
+fields_meta_data:
+    -
+        id: Accountstest2_c
+        name: test2_c
+        vname: LBL_TEST
+        comments: ''
+        help: ''
+        custom_module: Accounts
+        type: varchar
+        len: '255'
+        required: '0'
+        default_value: ''
+        date_modified: '2014-06-04 11:28:08'
+        deleted: '0'
+        audited: '0'
+        massupdate: '0'
+        duplicate_merge: '0'
+        reportable: '1'
+        importable: 'true'
+        ext1: ''
+        ext2: ''
+        ext3: ''
+        ext4: ''
+    -
+        id: Accountstest_c
+        name: test_c
+        vname: LBL_TEST
+        comments: ''
+        help: ''
+        custom_module: Accounts
+        type: varchar
+        len: '255'
+        required: '0'
+        default_value: ''
+        date_modified: '2014-06-04 11:28:08'
+        deleted: '0'
+        audited: '0'
+        massupdate: '0'
+        duplicate_merge: '0'
+        reportable: '1'
+        importable: 'true'
+        ext1: ''
+        ext2: ''
+        ext3: ''
+        ext4: ''
+    -
+        id: inet_ImportCSVcsv_fields_delimiter_c
+        name: csv_fields_delimiter_c
+        vname: LBL_CSV_FIELDS_DELIMITER_C
+        comments: ''
+        help: ''
+        custom_module: inet_ImportCSV
+        type: enum
+        len: '100'
+        required: '1'
+        default_value: semicolon
+        date_modified: '2014-05-16 18:58:07'
+        deleted: '0'
+        audited: '0'
+        massupdate: '0'
+        duplicate_merge: '0'
+        reportable: '1'
+        importable: '1'
+        ext1: csv_fields_delimiter_c_list
+        ext2: ''
+        ext3: ''
+        ext4: ''
+    -
+        id: inet_ImportCSVcsv_lines_filters_c
+        name: csv_lines_filters_c
+        vname: LBL_CSV_LINES_FILTERS_C
+        comments: ''
+        help: ''
+        custom_module: inet_ImportCSV
+        type: multienum
+        len: '100'
+        required: '0'
+        default_value: FilterEncoding
+        date_modified: '2014-05-16 18:58:07'
+        deleted: '0'
+        audited: '0'
+        massupdate: '0'
+        duplicate_merge: '0'
+        reportable: '1'
+        importable: 'true'
+        ext1: csv_lines_filters_c_list
+        ext2: ''
+        ext3: ''
+        ext4: ''
+    -
+        id: inet_ImportCSVprotocolsoap_function_dropdown_c
+        name: protocolsoap_function_dropdown_c
+        vname: LBL_PROTOCOLSOAP_FUNCTION_DROPDOWN_C
+        comments: ''
+        help: ''
+        custom_module: inet_ImportCSV
+        type: enum
+        len: '100'
+        required: '0'
+        default_value: other
+        date_modified: '2014-05-16 18:50:56'
+        deleted: '0'
+        audited: '1'
+        massupdate: '0'
+        duplicate_merge: '0'
+        reportable: '1'
+        importable: '1'
+        ext1: protocolsoap_function_dropdown_c_list
+        ext2: ''
+        ext3: ''
+        ext4: ''
+
