@@ -4,8 +4,9 @@ SugarCli is a command line tool to install and manage SugarCRM installations.
 
 ## Installing
 
-Get the packaged version at. Allow the execution and run it.
+Get the phar archive at `http://apt.inetprocess.fr/pub/sugarcli.phar`. Allow the execution and run it.
 ```
+wget 'http://apt.inetprocess.fr/pub/sugarcli.phar'
 chmod +x ./sugarcli.phar
 ./sugarcli.phar
 ```
@@ -74,16 +75,16 @@ nano config_si.php
 Use `-v` or `-vv` to add more verbose output.
 
 ### Manage `fields_meta_data` table.
-By default the metadata definition file will be `<sugar_path>/../db/fields_meta_data.yaml`. 
+By default the metadata definition file will be `<sugar_path>/../db/fields_meta_data.yaml`.
 You can override it with the `--metadata-file` parameter for all the sub-commands.
 
 #### Status
-`sugarcli metadata:status -p path/to/sugar` 
+`sugarcli metadata:status -p path/to/sugar`
 This will show which fields are differing between the definition file and the database.
 
 #### Write metadata to a file.
 `sugarcli metadata:dump`
-You can dump the current DB fields meta data contents into the definition file. 
+You can dump the current DB fields meta data contents into the definition file.
 You can also use the `--add`, `--del`, `--update` flags to only add, delete or update fields.
 The fields specified after the command line will allow you to act only on specific fields.
 
