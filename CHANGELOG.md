@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.3.2
+-----
+* Fix missing ressource file for command `install:config:get`
+* Fix issue where dbconfig array in config.php was not complete.
+
 1.3.1
 ------
 * `metadata:*`: Better error handling.

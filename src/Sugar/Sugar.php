@@ -83,10 +83,34 @@ class Sugar
         return $this->config;
     }
 
+    public function normalizeDbParams($params)
+    {
+        $defaults = array(
+            'db_password' => '',
+            'db_host_name' => 'localhost',
+            'db_port' => 3306,
+        );
+
+        if (empty($params['db_name'])) {
+            throw new SugarException('Missing configuration parameter "db_name".');
+        }
+        if (empty($params['db_user_name'])) {
+            throw new SugarException('Missing configuration parameter "db_user_name".');
+        }
+
+        return array_merge($defaults, $params);
+    }
+
     public function getExternalDb()
     {
-        $dbconfig = $this->getSugarConfig();
-        $dbconfig = $dbconfig['dbconfig'];
+        $sugar_config = $this->getSugarConfig();
+        if (!array_key_exists('dbconfig', $sugar_config)
+            or !is_array($sugar_config['dbconfig'])
+        ) {
+            throw new SugarException('Configuration parameter "db_config" is not an array');
+        }
+        $dbconfig = $sugar_config['dbconfig'];
+        $dbconfig = $this->normalizeDbParams($dbconfig);
 
         $params = array(
             'dbname' => $dbconfig['db_name'],
