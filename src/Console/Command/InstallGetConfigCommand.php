@@ -11,6 +11,8 @@ use Symfony\Component\Console\Input\InputOption;
 
 use Symfony\Component\Filesystem\Filesystem;
 
+use SugarCli\Console\ExitCode;
+
 class InstallGetConfigCommand extends Command
 {
     protected function configure()
@@ -32,12 +34,24 @@ class InstallGetConfigCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $fs = new Filesystem();
-        $fs->copy(
-            __DIR__ . '/../../res/config_si.php',
-            $input->getOption('config'),
-            $input->getOption('force')
-        );
+        $config_file = $input->getOption('config');
+        $logger = $this->getHelper('logger');
+        $config_res = __DIR__ . '/../../../res/config_si.php';
+
+
+        $fsys = new Filesystem();
+        if ($fsys->exists($config_file)) {
+            $logger->debug("File $config_file already exists.");
+            if ($input->getOption('force')) {
+                $output->writeln("Overwriting file $config_file.");
+                $fsys->copy($config_res, $config_file, true);
+            } else {
+                $output->writeln("Will not overwrite existing file $config_file.");
+                return ExitCode::EXIT_FILE_ALREADY_EXISTS;
+            }
+        } else {
+            $fsys->copy($config_res, $config_file);
+        }
     }
 }
 
