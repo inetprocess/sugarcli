@@ -30,12 +30,14 @@ class CleanLangFilesCommand extends DefaultFromConfCommand
                 'no-sort',
                 null,
                 InputOption::VALUE_NONE,
-                'Do not sort the files contents. It will still remove duplicates. Useful for testing.')
+                'Do not sort the files contents. It will still remove duplicates. Useful for testing.'
+            )
             ->addOption(
                 'test',
                 't',
                 InputOption::VALUE_NONE,
-                'Try to rewrite the files without modifying the contents. Imply --no-sort.');
+                'Try to rewrite the files without modifying the contents. Imply --no-sort.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

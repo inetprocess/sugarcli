@@ -25,7 +25,7 @@ EOH
 
     public function getFieldDisplayName($field_data)
     {
-        if (empty($field_data['name']) or empty($field_data['custom_module'])) {
+        if (empty($field_data['name']) || empty($field_data['custom_module'])) {
             throw new SugarException('Enable to find key \'name\' or \'custom_module\' for a field.');
         }
         return $field_data['custom_module'] . '.' . $field_data['name'];
@@ -120,10 +120,10 @@ EOH
 
             if (
                 $input->getOption('quiet')
-                and (
+                && (
                 !empty($diff[Metadata::ADD])
-                or !empty($diff[Metadata::DEL])
-                or !empty($diff[Metadata::UPDATE])
+                || !empty($diff[Metadata::DEL])
+                || !empty($diff[Metadata::UPDATE])
             )
             ) {
                 return ExitCode::EXIT_STATUS_MODIFICATIONS;
