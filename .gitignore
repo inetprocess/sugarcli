@@ -5,6 +5,7 @@
 # phpunit
 /phpunit.phar
 /phpunit.xml
+/reports/*
 
 # Composer
 /composer.lock
