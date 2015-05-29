@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.3.3
+-----
+* Fix #5756 : Use a single DB connection to Sugar.
+
 1.3.2
 -----
 * Fix missing ressource file for command `install:config:get`
