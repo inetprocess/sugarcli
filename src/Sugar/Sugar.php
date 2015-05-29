@@ -13,6 +13,7 @@ class Sugar
     protected $config = null;
     protected $initialized = false;
     protected $real_cwd = null;
+    protected $external_db = null;
 
     public $logger = null;
 
@@ -103,6 +104,10 @@ class Sugar
 
     public function getExternalDb()
     {
+        if ($this->external_db !== null) {
+            // We already have a db connection so we can return it.
+            return $this->external_db;
+        }
         $sugar_config = $this->getSugarConfig();
         if (!array_key_exists('dbconfig', $sugar_config)
             or !is_array($sugar_config['dbconfig'])
@@ -121,12 +126,11 @@ class Sugar
             'driver' => 'pdo_mysql',
         );
 
-        $conn = \Doctrine\DBAL\DriverManager::getConnection(
+        $this->external_db = \Doctrine\DBAL\DriverManager::getConnection(
             $params,
             new \Doctrine\DBAL\Configuration()
         );
-
-        return $conn;
+        return $this->external_db;
     }
 
     public function init()

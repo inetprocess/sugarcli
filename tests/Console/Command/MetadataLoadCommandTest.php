@@ -101,6 +101,18 @@ EOS;
     /**
      * @group db
      */
+    public function testSameConnection()
+    {
+        $sugar = new \SugarCli\Sugar\Sugar(__DIR__ . '/metadata/fake_sugar');
+        $conn1 = $sugar->getExternalDb();
+        $conn2 = $sugar->getExternalDb();
+        $this->assertNotNull($conn1);
+        $this->assertSame($conn1, $conn2);
+    }
+
+    /**
+     * @group db
+     */
     public function testFailure()
     {
         $logger = new TestLogger();
