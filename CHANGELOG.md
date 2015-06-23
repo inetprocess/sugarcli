@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.3.4
+-----
+* Set charset for mysql connection.
+
 1.3.3
 -----
 * Fix #5756 : Use a single DB connection to Sugar.

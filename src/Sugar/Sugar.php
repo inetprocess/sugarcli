@@ -124,6 +124,7 @@ class Sugar
             'host' => $dbconfig['db_host_name'],
             'port' => $dbconfig['db_port'],
             'driver' => 'pdo_mysql',
+            'charset' => 'UTF-8',
         );
 
         $this->external_db = \Doctrine\DBAL\DriverManager::getConnection(
