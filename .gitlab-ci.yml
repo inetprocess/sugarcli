@@ -4,5 +4,5 @@ before_script:
 
 phpunit:
     script:
-        - bin/run_tests.php
+        - bin/phpunit
         - php -dphar.readonly=0 bin/compile
