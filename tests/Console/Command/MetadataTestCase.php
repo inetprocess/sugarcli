@@ -31,15 +31,16 @@ class MetadataTestCase extends TestCase
         parent::setUp();
 
         $config = file_get_contents(__DIR__ . '/metadata/fake_sugar/config.tpl.php');
-        $config = str_replace(array(
+        $config = str_replace(
+            array(
                 '<DB_USER>',
                 '<DB_PASSWORD>',
                 '<DB_NAME>'
             ),
             array(
-                $GLOBALS['TEST_DB_USER'],
-                $GLOBALS['TEST_DB_PASSWORD'],
-                $GLOBALS['TEST_DB_NAME'],
+                getenv('SUGARCLI_DB_USER'),
+                getenv('SUGARCLI_DB_PASSWORD'),
+                getenv('SUGARCLI_DB_NAME'),
             ),
             $config
         );
@@ -57,4 +58,3 @@ class MetadataTestCase extends TestCase
         $this->app = null;
     }
 }
-
