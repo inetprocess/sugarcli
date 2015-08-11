@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\Util;
+namespace SugarCli\Tests\Util;
 
 use SugarCli\Util\TestLogger;
 
@@ -28,4 +28,3 @@ class TestLoggerTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('', $logger->getLines('error'));
     }
 }
-

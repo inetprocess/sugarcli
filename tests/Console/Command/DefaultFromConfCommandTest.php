@@ -1,33 +1,11 @@
 <?php
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Tests\Console\Command;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
 use SugarCli\Console\Config;
-
-class MyCommand extends DefaultFromConfCommand
-{
-    protected function getDefaults()
-    {
-        return array(
-            'path' => 'sugarcrm.path',
-            'url' => 'sugarcrm.url'
-        );
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $path = $this->getDefaultOption($input, 'path');
-        $output->writeln('path: ' . $path);
-        $url = $this->getDefaultOption($input, 'url');
-        $output->writeln('url: ' . $url);
-    }
-}
 
 class DefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -39,7 +17,7 @@ class DefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app->setAutoExit(false);
         $app->getHelperSet()->set($config);
-        $app->add(new MyCommand($cmd_name));
+        $app->add(new TestFromConfCommand($cmd_name));
 
         $command = $app->find($cmd_name);
         $commandTester = new CommandTester($command);
@@ -70,4 +48,3 @@ EOF;
         $this->assertEquals($expected, $commandTester->getDisplay());
     }
 }
-

@@ -1,11 +1,12 @@
 <?php
 
-namespace SugarCli\Sugar;
+namespace SugarCli\Tests\Sugar;
 
 use SugarCli\Util\TestLogger;
-use SugarCli\Sugar\TestCase;
+use SugarCli\Tests\TestsUtil\DatabaseTestCase;
+use SugarCli\Sugar\Metadata;
 
-class MetadataTest extends TestCase
+class MetadataTest extends DatabaseTestCase
 {
     protected $meta = null;
     protected $base = null;
@@ -125,4 +126,3 @@ SQL;
 
     }
 }
-

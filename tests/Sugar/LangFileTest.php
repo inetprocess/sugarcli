@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\Sugar;
+namespace SugarCli\Tests\Sugar;
 
 use Symfony\Component\Console\Logger\ConsoleLogger;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -147,4 +147,3 @@ EOF;
 
     }
 }
-

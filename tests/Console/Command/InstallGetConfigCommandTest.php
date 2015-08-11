@@ -1,10 +1,11 @@
 <?php
-namespace SugarCli\Console\Command;
+namespace SugarCli\Tests\Console\Command;
 
 use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
+use SugarCli\Console\Command\InstallGetConfigCommand;
 use SugarCli\Util\TestLogger;
 
 class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
@@ -122,4 +123,3 @@ class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
         }
     }
 }
-

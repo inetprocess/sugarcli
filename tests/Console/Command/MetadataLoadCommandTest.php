@@ -1,13 +1,10 @@
 <?php
 
-namespace SugarCli\Console\Command;
-
-require_once(__DIR__ . '/MetadataTestCase.php');
+namespace SugarCli\Tests\Console\Command;
 
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
-use SugarCli\Sugar\TestCase;
 use SugarCli\Util\TestLogger;
 
 class MetadataLoadCommandTest extends MetadataTestCase
@@ -130,4 +127,3 @@ EOS;
 
     }
 }
-

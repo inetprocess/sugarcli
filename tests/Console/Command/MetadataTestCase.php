@@ -1,11 +1,11 @@
 <?php
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Tests\Console\Command;
 
 use SugarCli\Console\Application;
-use SugarCli\Sugar\TestCase;
+use SugarCli\Tests\TestsUtil\DatabaseTestCase;
 
-class MetadataTestCase extends TestCase
+class MetadataTestCase extends DatabaseTestCase
 {
     protected $app = null;
 

@@ -1,9 +1,11 @@
 <?php
 
-namespace SugarCli\Console;
+namespace SugarCli\Tests\Console;
 
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Console\Helper\HelperSet;
+
+use SugarCli\Console\Config;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
@@ -156,4 +158,3 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $config->get();
     }
 }
-

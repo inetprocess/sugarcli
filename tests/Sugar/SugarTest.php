@@ -1,6 +1,8 @@
 <?php
 
-namespace SugarCli\Sugar;
+namespace SugarCli\Tests\Sugar;
+
+use SugarCli\Sugar\Sugar;
 
 class SugarTest extends \PHPUnit_Framework_TestCase
 {
@@ -101,4 +103,3 @@ class SugarTest extends \PHPUnit_Framework_TestCase
         $sugar->normalizeDbParams($db_data);
     }
 }
-

@@ -1,8 +1,8 @@
 <?php
 
-namespace SugarCli\Sugar;
+namespace SugarCli\Tests\TestsUtil;
 
-abstract class TestCase extends \PHPUnit_Extensions_Database_TestCase
+abstract class DatabaseTestCase extends \PHPUnit_Extensions_Database_TestCase
 {
     static private $pdo = null;
 
