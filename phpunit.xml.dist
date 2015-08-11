@@ -18,14 +18,14 @@
     </logging>
 
     <php>
-        <var name='TEST_DB_USER' value='@DB_USER@' />
-        <var name='TEST_DB_PASSWORD' value='@DB_PASSWORD@' />
-        <var name='TEST_DB_NAME' value='@DB_NAME@' />
-        <var name='TEST_DB_HOST' value='@DB_HOST@' />
-        <var name='TEST_DB_PORT' value='@DB_PORT@' />
+        <env name='SUGARCLI_DB_USER' value='' />
+        <env name='SUGARCLI_DB_PASSWORD' value='' />
+        <env name='SUGARCLI_DB_NAME' value='sugarcrm' />
+        <env name='SUGARCLI_DB_HOST' value='127.0.0.1' />
+        <env name='SUGARCLI_DB_PORT' value='3306' />
 
-        <var name='TEST_SUGAR_PATH' value='@SUGAR_PATH@' />
-        <var name='TEST_SUGAR_URL' value='@SUGAR_URL@' />
+        <env name='SUGARCLI_SUGAR_PATH' value='' />
+        <env name='SUGARCLI_SUGAR_URL' value='' />
     </php>
 
 </phpunit>

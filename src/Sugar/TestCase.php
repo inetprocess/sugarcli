@@ -13,17 +13,15 @@ abstract class TestCase extends \PHPUnit_Extensions_Database_TestCase
         if ($this->conn === null) {
             if (self::$pdo === null) {
                 $dsn = 'mysql:';
-                $params[] = 'host=' . (empty($GLOBALS['TEST_DB_HOST']) ? 'localhost' : $GLOBALS['TEST_DB_HOST']);
-                if (!empty($GLOBALS['TEST_DB_PORT'])) {
-                    $params[] = 'port=' . $GLOBALS['TEST_DB_PORT'];
-                }
-                $params[] = 'dbname=' . $GLOBALS['TEST_DB_NAME'];
+                $params[] = 'host=' . getenv('SUGARCLI_DB_HOST');
+                $params[] = 'port=' . getenv('SUGARCLI_DB_PORT');
+                $params[] = 'dbname=' . getenv('SUGARCLI_DB_NAME');
 
                 $dsn .= implode(';', $params);
 
-                self::$pdo = new \PDO($dsn, $GLOBALS['TEST_DB_USER'], $GLOBALS['TEST_DB_PASSWORD']);
+                self::$pdo = new \PDO($dsn, getenv('SUGARCLI_DB_USER'), getenv('SUGARCLI_DB_PASSWORD'));
             }
-            $this->conn = $this->createDefaultDBConnection(self::$pdo, $GLOBALS['TEST_DB_NAME']);
+            $this->conn = $this->createDefaultDBConnection(self::$pdo, getenv('SUGARCLI_DB_NAME'));
         }
         return $this->conn;
     }
@@ -36,4 +34,3 @@ abstract class TestCase extends \PHPUnit_Extensions_Database_TestCase
         return new \PHPUnit_Extensions_Database_DataSet_CsvDataSet();
     }
 }
-
