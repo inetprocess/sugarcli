@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.4.0
+-----
+* Add `inventory:*` commands
+* `inventory:facter`: Get facts about the system and a sugarcrm instance
+
+
 1.3.4
 -----
 * Set charset for mysql connection.
