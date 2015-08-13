@@ -6,13 +6,25 @@ use Symfony\Component\Finder\Finder;
 
 class Facter
 {
-    protected $facts;
+    protected $providers_dir;
+    protected $providers_namespace;
 
     protected $providers;
 
-    public function __construct()
+    protected $facts;
+
+    public function __construct($providers_dir = '', $providers_namespace = '')
     {
         $this->facts = null;
+
+        if (empty($providers_dir)) {
+            $providers_dir = __DIR__ . '/FactsProvider';
+        }
+        if (empty($providers_namespace)) {
+            $providers_namespace = __NAMESPACE__ . '\FactsProvider';
+        }
+        $this->providers_dir = $providers_dir;
+        $this->providers_namespace = $providers_namespace;
 
         $this->providers = array();
         $this->registerProviders();
@@ -23,7 +35,7 @@ class Facter
         $finder = new Finder();
         $finder->files()
             ->ignoreUnreadableDirs()
-            ->in(__DIR__ . '/FactsProvider')
+            ->in($this->providers_dir)
             ->name('*.php');
         foreach ($finder as $provider) {
             $this->registerProvider($provider);
@@ -32,7 +44,7 @@ class Facter
 
     public function registerProvider(\SplFileInfo $provider)
     {
-        $class_name = __NAMESPACE__ . '\FactsProvider\\' . $provider->getBasename('.php');
+        $class_name = $this->providers_namespace . '\\' . $provider->getBasename('.php');
         require_once($provider->getPathName());
         $this->providers[] = new $class_name();
     }

@@ -102,4 +102,17 @@ class SugarTest extends \PHPUnit_Framework_TestCase
         $sugar = new Sugar();
         $sugar->normalizeDbParams($db_data);
     }
+
+    public function testGetVersion()
+    {
+        $sugar = new Sugar(__DIR__ . '/fake_sugar');
+        $expected = array(
+            'version' => '7.5.0.1',
+            'db_version' => '7.5.0.1',
+            'flavor' => 'PRO',
+            'build' => '1006',
+            'build_timestamp' => '2014-12-12 09:59am',
+        );
+        $this->assertEquals($expected, $sugar->getVersion());
+    }
 }

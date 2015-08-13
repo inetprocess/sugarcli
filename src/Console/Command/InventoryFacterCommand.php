@@ -11,6 +11,8 @@ use JMS\Serializer\Exception\UnsupportedFormatException;
 
 use SugarCli\Console\ExitCode;
 use SugarCli\Inventory\Facter;
+use SugarCli\Inventory\SugarFacter;
+use SugarCli\Sugar\Sugar;
 
 class InventoryFacterCommand extends DefaultFromConfCommand
 {
@@ -48,6 +50,11 @@ class InventoryFacterCommand extends DefaultFromConfCommand
         if (in_array('all', $source) or in_array('system', $source)) {
             $facter = new Facter();
             $all_facts['system'] = $facter->getFacts();
+        }
+        if (in_array('all', $source) or in_array('sugarcrm', $source)) {
+            $sugar = new Sugar($this->getDefaultOption($input, 'path'));
+            $sugar_facter = new SugarFacter($sugar);
+            $all_facts['sugarcrm'] = $sugar_facter->getFacts();
         }
 
 

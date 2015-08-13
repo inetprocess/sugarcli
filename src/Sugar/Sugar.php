@@ -162,5 +162,25 @@ class Sugar
         $this->logger->notice('Sugar is initialized');
         // @codingStandardsIgnoreStop
     }
+
+    public function getVersion()
+    {
+        if (!$this->isExtracted()) {
+            throw new SugarException("{$this->path} is not a valid sugar installation.");
+        }
+        if (!defined('sugarEntry')) {
+            define('sugarEntry', true);
+        }
+        require($this->path . '/sugar_version.php');
+
+        $version = array(
+            'version' => $sugar_version,
+            'db_version' => $sugar_db_version,
+            'flavor' => $sugar_flavor,
+            'build' => $sugar_build,
+            'build_timestamp' => $sugar_timestamp,
+        );
+        return $version;
+    }
 }
 

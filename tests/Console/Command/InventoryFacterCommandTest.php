@@ -1,17 +1,25 @@
 <?php
 namespace SugarCli\Tests\Console\Command;
 
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Yaml;
 
+
+use SugarCli\Console\Application;
 use SugarCli\Console\Command\InventoryFacterCommand;
 
 class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
 {
+
+    public function getFakeSugarPath()
+    {
+        return __DIR__ . '/metadata/fake_sugar';
+    }
+
     public function getCommandTester()
     {
         $app = new Application();
+        $app->configure();
         $app->add(new InventoryFacterCommand());
 
         $cmd = $app->find('inventory:facter');
@@ -21,7 +29,9 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     public function testDefault()
     {
         $cmd = $this->getCommandTester();
-        $cmd->execute(array());
+        $cmd->execute(array(
+            '--path' => $this->getFakeSugarPath(),
+        ));
 
         $output = $cmd->getDisplay();
         $json = json_decode($output, true);
@@ -34,7 +44,10 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     {
         $cmd = $this->getCommandTester();
         $cmd->execute(
-            array('--format' => 'abc')
+            array(
+                '--format' => 'abc',
+                'source' => array('system'),
+            )
         );
         $this->assertEquals(3, $cmd->getStatusCode());
     }
@@ -42,19 +55,24 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     public function testSugarcrmOnly()
     {
         $cmd = $this->getCommandTester();
-        $cmd->execute(array('--format' => 'json', 'source' => array('sugarcrm')));
+        $cmd->execute(array(
+            '--format' => 'json',
+            '--path' => $this->getFakeSugarPath(),
+            'source' => array('sugarcrm')
+        ));
 
         $output = $cmd->getDisplay();
         $json = json_decode($output, true);
         $this->assertArrayHasKey('system', $json);
         $this->assertArrayHasKey('sugarcrm', $json);
         $this->assertEmpty($json['system']);
+        $this->assertNotEmpty($json['sugarcrm']);
     }
 
     public function testXmlFormat()
     {
         $cmd = $this->getCommandTester();
-        $cmd->execute(array('--format' => 'xml'));
+        $cmd->execute(array('--format' => 'xml', 'source' => array('system')));
 
         $output = $cmd->getDisplay();
         $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $output);
@@ -63,7 +81,7 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     public function testYmlFormat()
     {
         $cmd = $this->getCommandTester();
-        $cmd->execute(array('--format' => 'yml'));
+        $cmd->execute(array('--format' => 'yml', 'source' => array('system')));
 
         $output = $cmd->getDisplay();
         $yml = Yaml::parse($output);
