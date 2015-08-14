@@ -1,0 +1,11 @@
+HTTP/1.1 204 No Content
+Date: Fri, 14 Aug 2015 13:49:16 GMT
+Server: Apache/2.2.22 (Debian)
+Set-Cookie: PHPSESSID=6co8faf34rsrqs4cmr3eskmdg4; path=/
+Cache-Control: no-cache
+X-Debug-Token: a2d3ce
+X-Debug-Token-Link: /inventory/app_dev.php/_profiler/a2d3ce
+Connection: close
+Content-Type: text/html
+
+

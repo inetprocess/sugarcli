@@ -26,6 +26,10 @@
 
         <env name='SUGARCLI_SUGAR_PATH' value='' />
         <env name='SUGARCLI_SUGAR_URL' value='' />
+
+        <env name='INVENTORY_URL' value='' />
+        <env name='INVENTORY_USERNAME' value='' />
+        <env name='INVENTORY_PASSWORD' value='' />
     </php>
 
 </phpunit>

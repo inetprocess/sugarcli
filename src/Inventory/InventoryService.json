@@ -1,0 +1,119 @@
+{
+    "name": "inetinventory",
+    "apiVersion": "v1",
+    "description": "InetInventory server API",
+    "operations": {
+        "getServers": {
+            "httpMethod": "GET",
+            "uri": "servers",
+            "summary": "Get a list of servers",
+            "responseClass": "getServersOutput"
+        },
+        "getServer": {
+            "httpMethod": "GET",
+            "uri": "servers/{fqdn}",
+            "responseClass": "Server",
+            "parameters": {
+                "fqdn": {
+                    "type": "string",
+                    "location": "uri",
+                    "description": "Fqdn of the server to retrieve",
+                    "required": true
+                }
+            }
+        },
+        "postServer": {
+            "httpMethod": "POST",
+            "uri": "servers",
+            "responseClass": "postResponse",
+            "parameters": {
+                "fqdn": {
+                    "type": "string",
+                    "location": "json",
+                    "description": "Fqdn of the server to create",
+                    "required": true
+                },
+                "facts": {
+                    "type": "array",
+                    "location": "json",
+                    "description": "Facts about the server"
+                }
+            }
+        },
+        "putServer": {
+            "httpMethod": "PUT",
+            "uri": "servers/{fqdn_uri}",
+            "parameters": {
+                "fqdn_uri": {
+                    "type": "string",
+                    "location": "uri",
+                    "description": "Fqdn of the server to replace",
+                    "required": true
+                },
+                "fqdn": {
+                    "type": "string",
+                    "location": "json",
+                    "description": "Fqdn of the server to create",
+                    "required": true
+                },
+                "facts": {
+                    "type": "array",
+                    "location": "json",
+                    "description": "Facts about the server"
+                }
+            }
+        },
+        "deleteServer": {
+            "httpMethod": "DELETE",
+            "uri": "servers/{fqdn}",
+            "parameters": {
+                "fqdn": {
+                    "location": "uri",
+                    "description": "Fqdn of the server to retrieve",
+                    "required": true
+                }
+            }
+        }
+    },
+    "models": {
+        "postResponse": {
+            "type": "object",
+            "properties": {
+                "location": {
+                    "type": "string",
+                    "location": "header",
+                    "sentAs": "Location"
+                }
+            }
+        },
+        "Server": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "location": "json",
+                    "type": "integer"
+                },
+                "fqdn": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "facts": {
+                    "location": "json",
+                    "type": ["array", "object"]
+                },
+                "sugar_instances": {
+                    "location": "json",
+                    "type": "array"
+                }
+            }
+        },
+        "getServersOutput": {
+            "type": "object",
+            "additionalProperties": {
+                "type": "object",
+                "location": "json",
+                "$ref": "Server"
+            }
+        }
+    }
+}

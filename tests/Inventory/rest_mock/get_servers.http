@@ -1,0 +1,9 @@
+HTTP/1.1 200 OK
+Date: Fri, 14 Aug 2015 10:51:55 GMT
+Server: Apache/2.2.22 (Debian)
+Cache-Control: no-cache
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+[{"id":2,"fqdn":"testserver.inetprocess.fr","facts":{"test":"aerzteharg","tesERT":"aertaert"},"sugar_instances":[]},{"id":3,"fqdn":"testsererver.inetprocess.fr","facts":{"test":"aerzteharg","tesERT":"aertaert"},"sugar_instances":[]}]
