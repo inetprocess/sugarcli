@@ -3,6 +3,7 @@
 namespace SugarCli\Tests\Inventory;
 
 use Guzzle\Service\Client as GClient;
+use Guzzle\Service\Description\ServiceDescription;
 
 /**
  * @group inventory
