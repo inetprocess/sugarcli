@@ -45,6 +45,8 @@ function addFile($phar, $file)
     }
 
     $phar[$path] = $content;
+    // compress using Gzip
+    $phar[$path]->compress(Phar::GZ);
 }
 
 
@@ -101,10 +103,6 @@ include 'phar://sugarcli.phar/bin/sugarcli';
 __HALT_COMPILER();
 EOB
 );
-echo_step();
-
-echo_step("Compress all files.");
-$phar->compressFiles(Phar::GZ);
 echo_step();
 
 $phar->stopBuffering();
