@@ -6,6 +6,8 @@
 /phpunit.phar
 /phpunit.xml
 /reports/*
+# Build
+/build
 
 # Composer
 /composer.phar
