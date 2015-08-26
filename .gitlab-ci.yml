@@ -4,5 +4,5 @@ before_script:
 
 phpunit:
     script:
-        - bin/phpunit
+        - bin/phpunit --color=never
         - php -dphar.readonly=0 bin/compile

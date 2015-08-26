@@ -2,9 +2,7 @@
 
 namespace SugarCli\Sugar;
 
-use Symfony\Component\Filesystem\Filesystem;
-
-use SugarCli\Util;
+use SugarCli\Util\Filesystem;
 
 class Installer
 {
@@ -34,15 +32,6 @@ class Installer
         return $this->path . '/config_si.php';
     }
 
-    /**
-     * Check if install path is empty.
-     * @return true if path is empty.
-     */
-    public function isPathEmpty()
-    {
-        return Util::isPathEmpty($this->path);
-    }
-
     public function deletePath()
     {
         $this->logger->info("Removing installation path {$this->path}...");
@@ -70,7 +59,7 @@ class Installer
     public function extract()
     {
         $this->logger->info("Extracting {$this->source} into {$this->path}...");
-        if (!is_dir($this->path) and !$this->isPathEmpty()) {
+        if (!is_dir($this->path) and !$this->fs->isEmpty($this->path)) {
             throw new InstallerException(
                 "The target path {$this->path} is not a directory or is not empty when extracting the archive."
             );
@@ -95,7 +84,7 @@ class Installer
 
             $target_path = $this->path . '/' . $name;
             // Check is name ends with '/' (directory name)
-            if (strpos($name, '/', strlen($name) - 1) === false ) {
+            if (strpos($name, '/', strlen($name) - 1) === false) {
                 // We have a file name
                 // We load each zipped file in memory.
                 // It is much faster than getting the Stream handle.
@@ -154,7 +143,7 @@ class Installer
 
         $installer_res = '';
         while (!feof($h)) {
-            $installer_res .= fread( $h, 1048576 );
+            $installer_res .= fread($h, 1048576);
         }
         $metadata = stream_get_meta_data($h);
         if (fclose($h) === false) {
@@ -201,7 +190,7 @@ class Installer
                 } else {
                     throw new InstallerException(
                         "The target path {$this->path} is not empty. "
-                       ."Use --force to remove {$this->path} and its contents before installing."
+                        ."Use --force to remove {$this->path} and its contents before installing."
                     );
                 }
             }
@@ -217,4 +206,3 @@ class Installer
 
     }
 }
-
