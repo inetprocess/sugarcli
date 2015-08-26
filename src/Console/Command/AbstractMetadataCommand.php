@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
-abstract class MetadataCommand extends AbstractDefaultFromConfCommand
+abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
 {
     const METADATA_PATH = '../db/fields_meta_data.yaml';
 

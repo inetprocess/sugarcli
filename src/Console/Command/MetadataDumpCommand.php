@@ -11,7 +11,7 @@ use SugarCli\Console\ExitCode;
 use SugarCli\Sugar\Metadata;
 use SugarCli\Sugar\SugarException;
 
-class MetadataDumpCommand extends MetadataCommand
+class MetadataDumpCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
