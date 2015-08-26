@@ -8,7 +8,7 @@ if (ini_get('phar.readonly') == '1') {
 
 
 define('ROOT_DIR', dirname(__DIR__));
-define('BUILD_TARGET', ROOT_DIR . '/sugarcli.phar');
+define('BUILD_TARGET', ROOT_DIR . '/build//sugarcli.phar');
 
 require ROOT_DIR . '/vendor/autoload.php';
 
@@ -63,12 +63,17 @@ echo_step("Add php files.");
 $finder = new Finder();
 $finder->files()
     ->ignoreVCS(true)
+    ->ignoreDotFiles(true)
     ->name('*.php')
     ->in(ROOT_DIR . '/src')
     ->in(ROOT_DIR . '/vendor/composer')
     ->in(ROOT_DIR . '/vendor/doctrine')
     ->in(ROOT_DIR . '/vendor/psr')
-    ->in(ROOT_DIR . '/vendor/symfony');
+    ->in(ROOT_DIR . '/vendor/symfony')
+    ->exclude('test')
+    ->exclude('tests')
+    ->exclude('Tests')
+;
 
 foreach ($finder as $file) {
     addFile($phar, $file);
