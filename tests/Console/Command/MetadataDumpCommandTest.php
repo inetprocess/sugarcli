@@ -40,13 +40,12 @@ class MetadataDumpCommandTest extends MetadataTestCase
     public function testWithNewFile()
     {
         $test_dump_yaml = __DIR__ . '/metadata/new_file.yaml';
-        $logger = new TestLogger();
+        $logger = $this->app->getContainer()->get('logger');
         $fsys = new Filesystem();
 
         // Make sure the test file is remove before testing.
         $fsys->remove($test_dump_yaml);
 
-        $this->app->getHelperSet()->set($logger);
         $cmd = $this->app->find('metadata:dump');
         $tester = new CommandTester($cmd);
         $tester->execute(
@@ -70,9 +69,7 @@ class MetadataDumpCommandTest extends MetadataTestCase
     public function testFailure()
     {
         $test_dump_yaml = __DIR__ . '/metadata_unknwown_dir/new_file.yaml';
-        $logger = new TestLogger();
-
-        $this->app->getHelperSet()->set($logger);
+        $logger = $this->app->getContainer()->get('logger');
         $cmd = $this->app->find('metadata:dump');
         $tester = new CommandTester($cmd);
         $ret = $tester->execute(

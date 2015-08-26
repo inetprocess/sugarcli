@@ -42,7 +42,7 @@ class CleanLangFilesCommand extends AbstractDefaultFromConfCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getHelper('logger');
+        $logger = $this->getApplication()->getContainer()->get('logger');
         $path = $this->getDefaultOption($input, 'path');
         $sugar = new Sugar($path);
         $sort = !$input->getOption('no-sort');
@@ -55,4 +55,3 @@ class CleanLangFilesCommand extends AbstractDefaultFromConfCommand
         $cleaner->clean($sort, $test);
     }
 }
-

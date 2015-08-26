@@ -3,7 +3,6 @@
 namespace SugarCli\Tests\Console;
 
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Console\Helper\HelperSet;
 
 use SugarCli\Console\Config;
 
@@ -60,14 +59,6 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array(array('sugarcrm' => array('path' => ''))),
         );
     }
-
-    public function testHelper()
-    {
-        $config = new Config();
-        $helperSet = new HelperSet(array($config));
-        $this->assertEquals($config, $helperSet->get('config'));
-    }
-
 
     /**
      * @dataProvider yamlProvider

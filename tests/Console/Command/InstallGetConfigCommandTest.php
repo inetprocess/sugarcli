@@ -1,12 +1,12 @@
 <?php
 namespace SugarCli\Tests\Console\Command;
 
-use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
+use SugarCli\Console\Application;
 use SugarCli\Console\Command\InstallGetConfigCommand;
-use SugarCli\Util\TestLogger;
+use SugarCli\Tests\TestsUtil\TestLogger;
 
 class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -18,7 +18,8 @@ class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
     public function getCommandTester()
     {
         $app = new Application();
-        $app->getHelperSet()->set(new TestLogger());
+        $app->configure();
+        $app->getContainer()->set('config', new TestLogger());
         $app->add(new InstallGetConfigCommand());
 
         $cmd = $app->find('install:config:get');

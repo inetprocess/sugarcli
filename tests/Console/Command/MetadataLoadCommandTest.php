@@ -112,8 +112,7 @@ EOS;
      */
     public function testFailure()
     {
-        $logger = new TestLogger();
-        $this->app->getHelperSet()->set($logger);
+        $logger = $this->app->getContainer()->get('logger');
         $ret = $this->commandTester->execute(
             array(
                 'command' => 'metadata:load',

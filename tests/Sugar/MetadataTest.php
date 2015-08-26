@@ -2,9 +2,10 @@
 
 namespace SugarCli\Tests\Sugar;
 
-use SugarCli\Util\TestLogger;
-use SugarCli\Tests\TestsUtil\DatabaseTestCase;
 use SugarCli\Sugar\Metadata;
+
+use SugarCli\Tests\TestsUtil\DatabaseTestCase;
+use SugarCli\Tests\TestsUtil\TestLogger;
 
 class MetadataTest extends DatabaseTestCase
 {

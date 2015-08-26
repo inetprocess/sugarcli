@@ -92,7 +92,7 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getHelper('logger');
+        $logger = $this->getApplication()->getContainer()->get('logger');
 
         $path = $this->getDefaultOption($input, 'path');
         $metadata_file = $this->getMetadataOption($input);

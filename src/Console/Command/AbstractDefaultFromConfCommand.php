@@ -67,7 +67,7 @@ abstract class AbstractDefaultFromConfCommand extends Command
         if ($input->getOption($name) !== null) {
             return $input->getOption($name);
         }
-        $config = $this->getHelper('config');
+        $config = $this->getApplication()->getContainer()->get('config');
         if (!$config->has($defaults[$name])) {
             throw new \InvalidArgumentException(
                 sprintf('The "%s" option is not specified and not found in the config "%s"', $name, $defaults[$name])
@@ -83,4 +83,3 @@ abstract class AbstractDefaultFromConfCommand extends Command
         }
     }
 }
-

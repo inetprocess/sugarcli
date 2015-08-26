@@ -2,12 +2,12 @@
 
 namespace SugarCli\Tests\Console\Command;
 
-use Symfony\Component\Console\Application;
+use SugarCli\Console\Application;
 use Symfony\Component\Console\Tester\CommandTester;
 
 use SugarCli\Console\Config;
 
-class AbstractAbstractDefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
+class AbstractDefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaults()
     {
@@ -15,8 +15,10 @@ class AbstractAbstractDefaultFromConfCommandTest extends \PHPUnit_Framework_Test
         $config = new Config(array(__DIR__ . '/../yaml/complete.yaml'));
         $config->load();
         $app = new Application();
+        $app->configure();
         $app->setAutoExit(false);
-        $app->getHelperSet()->set($config);
+        $app->getContainer()->set('config', $config);
+        /* $app->getHelperSet()->set($config); */
         $app->add(new TestFromConfCommand($cmd_name));
 
         $command = $app->find($cmd_name);

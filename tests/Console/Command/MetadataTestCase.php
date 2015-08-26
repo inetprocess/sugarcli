@@ -4,6 +4,7 @@ namespace SugarCli\Tests\Console\Command;
 
 use SugarCli\Console\Application;
 use SugarCli\Tests\TestsUtil\DatabaseTestCase;
+use SugarCli\Tests\TestsUtil\TestLogger;
 
 class MetadataTestCase extends DatabaseTestCase
 {
@@ -48,6 +49,7 @@ class MetadataTestCase extends DatabaseTestCase
 
         $this->app = new Application();
         $this->app->configure();
+        $this->app->getContainer()->set('logger', new TestLogger());
 
     }
 

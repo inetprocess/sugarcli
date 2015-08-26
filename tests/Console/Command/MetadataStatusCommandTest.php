@@ -51,8 +51,7 @@ class MetadataStatusCommandTest extends MetadataTestCase
      */
     public function testFailure()
     {
-        $logger = new TestLogger();
-        $this->app->getHelperSet()->set($logger);
+        $logger = $this->app->getContainer()->get('logger');
         $cmd = $this->app->find('metadata:status');
         $tester = new CommandTester($cmd);
         $ret = $tester->execute(

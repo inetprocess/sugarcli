@@ -32,24 +32,27 @@ class InstallRunCommand extends AbstractDefaultFromConfCommand
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Force installer to remove target directory if present.')
+                'Force installer to remove target directory if present.'
+            )
             ->addOption(
                 'source',
                 's',
                 InputOption::VALUE_REQUIRED,
                 'Path to SugarCRM installation package.',
-                'sugar.zip')
+                'sugar.zip'
+            )
             ->addOption(
                 'config',
                 'c',
                 InputOption::VALUE_REQUIRED,
                 'PHP file to use as configuration for the installation.',
-                'config_si.php');
+                'config_si.php'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getHelper('logger');
+        $logger = $this->getApplication()->getContainer()->get('logger');
         $force = $input->getOption('force');
         $installer = new Installer(
             $this->getDefaultOption($input, 'path'),
@@ -68,4 +71,3 @@ class InstallRunCommand extends AbstractDefaultFromConfCommand
         }
     }
 }
-
