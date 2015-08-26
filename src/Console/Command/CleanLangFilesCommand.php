@@ -15,7 +15,7 @@ use SugarCli\Console\ExitCode;
 use SugarCli\Sugar\LangFileCleaner;
 use SugarCli\Sugar\Sugar;
 
-class CleanLangFilesCommand extends DefaultFromConfCommand
+class CleanLangFilesCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {

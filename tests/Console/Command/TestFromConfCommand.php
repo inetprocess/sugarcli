@@ -5,9 +5,9 @@ namespace SugarCli\Tests\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use SugarCli\Console\Command\DefaultFromConfCommand;
+use SugarCli\Console\Command\AbstractDefaultFromConfCommand;
 
-class TestFromConfCommand extends DefaultFromConfCommand
+class TestFromConfCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {

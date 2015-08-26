@@ -7,7 +7,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 use SugarCli\Console\Config;
 
-class DefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
+class AbstractAbstractDefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaults()
     {

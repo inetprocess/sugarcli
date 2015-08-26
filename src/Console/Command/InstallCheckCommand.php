@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use SugarCli\Console\ExitCode;
 use SugarCli\Sugar\Sugar;
 
-class InstallCheckCommand extends DefaultFromConfCommand
+class InstallCheckCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {

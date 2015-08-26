@@ -14,7 +14,7 @@ use SugarCli\Inventory\Facter;
 use SugarCli\Inventory\SugarFacter;
 use SugarCli\Sugar\Sugar;
 
-class InventoryFacterCommand extends DefaultFromConfCommand
+class InventoryFacterCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 use SugarCli\Console\ConfigException;
 
-abstract class DefaultFromConfCommand extends Command
+abstract class AbstractDefaultFromConfCommand extends Command
 {
     const SHORT = 0;
     const DESCRIPTION = 1;

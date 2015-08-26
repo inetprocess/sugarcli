@@ -14,7 +14,7 @@ use SugarCli\Console\ExitCode;
 use SugarCli\Sugar\Installer;
 use SugarCli\Sugar\InstallerException;
 
-class InstallRunCommand extends DefaultFromConfCommand
+class InstallRunCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {
