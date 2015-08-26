@@ -248,4 +248,3 @@ EOS;
         return implode('', $blocks);
     }
 }
-

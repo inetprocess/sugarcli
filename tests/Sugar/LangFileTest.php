@@ -138,12 +138,75 @@ EOF;
 
 EOF;
 
+        $log_duplicates = <<<'EOF'
+[warning] Found duplicate definition for $GLOBALS["test"].
+[warning] Found duplicate local definition for $GLOBALS["test"].
+
+EOF;
+
         return array(
             array('', $php_org, $php_org, true, false),
             array('', $php_org, $php_org, true, true),
             array($log, $php_not_sorted, $php_org, false, false),
             array($log, $php_expected, $php_org, false, true),
+            // Test empty file
+            array('', '', '', false, false),
+            array('', "<?php \n;\n?>\n", '<?php ; ?>', false, true),
+            // Test duplicate globals
+            array(
+                $log_duplicates, "<?php \n\$GLOBALS[\"test\"]=2;\n",
+                '<?php $GLOBALS["test"]=1; $GLOBALS["test"]=2;',
+                false,
+                true
+            ),
         );
+
+    }
+
+
+    /**
+     * @dataProvider fileFailureProvider
+     * @expectedException \Exception
+     */
+    public function testFileFailure($input_file)
+    {
+        $logger = new TestLogger();
+        $lang_file = new LangFile($input_file, true, $logger);
+        $res = $lang_file->getSortedFile();
+    }
+
+    public function fileFailureProvider()
+    {
+        return array(
+            array('<?php $test = "foo"'),
+            array('<?php $='),
+            array('<?php $test = "foo"=;'),
+            array('<?php $test[]$test = "foo";'),
+            array('<?php "bar" = "foo";'),
+            array('<?php $test ?>'),
+            array('<?php $test[;'),
+        );
+    }
+
+    public function testCheckVarName()
+    {
+        $local = '$foo';
+        $global = "\$GLOBALS['foo']";
+        $logger = new TestLogger();
+        $lang = new LangFile('', false, $logger);
+        $this->assertNull($lang->checkVarName(''));
+        $lang->var_blocks[$local] = '';
+        $lang->checkVarName($local);
+        $lang->checkVarName($global);
+        $lang->var_blocks = array($global => '');
+        $lang->checkVarName($local);
+        $log = <<<'EOF'
+[warning] Found duplicate definition for $foo.
+[warning] Found duplicate local definition for $GLOBALS['foo'].
+[warning] Found duplicate GLOBAL definition for $foo.
+
+EOF;
+        $this->assertEquals($log, $logger->getLines());
 
     }
 }

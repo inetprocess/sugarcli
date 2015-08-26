@@ -26,6 +26,19 @@ class MetadataTest extends DatabaseTestCase
 
     }
 
+    public function testEmptyMetadata()
+    {
+        $logger = new TestLogger();
+        $this->meta = new Metadata(null, $logger);
+        $this->meta->setMetadataFile(__DIR__ . '/metadata/empty.yaml');
+        $this->assertEmpty($this->meta->getFromFile());
+        $this->assertEquals(
+            "[warning] No definition found in metadata file.\n",
+            $logger->getLines()
+        );
+
+    }
+
     public function testDiffFull()
     {
         $diff = $this->meta->diff($this->base, $this->new);
