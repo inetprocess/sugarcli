@@ -6,7 +6,6 @@ Changelog
 * Add `inventory:*` commands
 * `inventory:facter`: Get facts about the system and a sugarcrm instance
 
-
 1.3.4
 -----
 * Set charset for mysql connection.
@@ -41,7 +40,7 @@ Changelog
 
 1.2.0
 -----
-* Reworked langfile cleaner with php token parser. 
+* Reworked langfile cleaner with php token parser.
 
 1.1.0
 -----
