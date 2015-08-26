@@ -1,26 +1,35 @@
 #!/usr/bin/env php
 <?php
 
-if ( ini_get('phar.readonly') == '1' ) {
+if (ini_get('phar.readonly') == '1') {
     echo "usage: php -dphar.readonly=0 $argv[0]\n";
     exit(1);
 }
 
 
 define('ROOT_DIR', dirname(__DIR__));
-define('BUILD_TARGET', ROOT_DIR . '/sugarcli.phar');
+define('BUILD_TARGET', ROOT_DIR . '/build//sugarcli.phar');
 
 require ROOT_DIR . '/vendor/autoload.php';
 
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\Process;
 
+function echo_step($msg = null)
+{
+    if (is_null($msg)) {
+        print("[ OK ]" . PHP_EOL);
+        return;
+    }
+    printf("%-50s", $msg);
+}
+
 // Remove path prefix and add to phar
 function addFile($phar, $file)
 {
-    $path = str_replace( ROOT_DIR . '/', '', $file );
+    $path = str_replace(ROOT_DIR . '/', '', $file);
     $content = file_get_contents($file);
-    print "addFile: $path = $file\n";
+    /* print "addFile: $path = $file\n"; */
 
     // Remove shebang and set version.
     if ($path == 'bin/sugarcli') {
@@ -36,6 +45,8 @@ function addFile($phar, $file)
     }
 
     $phar[$path] = $content;
+    // compress using Gzip
+    $phar[$path]->compress(Phar::GZ);
 }
 
 
@@ -48,21 +59,29 @@ $phar = new \Phar(BUILD_TARGET, 0, 'sugarcli.phar');
 $phar->startBuffering();
 
 // Find and include all php files.
+echo_step("Add php files.");
 $finder = new Finder();
 $finder->files()
     ->ignoreVCS(true)
+    ->ignoreDotFiles(true)
     ->name('*.php')
     ->in(ROOT_DIR . '/src')
     ->in(ROOT_DIR . '/vendor/composer')
     ->in(ROOT_DIR . '/vendor/doctrine')
     ->in(ROOT_DIR . '/vendor/psr')
-    ->in(ROOT_DIR . '/vendor/symfony');
+    ->in(ROOT_DIR . '/vendor/symfony')
+    ->exclude('test')
+    ->exclude('tests')
+    ->exclude('Tests')
+;
 
 foreach ($finder as $file) {
     addFile($phar, $file);
 }
+echo_step();
 
 // Find and include all res files.
+echo_step("Add resources files.");
 $finder = new Finder();
 $finder->files()
     ->ignoreVCS(true)
@@ -72,12 +91,16 @@ $finder->files()
 foreach ($finder as $file) {
     addFile($phar, $file);
 }
+echo_step();
 
 // Add autoload and bin
+echo_step("Add autoload and bin files.");
 addFile($phar, ROOT_DIR . '/vendor/autoload.php');
 addFile($phar, ROOT_DIR . '/bin/sugarcli');
+echo_step();
 
-$phar->setStub( <<<EOB
+echo_step("Set stub.");
+$phar->setStub(<<<EOB
 #!/usr/bin/env php
 <?php
 Phar::mapPhar('sugarcli.phar');
@@ -85,8 +108,9 @@ include 'phar://sugarcli.phar/bin/sugarcli';
 __HALT_COMPILER();
 EOB
 );
+echo_step();
 
 $phar->stopBuffering();
 
-echo "Phar generated at " . BUILD_TARGET . "\n";
-
+echo $phar->count() . " files compiled." . PHP_EOL;
+echo "Phar generated at " . BUILD_TARGET . PHP_EOL;

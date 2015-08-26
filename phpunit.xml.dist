@@ -13,8 +13,8 @@
     </filter>
     <logging>
         <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
-        <log type="coverage-clover" target="reports/coverage-clover.xml"/>
-        <log type="junit" target="reports/phpunit.xml" logIncompleteSkipped="false"/>
+        <log type="coverage-clover" target="build/reports/coverage-clover.xml"/>
+        <log type="junit" target="build/reports/phpunit.xml" logIncompleteSkipped="false"/>
     </logging>
 
     <php>
