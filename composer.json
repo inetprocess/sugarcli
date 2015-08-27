@@ -20,7 +20,11 @@
     },
     "autoload": {
         "psr-4": {
-            "SugarCli\\": "src/",
+            "SugarCli\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "SugarCli\\Tests\\": "tests/"
         }
     },
