@@ -7,6 +7,9 @@ use SugarCli\Sugar\Metadata;
 use SugarCli\Tests\TestsUtil\DatabaseTestCase;
 use SugarCli\Tests\TestsUtil\TestLogger;
 
+/**
+ * @group db
+ */
 class MetadataTest extends DatabaseTestCase
 {
     protected $meta = null;
@@ -136,7 +139,5 @@ UPDATE fields_meta_data SET name = 'baz' WHERE id = 'field2';
 
 SQL;
         $this->assertEquals($expected_sql, $sql);
-
-
     }
 }

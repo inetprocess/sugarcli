@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpunit bootstrap="./vendor/autoload.php" colors="true" >
+<phpunit
+    bootstrap="./vendor/autoload.php"
+    colors="true"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    >
 
     <testsuites>
         <testsuite name="SugarCli's test suite">
@@ -12,7 +16,7 @@
         </whitelist>
     </filter>
     <logging>
-        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false"/>
+        <log type="coverage-text" target="php://stdout" showUncoveredFiles="false" showOnlySummary="true"/>
         <log type="coverage-clover" target="build/reports/coverage-clover.xml"/>
         <log type="coverage-html" target="build/reports/coverage.html"/>
         <log type="junit" target="build/reports/phpunit.xml" logIncompleteSkipped="false"/>
