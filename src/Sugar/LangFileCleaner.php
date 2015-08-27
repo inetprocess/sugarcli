@@ -28,40 +28,25 @@ class LangFileCleaner
     {
         $finder = new Finder();
         $finder->files()
-            ->depth('== 0')
+            ->in($this->path)
+            ->path('/^custom\/include\/language/')
+            ->depth('== 3')
             ->name('*.lang.php');
-
-        // Add only if found real directories in the following paths.
-        $search_paths = array(
-            'custom/include/language',
-        );
         $found_one = false;
-        foreach ($search_paths as $sp) {
-            $real_path = $this->path . '/' . $sp;
-            $found_globs = glob($real_path);
-            if (!empty($found_globs)) {
-                foreach ($found_globs as $glob) {
-                    if (is_dir($glob)) {
-                        $finder->in($real_path);
-                        $found_one = true;
-                        break;
-                    }
-                }
+        foreach ($finder as $file) {
+            $this->logger->notice('Processing file ' . $file);
+            $found_one = true;
+            $content = file_get_contents($file);
+            if ($content === false) {
+                throw new \Exception('Unable to load the file contents of ' . $file . '.');
             }
+            $lang = new LangFile($content, $test, $this->logger);
+            file_put_contents($file, $lang->getSortedFile($sort));
         }
         if (!$found_one) {
             $this->logger->notice('No lang files found to process.');
-        } else {
-            foreach ($finder as $file) {
-                $this->logger->notice('Processing file ' . $file);
-                $content = file_get_contents($file);
-                if ($content === false ) {
-                    throw new \Exception('Unable to load the file contents of ' . $file . '.');
-                }
-                $lang = new LangFile($content, $test, $this->logger);
-                file_put_contents($file, $lang->getSortedFile($sort));
-            }
+            return false;
         }
+        return true;
     }
 }
-
