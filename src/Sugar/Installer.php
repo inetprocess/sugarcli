@@ -32,6 +32,9 @@ class Installer
         return $this->path . '/config_si.php';
     }
 
+    /**
+     * Remove sugar installation path
+     */
     public function deletePath()
     {
         $this->logger->info("Removing installation path {$this->path}...");
@@ -39,12 +42,19 @@ class Installer
         $this->logger->info("Path {$this->path} was successfully removed.");
     }
 
+    /**
+     * Create Sugar installation path
+     */
     public function createPath()
     {
         $this->logger->info("Creating installation path {$this->path}.");
         $this->fs->mkdir($this->path, 0750);
     }
 
+    /**
+     * Remove the first directory level from the path.
+     * Used to remove the top directory in the zip file.
+     */
     public static function junkParent($path)
     {
         return preg_replace('/^\/?[^\/]+\/(.*)$/', '$1', $path);
@@ -59,7 +69,7 @@ class Installer
     public function extract()
     {
         $this->logger->info("Extracting {$this->source} into {$this->path}...");
-        if (!is_dir($this->path) and !$this->fs->isEmpty($this->path)) {
+        if (!is_dir($this->path) or !$this->fs->isEmpty($this->path)) {
             throw new InstallerException(
                 "The target path {$this->path} is not a directory or is not empty when extracting the archive."
             );
@@ -183,7 +193,7 @@ class Installer
         }
         $this->logger->notice("Installing SugarCRM into {$this->path}...");
         if ($this->fs->exists($this->path)) {
-            if (!$this->isPathEmpty()) {
+            if (!$this->fs->isEmpty($this->path)) {
                 if ($force === true) {
                     $this->deletePath();
                     $this->createPath();
