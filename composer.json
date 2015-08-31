@@ -8,10 +8,10 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "doctrine/dbal": "~2.5",
         "guzzle/guzzle": "~3.9",
         "inetprocess/sugarcrm": "dev-sugarcli_integration",
         "jms/serializer": "~0.16",
+        "lichtner/fluentpdo": "^1.0",
         "psr/log": "~1",
         "symfony/config": "~2",
         "symfony/console": "~2",

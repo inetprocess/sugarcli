@@ -118,20 +118,16 @@ class Sugar
         $dbconfig = $this->normalizeDbParams($dbconfig);
 
         $params = array(
-            'dbname' => $dbconfig['db_name'],
-            'user' => $dbconfig['db_user_name'],
-            'password' => $dbconfig['db_password'],
             'host' => $dbconfig['db_host_name'],
             'port' => $dbconfig['db_port'],
-            'driver' => 'pdo_mysql',
+            'dbname' => $dbconfig['db_name'],
             'charset' => 'utf8',
         );
-
-        $this->external_db = \Doctrine\DBAL\DriverManager::getConnection(
-            $params,
-            new \Doctrine\DBAL\Configuration()
-        );
+        $dsn = 'mysql:' . http_build_query($params, null, ';');
+        $pdo = new \PDO($dsn, $dbconfig['db_user_name'], $dbconfig['db_password']);
+        $this->external_db = new \FluentPDO($pdo);
         return $this->external_db;
+
     }
 
     public function init()

@@ -48,8 +48,7 @@ class Metadata extends Sugar
     public function getFromDb()
     {
         $this->logger->debug('Reading fields_meta_data from DB.');
-        $sql = 'SELECT * FROM ' . self::TABLE_NAME;
-        $res = $this->getExternalDb()->query($sql);
+        $res = $this->getExternalDb()->from(self::TABLE_NAME);
         $fields = array();
         foreach ($res->fetchAll() as $row) {
             $fields[$row['id']] = $row;
@@ -119,20 +118,13 @@ class Metadata extends Sugar
         return $res;
     }
 
-
     /**
      * Build Query for add field
      */
     public function getAddQuery(array $field_data)
     {
-        $query = $this->getExternalDb()
-            ->createQueryBuilder()
-            ->insert(self::TABLE_NAME);
-        //$idx = 0;
-        foreach ($field_data as $key => $value) {
-            $query->setValue($key, $query->createNamedParameter($value));
-        }
-        return $query;
+        return $this->getExternalDb()
+            ->insertInto(self::TABLE_NAME, $field_data);
     }
 
     /**
@@ -140,11 +132,8 @@ class Metadata extends Sugar
      */
     public function getDeleteQuery(array $field_data)
     {
-        $query = $this->getExternalDb()
-            ->createQueryBuilder()
-            ->delete(self::TABLE_NAME);
-        $query->where('id = ' . $query->createNamedParameter($field_data['id']));
-        return $query;
+        return $this->getExternalDb()
+            ->delete(self::TABLE_NAME, $field_data['id']);
     }
 
     /**
@@ -152,14 +141,8 @@ class Metadata extends Sugar
      */
     public function getUpdateQuery(array $field_data)
     {
-        $query = $this->getExternalDb()
-            ->createQueryBuilder()
-            ->update(self::TABLE_NAME);
-        $query->where('id = ' . $query->createNamedParameter($field_data[self::BASE]['id']));
-        foreach ($field_data[self::MODIFIED] as $key => $value) {
-            $query->set($key, $query->createNamedParameter($value));
-        }
-        return $query;
+        return $this->getExternalDb()
+            ->update(self::TABLE_NAME, $field_data[self::MODIFIED], $field_data[self::BASE]['id']);
     }
 
     /**
@@ -185,12 +168,14 @@ class Metadata extends Sugar
      */
     public function getSqlQuery($query)
     {
-        $prepated_stmt = $query->getSql();
+        $prepated_stmt = $query->getQuery(false);
         $params = array();
-        foreach ($query->getParameters() as $key => $value) {
-            $params[":$key"] = "'$value'";
+        $search = array();
+        foreach ($query->getParameters() as $value) {
+            $params[] = "'$value'";
+            $search[] = '/\?/';
         }
-        return str_replace(array_keys($params), $params, $prepated_stmt);
+        return preg_replace($search, $params, $prepated_stmt, 1);
     }
 
     /**
