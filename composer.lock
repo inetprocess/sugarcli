@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "62fc386efb5633ec706f58e9508b1909",
+    "hash": "7fc6ce57a5193b2d6410109a41b1a28b",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -569,6 +569,46 @@
                 "web service"
             ],
             "time": "2015-03-18 18:23:50"
+        },
+        {
+            "name": "inetprocess/sugarcrm",
+            "version": "dev-sugarcli_integration",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/inetprocess/sugarcrm",
+                "reference": "b3ae544904cf1b53e0b95edae6ace4d8d322f793"
+            },
+            "require": {
+                "php": ">=5.3",
+                "psr/log": "~1.0",
+                "symfony/filesystem": "~2",
+                "symfony/finder": "~2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Inet\\SugarCRM\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Inet\\SugarCRM\\Tests\\": "tests/"
+                }
+            },
+            "authors": [
+                {
+                    "name": "Emmanuel Dyan",
+                    "email": "emmanuel.dyan@inetprocess.com"
+                }
+            ],
+            "description": "This library provides a various classes to interact with SugarCRM",
+            "keywords": [
+                "sugarcrm"
+            ],
+            "time": "2015-08-31 10:03:20"
         },
         {
             "name": "jms/metadata",
@@ -2252,7 +2292,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "inetprocess/sugarcrm": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

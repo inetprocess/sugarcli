@@ -10,9 +10,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Installer;
+use Inet\SugarCRM\InstallerException;
+
 use SugarCli\Console\ExitCode;
-use SugarCli\Sugar\Installer;
-use SugarCli\Sugar\InstallerException;
 
 class InstallRunCommand extends AbstractDefaultFromConfCommand
 {
@@ -55,11 +57,10 @@ class InstallRunCommand extends AbstractDefaultFromConfCommand
         $logger = $this->getApplication()->getContainer()->get('logger');
         $force = $input->getOption('force');
         $installer = new Installer(
-            $this->getDefaultOption($input, 'path'),
+            new Application($logger, $this->getDefaultOption($input, 'path')),
             $this->getDefaultOption($input, 'url'),
             $input->getOption('source'),
-            $input->getOption('config'),
-            $logger
+            $input->getOption('config')
         );
         try {
             $installer->run($force);

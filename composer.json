@@ -1,9 +1,16 @@
 {
     "name": "inet/sugarcli",
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/inetprocess/sugarcrm"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "doctrine/dbal": "~2.5",
         "guzzle/guzzle": "~3.9",
+        "inetprocess/sugarcrm": "dev-sugarcli_integration",
         "jms/serializer": "~0.16",
         "psr/log": "~1",
         "symfony/config": "~2",
