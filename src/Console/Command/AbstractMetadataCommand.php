@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
+use SugarCli\Sugar\Metadata;
+
 abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
 {
     const METADATA_PATH = '../db/fields_meta_data.yaml';
@@ -24,7 +26,8 @@ abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
             InputOption::VALUE_REQUIRED,
             'Path to the metadata file.' .
             ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>',
-            null);
+            null
+        );
     }
 
     protected function getMetadataOption(InputInterface $input)
@@ -65,18 +68,21 @@ abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
 
     protected function getDiffOptions(InputInterface $input)
     {
-        $res = array(
-            'add' => $input->getOption('add'),
-            'del' => $input->getOption('del'),
-            'update' => $input->getOption('update'),
+        $res = Metadata::DIFF_NONE;
+        $options_map = array(
+            'add' => Metadata::DIFF_ADD,
+            'del' => Metadata::DIFF_DEL,
+            'update' => Metadata::DIFF_UPDATE
+        );
+        foreach ($options_map as $opt => $diff_opt) {
+            if ($input->getOption($opt)) {
+                $res |= $diff_opt;
+            }
+        }
+        return array(
+            'mode' => ($res) ?: Metadata::DIFF_ALL,
             'fields' => str_replace('.', '', $input->getArgument('fields'))
         );
-        if (!$res['add'] && !$res['del'] && !$res['update']) {
-            $res['add'] = true;
-            $res['del'] = true;
-            $res['update'] = true;
-        }
-        return $res;
     }
 
     public function getProgramName()
@@ -84,4 +90,3 @@ abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
         return $_SERVER['argv'][0];
     }
 }
-

@@ -19,6 +19,12 @@ class Metadata extends Sugar
     const BASE = 0;
     const MODIFIED = 1;
 
+    const DIFF_NONE = 0;
+    const DIFF_ADD = 1;
+    const DIFF_DEL = 2;
+    const DIFF_UPDATE = 4;
+    const DIFF_ALL = 7;
+
     /**
      * Path of metadata definition file.
      */
@@ -81,7 +87,7 @@ class Metadata extends Sugar
      * @param $field_ids Array for field name to filter the results.
      * @return array Return a 3-row array for add, del and update fields.
      */
-    public function diff($base, $new, $add = true, $del = true, $update = true, array $field_ids = array())
+    public function diff($base, $new, $mode = self::DIFF_ALL, array $field_ids = array())
     {
         if (!empty($field_ids)) {
             $field_ids = array_flip($field_ids);
@@ -93,13 +99,13 @@ class Metadata extends Sugar
             self::DEL => array(),
             self::UPDATE => array()
         );
-        if ($add) {
+        if ($mode & self::DIFF_ADD) {
             $res[self::ADD] = array_diff_key($new, $base);
         }
-        if ($del) {
+        if ($mode & self::DIFF_DEL) {
             $res[self::DEL] = array_diff_key($base, $new);
         }
-        if ($update) {
+        if ($mode & self::DIFF_UPDATE) {
             // Update array will have common fields with different data.
             $common = array_intersect_key($new, $base);
             foreach ($common as $field_name => $new_field_data) {
@@ -243,4 +249,3 @@ class Metadata extends Sugar
         }
     }
 }
-

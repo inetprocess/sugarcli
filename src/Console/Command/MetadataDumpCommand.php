@@ -48,9 +48,7 @@ EOH
             $diff_res = $meta->diff(
                 $base,
                 $new,
-                $diff_opts['add'],
-                $diff_opts['del'],
-                $diff_opts['update'],
+                $diff_opts['mode'],
                 $diff_opts['fields']
             );
             $logger->info("Fields metadata loaded from DB.");

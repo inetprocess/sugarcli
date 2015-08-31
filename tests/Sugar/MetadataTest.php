@@ -68,7 +68,7 @@ class MetadataTest extends DatabaseTestCase
 
     public function testDiffEmpty()
     {
-        $diff = $this->meta->diff($this->base, $this->new, false, false, false);
+        $diff = $this->meta->diff($this->base, $this->new, Metadata::DIFF_NONE);
         $expected = array(
             Metadata::ADD => array(),
             Metadata::DEL => array(),
@@ -79,7 +79,12 @@ class MetadataTest extends DatabaseTestCase
 
     public function testDiffFilter()
     {
-        $diff = $this->meta->diff($this->base, $this->new, true, false, true, array('field4', 'field1'));
+        $diff = $this->meta->diff(
+            $this->base,
+            $this->new,
+            Metadata::DIFF_ADD | Metadata::DIFF_UPDATE,
+            array('field4', 'field1')
+        );
         $expected = array(
             Metadata::ADD => array(),
             Metadata::DEL => array(),
