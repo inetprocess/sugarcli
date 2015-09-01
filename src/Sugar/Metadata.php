@@ -48,9 +48,10 @@ class Metadata extends Sugar
     public function getFromDb()
     {
         $this->logger->debug('Reading fields_meta_data from DB.');
-        $res = $this->getExternalDb()->from(self::TABLE_NAME);
+        $sql = 'SELECT * FROM ' . self::TABLE_NAME;
+        $res = $this->getExternalDb()->query($sql);
         $fields = array();
-        foreach ($res->fetchAll() as $row) {
+        foreach ($res->fetchAll(\PDO::FETCH_ASSOC) as $row) {
             $fields[$row['id']] = $row;
         }
         ksort($fields);
@@ -118,13 +119,18 @@ class Metadata extends Sugar
         return $res;
     }
 
+    public function getQueryFactory()
+    {
+        return new QueryFactory($this->getExternalDb());
+    }
+
     /**
      * Build Query for add field
      */
     public function getAddQuery(array $field_data)
     {
-        return $this->getExternalDb()
-            ->insertInto(self::TABLE_NAME, $field_data);
+        return $this->getQueryFactory()
+            ->createInsertQuery(self::TABLE_NAME, $field_data);
     }
 
     /**
@@ -132,8 +138,8 @@ class Metadata extends Sugar
      */
     public function getDeleteQuery(array $field_data)
     {
-        return $this->getExternalDb()
-            ->delete(self::TABLE_NAME, $field_data['id']);
+        return $this->getQueryFactory()
+            ->createDeleteQuery(self::TABLE_NAME, $field_data['id']);
     }
 
     /**
@@ -141,8 +147,8 @@ class Metadata extends Sugar
      */
     public function getUpdateQuery(array $field_data)
     {
-        return $this->getExternalDb()
-            ->update(self::TABLE_NAME, $field_data[self::MODIFIED], $field_data[self::BASE]['id']);
+        return $this->getQueryFactory()
+            ->createUpdateQuery(self::TABLE_NAME, $field_data[self::BASE]['id'], $field_data[self::MODIFIED]);
     }
 
     /**
@@ -168,14 +174,7 @@ class Metadata extends Sugar
      */
     public function getSqlQuery($query)
     {
-        $prepated_stmt = $query->getQuery(false);
-        $params = array();
-        $search = array();
-        foreach ($query->getParameters() as $value) {
-            $params[] = "'$value'";
-            $search[] = '/\?/';
-        }
-        return preg_replace($search, $params, $prepated_stmt, 1);
+        return $query->getRawSql();
     }
 
     /**

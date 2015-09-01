@@ -125,7 +125,7 @@ class Sugar
         );
         $dsn = 'mysql:' . http_build_query($params, null, ';');
         $pdo = new \PDO($dsn, $dbconfig['db_user_name'], $dbconfig['db_password']);
-        $this->external_db = new \FluentPDO($pdo);
+        $this->external_db = $pdo;
         return $this->external_db;
 
     }

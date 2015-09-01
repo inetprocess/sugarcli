@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "6881414c18be4484560dea7e72b95fc1",
+    "hash": "293852a1a22130370fafa084a093990e",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -419,46 +419,6 @@
                 "xml"
             ],
             "time": "2014-03-18 08:39:00"
-        },
-        {
-            "name": "lichtner/fluentpdo",
-            "version": "1.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lichtner/fluentpdo.git",
-                "reference": "8a34b9c6742544bda9d193e814101cd065d88875"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lichtner/fluentpdo/zipball/8a34b9c6742544bda9d193e814101cd065d88875",
-                "reference": "8a34b9c6742544bda9d193e814101cd065d88875",
-                "shasum": ""
-            },
-            "type": "library",
-            "autoload": {
-                "files": [
-                    "FluentPDO/FluentPDO.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0",
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "Marek Lichtner",
-                    "homepage": "http://licht.sk/"
-                }
-            ],
-            "description": "FluentPDO is small PHP library for rapid query building. Killer feature is smart join builder which generates joins automatically.",
-            "homepage": "http://fluentpdo.com/",
-            "keywords": [
-                "database",
-                "dbal",
-                "pdo"
-            ],
-            "time": "2015-02-24 20:50:47"
         },
         {
             "name": "phpcollection/phpcollection",
