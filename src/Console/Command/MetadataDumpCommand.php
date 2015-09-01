@@ -7,9 +7,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Database\Metadata;
+use Inet\SugarCRM\Database\SugarPDO;
+use Inet\SugarCRM\Exception\SugarException;
+
 use SugarCli\Console\ExitCode;
-use SugarCli\Sugar\Metadata;
-use SugarCli\Sugar\SugarException;
 
 class MetadataDumpCommand extends AbstractMetadataCommand
 {
@@ -38,13 +41,15 @@ EOH
 
         $diff_opts = $this->getDiffOptions($input);
 
+
         try {
-            $meta = new Metadata($path, $logger, $metadata_file);
+            $pdo = new SugarPDO(new Application($logger, $path));
+            $meta = new Metadata($logger, $pdo, $metadata_file);
             $base = array();
             if (is_readable($metadata_file)) {
-                $base = $meta->getFromFile();
+                $base = $meta->loadFromFile();
             }
-            $new = $meta->getFromDb();
+            $new = $meta->loadFromDb();
             $diff_res = $meta->diff(
                 $base,
                 $new,

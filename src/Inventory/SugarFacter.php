@@ -2,13 +2,13 @@
 
 namespace SugarCli\Inventory;
 
-use SugarCli\Sugar\Sugar;
+use Inet\SugarCRM\Application;
 
 class SugarFacter extends Facter
 {
     protected $sugar;
 
-    public function __construct(Sugar $sugar)
+    public function __construct(Application $sugar)
     {
         $this->sugar = $sugar;
         $providers_dir = __DIR__ . '/SugarFactsProvider';

@@ -229,15 +229,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/sugarcrm",
-                "reference": "ad375700dad5fe714f7cf753b515886c9466c51e"
+                "reference": "c296a54709fd753f86e88d90d6b3e8054b7ef879"
             },
             "require": {
                 "php": ">=5.3",
                 "psr/log": "~1.0",
                 "symfony/filesystem": "~2",
-                "symfony/finder": "~2"
+                "symfony/finder": "~2",
+                "symfony/yaml": "~2"
             },
             "require-dev": {
+                "phpunit/dbunit": "~1.3",
                 "phpunit/phpunit": "~4.0"
             },
             "type": "library",
@@ -261,7 +263,7 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2015-08-31 11:19:08"
+            "time": "2015-09-01 16:31:29"
         },
         {
             "name": "jms/metadata",

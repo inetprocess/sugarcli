@@ -8,8 +8,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-use SugarCli\Sugar\Metadata;
-use SugarCli\Sugar\SugarException;
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Database\Metadata;
+use Inet\SugarCRM\Database\SugarPDO;
+use Inet\SugarCRM\Exception\SugarException;
+
 use SugarCli\Console\ExitCode;
 
 class MetadataStatusCommand extends AbstractMetadataCommand
@@ -108,23 +111,23 @@ EOH
         }
 
         try {
-            $meta = new Metadata($path, $logger, $metadata_file);
+            $pdo = new SugarPDO(new Application($logger, $path));
+            $meta = new Metadata($logger, $pdo, $metadata_file);
 
-            $dump_fields = $meta->getFromFile();
-            $db_fields = $meta->getFromDb();
+            $dump_fields = $meta->loadFromFile();
+            $db_fields = $meta->loadFromDb();
             $diff = $meta->diff($db_fields, $dump_fields);
 
             $this->writeAdd($output, $diff[Metadata::ADD]);
             $this->writeUpdate($output, $diff[Metadata::UPDATE]);
             $this->writeDel($output, $diff[Metadata::DEL]);
 
-            if (
-                $input->getOption('quiet')
+            if ($input->getOption('quiet')
                 && (
                 !empty($diff[Metadata::ADD])
                 || !empty($diff[Metadata::DEL])
                 || !empty($diff[Metadata::UPDATE])
-            )
+                )
             ) {
                 return ExitCode::EXIT_STATUS_MODIFICATIONS;
             }
@@ -137,4 +140,3 @@ EOH
 
     }
 }
-

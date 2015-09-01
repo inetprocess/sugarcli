@@ -6,9 +6,12 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Database\Metadata;
+use Inet\SugarCRM\Database\SugarPDO;
+use Inet\SugarCRM\Exception\SugarException;
+
 use SugarCli\Console\ExitCode;
-use SugarCli\Sugar\Metadata;
-use SugarCli\Sugar\SugarException;
 
 class MetadataLoadCommand extends AbstractMetadataCommand
 {
@@ -59,9 +62,10 @@ EOH
         }
 
         try {
-            $meta = new Metadata($path, $logger, $metadata_file);
-            $base = $meta->getFromDb();
-            $new = $meta->getFromFile();
+            $pdo = new SugarPDO(new Application($logger, $path));
+            $meta = new Metadata($logger, $pdo, $metadata_file);
+            $base = $meta->loadFromDb();
+            $new = $meta->loadFromFile();
             $diff_res = $meta->diff(
                 $base,
                 $new,
@@ -71,7 +75,7 @@ EOH
             $logger->info("Fields metadata loaded from $metadata_file.");
 
             if ($input->getOption('sql')) {
-                $output->writeln($meta->getSqlQueries($diff_res));
+                $output->writeln($meta->generateSqlQueries($diff_res));
             }
 
             if ($input->getOption('force')) {

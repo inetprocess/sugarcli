@@ -12,7 +12,7 @@ use Symfony\Component\Console\Logger\ConsoleLogger;
 
 use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Installer;
-use Inet\SugarCRM\InstallerException;
+use Inet\SugarCRM\Exception\InstallerException;
 
 use SugarCli\Console\ExitCode;
 

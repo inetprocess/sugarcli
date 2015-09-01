@@ -50,7 +50,6 @@ class MetadataTestCase extends DatabaseTestCase
         $this->app = new Application();
         $this->app->configure();
         $this->app->getContainer()->set('logger', new TestLogger());
-
     }
 
     public function tearDown()

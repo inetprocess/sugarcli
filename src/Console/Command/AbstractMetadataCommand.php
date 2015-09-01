@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
-use SugarCli\Sugar\Metadata;
+use Inet\SugarCRM\Database\Metadata;
 
 abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
 {
