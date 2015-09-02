@@ -95,9 +95,9 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getApplication()->getContainer()->get('logger');
+        $logger = $this->getService('logger');
 
-        $path = $this->getDefaultOption($input, 'path');
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $style = new OutputFormatterStyle(null, null, array('bold'));
@@ -111,8 +111,7 @@ EOH
         }
 
         try {
-            $pdo = new SugarPDO(new Application($logger, $path));
-            $meta = new Metadata($logger, $pdo, $metadata_file);
+            $meta = new Metadata($logger, $this->getService('sugarcrm.pdo'), $metadata_file);
 
             $dump_fields = $meta->loadFromFile();
             $db_fields = $meta->loadFromDb();

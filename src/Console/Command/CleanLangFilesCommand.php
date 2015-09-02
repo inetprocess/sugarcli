@@ -43,9 +43,9 @@ class CleanLangFilesCommand extends AbstractDefaultFromConfCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getApplication()->getContainer()->get('logger');
         $path = $this->getDefaultOption($input, 'path');
-        $sugar = new Application($logger, $path);
+        $this->setSugarPath($path);
+        $sugar = $this->getService('sugarcrm.application');
         $sort = !$input->getOption('no-sort');
         $test = $input->getOption('test');
         if (!$sugar->isValid()) {

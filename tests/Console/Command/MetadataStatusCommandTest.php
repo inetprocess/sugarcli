@@ -35,6 +35,12 @@ class MetadataStatusCommandTest extends MetadataTestCase
         $this->assertRegExp("/$add/", $tester->getDisplay());
         $this->assertRegExp("/$del/", $tester->getDisplay());
         $this->assertRegExp("/$update/", $tester->getDisplay());
+    }
+
+    public function testQuietStatus()
+    {
+        $cmd = $this->app->find('metadata:status');
+        $tester = new CommandTester($cmd);
 
         $ret = $tester->execute(
             array(

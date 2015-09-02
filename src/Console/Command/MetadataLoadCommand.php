@@ -47,9 +47,9 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getApplication()->getContainer()->get('logger');
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
+        $logger = $this->getService('logger');
 
-        $path = $this->getDefaultOption($input, 'path');
         $metadata_file = $this->getMetadataOption($input);
 
         $diff_opts = $this->getDiffOptions($input);
@@ -62,8 +62,7 @@ EOH
         }
 
         try {
-            $pdo = new SugarPDO(new Application($logger, $path));
-            $meta = new Metadata($logger, $pdo, $metadata_file);
+            $meta = new Metadata($logger, $this->getService('sugarcrm.pdo'), $metadata_file);
             $base = $meta->loadFromDb();
             $new = $meta->loadFromFile();
             $diff_res = $meta->diff(

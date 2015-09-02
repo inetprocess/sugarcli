@@ -34,17 +34,16 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getApplication()->getContainer()->get('logger');
+        $logger = $this->getService('logger');
 
-        $path = $this->getDefaultOption($input, 'path');
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $diff_opts = $this->getDiffOptions($input);
 
 
         try {
-            $pdo = new SugarPDO(new Application($logger, $path));
-            $meta = new Metadata($logger, $pdo, $metadata_file);
+            $meta = new Metadata($logger, $this->getService('sugarcrm.pdo'), $metadata_file);
             $base = array();
             if (is_readable($metadata_file)) {
                 $base = $meta->loadFromFile();

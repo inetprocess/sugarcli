@@ -53,11 +53,8 @@ class InventoryFacterCommand extends AbstractDefaultFromConfCommand
             $all_facts['system'] = $facter->getFacts();
         }
         if (in_array('all', $source) or in_array('sugarcrm', $source)) {
-            $sugar = new Application(
-                $this->getApplication()->getContainer()->get('logger'),
-                $this->getDefaultOption($input, 'path')
-            );
-            $sugar_facter = new SugarFacter($sugar);
+            $this->setSugarPath($this->getDefaultOption($input, 'path'));
+            $sugar_facter = new SugarFacter($this->getService('sugarcrm.application'));
             $all_facts['sugarcrm'] = $sugar_facter->getFacts();
         }
 

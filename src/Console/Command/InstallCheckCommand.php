@@ -29,7 +29,8 @@ class InstallCheckCommand extends AbstractDefaultFromConfCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path = $this->getDefaultOption($input, 'path');
-        $sugar = new Application($this->getApplication()->getContainer()->get('logger'), $path);
+        $this->setSugarPath($path);
+        $sugar = $this->getService('sugarcrm.application');
         if (!$sugar->isValid()) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
             return ExitCode::EXIT_NOT_EXTRACTED;

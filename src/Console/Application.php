@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
 /**
@@ -65,7 +66,6 @@ class Application extends BaseApplication
 
     public function configure(InputInterface $input = null, OutputInterface $output = null)
     {
-        // New DI version
         if ($output == null) {
             $output = new ConsoleOutput();
         }
@@ -76,7 +76,20 @@ class Application extends BaseApplication
         $this->container->register('config', 'SugarCli\Console\Config')
             ->addArgument($this->config_paths)
             ->addMethodCall('load');
+
+        ########### SugarCRM
+        $this->container->register('sugarcrm.application', 'Inet\SugarCRM\Application')
+            ->addArgument(new Reference('logger'))
+            ->addArgument('%sugarcrm.path%');
+        $this->container->register('sugarcrm.pdo', 'Inet\SugarCRM\Database\SugarPDO')
+            ->addArgument(new Reference('sugarcrm.application'));
+        ## Register SugarCRM EntryPoint
+        $this->container->setDefinition('sugarcrm.entrypoint', new Definition('Inet\SugarCRM\EntryPoint'))
+            ->setFactory('Inet\SugarCRM\EntryPoint::createInstance')
+            ->addArgument(new Reference('sugarcrm.application'))
+            ->addArgument('1');
     }
+
 
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {

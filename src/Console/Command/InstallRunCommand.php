@@ -54,10 +54,10 @@ class InstallRunCommand extends AbstractDefaultFromConfCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getApplication()->getContainer()->get('logger');
+        $this->setSugarPath('sugarcrm.path', $this->getDefaultOption($input, 'path'));
         $force = $input->getOption('force');
         $installer = new Installer(
-            new Application($logger, $this->getDefaultOption($input, 'path')),
+            $this->getService('sugarcrm.application'),
             $this->getDefaultOption($input, 'url'),
             $input->getOption('source'),
             $input->getOption('config')
@@ -66,6 +66,7 @@ class InstallRunCommand extends AbstractDefaultFromConfCommand
             $installer->run($force);
             $output->writeln('Installation was sucessfully completed.');
         } catch (InstallerException $e) {
+            $logger = $this->getService('logger');
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
             return ExitCode::EXIT_INSTALL_ERROR;
