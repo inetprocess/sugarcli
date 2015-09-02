@@ -54,7 +54,7 @@ class InstallRunCommand extends AbstractDefaultFromConfCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath('sugarcrm.path', $this->getDefaultOption($input, 'path'));
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
         $force = $input->getOption('force');
         $installer = new Installer(
             $this->getService('sugarcrm.application'),
