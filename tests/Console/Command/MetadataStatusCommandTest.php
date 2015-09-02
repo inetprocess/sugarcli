@@ -138,6 +138,15 @@ class MetadataStatusCommandTest extends MetadataTestCase
     public function testGetDisplayNameFail()
     {
         $cmd = $this->app->find('metadata:status');
-        $cmd->getFieldDisplayName('test');
+        $cmd->getFieldDisplayName(array('foo'));
+    }
+
+    /**
+     * @expectedException Inet\SugarCRM\Exception\SugarException
+     */
+    public function testGetDisplayNameFail2()
+    {
+        $cmd = $this->app->find('metadata:status');
+        $cmd->getFieldDisplayName(array('name' => ''));
     }
 }

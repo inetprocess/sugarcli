@@ -26,7 +26,7 @@ EOH
             );
     }
 
-    public function getFieldDisplayName($field_data)
+    public function getFieldDisplayName(array $field_data)
     {
         if (empty($field_data['name']) || empty($field_data['custom_module'])) {
             throw new SugarException('Enable to find key \'name\' or \'custom_module\' for a field.');
