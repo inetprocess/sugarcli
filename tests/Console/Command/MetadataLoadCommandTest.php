@@ -60,9 +60,9 @@ class MetadataLoadCommandTest extends MetadataTestCase
 
         //@codingStandardsIgnoreStart
         $expected_sql = <<<EOS
-INSERT INTO fields_meta_data (id, name, vname, comments, help, custom_module, type, len, required, default_value, date_modified, deleted, audited, massupdate, duplicate_merge, reportable, importable, ext1, ext2, ext3, ext4) VALUES ('Accountstest2_c', 'test2_c', 'LBL_TEST', '', '', 'Accounts', 'varchar', '255', '0', '', '2014-06-04 11:28:08', '0', '0', '0', '0', '1', 'true', '', '', '', '');
-DELETE FROM fields_meta_data WHERE id = 'inet_ImportCSVcsv_fields_enclosure_c';
-UPDATE fields_meta_data SET required = '0', date_modified = '2014-05-16 18:50:56', audited = '1' WHERE id = 'inet_ImportCSVprotocolsoap_function_dropdown_c';
+INSERT INTO `fields_meta_data` (id, name, vname, comments, help, custom_module, type, len, required, default_value, date_modified, deleted, audited, massupdate, duplicate_merge, reportable, importable, ext1, ext2, ext3, ext4) VALUES ('Accountstest2_c', 'test2_c', 'LBL_TEST', '', '', 'Accounts', 'varchar', '255', '0', '', '2014-06-04 11:28:08', '0', '0', '0', '0', '1', 'true', '', '', '', '');
+DELETE FROM `fields_meta_data` WHERE id = 'inet_ImportCSVcsv_fields_enclosure_c';
+UPDATE `fields_meta_data` SET required = '0', date_modified = '2014-05-16 18:50:56', audited = '1' WHERE id = 'inet_ImportCSVprotocolsoap_function_dropdown_c';
 
 No action done. Use --force to execute the queries.
 
