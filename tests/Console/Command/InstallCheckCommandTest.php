@@ -24,6 +24,7 @@ class InstallCheckCommandTest extends CommandTestCase
 
     public function testNotInstalled()
     {
+        @unlink(__DIR__ . '/metadata/fake_sugar/config.php');
         $ret = $this->getCommandTester('install:check')
             ->execute(array(
                 '--path' => __DIR__ . '/metadata/fake_sugar',

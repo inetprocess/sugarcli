@@ -98,7 +98,7 @@ EOS;
     /**
      * @group db
      */
-    public function testFailure()
+    public function testWrongMetadataFile()
     {
         $logger = $this->app->getContainer()->get('logger');
         $ret = $this->commandTester->execute(
@@ -112,5 +112,21 @@ EOS;
         $this->assertEquals($expected_log, $logger->getLines());
         $this->assertEquals(21, $ret);
 
+    }
+
+    /**
+     * @group db
+     */
+    public function testWrongSugarDir()
+    {
+        $logger = $this->app->getContainer()->get('logger');
+        $ret = $this->commandTester->execute(
+            array(
+                'command' => 'metadata:load',
+                '--path' => __DIR__ . '/unknown_sugar',
+                '--metadata-file' => $this->getYamlFilename(MetadataTestCase::METADATA_NEW),
+            )
+        );
+        $this->assertEquals(20, $ret);
     }
 }

@@ -9,7 +9,7 @@
     "require": {
         "php": ">=5.3.3",
         "guzzle/guzzle": "~3.9",
-        "inetprocess/sugarcrm": "dev-sugarcli_integration",
+        "inetprocess/sugarcrm": "0.9",
         "jms/serializer": "~0.16",
         "psr/log": "~1",
         "symfony/config": "~2",

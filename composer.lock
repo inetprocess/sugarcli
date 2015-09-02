@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "293852a1a22130370fafa084a093990e",
+    "hash": "9a3c87dbb4f09cf9587959c2d0ccd6ec",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -225,11 +225,11 @@
         },
         {
             "name": "inetprocess/sugarcrm",
-            "version": "dev-sugarcli_integration",
+            "version": "0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/sugarcrm",
-                "reference": "c296a54709fd753f86e88d90d6b3e8054b7ef879"
+                "reference": "39d46d87626de65f5946829cb54524fb4720db8b"
             },
             "require": {
                 "php": ">=5.3",
@@ -263,7 +263,7 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2015-09-01 16:31:29"
+            "time": "2015-09-02 11:49:27"
         },
         {
             "name": "jms/metadata",
@@ -1947,9 +1947,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "inetprocess/sugarcrm": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

@@ -66,6 +66,31 @@ class MetadataDumpCommandTest extends MetadataTestCase
     /**
      * @group db
      */
+    public function testUpdateOnly()
+    {
+        $test_dump_yaml = __DIR__ . '/metadata/test_dump.yaml';
+        $fsys = new Filesystem();
+        $fsys->copy($this->getYamlFilename('metadata_update'), $test_dump_yaml, true);
+
+        $cmd = $this->app->find('metadata:dump');
+        $tester = new CommandTester($cmd);
+        $tester->execute(
+            array(
+                'command' => $cmd->getName(),
+                '--path' => __DIR__ . '/metadata/fake_sugar',
+                '--metadata-file' => $test_dump_yaml,
+                '--update' => null,
+            )
+        );
+
+        $this->assertFileEquals($this->getYamlFilename(MetadataTestCase::METADATA_BASE), $test_dump_yaml);
+        $fsys->remove($test_dump_yaml);
+    }
+
+
+    /**
+     * @group db
+     */
     public function testFailure()
     {
         $test_dump_yaml = __DIR__ . '/metadata_unknwown_dir/new_file.yaml';

@@ -124,9 +124,9 @@ EOH
 
             if ($input->getOption('quiet')
                 && (
-                !empty($diff[Metadata::ADD])
-                || !empty($diff[Metadata::DEL])
-                || !empty($diff[Metadata::UPDATE])
+                    !empty($diff[Metadata::ADD])
+                    || !empty($diff[Metadata::DEL])
+                    || !empty($diff[Metadata::UPDATE])
                 )
             ) {
                 return ExitCode::EXIT_STATUS_MODIFICATIONS;

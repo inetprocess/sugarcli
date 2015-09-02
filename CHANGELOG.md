@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.4.1
+-----
+* Moved all sugar related work to inetprocess/sugarcrm external library.
+
 1.4.0
 -----
 * Add `inventory:*` commands
