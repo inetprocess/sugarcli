@@ -1,18 +1,19 @@
 <?php
 namespace SugarCli\Console\Command;
-/**
- * Check command to verify that Sugar is present and installed.
- */
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 
-use SugarCli\Console\ExitCode;
-use SugarCli\Sugar\Sugar;
+use Inet\SugarCRM\Application;
 
-class InstallCheckCommand extends DefaultFromConfCommand
+use SugarCli\Console\ExitCode;
+
+/**
+ * Check command to verify that Sugar is present and installed.
+ */
+class InstallCheckCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {
@@ -28,8 +29,9 @@ class InstallCheckCommand extends DefaultFromConfCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $path = $this->getDefaultOption($input, 'path');
-        $sugar = new Sugar($path);
-        if (!$sugar->isExtracted()) {
+        $this->setSugarPath($path);
+        $sugar = $this->getService('sugarcrm.application');
+        if (!$sugar->isValid()) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');
             return ExitCode::EXIT_NOT_EXTRACTED;
         }
@@ -40,4 +42,3 @@ class InstallCheckCommand extends DefaultFromConfCommand
         $output->writeln('SugarCRM is present and installed in ' . $path . '.');
     }
 }
-

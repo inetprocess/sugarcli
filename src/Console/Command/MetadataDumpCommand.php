@@ -7,11 +7,14 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-use SugarCli\Console\ExitCode;
-use SugarCli\Sugar\Metadata;
-use SugarCli\Sugar\SugarException;
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Database\Metadata;
+use Inet\SugarCRM\Database\SugarPDO;
+use Inet\SugarCRM\Exception\SugarException;
 
-class MetadataDumpCommand extends MetadataCommand
+use SugarCli\Console\ExitCode;
+
+class MetadataDumpCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
@@ -31,26 +34,25 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getHelper('logger');
+        $logger = $this->getService('logger');
 
-        $path = $this->getDefaultOption($input, 'path');
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $diff_opts = $this->getDiffOptions($input);
 
+
         try {
-            $meta = new Metadata($path, $logger, $metadata_file);
+            $meta = new Metadata($logger, $this->getService('sugarcrm.pdo'), $metadata_file);
             $base = array();
             if (is_readable($metadata_file)) {
-                $base = $meta->getFromFile();
+                $base = $meta->loadFromFile();
             }
-            $new = $meta->getFromDb();
+            $new = $meta->loadFromDb();
             $diff_res = $meta->diff(
                 $base,
                 $new,
-                $diff_opts['add'],
-                $diff_opts['del'],
-                $diff_opts['update'],
+                $diff_opts['mode'],
                 $diff_opts['fields']
             );
             $logger->info("Fields metadata loaded from DB.");
@@ -64,4 +66,3 @@ EOH
         }
     }
 }
-

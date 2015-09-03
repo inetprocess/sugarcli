@@ -5,16 +5,11 @@ namespace SugarCli\Console;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
-use Symfony\Component\Console\Helper\HelperInterface;
-use Symfony\Component\Console\Helper\HelperSet;
-
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Config\Definition\Processor;
 
-class Config implements ConfigurationInterface, HelperInterface
+class Config implements ConfigurationInterface
 {
-    protected $helper_set = null;
-
     protected $config_data = array();
 
     protected $loaded = false;
@@ -103,34 +98,4 @@ class Config implements ConfigurationInterface, HelperInterface
     {
         return $this->get($path, true);
     }
-
-    /**
-     * Sets the helper set associated with this helper.
-     *
-     * @param HelperSet $helperSet A HelperSet instance
-     */
-
-    public function setHelperSet(HelperSet $helper_set = null)
-    {
-        $this->helper_set = $helper_set;
-    }
-
-    /**
-     * Gets the helper set associated with this helper.
-     *
-     * @return HelperSet A HelperSet instance
-     */
-    public function getHelperSet()
-    {
-        return $this->helper_set;
-    }
-
-    /**
-     * Implement the HelperInterface
-     */
-    public function getName()
-    {
-        return 'config';
-    }
 }
-

@@ -1,8 +1,8 @@
 <?php
 
-namespace SugarCli\Tests\Util;
+namespace SugarCli\Tests\TestsUtil;
 
-use SugarCli\Util\TestLogger;
+use SugarCli\Tests\TestsUtil\TestLogger;
 
 class TestLoggerTest extends \PHPUnit_Framework_TestCase
 {

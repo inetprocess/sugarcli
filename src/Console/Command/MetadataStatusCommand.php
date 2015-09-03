@@ -8,11 +8,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 
-use SugarCli\Sugar\Metadata;
-use SugarCli\Sugar\SugarException;
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Database\Metadata;
+use Inet\SugarCRM\Database\SugarPDO;
+use Inet\SugarCRM\Exception\SugarException;
+
 use SugarCli\Console\ExitCode;
 
-class MetadataStatusCommand extends MetadataCommand
+class MetadataStatusCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
@@ -23,7 +26,7 @@ EOH
             );
     }
 
-    public function getFieldDisplayName($field_data)
+    public function getFieldDisplayName(array $field_data)
     {
         if (empty($field_data['name']) || empty($field_data['custom_module'])) {
             throw new SugarException('Enable to find key \'name\' or \'custom_module\' for a field.');
@@ -92,9 +95,9 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getHelper('logger');
+        $logger = $this->getService('logger');
 
-        $path = $this->getDefaultOption($input, 'path');
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $style = new OutputFormatterStyle(null, null, array('bold'));
@@ -108,23 +111,22 @@ EOH
         }
 
         try {
-            $meta = new Metadata($path, $logger, $metadata_file);
+            $meta = new Metadata($logger, $this->getService('sugarcrm.pdo'), $metadata_file);
 
-            $dump_fields = $meta->getFromFile();
-            $db_fields = $meta->getFromDb();
+            $dump_fields = $meta->loadFromFile();
+            $db_fields = $meta->loadFromDb();
             $diff = $meta->diff($db_fields, $dump_fields);
 
             $this->writeAdd($output, $diff[Metadata::ADD]);
             $this->writeUpdate($output, $diff[Metadata::UPDATE]);
             $this->writeDel($output, $diff[Metadata::DEL]);
 
-            if (
-                $input->getOption('quiet')
+            if ($input->getOption('quiet')
                 && (
-                !empty($diff[Metadata::ADD])
-                || !empty($diff[Metadata::DEL])
-                || !empty($diff[Metadata::UPDATE])
-            )
+                    !empty($diff[Metadata::ADD])
+                    || !empty($diff[Metadata::DEL])
+                    || !empty($diff[Metadata::UPDATE])
+                )
             ) {
                 return ExitCode::EXIT_STATUS_MODIFICATIONS;
             }
@@ -137,4 +139,3 @@ EOH
 
     }
 }
-

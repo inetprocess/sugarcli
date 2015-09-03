@@ -9,12 +9,13 @@ use Symfony\Component\Console\Input\InputOption;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 
+use Inet\SugarCRM\Application;
+
 use SugarCli\Console\ExitCode;
 use SugarCli\Inventory\Facter;
 use SugarCli\Inventory\SugarFacter;
-use SugarCli\Sugar\Sugar;
 
-class InventoryFacterCommand extends DefaultFromConfCommand
+class InventoryFacterCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {
@@ -52,8 +53,8 @@ class InventoryFacterCommand extends DefaultFromConfCommand
             $all_facts['system'] = $facter->getFacts();
         }
         if (in_array('all', $source) or in_array('sugarcrm', $source)) {
-            $sugar = new Sugar($this->getDefaultOption($input, 'path'));
-            $sugar_facter = new SugarFacter($sugar);
+            $this->setSugarPath($this->getDefaultOption($input, 'path'));
+            $sugar_facter = new SugarFacter($this->getService('sugarcrm.application'));
             $all_facts['sugarcrm'] = $sugar_facter->getFacts();
         }
 

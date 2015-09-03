@@ -1,11 +1,14 @@
 Changelog
 =========
 
+1.4.1
+-----
+* Moved all sugar related work to inetprocess/sugarcrm external library.
+
 1.4.0
 -----
 * Add `inventory:*` commands
 * `inventory:facter`: Get facts about the system and a sugarcrm instance
-
 
 1.3.4
 -----
@@ -41,7 +44,7 @@ Changelog
 
 1.2.0
 -----
-* Reworked langfile cleaner with php token parser. 
+* Reworked langfile cleaner with php token parser.
 
 1.1.0
 -----

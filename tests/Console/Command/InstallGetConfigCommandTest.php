@@ -1,28 +1,13 @@
 <?php
 namespace SugarCli\Tests\Console\Command;
 
-use Symfony\Component\Console\Application;
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
 
-use SugarCli\Console\Command\InstallGetConfigCommand;
-use SugarCli\Util\TestLogger;
-
-class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
+class InstallGetConfigCommandTest extends CommandTestCase
 {
     public function getTestDir()
     {
         return __DIR__ . '/test_config_si';
-    }
-
-    public function getCommandTester()
-    {
-        $app = new Application();
-        $app->getHelperSet()->set(new TestLogger());
-        $app->add(new InstallGetConfigCommand());
-
-        $cmd = $app->find('install:config:get');
-        return new CommandTester($cmd);
     }
 
     public function getRessourceConfig()
@@ -42,7 +27,7 @@ class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
             $fsys->remove($config);
         }
 
-        $this->getCommandTester()->execute(array());
+        $this->getCommandTester('install:config:get')->execute(array());
         chdir($old_cwd);
 
         $this->assertFileEquals(
@@ -64,7 +49,7 @@ class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
             $fsys->remove($config);
         }
 
-        $this->getCommandTester()->execute(array(
+        $this->getCommandTester('install:config:get')->execute(array(
             '--config' => $config
         ));
 
@@ -87,7 +72,7 @@ class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
         $fsys = new Filesystem();
         $fsys->copy($empty_file, $config, true);
 
-        $ret = $this->getCommandTester()->execute(array(
+        $ret = $this->getCommandTester('install:config:get')->execute(array(
             '--config' => $config
         ));
 
@@ -108,7 +93,7 @@ class InstallGetConfigCommandTest extends \PHPUnit_Framework_TestCase
         $fsys = new Filesystem();
         $fsys->copy($empty_file, $config, true);
 
-        $this->getCommandTester()->execute(array(
+        $this->getCommandTester('install:config:get')->execute(array(
             '--config' => $config,
             '--force' => null
         ));

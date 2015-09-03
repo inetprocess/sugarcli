@@ -6,8 +6,9 @@ use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use SugarCli\Util\LoggerHelper;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 /**
  * Run console application.
@@ -20,6 +21,11 @@ class Application extends BaseApplication
     const CONFIG_NAME = 'sugarclirc';
 
     public $config_paths = array();
+
+    /**
+     * Services container for dependency injection.
+     */
+    protected $container;
 
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
@@ -53,20 +59,41 @@ class Application extends BaseApplication
         $this->config_paths = $config_paths;
     }
 
+    public function getContainer()
+    {
+        return $this->container;
+    }
+
     public function configure(InputInterface $input = null, OutputInterface $output = null)
     {
-        $config = new Config($this->config_paths);
-        $config->load();
         if ($output == null) {
             $output = new ConsoleOutput();
         }
-        $this->getHelperSet()->set(new LoggerHelper($output));
-        $this->getHelperSet()->set($config);
+        $this->container = new ContainerBuilder();
+        $this->container->set('console.output', $output);
+        $this->container->register('logger', 'Symfony\Component\Console\Logger\ConsoleLogger')
+            ->addArgument(new Reference('console.output'));
+        $this->container->register('config', 'SugarCli\Console\Config')
+            ->addArgument($this->config_paths)
+            ->addMethodCall('load');
+
+        ########### SugarCRM
+        $this->container->register('sugarcrm.application', 'Inet\SugarCRM\Application')
+            ->addArgument(new Reference('logger'))
+            ->addArgument('%sugarcrm.path%');
+        $this->container->register('sugarcrm.pdo', 'Inet\SugarCRM\Database\SugarPDO')
+            ->addArgument(new Reference('sugarcrm.application'));
+        ## Register SugarCRM EntryPoint
+        $this->container->setDefinition('sugarcrm.entrypoint', new Definition('Inet\SugarCRM\EntryPoint'))
+            ->setFactory('Inet\SugarCRM\EntryPoint::createInstance')
+            ->addArgument(new Reference('sugarcrm.application'))
+            ->addArgument('1');
     }
+
 
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         $this->configure($input, $output);
-        return parent::run(null, $output);
+        return parent::run($input, $output);
     }
 }

@@ -10,11 +10,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Logger\ConsoleLogger;
 
-use SugarCli\Console\ExitCode;
-use SugarCli\Sugar\Installer;
-use SugarCli\Sugar\InstallerException;
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Installer;
+use Inet\SugarCRM\Exception\InstallerException;
 
-class InstallRunCommand extends DefaultFromConfCommand
+use SugarCli\Console\ExitCode;
+
+class InstallRunCommand extends AbstractDefaultFromConfCommand
 {
     protected function getDefaults()
     {
@@ -32,40 +34,42 @@ class InstallRunCommand extends DefaultFromConfCommand
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Force installer to remove target directory if present.')
+                'Force installer to remove target directory if present.'
+            )
             ->addOption(
                 'source',
                 's',
                 InputOption::VALUE_REQUIRED,
                 'Path to SugarCRM installation package.',
-                'sugar.zip')
+                'sugar.zip'
+            )
             ->addOption(
                 'config',
                 'c',
                 InputOption::VALUE_REQUIRED,
                 'PHP file to use as configuration for the installation.',
-                'config_si.php');
+                'config_si.php'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getHelper('logger');
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
         $force = $input->getOption('force');
         $installer = new Installer(
-            $this->getDefaultOption($input, 'path'),
+            $this->getService('sugarcrm.application'),
             $this->getDefaultOption($input, 'url'),
             $input->getOption('source'),
-            $input->getOption('config'),
-            $logger
+            $input->getOption('config')
         );
         try {
             $installer->run($force);
             $output->writeln('Installation was sucessfully completed.');
         } catch (InstallerException $e) {
+            $logger = $this->getService('logger');
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
             return ExitCode::EXIT_INSTALL_ERROR;
         }
     }
 }
-

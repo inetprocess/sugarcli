@@ -2,14 +2,13 @@
 
 namespace SugarCli\Console\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 
 use SugarCli\Console\ConfigException;
 
-abstract class DefaultFromConfCommand extends Command
+abstract class AbstractDefaultFromConfCommand extends AbstractContainerAwareCommand
 {
     const SHORT = 0;
     const DESCRIPTION = 1;
@@ -67,7 +66,7 @@ abstract class DefaultFromConfCommand extends Command
         if ($input->getOption($name) !== null) {
             return $input->getOption($name);
         }
-        $config = $this->getHelper('config');
+        $config = $this->getApplication()->getContainer()->get('config');
         if (!$config->has($defaults[$name])) {
             throw new \InvalidArgumentException(
                 sprintf('The "%s" option is not specified and not found in the config "%s"', $name, $defaults[$name])
@@ -83,4 +82,3 @@ abstract class DefaultFromConfCommand extends Command
         }
     }
 }
-

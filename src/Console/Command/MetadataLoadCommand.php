@@ -6,11 +6,14 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use SugarCli\Console\ExitCode;
-use SugarCli\Sugar\Metadata;
-use SugarCli\Sugar\SugarException;
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Database\Metadata;
+use Inet\SugarCRM\Database\SugarPDO;
+use Inet\SugarCRM\Exception\SugarException;
 
-class MetadataLoadCommand extends MetadataCommand
+use SugarCli\Console\ExitCode;
+
+class MetadataLoadCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
@@ -44,9 +47,9 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getHelper('logger');
+        $this->setSugarPath($this->getDefaultOption($input, 'path'));
+        $logger = $this->getService('logger');
 
-        $path = $this->getDefaultOption($input, 'path');
         $metadata_file = $this->getMetadataOption($input);
 
         $diff_opts = $this->getDiffOptions($input);
@@ -59,21 +62,19 @@ EOH
         }
 
         try {
-            $meta = new Metadata($path, $logger, $metadata_file);
-            $base = $meta->getFromDb();
-            $new = $meta->getFromFile();
+            $meta = new Metadata($logger, $this->getService('sugarcrm.pdo'), $metadata_file);
+            $base = $meta->loadFromDb();
+            $new = $meta->loadFromFile();
             $diff_res = $meta->diff(
                 $base,
                 $new,
-                $diff_opts['add'],
-                $diff_opts['del'],
-                $diff_opts['update'],
+                $diff_opts['mode'],
                 $diff_opts['fields']
             );
             $logger->info("Fields metadata loaded from $metadata_file.");
 
             if ($input->getOption('sql')) {
-                $output->writeln($meta->getSqlQueries($diff_res));
+                $output->writeln($meta->generateSqlQueries($diff_res));
             }
 
             if ($input->getOption('force')) {
@@ -90,4 +91,3 @@ EOH
         }
     }
 }
-

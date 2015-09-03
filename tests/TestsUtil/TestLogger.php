@@ -1,41 +1,11 @@
 <?php
 
-namespace SugarCli\Util;
+namespace SugarCli\Tests\TestsUtil;
 
 use Psr\Log\AbstractLogger;
-use Symfony\Component\Console\Helper\HelperInterface;
-use Symfony\Component\Console\Helper\HelperSet;
 
-class TestLogger extends AbstractLogger implements HelperInterface
+class TestLogger extends AbstractLogger
 {
-    protected $helperSet = null;
-
-    /**
-     * Sets the helper set associated with this helper.
-     *
-     * @param HelperSet $helperSet A HelperSet instance
-     */
-
-    public function setHelperSet(HelperSet $helperSet = null)
-    {
-        $this->helperSet = $helperSet;
-    }
-
-    /**
-     * Gets the helper set associated with this helper.
-     *
-     * @return HelperSet A HelperSet instance
-     */
-    public function getHelperSet()
-    {
-        return $this->helperSet;
-    }
-
-    public function getName()
-    {
-        return 'logger';
-    }
-
     public $logLevels = array(
         'emergency' => 0,
         'alert' => 1,
@@ -86,4 +56,3 @@ class TestLogger extends AbstractLogger implements HelperInterface
         $this->lines = array();
     }
 }
-

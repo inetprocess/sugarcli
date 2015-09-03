@@ -2,19 +2,20 @@
 
 namespace SugarCli\Inventory\SugarFactsProvider;
 
+use Inet\SugarCRM\Application;
+
 use SugarCli\Inventory\FactsProvider;
-use SugarCli\Sugar\Sugar;
 
 class Version implements FactsProvider
 {
-    protected $sugar;
+    protected $sugarApp;
 
-    public function __construct(Sugar $sugar)
+    public function __construct(Application $sugarApp)
     {
-        $this->sugar = $sugar;
+        $this->sugarApp = $sugarApp;
     }
     public function getFacts()
     {
-        return $this->sugar->getVersion();
+        return $this->sugarApp->getVersion();
     }
 }
