@@ -94,6 +94,6 @@ class Application extends BaseApplication
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
         $this->configure($input, $output);
-        return parent::run(null, $output);
+        return parent::run($input, $output);
     }
 }
