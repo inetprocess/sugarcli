@@ -17,7 +17,7 @@ use SugarCli\Inventory\Facter\SugarFacter;
 
 class InventoryFacterCommand extends AbstractDefaultFromConfCommand
 {
-    protected function getDefaults()
+    protected function getConfigOptionMapping()
     {
         return array('path' => 'sugarcrm.path');
     }

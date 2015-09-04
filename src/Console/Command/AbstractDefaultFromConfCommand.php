@@ -10,75 +10,56 @@ use SugarCli\Console\ConfigException;
 
 abstract class AbstractDefaultFromConfCommand extends AbstractContainerAwareCommand
 {
-    const SHORT = 0;
-    const DESCRIPTION = 1;
-
     /**
      * Return an array with the parameters needed with
      * argument as key and and section.key as value
      * @example array('path' => 'sugarcrm.path')
      */
-    abstract protected function getDefaults();
+    abstract protected function getConfigOptionMapping();
 
     public function __construct($name = null)
     {
         parent::__construct($name);
-        $this->configureDefaults();
+        $this->configureConfigOptions();
     }
 
-    protected function getOptionsData($name)
+    protected function configureConfigOptions()
     {
-        $options = array(
-            'path' => array(
-                self::SHORT => 'p',
-                self::DESCRIPTION => 'Path to SugarCRM installation.',
-            ),
-            'url' => array(
-                self::SHORT => 'u',
-                self::DESCRIPTION => 'Public url of SugarCRM.',
-            )
-        );
-
-        if (!array_key_exists($name, $options)) {
-            throw new \Exception("Couldn't find option data for $name.");
+        $options = $this->getConfigOptions();
+        foreach (array_keys($this->getConfigOptionMapping()) as $name) {
+            if (isset($options[$name])) {
+                $this->getDefinition()->addOption($options[$name]);
+            }
         }
-        return $options[$name];
     }
 
-    protected function setDefaultOptions($name)
+    protected function getConfigOptions()
     {
-        $opt_data = $this->getOptionsData($name);
-        $this->addOption(
-            $name,
-            $opt_data[self::SHORT],
-            InputOption::VALUE_REQUIRED,
-            $opt_data[self::DESCRIPTION],
-            null
+        return array(
+            'path' => new InputOption(
+                'path',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'Path to SugarCRM installation.'
+            ),
         );
     }
 
     protected function getDefaultOption(InputInterface $input, $name)
     {
-        $defaults = $this->getDefaults();
+        $defaults = $this->getConfigOptionMapping();
         if (!array_key_exists($name, $defaults)) {
             throw new \InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
         }
         if ($input->getOption($name) !== null) {
             return $input->getOption($name);
         }
-        $config = $this->getApplication()->getContainer()->get('config');
+        $config = $this->getService('config');
         if (!$config->has($defaults[$name])) {
             throw new \InvalidArgumentException(
                 sprintf('The "%s" option is not specified and not found in the config "%s"', $name, $defaults[$name])
             );
         }
         return $config->get($defaults[$name]);
-    }
-
-    protected function configureDefaults()
-    {
-        foreach (array_keys($this->getDefaults()) as $name) {
-            $this->setDefaultOptions($name);
-        }
     }
 }

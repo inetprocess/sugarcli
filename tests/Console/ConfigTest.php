@@ -12,15 +12,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider configProvider
      */
-    public function testConfig($input)
+    public function testValidConfig($input)
     {
         $conf = new Config();
         $proc = new Processor();
 
         $res = $proc->processConfiguration($conf, array($input));
         $this->assertEquals($input, $res);
-
-
     }
 
     public function configProvider()
@@ -32,6 +30,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         'url' => 'test',
                         'path' => 'toto'
                     )
+                ),
+                array('metadata' =>
+                    array(
+                        'file' => 'foo',
+                    ),
                 ),
             ),
             array(array()),
@@ -57,6 +60,8 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array(array('foo' => 'bar')),
             array(array('sugarcrm' => array('url' => ''))),
             array(array('sugarcrm' => array('path' => ''))),
+            array(array('metadata' => array('file' => ''))),
+            array(array('metadata' => array('foo' => 'bar'))),
         );
     }
 

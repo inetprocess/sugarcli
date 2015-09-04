@@ -52,11 +52,18 @@ class Config implements ConfigurationInterface
     {
         $tree_builder = new TreeBuilder();
         $tree_builder->root('sugarcli')
-        ->children()
-            ->arrayNode('sugarcrm')
             ->children()
-                ->scalarNode('path')->cannotBeEmpty()->end()
-                ->scalarNode('url')->cannotBeEmpty()->end()
+                ->arrayNode('sugarcrm')
+                    ->children()
+                        ->scalarNode('path')->cannotBeEmpty()->end()
+                        ->scalarNode('url')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
+                ->arrayNode('metadata')
+                    ->children()
+                        ->scalarNode('file')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
             ->end()
         ->end();
         return $tree_builder;

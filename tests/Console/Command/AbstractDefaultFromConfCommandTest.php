@@ -19,7 +19,6 @@ class AbstractDefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
         $app->configure();
         $app->setAutoExit(false);
         $app->getContainer()->set('config', $config);
-        /* $app->getHelperSet()->set($config); */
         $app->add(new TestFromConfCommand($cmd_name));
 
         $command = $app->find($cmd_name);
@@ -52,19 +51,6 @@ EOF;
     }
 
     /**
-     * @expectedException Exception
-     * @expectedExceptionMessage Couldn't find option data for foo.
-     */
-    public function testWrongOptionData()
-    {
-        $cmd = new TestFromConfCommand('test');
-        $reflex = new \ReflectionClass($cmd);
-        $method = $reflex->getMethod('getOptionsData');
-        $method->setAccessible(true);
-        $method->invoke($cmd, 'foo');
-    }
-
-    /**
      * @expectedException InvalidArgumentException
      * @expectedExceptionMessage The "foo" argument does not exist.
      */
@@ -90,7 +76,6 @@ EOF;
         $app->configure();
         $app->setAutoExit(false);
         $app->getContainer()->set('config', $config);
-        /* $app->getHelperSet()->set($config); */
         $app->add(new TestFromConfCommand($cmd_name));
 
         $command = $app->find($cmd_name);

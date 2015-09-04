@@ -15,7 +15,7 @@ use SugarCli\Console\ExitCode;
  */
 class InstallCheckCommand extends AbstractDefaultFromConfCommand
 {
-    protected function getDefaults()
+    protected function getConfigOptionMapping()
     {
         return array('path' => 'sugarcrm.path');
     }

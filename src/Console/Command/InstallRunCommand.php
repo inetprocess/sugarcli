@@ -18,12 +18,24 @@ use SugarCli\Console\ExitCode;
 
 class InstallRunCommand extends AbstractDefaultFromConfCommand
 {
-    protected function getDefaults()
+    protected function getConfigOptionMapping()
     {
         return array(
             'path' => 'sugarcrm.path',
             'url' => 'sugarcrm.url',
         );
+    }
+
+    protected function getConfigOptions()
+    {
+        $options = parent::getConfigOptions();
+        $options['url'] = new InputOption(
+            'url',
+            'u',
+            InputOption::VALUE_REQUIRED,
+            'Public url of SugarCRM.'
+        );
+        return $options;
     }
 
     protected function configure()

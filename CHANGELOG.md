@@ -1,6 +1,14 @@
 Changelog
 =========
 
+1.4.3
+-----
+* Add configuration option `metadata.file` for option `--metadata-file` for `metadata:*` commands.
+
+1.4.2
+-----
+* Fix error with `--path` option for `install:run` command.
+
 1.4.1
 -----
 * Moved all sugar related work to inetprocess/sugarcrm external library.

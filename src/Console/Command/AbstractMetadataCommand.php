@@ -12,28 +12,32 @@ abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
 {
     const METADATA_PATH = '../db/fields_meta_data.yaml';
 
-    protected function getDefaults()
+    protected function getConfigOptionMapping()
     {
-        return array('path' => 'sugarcrm.path');
+        return array(
+            'path' => 'sugarcrm.path',
+            'metadata-file' => 'metadata.file',
+        );
     }
 
-    public function __construct($name = null)
+    protected function getConfigOptions()
     {
-        parent::__construct($name);
-        $this->addOption(
+        $options = parent::getConfigOptions();
+        $options['metadata-file'] = new InputOption(
             'metadata-file',
             'm',
             InputOption::VALUE_REQUIRED,
             'Path to the metadata file.' .
-            ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>',
-            null
+            ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>'
         );
+        return $options;
     }
 
     protected function getMetadataOption(InputInterface $input)
     {
-        $metadata = $input->getOption('metadata-file');
-        if ($metadata === null) {
+        try {
+            $metadata = $this->getDefaultOption($input, 'metadata-file');
+        } catch (\InvalidArgumentException $e) {
             $metadata = $this->getDefaultOption($input, 'path') . '/' . self::METADATA_PATH;
         }
         return $metadata;

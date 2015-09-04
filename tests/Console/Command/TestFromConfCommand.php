@@ -3,13 +3,26 @@
 namespace SugarCli\Tests\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use SugarCli\Console\Command\AbstractDefaultFromConfCommand;
 
 class TestFromConfCommand extends AbstractDefaultFromConfCommand
 {
-    protected function getDefaults()
+    protected function getConfigOptions()
+    {
+        $options = parent::getConfigOptions();
+        $options['url'] = new InputOption(
+            'url',
+            'u',
+            InputOption::VALUE_REQUIRED,
+            'Public url of SugarCRM.'
+        );
+        return $options;
+    }
+
+    protected function getConfigOptionMapping()
     {
         return array(
             'path' => 'sugarcrm.path',
