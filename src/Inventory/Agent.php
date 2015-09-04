@@ -18,16 +18,18 @@ class Agent
     protected $facters;
     protected $logger;
     protected $client;
+    protected $account_name;
 
     const SYSTEM = 0;
     const SUGARCRM = 1;
 
-    public function __construct(LoggerInterface $logger, GClient $client)
+    public function __construct(LoggerInterface $logger, GClient $client, $account_name = '')
     {
         $this->facters = array();
         $this->logger = $logger;
-        $this->client = $client;
+        $this->account_name = $account_name;
 
+        $this->client = $client;
         $this->client->setDescription(
             ServiceDescription::factory(__DIR__ . '/InventoryService.json')
         );
@@ -71,20 +73,45 @@ class Agent
             'fqdn' => $fqdn,
             'facts' => $facts,
         );
+        $this->sendEntity('Server', $server_data, 'fqdn');
+    }
+
+    public function sendAccount()
+    {
+        $this->sendEntity(
+            'Account',
+            array('name' => $this->account_name),
+            'name'
+        );
+    }
+
+    /**
+     * Send an entity.
+     * Try put first if 404 create it with POST.
+     * @param string $entity_name Entity name in CamelCase
+     * @param array $data Entity data to send.
+     * @param string $key_id Key of data to use as an id for the request.
+     */
+    public function sendEntity($entity_name, array $data, $key_id)
+    {
+        $client = $this->getClient();
+        $this->getLogger()->info('Sending new ' . $entity_name . '.');
         try {
-            $this->getLogger()->info('Try to put data to existing server record.');
-            $server_data['fqdn_uri'] = $fqdn;
-            $client->putServer($server_data);
+            $this->getLogger()->info('Try to PUT data to existing ' . $entity_name . ' record.');
+            $data[$key_id . '_uri'] = $data[$key_id];
+            $client->getCommand('put' . $entity_name, $data)
+                ->execute();
         } catch (ClientErrorResponseException $e) {
             if ($e->getResponse()->getStatusCode() === 404) {
                 // The server doesn't exist yet. We need to POST it.
-                $this->getLogger()->info('Server was not found on PUT request. Doing POST to create it.');
-                $client->postServer($server_data);
+                $this->getLogger()->info($entity_name . ' was not found on PUT request. Doing POST to create it.');
+                $client->getCommand('post' . $entity_name, $data)
+                    ->execute();
             } else {
                 // This is not a 404 error, throw the exception.
                 throw $e;
             }
         }
-        $this->getLogger()->info('The server information has been successfully sent.');
+        $this->getLogger()->info('The ' . $entity_name . ' information has been successfully sent.');
     }
 }

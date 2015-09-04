@@ -5,6 +5,7 @@ namespace SugarCli\Tests\Inventory;
 use Guzzle\Tests\GuzzleTestCase;
 use Guzzle\Service\Client as GClient;
 use Guzzle\Service\Description\ServiceDescription;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 
 use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Http\Message\Response;
@@ -63,5 +64,24 @@ class AgentTest extends ClientTestCase
             'hostname' => $fqdn,
         )), Agent::SYSTEM);
         $agent->sendServer();
+    }
+
+    public function testSendAccount()
+    {
+        $name = 'Test Corp.';
+        $client = $this->getClient();
+        $agent = new Agent(new NullLogger(), $client, $name);
+        try {
+            $client->deleteAccount(array('name' => $name));
+        } catch (ClientErrorResponseException $e) {
+            throw $e;
+        }
+        $history = $this->getHistory($client);
+        // Should POST
+        $agent->sendAccount();
+        $this->assertEquals('POST', $history->getLastRequest()->getMethod());
+        // Should PUT
+        $agent->sendAccount();
+        $this->assertEquals('PUT', $history->getLastRequest()->getMethod());
     }
 }
