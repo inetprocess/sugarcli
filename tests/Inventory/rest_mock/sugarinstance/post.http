@@ -1,0 +1,13 @@
+HTTP/1.1 201 Created
+Date: Fri, 14 Aug 2015 13:28:18 GMT
+Server: Apache/2.2.22 (Debian)
+Set-Cookie: PHPSESSID=0hm1ninkou18ho1a665spl3c91; path=/
+Cache-Control: no-cache
+X-Debug-Token: 6f679f
+X-Debug-Token-Link: /inventory/app_dev.php/_profiler/6f679f
+Location: http://192.168.10.119/inventory/app_dev.php/api/v1/sugarinstances/test_instance
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: text/html
+
+

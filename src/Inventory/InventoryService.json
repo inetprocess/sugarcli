@@ -6,8 +6,7 @@
         "getServers": {
             "httpMethod": "GET",
             "uri": "servers",
-            "summary": "Get a list of servers",
-            "responseClass": "getListOutput"
+            "summary": "Get a list of servers"
         },
         "getServer": {
             "httpMethod": "GET",
@@ -77,8 +76,7 @@
         "getAccounts": {
             "httpMethod": "GET",
             "uri": "accounts",
-            "summary": "Get a list of accounts",
-            "responseClass": "getListOutput"
+            "summary": "Get a list of accounts"
         },
         "getAccount": {
             "httpMethod": "GET",
@@ -134,6 +132,97 @@
                     "required": true
                 }
             }
+        },
+        "getSugarInstances": {
+            "httpMethod": "GET",
+            "uri": "sugarinstances",
+            "summary": "Get a list of sugarinstances",
+            "responseClass": "getListOutput"
+        },
+        "getSugarInstance": {
+            "httpMethod": "GET",
+            "uri": "sugarinstances/{url}",
+            "responseClass": "SugarInstance",
+            "parameters": {
+                "url": {
+                    "type": "string",
+                    "location": "uri",
+                    "description": "Name of the sugarinstance to retrieve",
+                    "required": true
+                }
+            }
+        },
+        "postSugarInstance": {
+            "httpMethod": "POST",
+            "uri": "sugarinstances",
+            "responseClass": "postResponse",
+            "parameters": {
+                "url": {
+                    "type": "string",
+                    "location": "json",
+                    "description": "Name of the sugarinstance to create",
+                    "required": true
+                },
+                "facts": {
+                    "type": "array",
+                    "location": "json",
+                    "description": "Facts about the sugarinstance"
+                },
+                "server": {
+                    "type": "integer",
+                    "location": "json",
+                    "description": "Id of the related server"
+                },
+                "account": {
+                    "type": "integer",
+                    "location": "json",
+                    "description": "Id of the related account"
+                }
+            }
+        },
+        "putSugarInstance": {
+            "httpMethod": "PUT",
+            "uri": "sugarinstances/{url_uri}",
+            "parameters": {
+                "url_uri": {
+                    "type": "string",
+                    "location": "uri",
+                    "description": "Name of the sugarinstance to replace",
+                    "required": true
+                },
+                "url": {
+                    "type": "string",
+                    "location": "json",
+                    "description": "Name of the sugarinstance to create",
+                    "required": true
+                },
+                "facts": {
+                    "type": "array",
+                    "location": "json",
+                    "description": "Facts about the sugarinstance"
+                },
+                "server": {
+                    "type": "integer",
+                    "location": "json",
+                    "description": "Id of the related server"
+                },
+                "account": {
+                    "type": "integer",
+                    "location": "json",
+                    "description": "Id of the related account"
+                }
+            }
+        },
+        "deleteSugarInstance": {
+            "httpMethod": "DELETE",
+            "uri": "sugarinstances/{url}",
+            "parameters": {
+                "url": {
+                    "location": "uri",
+                    "description": "Name of the sugarinstance to retrieve",
+                    "required": true
+                }
+            }
         }
     },
     "models": {
@@ -182,6 +271,31 @@
                 "sugar_instances": {
                     "location": "json",
                     "type": "array"
+                }
+            }
+        },
+        "SugarInstance": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "location": "json",
+                    "type": "integer"
+                },
+                "url": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "facts": {
+                    "location": "json",
+                    "type": ["array", "object"]
+                },
+                "server": {
+                    "location": "json",
+                    "type": "integer"
+                },
+                "account": {
+                    "location": "json",
+                    "type": "integer"
                 }
             }
         },

@@ -12,6 +12,8 @@ class MockClientTest extends ClientTestCase
 
     public $name = "FooBar";
 
+    public $si_url = "test_instance";
+
     public function getClientType()
     {
         return 'mock';
@@ -128,6 +130,63 @@ class MockClientTest extends ClientTestCase
     {
         $client = $this->getClient(array('account/delete.http'));
         $cmd = $client->getCommand('deleteAccount', array('name' => $this->name));
+        $cmd->execute();
+        $this->assertEquals(204, $cmd->getResponse()->getStatusCode());
+    }
+
+    /*******************************
+     ******* Sugar Instance ********
+     *******************************/
+
+
+    public function testPostSugarInstance()
+    {
+        $client = $this->getClient(array('sugarinstance/post.http'));
+        $cmd = $client->getCommand('postSugarInstance', array(
+            'url' => $this->si_url,
+            'facts' => array('test' => 'test', 'foo' => 'bar'),
+        ));
+        $resp = $cmd->execute();
+        $this->assertEquals(201, $cmd->getResponse()->getStatusCode());
+        $this->assertStringEndsWith('/sugarinstances/' . $this->si_url, $resp->get('location'));
+    }
+
+    public function testPutSugarInstance()
+    {
+        $client = $this->getClient(array('sugarinstance/put.http'));
+        $cmd = $client->getCommand('putSugarInstance', array(
+            'url_uri' => $this->si_url,
+            'url' => $this->si_url,
+            'facts' => array('test' => 'test', 'bar' => 'foo')
+        ));
+        $cmd->execute();
+        $this->assertEquals(204, $cmd->getResponse()->getStatusCode());
+    }
+
+    public function testGetOneSugarInstance()
+    {
+        $client = $this->getClient(array('sugarinstance/get_one.http'));
+        $cmd = $client->getCommand('getSugarInstance', (array('url' => $this->si_url)));
+        $resp = $cmd->execute();
+        $this->assertEquals($this->si_url, $resp['url']);
+    }
+
+    public function testGetSugarInstances()
+    {
+        $client = $this->getClient(array('sugarinstance/get.http'));
+        $resp = $client->getSugarInstances();
+        $this->assertNotEmpty($resp->toArray());
+        foreach ($resp as $sugarinstance) {
+            $this->assertArrayHasKey('id', $sugarinstance);
+            $this->assertArrayHasKey('url', $sugarinstance);
+            $this->assertArrayHasKey('facts', $sugarinstance);
+        }
+    }
+
+    public function testDeleteSugarInstance()
+    {
+        $client = $this->getClient(array('sugarinstance/delete.http'));
+        $cmd = $client->getCommand('deleteSugarInstance', array('url' => $this->si_url));
         $cmd->execute();
         $this->assertEquals(204, $cmd->getResponse()->getStatusCode());
     }
