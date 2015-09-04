@@ -7,7 +7,7 @@
             "httpMethod": "GET",
             "uri": "servers",
             "summary": "Get a list of servers",
-            "responseClass": "getServersOutput"
+            "responseClass": "getListOutput"
         },
         "getServer": {
             "httpMethod": "GET",
@@ -73,6 +73,67 @@
                     "required": true
                 }
             }
+        },
+        "getAccounts": {
+            "httpMethod": "GET",
+            "uri": "accounts",
+            "summary": "Get a list of accounts",
+            "responseClass": "getListOutput"
+        },
+        "getAccount": {
+            "httpMethod": "GET",
+            "uri": "accounts/{name}",
+            "responseClass": "Account",
+            "parameters": {
+                "name": {
+                    "type": "string",
+                    "location": "uri",
+                    "description": "Name of the account to retrieve",
+                    "required": true
+                }
+            }
+        },
+        "postAccount": {
+            "httpMethod": "POST",
+            "uri": "accounts",
+            "responseClass": "postResponse",
+            "parameters": {
+                "name": {
+                    "type": "string",
+                    "location": "json",
+                    "description": "Fqdn of the account to create",
+                    "required": true
+                }
+            }
+        },
+        "putAccount": {
+            "httpMethod": "PUT",
+            "uri": "accounts/{name_uri}",
+            "parameters": {
+                "name_uri": {
+                    "type": "string",
+                    "location": "uri",
+                    "description": "Fqdn of the account to replace",
+                    "required": true
+                },
+                "name": {
+                    "type": "string",
+                    "location": "json",
+                    "description": "Fqdn of the account to create",
+                    "required": true
+                }
+            }
+        },
+        "deleteAccount": {
+            "httpMethod": "DELETE",
+            "uri": "accounts/{name}",
+            "parameters": {
+                "name": {
+                    "location": "uri",
+                    "description": "Name of the account to retrieve",
+                    "required": true
+                }
+            }
         }
     },
     "models": {
@@ -107,7 +168,24 @@
                 }
             }
         },
-        "getServersOutput": {
+        "Account": {
+            "type": "object",
+            "properties": {
+                "id": {
+                    "location": "json",
+                    "type": "integer"
+                },
+                "name": {
+                    "location": "json",
+                    "type": "string"
+                },
+                "sugar_instances": {
+                    "location": "json",
+                    "type": "array"
+                }
+            }
+        },
+        "getListOutput": {
             "type": "object",
             "additionalProperties": {
                 "type": "object",
