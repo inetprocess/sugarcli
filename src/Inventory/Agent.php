@@ -7,6 +7,8 @@ use Guzzle\Service\Description\ServiceDescription;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 
 use Inet\SugarCRM\Application;
+use SugarCli\Inventory\Facter\SystemFacter;
+use SugarCli\Inventory\Facter\SugarFacter;
 
 /**
  * Send gathered facts to Inventory server.
@@ -49,7 +51,7 @@ class Agent
 
     public function populateFacts()
     {
-        $sys_facter = new Facter();
+        $sys_facter = new SystemFacter();
         $this->facts['system'] = $sys_facter->getFacts();
 
         $sugar_facter = new SugarFacter($this->getApplication());

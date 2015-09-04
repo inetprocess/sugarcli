@@ -1,10 +1,10 @@
 <?php
 
-namespace SugarCli\Inventory;
+namespace SugarCli\Inventory\Facter;
 
 use Symfony\Component\Finder\Finder;
 
-class Facter
+class ProviderFacter implements FacterInterface
 {
     protected $providers_dir;
     protected $providers_namespace;
@@ -13,16 +13,10 @@ class Facter
 
     protected $facts;
 
-    public function __construct($providers_dir = '', $providers_namespace = '')
+    public function __construct($providers_dir, $providers_namespace)
     {
         $this->facts = null;
 
-        if (empty($providers_dir)) {
-            $providers_dir = __DIR__ . '/FactsProvider';
-        }
-        if (empty($providers_namespace)) {
-            $providers_namespace = __NAMESPACE__ . '\FactsProvider';
-        }
         $this->providers_dir = $providers_dir;
         $this->providers_namespace = $providers_namespace;
 

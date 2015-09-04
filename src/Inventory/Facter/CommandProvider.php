@@ -1,26 +1,18 @@
 <?php
 
-namespace SugarCli\Inventory;
+namespace SugarCli\Inventory\Facter;
 
 use Symfony\Component\Process\Process;
-use SugarCli\Inventory\FactsProvider;
 
-class CommandFactsProvider implements FactsProvider
+class CommandProvider implements FacterInterface
 {
-    // Child classes just need to inherits both properties.
     protected $cmd;
-    protected $as_json = false;
+    protected $as_json;
 
-    /**
-     * Run the command.
-     * @param $cmd Command line to run
-     * @return oupout of command
-     */
-    protected function runCommand($cmd)
+    public function __construct($command, $as_json = false)
     {
-        $process = new Process($cmd);
-        $process->mustRun();
-        return $process->getOutput();
+        $this->cmd = $command;
+        $this->as_json = $as_json;
     }
 
     /**
@@ -43,6 +35,18 @@ class CommandFactsProvider implements FactsProvider
         } catch (\Exception $e) {
             return array();
         }
+    }
+
+    /**
+     * Run the command.
+     * @param $cmd Command line to run
+     * @return oupout of command
+     */
+    protected function runCommand($cmd)
+    {
+        $process = new Process($cmd);
+        $process->mustRun();
+        return $process->getOutput();
     }
 
     /**

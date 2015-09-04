@@ -1,18 +1,18 @@
 <?php
 
-namespace SugarCli\Inventory;
+namespace SugarCli\Inventory\Facter;
 
 use Inet\SugarCRM\Application;
 
-class SugarFacter extends Facter
+class SugarFacter extends ProviderFacter
 {
     protected $sugar;
 
     public function __construct(Application $sugar)
     {
         $this->sugar = $sugar;
-        $providers_dir = __DIR__ . '/SugarFactsProvider';
-        $providers_namespace = __NAMESPACE__ . '\SugarFactsProvider';
+        $providers_dir = __DIR__ . '/SugarProvider';
+        $providers_namespace = __NAMESPACE__ . '\SugarProvider';
         parent::__construct($providers_dir, $providers_namespace);
     }
 
