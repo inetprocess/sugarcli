@@ -2,34 +2,49 @@
 
 namespace SugarCli\Inventory;
 
-use Guzzle\Http\Client;
+use Guzzle\Service\Client as GClient;
+use Guzzle\Service\Description\ServiceDescription;
+use Guzzle\Http\Exception\ClientErrorResponseException;
 
-use SugarCli\Sugar\Sugar;
+use Inet\SugarCRM\Application;
 
 /**
  * Send gathered facts to Inventory server.
  */
 class Agent
 {
-    protected $server_url;
-    protected $client_username;
-    protected $client_password;
-
     protected $facts;
-    protected $sugar;
+    protected $sugarApp;
+    protected $client;
 
-    public function __construct($server_url, $client_username, $client_password, Sugar $sugar)
+    public function __construct(Application $sugarApp, GClient $client)
     {
-        $this->server_url = $server_url;
-        $this->client_username = $client_username;
-        $this->client_password = $client_password;
-
         $this->facts = array(
             'system' => array(),
             'sugarcrm' => array(),
         );
 
-        $this->sugar = $sugar;
+        $this->sugarApp = $sugarApp;
+        $this->client = $client;
+
+        $this->client->setDescription(
+            ServiceDescription::factory(__DIR__ . '/InventoryService.json')
+        );
+    }
+
+    public function getApplication()
+    {
+        return $this->sugarApp;
+    }
+
+    public function getLogger()
+    {
+        return $this->getApplication()->getLogger();
+    }
+
+    public function getClient()
+    {
+        return $this->client;
     }
 
     public function populateFacts()
@@ -37,26 +52,31 @@ class Agent
         $sys_facter = new Facter();
         $this->facts['system'] = $sys_facter->getFacts();
 
-        $sugar_facter = new SugarFacter($this->sugar);
+        $sugar_facter = new SugarFacter($this->getApplication());
         $this->facts['sugarcrm'] = $sugar_facter->getFacts();
-    }
-
-    public function sendInstance()
-    {
-    }
-
-    public function getInstance()
-    {
-    }
-
-    public function getServer()
-    {
-        $client = new Client($this->server_url);
-        $client->setAuth($this->client_username, $this->client_password);
-
     }
 
     public function sendServer()
     {
+        $fqdn = $this->facts['system']['hostname'];
+        $client = $this->getClient();
+        try {
+            $server_data = $client->getServer(array('fqdn' => $fqdn))->toArray();
+            $server_data['fqdn_uri'] = $fqdn;
+            $server_data['facts'] = $this->facts['system'];
+            $client->putServer($server_data);
+        } catch (ClientErrorResponseException $e) {
+            if ($e->getResponse()->getStatusCode() === 404) {
+                // The server doesn't exist yet. We need to POST it.
+                $server_data = array(
+                    'fqdn' => $fqdn,
+                    'facts' => $this->facts['system'],
+                );
+                $client->postServer($server_data);
+            } else {
+                // This is not a 404 error, throw the exception.
+                throw $e;
+            }
+        }
     }
 }

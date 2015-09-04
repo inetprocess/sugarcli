@@ -8,26 +8,12 @@ use Guzzle\Service\Description\ServiceDescription;
 /**
  * @group inventory
  */
-class RealClientTest extends FakeClientTest
+class RealClientTest extends MockClientTest
 {
     public $fqdn = 'testserver.inetprocess.fr';
 
-    public function getClient($mock = array())
+    public function getClientType()
     {
-        $client = new GClient(
-            getenv('INVENTORY_URL'),
-            array(
-                'request.options' => array(
-                    'auth' => array(
-                        getenv('INVENTORY_USERNAME'),
-                        getenv('INVENTORY_PASSWORD'),
-                    ),
-                ),
-            )
-        );
-        $client->setDescription(
-            ServiceDescription::factory('src/Inventory/InventoryService.json')
-        );
-        return $client;
+        return 'real';
     }
 }

@@ -6,23 +6,21 @@ use Guzzle\Tests\GuzzleTestCase;
 use Guzzle\Service\Client as GClient;
 use Guzzle\Service\Description\ServiceDescription;
 
-use Guzzle\Plugin\Mock\MockPlugin;
-use Guzzle\Http\Message\Response;
-
-class FakeClientTest extends GuzzleTestCase
+class MockClientTest extends ClientTestCase
 {
     public $fqdn = 'testserver.inetprocess.fr';
 
+    public function getClientType()
+    {
+        return 'mock';
+    }
+
     public function getClient($mocks = array())
     {
-        $client = new GClient('test');
+        $client = parent::getClient($mocks);
         $client->setDescription(
-            ServiceDescription::factory('src/Inventory/InventoryService.json')
+            ServiceDescription::factory(__DIR__ . '/../../src/Inventory/InventoryService.json')
         );
-        $this->setMockBasePath(__DIR__ . '/rest_mock');
-        if (!empty($mocks)) {
-            $this->setMockResponse($client, $mocks);
-        }
         return $client;
     }
 
