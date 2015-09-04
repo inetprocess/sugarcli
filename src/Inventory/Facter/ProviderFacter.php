@@ -6,11 +6,25 @@ use Symfony\Component\Finder\Finder;
 
 class ProviderFacter implements FacterInterface
 {
+    /**
+     * Directory where providers can be found
+     * @var
+     */
     protected $providers_dir;
+    /**
+     * Namespace for the providers in the directory
+     * @var
+     */
     protected $providers_namespace;
 
+    /**
+     * Array of provider objects
+     */
     protected $providers;
 
+    /**
+     * Array of resulting facts
+     */
     protected $facts;
 
     public function __construct($providers_dir, $providers_namespace)
@@ -24,6 +38,9 @@ class ProviderFacter implements FacterInterface
         $this->registerProviders();
     }
 
+    /**
+     * List the files in the providers dir to create new objects.
+     */
     public function registerProviders()
     {
         $finder = new Finder();
@@ -32,17 +49,39 @@ class ProviderFacter implements FacterInterface
             ->in($this->providers_dir)
             ->name('*.php');
         foreach ($finder as $provider) {
-            $this->registerProvider($provider);
+            $this->registerProviderFromFile($provider);
         }
     }
 
-    public function registerProvider(\SplFileInfo $provider)
+    /**
+     * Factory method to create provider classes.
+     * Usefull to override this method in child classes to inject into provider classes
+     */
+    public function factory($class_name)
     {
-        $class_name = $this->providers_namespace . '\\' . $provider->getBasename('.php');
-        require_once($provider->getPathName());
-        $this->providers[] = new $class_name();
+        return new $class_name();
     }
 
+    /**
+     * Instantiate a provider from a file
+     */
+    public function registerProviderFromFile(\SplFileInfo $provider_file)
+    {
+        $class_name = $this->providers_namespace . '\\' . $provider_file->getBasename('.php');
+        $this->addProvider($this->factory($class_name));
+    }
+
+    /**
+     * Add a provider object directly
+     */
+    public function addProvider(FacterInterface $provider)
+    {
+        $this->providers[] = $provider;
+    }
+
+    /**
+     * Fetch the facts from the providers
+     */
     public function getFacts($cached = true)
     {
         if (is_null($this->facts)) {
@@ -51,6 +90,9 @@ class ProviderFacter implements FacterInterface
         return $this->facts;
     }
 
+    /**
+     * Fill from facts from providers for caching.
+     */
     public function populateFacts()
     {
         $this->facts = array();

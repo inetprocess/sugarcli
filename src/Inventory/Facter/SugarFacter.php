@@ -16,10 +16,12 @@ class SugarFacter extends ProviderFacter
         parent::__construct($providers_dir, $providers_namespace);
     }
 
-    public function registerProvider(\SplFileInfo $provider)
+    /**
+     * Inject sugar application into providers.
+     * @param string $class_name Name of the class to create.
+     */
+    public function factory($class_name)
     {
-        $class_name = $this->providers_namespace . '\\' . $provider->getBasename('.php');
-        require_once($provider->getPathName());
-        $this->providers[] = new $class_name($this->sugar);
+        return new $class_name($this->sugar);
     }
 }
