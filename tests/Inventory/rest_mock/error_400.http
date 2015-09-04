@@ -1,0 +1,9 @@
+HTTP/1.1 400 Bad Request
+Date: Fri, 04 Sep 2015 10:50:49 GMT
+Server: Apache/2.2.22 (Debian)
+Cache-Control: no-cache
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{"error":{"code":400,"message":"Bad Request"}}

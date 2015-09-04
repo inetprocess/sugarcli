@@ -6,27 +6,26 @@ use Guzzle\Service\Client as GClient;
 use Guzzle\Service\Description\ServiceDescription;
 use Guzzle\Http\Exception\ClientErrorResponseException;
 
-use Inet\SugarCRM\Application;
-use SugarCli\Inventory\Facter\SystemFacter;
-use SugarCli\Inventory\Facter\SugarFacter;
+use Psr\Log\LoggerInterface;
+
+use SugarCli\Inventory\Facter\FacterInterface;
 
 /**
  * Send gathered facts to Inventory server.
  */
 class Agent
 {
-    protected $facts;
-    protected $sugarApp;
+    protected $facters;
+    protected $logger;
     protected $client;
 
-    public function __construct(Application $sugarApp, GClient $client)
-    {
-        $this->facts = array(
-            'system' => array(),
-            'sugarcrm' => array(),
-        );
+    const SYSTEM = 0;
+    const SUGARCRM = 1;
 
-        $this->sugarApp = $sugarApp;
+    public function __construct(LoggerInterface $logger, GClient $client)
+    {
+        $this->facters = array();
+        $this->logger = $logger;
         $this->client = $client;
 
         $this->client->setDescription(
@@ -34,14 +33,27 @@ class Agent
         );
     }
 
-    public function getApplication()
+    public function setFacter(FacterInterface $facter, $type)
     {
-        return $this->sugarApp;
+        $this->facters[$type] = $facter;
+    }
+
+    public function getFacter($type)
+    {
+        if (!isset($this->facters[$type])) {
+            throw new \RuntimeException('No facter found for this type. Please set the facter object first.');
+        }
+        return $this->facters[$type];
+    }
+
+    public function getFacts($type)
+    {
+        return $this->getFacter($type)->getFacts();
     }
 
     public function getLogger()
     {
-        return $this->getApplication()->getLogger();
+        return $this->logger;
     }
 
     public function getClient()
@@ -49,36 +61,30 @@ class Agent
         return $this->client;
     }
 
-    public function populateFacts()
-    {
-        $sys_facter = new SystemFacter();
-        $this->facts['system'] = $sys_facter->getFacts();
-
-        $sugar_facter = new SugarFacter($this->getApplication());
-        $this->facts['sugarcrm'] = $sugar_facter->getFacts();
-    }
-
     public function sendServer()
     {
-        $fqdn = $this->facts['system']['hostname'];
+        $this->getLogger()->info('Fetching system facts.');
+        $facts = $this->getFacts(self::SYSTEM);
+        $fqdn = $facts['hostname'];
         $client = $this->getClient();
+        $server_data = array(
+            'fqdn' => $fqdn,
+            'facts' => $facts,
+        );
         try {
-            $server_data = $client->getServer(array('fqdn' => $fqdn))->toArray();
+            $this->getLogger()->info('Try to put data to existing server record.');
             $server_data['fqdn_uri'] = $fqdn;
-            $server_data['facts'] = $this->facts['system'];
             $client->putServer($server_data);
         } catch (ClientErrorResponseException $e) {
             if ($e->getResponse()->getStatusCode() === 404) {
                 // The server doesn't exist yet. We need to POST it.
-                $server_data = array(
-                    'fqdn' => $fqdn,
-                    'facts' => $this->facts['system'],
-                );
+                $this->getLogger()->info('Server was not found on PUT request. Doing POST to create it.');
                 $client->postServer($server_data);
             } else {
                 // This is not a 404 error, throw the exception.
                 throw $e;
             }
         }
+        $this->getLogger()->info('The server information has been successfully sent.');
     }
 }

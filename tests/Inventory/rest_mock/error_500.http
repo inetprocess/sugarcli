@@ -1,0 +1,10 @@
+HTTP/1.1 500 Internal Server Error
+Date: Fri, 04 Sep 2015 10:45:53 GMT
+Server: Apache/2.2.22 (Debian)
+Set-Cookie: PHPSESSID=tq5vh7npbvroeu8n3rglb5n091; path=/
+Cache-Control: no-cache
+Connection: close
+Transfer-Encoding: chunked
+Content-Type: application/json
+
+{"error":{"code":500,"message":"Internal Server Error"}}

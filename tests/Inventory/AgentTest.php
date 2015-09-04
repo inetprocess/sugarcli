@@ -10,8 +10,8 @@ use Guzzle\Plugin\Mock\MockPlugin;
 use Guzzle\Http\Message\Response;
 
 use Psr\Log\NullLogger;
-use Inet\SugarCRM\Application;
 use SugarCli\Inventory\Agent;
+use SugarCli\Inventory\Facter\ArrayFacter;
 
 class AgentTest extends ClientTestCase
 {
@@ -21,19 +21,47 @@ class AgentTest extends ClientTestCase
     }
     public function testSendServer()
     {
+        $fqdn = 'agent.test';
         $client = $this->getClient();
-        $agent = new Agent(new Application(new NullLogger, __DIR__ . '/fake_sugar'), $client);
+        $agent = new Agent(new NullLogger(), $client);
         try {
-            $client->deleteServer(array('fqdn' => gethostname()));
+            $client->deleteServer(array('fqdn' => $fqdn));
         } catch (\Exception $e) {
         }
         $history = $this->getHistory($client);
-        $agent->populateFacts();
+        $agent->setFacter(new ArrayFacter(array(
+            'fqdn' => $fqdn,
+            'hostname' => $fqdn,
+        )), Agent::SYSTEM);
         // Should POST
         $agent->sendServer();
         $this->assertEquals('POST', $history->getLastRequest()->getMethod());
         // Should PUT
         $agent->sendServer();
         $this->assertEquals('PUT', $history->getLastRequest()->getMethod());
+    }
+
+    /**
+     * @expectedException RuntimeException
+     * @expectedExceptionMessage No facter found for this type. Please set the facter object first.
+     */
+    public function testSetWrongFacter()
+    {
+        $agent = new Agent(new NullLogger(), $this->getClient());
+        $agent->getFacter(999999);
+    }
+
+    /**
+     * @expectedException Guzzle\Http\Exception\ClientErrorResponseException
+     */
+    public function testServerError()
+    {
+        $fqdn = 'error.400';
+        $agent = new Agent(new NullLogger(), $this->getMockClient(array('error_400.http')));
+        $agent->setFacter(new ArrayFacter(array(
+            'fqdn' => $fqdn,
+            'hostname' => $fqdn,
+        )), Agent::SYSTEM);
+        $agent->sendServer();
     }
 }
