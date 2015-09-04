@@ -74,7 +74,6 @@ class AgentTest extends ClientTestCase
         try {
             $client->deleteAccount(array('name' => $name));
         } catch (ClientErrorResponseException $e) {
-            throw $e;
         }
         $history = $this->getHistory($client);
         // Should POST
@@ -82,6 +81,28 @@ class AgentTest extends ClientTestCase
         $this->assertEquals('POST', $history->getLastRequest()->getMethod());
         // Should PUT
         $agent->sendAccount();
+        $this->assertEquals('PUT', $history->getLastRequest()->getMethod());
+    }
+
+    public function testSendSugarInstance()
+    {
+        $name = 'test_agent_instance';
+        $client = $this->getClient();
+        $agent = new Agent(new NullLogger(), $client, $name);
+        try {
+            $client->deleteSugarInstance(array('url' => $name));
+        } catch (ClientErrorResponseException $e) {
+        }
+        $history = $this->getHistory($client);
+        $agent->setFacter(new ArrayFacter(array(
+            'instance_id' => $name,
+            'flavor' => 'PRO',
+        )), Agent::SUGARCRM);
+        // Should POST
+        $agent->sendSugarInstance();
+        $this->assertEquals('POST', $history->getLastRequest()->getMethod());
+        // Should PUT
+        $agent->sendSugarInstance();
         $this->assertEquals('PUT', $history->getLastRequest()->getMethod());
     }
 }

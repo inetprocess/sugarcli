@@ -68,7 +68,6 @@ class Agent
         $this->getLogger()->info('Fetching system facts.');
         $facts = $this->getFacts(self::SYSTEM);
         $fqdn = $facts['hostname'];
-        $client = $this->getClient();
         $server_data = array(
             'fqdn' => $fqdn,
             'facts' => $facts,
@@ -83,6 +82,23 @@ class Agent
             array('name' => $this->account_name),
             'name'
         );
+    }
+
+    public function sendSugarInstance($server_id = null, $account_id = null)
+    {
+        $this->getLogger()->info('Fetch sugarcrm facts.');
+        $facts = $this->getFacts(self::SUGARCRM);
+        $sugar_data = array(
+            'url' => $facts['instance_id'],
+            'facts' => $facts,
+        );
+        if (!is_null($server_id)) {
+            $sugar_data['server'] = $server_id;
+        }
+        if (!is_null($account_id)) {
+            $sugar_data['account'] = $account;
+        }
+        $this->sendEntity('SugarInstance', $sugar_data, 'url');
     }
 
     /**
