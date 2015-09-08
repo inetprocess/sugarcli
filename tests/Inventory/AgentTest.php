@@ -16,18 +16,26 @@ use SugarCli\Inventory\Facter\ArrayFacter;
 
 class AgentTest extends ClientTestCase
 {
+    protected $account_name = 'Test Corp.';
+    protected $server_fqdn = 'agent.test';
+    protected $instance_id = 'test_agent_instance';
+
     public function getClientType()
     {
         return 'real';
     }
     public function testSendServer()
     {
-        $fqdn = 'agent.test';
+        $fqdn = $this->server_fqdn;
         $client = $this->getClient();
         $agent = new Agent(new NullLogger(), $client);
         try {
+            $client->deleteSugarInstance(array('url' => $this->instance_id));
+        } catch (ClientErrorResponseException $e) {
+        }
+        try {
             $client->deleteServer(array('fqdn' => $fqdn));
-        } catch (\Exception $e) {
+        } catch (\ClientErrorResponseException $e) {
         }
         $history = $this->getHistory($client);
         $agent->setFacter(new ArrayFacter(array(
@@ -68,9 +76,13 @@ class AgentTest extends ClientTestCase
 
     public function testSendAccount()
     {
-        $name = 'Test Corp.';
+        $name = $this->account_name;
         $client = $this->getClient();
         $agent = new Agent(new NullLogger(), $client, $name);
+        try {
+            $client->deleteSugarInstance(array('url' => $this->instance_id));
+        } catch (ClientErrorResponseException $e) {
+        }
         try {
             $client->deleteAccount(array('name' => $name));
         } catch (ClientErrorResponseException $e) {
@@ -84,13 +96,42 @@ class AgentTest extends ClientTestCase
         $this->assertEquals('PUT', $history->getLastRequest()->getMethod());
     }
 
+    public function testGetServer()
+    {
+        $name = $this->server_fqdn;
+        $client = $this->getClient();
+        $agent = new Agent(new NullLogger(), $client, $name);
+        $this->assertInternalType('integer', $agent->getServerId($name));
+        $this->assertNull($agent->getServerId('invalid server'));
+    }
+
+    public function testGetAccount()
+    {
+        $name = $this->account_name;
+        $client = $this->getClient();
+        $agent = new Agent(new NullLogger(), $client, $name);
+        $this->assertInternalType('integer', $agent->getAccountId($name));
+        $this->assertNull($agent->getAccountId('invalid account'));
+    }
+
+    /**
+     * @expectedException Guzzle\Http\Exception\ClientErrorResponseException
+     */
+    public function testGetAccountError()
+    {
+        $fqdn = 'error.400';
+        $agent = new Agent(new NullLogger(), $this->getMockClient(array('error_400.http')));
+        $agent->getAccountId('invalid account');
+    }
+
+
     public function testSendSugarInstance()
     {
-        $name = 'test_agent_instance';
+        $name = $this->instance_id;
         $client = $this->getClient();
         $agent = new Agent(new NullLogger(), $client, $name);
         try {
-            $client->deleteSugarInstance(array('url' => $name));
+            $client->deleteSugarInstance(array('url' => $this->instance_id));
         } catch (ClientErrorResponseException $e) {
         }
         $history = $this->getHistory($client);
@@ -102,7 +143,11 @@ class AgentTest extends ClientTestCase
         $agent->sendSugarInstance();
         $this->assertEquals('POST', $history->getLastRequest()->getMethod());
         // Should PUT
-        $agent->sendSugarInstance();
+        $account_id = $agent->getAccountId($this->account_name);
+        $this->assertInternalType('integer', $account_id);
+        $server_id = $agent->getServerId($this->server_fqdn);
+        $this->assertInternalType('integer', $server_id);
+        $agent->sendSugarInstance($server_id, $account_id);
         $this->assertEquals('PUT', $history->getLastRequest()->getMethod());
     }
 }

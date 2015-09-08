@@ -253,7 +253,8 @@
                 },
                 "sugar_instances": {
                     "location": "json",
-                    "type": "array"
+                    "type": "array",
+                    "$ref": "SugarInstance"
                 }
             }
         },
@@ -270,7 +271,8 @@
                 },
                 "sugar_instances": {
                     "location": "json",
-                    "type": "array"
+                    "type": "array",
+                    "$ref": "SugarInstance"
                 }
             }
         },
