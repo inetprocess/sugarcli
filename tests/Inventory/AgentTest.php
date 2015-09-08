@@ -129,7 +129,7 @@ class AgentTest extends ClientTestCase
     {
         $name = $this->instance_id;
         $client = $this->getClient();
-        $agent = new Agent(new NullLogger(), $client, $name);
+        $agent = new Agent(new NullLogger(), $client, $this->account_name);
         try {
             $client->deleteSugarInstance(array('instance_id' => $this->instance_id));
         } catch (ClientErrorResponseException $e) {
@@ -149,5 +149,11 @@ class AgentTest extends ClientTestCase
         $this->assertInternalType('integer', $server_id);
         $agent->sendSugarInstance($server_id, $account_id);
         $this->assertEquals('PUT', $history->getLastRequest()->getMethod());
+
+        // Test full send
+        $agent->setFacter(new ArrayFacter(array(
+            'fqdn' => $this->server_fqdn,
+        )), Agent::SYSTEM);
+        $agent->sendAll();
     }
 }

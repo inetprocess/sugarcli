@@ -64,6 +64,11 @@ class Config implements ConfigurationInterface
                         ->scalarNode('file')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
+                ->arrayNode('account')
+                    ->children()
+                        ->scalarNode('name')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
             ->end()
         ->end();
         return $tree_builder;

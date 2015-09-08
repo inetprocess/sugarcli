@@ -93,5 +93,18 @@ The fields specified after the command line will allow you to act only on specif
 Load fields defined in the meta data file to update the database.
 
 
+### Inventory
+
+#### Get Facts about your environment.
+
+`./sugarcli.phar inventory:facter --path <sugracrm_path> --format yml` will give you a yaml file with various information about
+the system and the sugarcrm instance.
+
+
+#### Report information to an inventory server.
+
+`./sugarcli.phar inventory:agent --path <sugarcrm_path> --account-name 'Name of client' <inventory_url> <username> <password>`
+This will send all the gathered facts to the inventory server.
+
 
 

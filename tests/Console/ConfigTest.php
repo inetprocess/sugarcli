@@ -36,6 +36,11 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                         'file' => 'foo',
                     ),
                 ),
+                array('account' =>
+                    array(
+                        'name' => 'Test Corp.',
+                    ),
+                ),
             ),
             array(array()),
             array(array('sugarcrm' => array())),

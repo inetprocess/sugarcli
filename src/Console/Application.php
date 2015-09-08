@@ -43,14 +43,15 @@ class Application extends BaseApplication
     public function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = new \SugarCli\Console\Command\InstallCheckCommand();
-        $commands[] = new \SugarCli\Console\Command\InstallRunCommand();
-        $commands[] = new \SugarCli\Console\Command\InstallGetConfigCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
+        $commands[] = new \SugarCli\Console\Command\InstallCheckCommand();
+        $commands[] = new \SugarCli\Console\Command\InstallGetConfigCommand();
+        $commands[] = new \SugarCli\Console\Command\InstallRunCommand();
+        $commands[] = new \SugarCli\Console\Command\InventoryAgentCommand();
+        $commands[] = new \SugarCli\Console\Command\InventoryFacterCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataDumpCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataLoadCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataStatusCommand();
-        $commands[] = new \SugarCli\Console\Command\InventoryFacterCommand();
         return $commands;
     }
 

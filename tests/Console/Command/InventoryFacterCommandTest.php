@@ -10,7 +10,6 @@ use SugarCli\Console\Command\InventoryFacterCommand;
 
 class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
 {
-
     public function getFakeSugarPath()
     {
         return __DIR__ . '/metadata/fake_sugar';
@@ -20,8 +19,6 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->configure();
-        $app->add(new InventoryFacterCommand());
-
         $cmd = $app->find('inventory:facter');
         return new CommandTester($cmd);
     }

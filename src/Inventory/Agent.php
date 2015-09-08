@@ -63,6 +63,12 @@ class Agent
         return $this->client;
     }
 
+    public function getServerFqdn()
+    {
+        $facts = $this->getFacts(self::SYSTEM);
+        return $facts['fqdn'];
+    }
+
     public function getAccountId($account_name)
     {
         return $this->getEntityId('Account', 'name', $account_name);
@@ -94,7 +100,7 @@ class Agent
     {
         $this->getLogger()->info('Fetching system facts.');
         $facts = $this->getFacts(self::SYSTEM);
-        $fqdn = $facts['hostname'];
+        $fqdn = $facts['fqdn'];
         $server_data = array(
             'fqdn' => $fqdn,
             'facts' => $facts,
@@ -156,5 +162,14 @@ class Agent
             }
         }
         $this->getLogger()->info('The ' . $entity_name . ' information has been successfully sent.');
+    }
+
+    public function sendAll()
+    {
+        $this->sendServer();
+        $server_id = $this->getServerId($this->getServerFqdn());
+        $this->sendAccount();
+        $account_id = $this->getAccountId($this->account_name);
+        $this->sendSugarInstance($server_id, $account_id);
     }
 }
