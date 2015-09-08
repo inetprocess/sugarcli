@@ -141,10 +141,10 @@
         },
         "getSugarInstance": {
             "httpMethod": "GET",
-            "uri": "sugarinstances/{url}",
+            "uri": "sugarinstances/{instance_id}",
             "responseClass": "SugarInstance",
             "parameters": {
-                "url": {
+                "instance_id": {
                     "type": "string",
                     "location": "uri",
                     "description": "Name of the sugarinstance to retrieve",
@@ -157,7 +157,7 @@
             "uri": "sugarinstances",
             "responseClass": "postResponse",
             "parameters": {
-                "url": {
+                "instance_id": {
                     "type": "string",
                     "location": "json",
                     "description": "Name of the sugarinstance to create",
@@ -182,15 +182,15 @@
         },
         "putSugarInstance": {
             "httpMethod": "PUT",
-            "uri": "sugarinstances/{url_uri}",
+            "uri": "sugarinstances/{instance_id_uri}",
             "parameters": {
-                "url_uri": {
+                "instance_id_uri": {
                     "type": "string",
                     "location": "uri",
                     "description": "Name of the sugarinstance to replace",
                     "required": true
                 },
-                "url": {
+                "instance_id": {
                     "type": "string",
                     "location": "json",
                     "description": "Name of the sugarinstance to create",
@@ -215,9 +215,9 @@
         },
         "deleteSugarInstance": {
             "httpMethod": "DELETE",
-            "uri": "sugarinstances/{url}",
+            "uri": "sugarinstances/{instance_id}",
             "parameters": {
-                "url": {
+                "instance_id": {
                     "location": "uri",
                     "description": "Name of the sugarinstance to retrieve",
                     "required": true
@@ -283,7 +283,7 @@
                     "location": "json",
                     "type": "integer"
                 },
-                "url": {
+                "instance_id": {
                     "location": "json",
                     "type": "string"
                 },

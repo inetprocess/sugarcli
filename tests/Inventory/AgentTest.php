@@ -30,7 +30,7 @@ class AgentTest extends ClientTestCase
         $client = $this->getClient();
         $agent = new Agent(new NullLogger(), $client);
         try {
-            $client->deleteSugarInstance(array('url' => $this->instance_id));
+            $client->deleteSugarInstance(array('instance_id' => $this->instance_id));
         } catch (ClientErrorResponseException $e) {
         }
         try {
@@ -80,7 +80,7 @@ class AgentTest extends ClientTestCase
         $client = $this->getClient();
         $agent = new Agent(new NullLogger(), $client, $name);
         try {
-            $client->deleteSugarInstance(array('url' => $this->instance_id));
+            $client->deleteSugarInstance(array('instance_id' => $this->instance_id));
         } catch (ClientErrorResponseException $e) {
         }
         try {
@@ -131,7 +131,7 @@ class AgentTest extends ClientTestCase
         $client = $this->getClient();
         $agent = new Agent(new NullLogger(), $client, $name);
         try {
-            $client->deleteSugarInstance(array('url' => $this->instance_id));
+            $client->deleteSugarInstance(array('instance_id' => $this->instance_id));
         } catch (ClientErrorResponseException $e) {
         }
         $history = $this->getHistory($client);

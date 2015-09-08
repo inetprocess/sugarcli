@@ -6,4 +6,4 @@ Connection: close
 Transfer-Encoding: chunked
 Content-Type: application/json
 
-{"id":2,"url":"test_instance","facts":{"test":"aerzteharg","tesERT":"aertaert"},"server":1}
+{"id":2,"instance_id":"test_instance","facts":{"test":"aerzteharg","tesERT":"aertaert"},"server":1}

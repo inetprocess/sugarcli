@@ -63,6 +63,33 @@ class Agent
         return $this->client;
     }
 
+    public function getAccountId($account_name)
+    {
+        return $this->getEntityId('Account', 'name', $account_name);
+    }
+
+    public function getServerId($server_fqdn)
+    {
+        return $this->getEntityId('Server', 'fqdn', $server_fqdn);
+    }
+
+    private function getEntityId($entity_name, $key_id, $search)
+    {
+        $client = $this->getClient();
+        try {
+            $cmd = $client->getCommand('get' . $entity_name, array($key_id => $search));
+            $entity = $cmd->execute();
+            $id = $entity->get('id');
+        } catch (ClientErrorResponseException $e) {
+            if ($e->getResponse()->getStatusCode() === 404) {
+                $id = null;
+            } else {
+                throw $e;
+            }
+        }
+        return $id;
+    }
+
     public function sendServer()
     {
         $this->getLogger()->info('Fetching system facts.');
@@ -84,39 +111,12 @@ class Agent
         );
     }
 
-    public function getAccountId($account_name)
-    {
-        return $this->getEntityId('Account', 'name', $account_name);
-    }
-
-    public function getServerId($server_fqdn)
-    {
-        return $this->getEntityId('Server', 'fqdn', $server_fqdn);
-    }
-
-    public function getEntityId($entity_name, $key_id, $search)
-    {
-        $client = $this->getClient();
-        try {
-            $cmd = $client->getCommand('get' . $entity_name, array($key_id => $search));
-            $entity = $cmd->execute();
-            $id = $entity->get('id');
-        } catch (ClientErrorResponseException $e) {
-            if ($e->getResponse()->getStatusCode() === 404) {
-                $id = null;
-            } else {
-                throw $e;
-            }
-        }
-        return $id;
-    }
-
     public function sendSugarInstance($server_id = null, $account_id = null)
     {
         $this->getLogger()->info('Fetch sugarcrm facts.');
         $facts = $this->getFacts(self::SUGARCRM);
         $sugar_data = array(
-            'url' => $facts['instance_id'],
+            'instance_id' => $facts['instance_id'],
             'facts' => $facts,
         );
         if (!is_null($server_id)) {
@@ -125,7 +125,7 @@ class Agent
         if (!is_null($account_id)) {
             $sugar_data['account'] = $account_id;
         }
-        $this->sendEntity('SugarInstance', $sugar_data, 'url');
+        $this->sendEntity('SugarInstance', $sugar_data, 'instance_id');
     }
 
     /**
@@ -135,7 +135,7 @@ class Agent
      * @param array $data Entity data to send.
      * @param string $key_id Key of data to use as an id for the request.
      */
-    public function sendEntity($entity_name, array $data, $key_id)
+    private function sendEntity($entity_name, array $data, $key_id)
     {
         $client = $this->getClient();
         $this->getLogger()->info('Sending new ' . $entity_name . '.');

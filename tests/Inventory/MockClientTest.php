@@ -12,7 +12,7 @@ class MockClientTest extends ClientTestCase
 
     public $name = "FooBar";
 
-    public $si_url = "test_instance";
+    public $si_instance_id = "test_instance";
 
     public function getClientType()
     {
@@ -143,20 +143,20 @@ class MockClientTest extends ClientTestCase
     {
         $client = $this->getClient(array('sugarinstance/post.http'));
         $cmd = $client->getCommand('postSugarInstance', array(
-            'url' => $this->si_url,
+            'instance_id' => $this->si_instance_id,
             'facts' => array('test' => 'test', 'foo' => 'bar'),
         ));
         $resp = $cmd->execute();
         $this->assertEquals(201, $cmd->getResponse()->getStatusCode());
-        $this->assertStringEndsWith('/sugarinstances/' . $this->si_url, $resp->get('location'));
+        $this->assertStringEndsWith('/sugarinstances/' . $this->si_instance_id, $resp->get('location'));
     }
 
     public function testPutSugarInstance()
     {
         $client = $this->getClient(array('sugarinstance/put.http'));
         $cmd = $client->getCommand('putSugarInstance', array(
-            'url_uri' => $this->si_url,
-            'url' => $this->si_url,
+            'instance_id_uri' => $this->si_instance_id,
+            'instance_id' => $this->si_instance_id,
             'facts' => array('test' => 'test', 'bar' => 'foo')
         ));
         $cmd->execute();
@@ -166,9 +166,9 @@ class MockClientTest extends ClientTestCase
     public function testGetOneSugarInstance()
     {
         $client = $this->getClient(array('sugarinstance/get_one.http'));
-        $cmd = $client->getCommand('getSugarInstance', (array('url' => $this->si_url)));
+        $cmd = $client->getCommand('getSugarInstance', (array('instance_id' => $this->si_instance_id)));
         $resp = $cmd->execute();
-        $this->assertEquals($this->si_url, $resp['url']);
+        $this->assertEquals($this->si_instance_id, $resp['instance_id']);
     }
 
     public function testGetSugarInstances()
@@ -178,7 +178,7 @@ class MockClientTest extends ClientTestCase
         $this->assertNotEmpty($resp->toArray());
         foreach ($resp as $sugarinstance) {
             $this->assertArrayHasKey('id', $sugarinstance);
-            $this->assertArrayHasKey('url', $sugarinstance);
+            $this->assertArrayHasKey('instance_id', $sugarinstance);
             $this->assertArrayHasKey('facts', $sugarinstance);
         }
     }
@@ -186,7 +186,7 @@ class MockClientTest extends ClientTestCase
     public function testDeleteSugarInstance()
     {
         $client = $this->getClient(array('sugarinstance/delete.http'));
-        $cmd = $client->getCommand('deleteSugarInstance', array('url' => $this->si_url));
+        $cmd = $client->getCommand('deleteSugarInstance', array('instance_id' => $this->si_instance_id));
         $cmd->execute();
         $this->assertEquals(204, $cmd->getResponse()->getStatusCode());
     }
