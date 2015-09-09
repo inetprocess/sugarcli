@@ -27,7 +27,7 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     {
         $cmd = $this->getCommandTester();
         $cmd->execute(array(
-            '--path' => $this->getFakeSugarPath(),
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
         ));
 
         $output = $cmd->getDisplay();
@@ -54,7 +54,7 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
         $cmd = $this->getCommandTester();
         $cmd->execute(array(
             '--format' => 'json',
-            '--path' => $this->getFakeSugarPath(),
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             'source' => array('sugarcrm')
         ));
 

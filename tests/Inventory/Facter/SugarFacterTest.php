@@ -32,6 +32,20 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
         $this->assertRegExp('/\w+@' . gethostname() . '/', $facts['instance_id']);
     }
 
+    public function testConfigProvider()
+    {
+        $provider = new \SugarCli\Inventory\Facter\SugarProvider\Config(
+            new Application(new NullLogger(), __DIR__ . '/../fake_sugar')
+        );
+        $facts = $provider->getFacts();
+        $this->assertEquals(array(
+            'url' => 'XXXXXXXXXXXXXXX',
+            'unique_key' => '9b4af07fd8b49289db29eacb326d8766',
+            'log_level' => 'fatal',
+        ), $facts);
+    }
+
+
     public function testSugarFacter()
     {
         $facter = new SugarFacter(new Application(new NullLogger(), __DIR__ . '/../fake_sugar'));
