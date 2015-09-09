@@ -28,9 +28,8 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
             new Application(new NullLogger(), __DIR__ . '/../fake_sugar')
         );
         $facts = $provider->getFacts();
-        $this->assertEquals(array(
-            'instance_id' => posix_getlogin() . '@' . gethostname()
-        ), $facts);
+        $this->assertArrayHasKey('instance_id', $facts);
+        $this->assertRegExp('/\w+@' . gethostname() . '/', $facts['instance_id']);
     }
 
     public function testSugarFacter()

@@ -2,7 +2,12 @@
 <?php
 
 if (PHP_SAPI !== 'cli') {
-    echo 'Warning: sugarcli should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI'.PHP_EOL;
+    echo 'Error: sugarcli should be invoked via the CLI version of PHP, not the '.PHP_SAPI.' SAPI.'.PHP_EOL;
+    exit(1);
+}
+
+if (posix_getuid() === 0 or posix_geteuid() === 0) {
+    echo 'Error: You are not allowed to run this program as root.' . PHP_EOL;
     exit(1);
 }
 
@@ -12,6 +17,4 @@ require_once(dirname(__DIR__) . '/vendor/autoload.php');
 use SugarCli\Console\Application;
 
 $app = new Application('SugarCRM command line', '@sugarcli_version@');
-
 $app->run();
-
