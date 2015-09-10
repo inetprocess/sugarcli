@@ -43,7 +43,7 @@ class InventoryAgentCommandTest extends \PHPUnit_Framework_TestCase
     {
         $cmd = $this->getCommandTester();
         $ret = $cmd->execute(array(
-            '--path' => $this->getFakeSugarPath(),
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--account-name' => 'Test Agent',
             'server' => 'test_server_invalid',
             'username' => 'invalid_user',

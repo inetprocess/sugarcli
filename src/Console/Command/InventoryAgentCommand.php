@@ -77,7 +77,13 @@ class InventoryAgentCommand extends AbstractDefaultFromConfCommand
             );
             $agent = new Agent($logger, $client, $account_name);
             $agent->setFacter(new SystemFacter(), Agent::SYSTEM);
-            $agent->setFacter(new SugarFacter($this->getService('sugarcrm.application')), Agent::SUGARCRM);
+            $agent->setFacter(
+                new SugarFacter(
+                    $this->getService('sugarcrm.application'),
+                    $this->getService('sugarcrm.pdo')
+                ),
+                Agent::SUGARCRM
+            );
             $agent->sendAll();
             $output->writeln('Successfuly sent report to inventory server.');
         } catch (RequestException $e) {

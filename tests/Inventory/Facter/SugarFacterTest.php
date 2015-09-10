@@ -2,16 +2,19 @@
 
 namespace SugarCli\Tests\Inventory\Facter;
 
+use Psr\Log\NullLogger;
+use Inet\SugarCRM\Application;
+use Inet\SugarCRM\Database\SugarPDO;
+
 use SugarCli\Inventory\Facter\SugarFacter;
 use SugarCli\Inventory\Facter\SugarProvider\Version;
-use Inet\SugarCRM\Application;
-use Psr\Log\NullLogger;
+use SugarCli\Tests\TestsUtil\MockPDO;
 
 class SugarFacterTest extends \PHPUnit_Framework_TestCase
 {
     public function testVersionProvider()
     {
-        $provider = new Version(new Application(new NullLogger(), __DIR__ . '/../fake_sugar'));
+        $provider = new Version(new Application(new NullLogger(), __DIR__ . '/../fake_sugar'), new MockPDO());
         $facts = $provider->getFacts();
         $this->assertEquals(array(
             'version' => '7.5.0.1',
@@ -25,7 +28,8 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
     public function testInstanceIdProvider()
     {
         $provider = new \SugarCli\Inventory\Facter\SugarProvider\InstanceId(
-            new Application(new NullLogger(), __DIR__ . '/../fake_sugar')
+            new Application(new NullLogger(), __DIR__ . '/../fake_sugar'),
+            new MockPDO()
         );
         $facts = $provider->getFacts();
         $this->assertArrayHasKey('instance_id', $facts);
@@ -35,7 +39,8 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
     public function testConfigProvider()
     {
         $provider = new \SugarCli\Inventory\Facter\SugarProvider\Config(
-            new Application(new NullLogger(), __DIR__ . '/../fake_sugar')
+            new Application(new NullLogger(), __DIR__ . '/../fake_sugar'),
+            new MockPDO()
         );
         $facts = $provider->getFacts();
         $this->assertEquals(array(
@@ -45,10 +50,28 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
         ), $facts);
     }
 
+    /**
+     * @group sugar
+     */
+    public function testUserInfo()
+    {
+        $app = new Application(new NullLogger(), getenv('SUGARCLI_SUGAR_PATH'));
+        $facter = new \SugarCli\Inventory\Facter\SugarProvider\UsersInfo($app, new SugarPDO($app));
+        $facts = $facter->getFacts();
+        $this->assertArrayHasKey('active', $facts['users']);
+        $this->assertGreaterThan(0, $facts['users']['active']);
+        $this->assertArrayHasKey('admin', $facts['users']);
+        $this->assertGreaterThan(0, $facts['users']['admin']);
+        $this->assertArrayHasKey('last_session', $facts['users']);
+    }
 
+    /**
+     * @group sugar
+     */
     public function testSugarFacter()
     {
-        $facter = new SugarFacter(new Application(new NullLogger(), __DIR__ . '/../fake_sugar'));
+        $app = new Application(new NullLogger(), getenv('SUGARCLI_SUGAR_PATH'));
+        $facter = new SugarFacter($app, new SugarPDO($app));
         $facts = $facter->getFacts();
         $this->assertArrayHasKey('instance_id', $facts);
         $this->assertArrayHasKey('version', $facts);

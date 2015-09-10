@@ -2,15 +2,18 @@
 
 namespace SugarCli\Inventory\Facter;
 
+use PDO;
 use Inet\SugarCRM\Application;
 
 class SugarFacter extends ProviderFacter
 {
     protected $sugar;
+    protected $pdo;
 
-    public function __construct(Application $sugar)
+    public function __construct(Application $sugar, PDO $pdo)
     {
         $this->sugar = $sugar;
+        $this->pdo = $pdo;
         $providers_dir = __DIR__ . '/SugarProvider';
         $providers_namespace = __NAMESPACE__ . '\SugarProvider';
         parent::__construct($providers_dir, $providers_namespace);
@@ -22,6 +25,6 @@ class SugarFacter extends ProviderFacter
      */
     public function factory($class_name)
     {
-        return new $class_name($this->sugar);
+        return new $class_name($this->sugar, $this->pdo);
     }
 }
