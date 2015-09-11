@@ -34,10 +34,10 @@ abstract class AbstractSugarProvider implements FacterInterface
         return $this->pdo;
     }
 
-    public function queryOne($sql)
+    public function queryOne(\PDOStatement $stmt)
     {
         $value = null;
-        $stmt = $this->getPdo()->query($sql);
+        $stmt->execute();
         if ($stmt !== false) {
             $result = $stmt->fetchAll();
             if (!empty($result)) {

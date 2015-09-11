@@ -1,9 +1,15 @@
 * Delete all records from a module
 * Config file in home user
-* Export fields meta data (field as a parameter)
-    * 
 * repair & rebuild
 * ServerCheck (plug-able external module)
+    * Add custom facts from cmd line.
+    * Missing facts:
+        * sugar cron
+        * last cron run
+        * license informations
+        * DB Size
+        * Sugar Files size
+        * Disk space
 * Anonymization
 * DBV replacement
 * Activate/Inactivate admin user.

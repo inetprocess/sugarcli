@@ -16,7 +16,8 @@ class UsersInfo extends AbstractSugarProvider
         );
         $self = $this;
         array_walk($facts, function (&$sql, $fact) use ($self) {
-            $sql = $self->queryOne($sql);
+            $stmt = $this->getPdo()->prepare($sql);
+            $sql = $self->queryOne($stmt);
         });
         return array('users' => $facts);
     }

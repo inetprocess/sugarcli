@@ -97,6 +97,23 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
     /**
      * @group sugar
      */
+    public function testLicense()
+    {
+        $app = new Application(new NullLogger(), getenv('SUGARCLI_SUGAR_PATH'));
+        $facter = new \SugarCli\Inventory\Facter\SugarProvider\License($app, new SugarPDO($app));
+        $facts = $facter->getFacts();
+        $this->assertArrayHasKey('license', $facts);
+        $this->assertArrayHasKey('expire', $facts['license']);
+        $this->assertArrayHasKey('last_validation', $facts['license']);
+        $this->assertArrayHasKey('last_validation_success', $facts['license']);
+        $this->assertArrayHasKey('users', $facts['license']);
+        $this->assertInternalType('integer', $facts['license']['users']);
+        $this->assertArrayHasKey('validation_key_exipire', $facts['license']);
+    }
+
+    /**
+     * @group sugar
+     */
     public function testSugarFacter()
     {
         $app = new Application(new NullLogger(), getenv('SUGARCLI_SUGAR_PATH'));
