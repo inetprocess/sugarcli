@@ -9,16 +9,16 @@ class UsersInfo extends AbstractSugarProvider
 {
     public function getFacts()
     {
-        $facts = array(
+        $queries = array(
             'active' => 'SELECT count(*) FROM users WHERE deleted = 0 AND status = "Active"',
             'admin' => 'SELECT count(*) FROM users WHERE deleted = 0 AND status = "Active" AND is_admin = 1',
             'last_session' => 'SELECT MAX(date_end) FROM tracker_sessions',
         );
-        $self = $this;
-        array_walk($facts, function (&$sql, $fact) use ($self) {
+        $facts = array();
+        foreach ($queries as $key => $sql) {
             $stmt = $this->getPdo()->prepare($sql);
-            $sql = $self->queryOne($stmt);
-        });
+            $facts[$key] = $this->queryOne($stmt);
+        }
         return array('users' => $facts);
     }
 }

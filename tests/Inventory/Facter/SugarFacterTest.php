@@ -108,7 +108,7 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('last_validation_success', $facts['license']);
         $this->assertArrayHasKey('users', $facts['license']);
         $this->assertInternalType('integer', $facts['license']['users']);
-        $this->assertArrayHasKey('validation_key_exipire', $facts['license']);
+        $this->assertArrayHasKey('validation_key_expire', $facts['license']);
     }
 
     /**
