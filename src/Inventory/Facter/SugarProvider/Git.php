@@ -30,8 +30,7 @@ class Git extends AbstractSugarProvider
     public function getModifiedFiles()
     {
         try {
-            $modified_files = $this->exec('git status --porcelain', $this->getPath());
-            return count(explode("\n", rtrim($modified_files)));
+            return substr_count($this->exec('git status --porcelain', $this->getPath()), "\n");
         } catch (ProcessFailedException $e) {
         }
         return null;
