@@ -2,7 +2,6 @@
 
 namespace SugarCli\Inventory\Facter\SugarProvider;
 
-use Inet\SugarCRM\DB\SugarPDO;
 use SugarCli\Inventory\Facter\AbstractSugarProvider;
 
 class UsersInfo extends AbstractSugarProvider
@@ -19,6 +18,8 @@ class UsersInfo extends AbstractSugarProvider
             $stmt = $this->getPdo()->prepare($sql);
             $facts[$key] = $this->queryOne($stmt);
         }
+        $facts['active'] = intval($facts['active']);
+        $facts['admin'] = intval($facts['admin']);
         return array('users' => $facts);
     }
 }

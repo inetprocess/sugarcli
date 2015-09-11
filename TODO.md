@@ -4,9 +4,6 @@
 * ServerCheck (plug-able external module)
     * Add custom facts from cmd line.
     * Missing facts:
-        * sugar cron
-        * last cron run
-        * license informations
         * DB Size
         * Sugar Files size
         * Disk space

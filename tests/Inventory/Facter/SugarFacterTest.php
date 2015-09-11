@@ -79,6 +79,43 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array(), $provider->getFacts());
     }
 
+    public function cronDataProvider()
+    {
+        return array(
+            //Valid
+            array(true, '* * * * * cd test_path; php cron.php'),
+            array(true, '*   *   *  * * cd test_path; php cron.php'),
+            array(true, '* * * * * php test_path/cron.php'),
+            array(true, '* * * * * randcron; cd test_path && php -f cron.php > /dev/null 2>&1'),
+            array(true, "test\n* * * * * php test_path/cron.php"),
+            // Invalid
+            array(false, '* * * 4 * php test_path/cron.php'),
+            array(false, '5 * * * * cd test_path; php cron.php'),
+            array(false, '* * * * * cd test_; php cron.php'),
+        );
+    }
+
+    /**
+     * @dataProvider cronDataProvider
+     */
+    public function testCronProvider($expected, $crontabs)
+    {
+        $stub = $this->getMock(
+            'SugarCli\Inventory\Facter\SugarProvider\Cron',
+            array('exec'),
+            array(
+                new Application(new NullLogger(), 'test_path'),
+                new MockPDO()
+            )
+        );
+        $stub->method('exec')
+            ->willReturn($crontabs);
+        $reflex = new \ReflectionClass($stub);
+        $method = $reflex->getMethod('isCronInstalled');
+        $method->setAccessible(true);
+        $this->assertEquals($expected, $method->invoke($stub));
+    }
+
     /**
      * @group sugar
      */

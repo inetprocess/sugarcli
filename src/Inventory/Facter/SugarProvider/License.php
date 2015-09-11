@@ -2,7 +2,6 @@
 
 namespace SugarCli\Inventory\Facter\SugarProvider;
 
-use Inet\SugarCRM\DB\SugarPDO;
 use SugarCli\Inventory\Facter\AbstractSugarProvider;
 
 class License extends AbstractSugarProvider
