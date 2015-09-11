@@ -3,10 +3,6 @@
 * repair & rebuild
 * ServerCheck (plug-able external module)
     * Add custom facts from cmd line.
-    * Missing facts:
-        * DB Size
-        * Sugar Files size
-        * Disk space
 * Anonymization
 * DBV replacement
 * Activate/Inactivate admin user.

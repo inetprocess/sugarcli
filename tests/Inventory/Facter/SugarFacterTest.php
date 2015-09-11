@@ -116,6 +116,24 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected, $method->invoke($stub));
     }
 
+    public function testSpaceUsageFail()
+    {
+        $stub = $this->getMock(
+            'SugarCli\Inventory\Facter\SugarProvider\SpaceUsage',
+            array('exec'),
+            array(
+                new Application(new NullLogger(), 'test_path'),
+                new MockPDO()
+            )
+        );
+        $stub->method('exec')
+            ->willReturn(null);
+        $reflex = new \ReflectionClass($stub);
+        $method = $reflex->getMethod('getDiskSpaceUsage');
+        $method->setAccessible(true);
+        $this->assertEquals(null, $method->invoke($stub));
+    }
+
     /**
      * @group sugar
      */
