@@ -3,6 +3,7 @@
 namespace SugarCli\Inventory\Facter;
 
 use PDO;
+use Symfony\Component\Process\Process;
 use Inet\SugarCRM\Application;
 
 abstract class AbstractSugarProvider implements FacterInterface
@@ -23,6 +24,11 @@ abstract class AbstractSugarProvider implements FacterInterface
         return $this->sugarApp;
     }
 
+    public function getPath()
+    {
+        return $this->getApplication()->getPath();
+    }
+
     public function getPdo()
     {
         return $this->pdo;
@@ -39,5 +45,12 @@ abstract class AbstractSugarProvider implements FacterInterface
             }
         }
         return $value;
+    }
+
+    public function exec($cmd, $cwd = null)
+    {
+        $process = new Process($cmd, $cwd);
+        $process->mustRun();
+        return $process->getOutput();
     }
 }

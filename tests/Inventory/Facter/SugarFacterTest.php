@@ -50,6 +50,35 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
         ), $facts);
     }
 
+    public function testGitProvider()
+    {
+        $provider = new \SugarCli\Inventory\Facter\SugarProvider\Git(
+            new Application(new NullLogger(), __DIR__),
+            new MockPDO()
+        );
+        $facts = $provider->getFacts();
+        $this->assertArrayHasKey('git', $facts);
+        $this->assertArrayHasKey('tag', $facts['git']);
+        $this->assertArrayHasKey('branch', $facts['git']);
+        $this->assertArrayHasKey('origin', $facts['git']);
+        $this->assertArrayHasKey('modified_files', $facts['git']);
+        $this->assertInternalType('integer', $facts['git']['modified_files']);
+    }
+
+    public function testGitProviderFailures()
+    {
+        $provider = new \SugarCli\Inventory\Facter\SugarProvider\Git(
+            new Application(new NullLogger(), __DIR__ .'/../../../..'),
+            new MockPDO()
+        );
+        $this->assertNull($provider->getModifiedFiles());
+        $reflex = new \ReflectionClass($provider);
+        $method = $reflex->getMethod('execOrNull');
+        $method->setAccessible(true);
+        $this->assertNull($method->invoke($provider, 'git status'));
+        $this->assertEquals(array(), $provider->getFacts());
+    }
+
     /**
      * @group sugar
      */
