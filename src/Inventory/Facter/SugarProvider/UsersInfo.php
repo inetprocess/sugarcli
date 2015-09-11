@@ -14,8 +14,9 @@ class UsersInfo extends AbstractSugarProvider
             'admin' => 'SELECT count(*) FROM users WHERE deleted = 0 AND status = "Active" AND is_admin = 1',
             'last_session' => 'SELECT MAX(date_end) FROM tracker_sessions',
         );
-        array_walk($facts, function (&$sql, $fact) {
-            $sql = $this->queryOne($sql);
+        $self = $this;
+        array_walk($facts, function (&$sql, $fact) use ($self) {
+            $sql = $self->queryOne($sql);
         });
         return array('users' => $facts);
     }
