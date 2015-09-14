@@ -10,24 +10,16 @@ use SugarCli\Console\Command\AbstractDefaultFromConfCommand;
 
 class TestFromConfCommand extends AbstractDefaultFromConfCommand
 {
-    protected function getConfigOptions()
+    protected function configure()
     {
-        $options = parent::getConfigOptions();
-        $options['url'] = new InputOption(
-            'url',
-            'u',
-            InputOption::VALUE_REQUIRED,
-            'Public url of SugarCRM.'
-        );
-        return $options;
-    }
-
-    protected function getConfigOptionMapping()
-    {
-        return array(
-            'path' => 'sugarcrm.path',
-            'url' => 'sugarcrm.url'
-        );
+        $this->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->addConfigOptionMapping('url', 'sugarcrm.url')
+            ->addConfigOption(
+                'url',
+                'u',
+                InputOption::VALUE_REQUIRED,
+                'Public url of SugarCRM.'
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

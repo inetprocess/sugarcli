@@ -6,6 +6,7 @@ use Psr\Log\NullLogger;
 use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Database\SugarPDO;
 
+use SugarCli\Inventory\Facter\ArrayFacter;
 use SugarCli\Inventory\Facter\SugarFacter;
 use SugarCli\Inventory\Facter\SugarProvider\Version;
 use SugarCli\Tests\TestsUtil\MockPDO;
@@ -114,6 +115,22 @@ class SugarFacterTest extends \PHPUnit_Framework_TestCase
         $method = $reflex->getMethod('isCronInstalled');
         $method->setAccessible(true);
         $this->assertEquals($expected, $method->invoke($stub));
+    }
+
+    public function testMultiFacter()
+    {
+        $multi = new \SugarCli\Inventory\Facter\MultiFacterFacter(
+            array(new ArrayFacter(array(
+                'foo' => 'bar',
+                'baz' => 'baz'
+            )))
+        );
+        $multi->addFacter(new ArrayFacter(array('baz' => 'test')));
+        $this->assertEquals(array(
+            'foo' => 'bar',
+            'baz' => 'test',
+        ), $multi->getFacts());
+
     }
 
     public function testSpaceUsageFail()

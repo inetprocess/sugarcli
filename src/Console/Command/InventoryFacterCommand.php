@@ -12,18 +12,16 @@ use JMS\Serializer\Exception\UnsupportedFormatException;
 use Inet\SugarCRM\Application;
 
 use SugarCli\Console\ExitCode;
-use SugarCli\Inventory\Facter\SystemFacter;
+use SugarCli\Inventory\Facter\ArrayFacter;
+use SugarCli\Inventory\Facter\MultiFacterFacter;
 use SugarCli\Inventory\Facter\SugarFacter;
+use SugarCli\Inventory\Facter\SystemFacter;
 
-class InventoryFacterCommand extends AbstractDefaultFromConfCommand
+class InventoryFacterCommand extends AbstractInventoryCommand
 {
-    protected function getConfigOptionMapping()
-    {
-        return array('path' => 'sugarcrm.path');
-    }
-
     protected function configure()
     {
+        parent::configure();
         $this->setName('inventory:facter')
             ->setDescription('Get facts from system and a Sugar instance')
             ->addArgument(
@@ -49,15 +47,21 @@ class InventoryFacterCommand extends AbstractDefaultFromConfCommand
         );
         $source = $input->getArgument('source');
         if (in_array('all', $source) or in_array('system', $source)) {
-            $facter = new SystemFacter();
+            $facter = new MultiFacterFacter(array(
+                new SystemFacter(),
+                new ArrayFacter($this->getCustomFacts($input, 'system'))
+            ));
             $all_facts['system'] = $facter->getFacts();
         }
         if (in_array('all', $source) or in_array('sugarcrm', $source)) {
             $this->setSugarPath($this->getDefaultOption($input, 'path'));
-            $sugar_facter = new SugarFacter(
-                $this->getService('sugarcrm.application'),
-                $this->getService('sugarcrm.pdo')
-            );
+            $sugar_facter = new MultiFacterFacter(array(
+                new SugarFacter(
+                    $this->getService('sugarcrm.application'),
+                    $this->getService('sugarcrm.pdo')
+                ),
+                new ArrayFacter($this->getCustomFacts($input, 'sugarcrm'))
+            ));
             $all_facts['sugarcrm'] = $sugar_facter->getFacts();
         }
 

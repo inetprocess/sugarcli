@@ -14,33 +14,16 @@ use Inet\SugarCRM\Exception\SugarException;
 
 use SugarCli\Console\ExitCode;
 use SugarCli\Inventory\Agent;
+use SugarCli\Inventory\Facter\ArrayFacter;
+use SugarCli\Inventory\Facter\MultiFacterFacter;
 use SugarCli\Inventory\Facter\SugarFacter;
 use SugarCli\Inventory\Facter\SystemFacter;
 
-class InventoryAgentCommand extends AbstractDefaultFromConfCommand
+class InventoryAgentCommand extends AbstractInventoryCommand
 {
-    protected function getConfigOptionMapping()
-    {
-        return array(
-            'path' => 'sugarcrm.path',
-            'account-name' => 'account.name',
-        );
-    }
-
-    protected function getConfigOptions()
-    {
-        $options = parent::getConfigOptions();
-        $options['account-name'] = new InputOption(
-            'account-name',
-            'a',
-            InputOption::VALUE_REQUIRED,
-            'Name of the account.'
-        );
-        return $options;
-    }
-
     protected function configure()
     {
+        parent::configure();
         $this->setName('inventory:agent')
             ->setDescription('Gather facts and send report to Inventory server.')
             ->addArgument(
@@ -57,7 +40,14 @@ class InventoryAgentCommand extends AbstractDefaultFromConfCommand
                 'password',
                 InputArgument::REQUIRED,
                 'Password for server authentication.'
-            );
+            )
+            ->addConfigOption(
+                'account-name',
+                'a',
+                InputOption::VALUE_REQUIRED,
+                'Name of the account.'
+            )
+            ->addConfigOptionMapping('account-name', 'account.name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -76,12 +66,18 @@ class InventoryAgentCommand extends AbstractDefaultFromConfCommand
                 )))
             );
             $agent = new Agent($logger, $client, $account_name);
-            $agent->setFacter(new SystemFacter(), Agent::SYSTEM);
+            $agent->setFacter(new MultiFacterFacter(array(
+                new SystemFacter(),
+                new ArrayFacter($this->getCustomFacts($input, 'system'))
+            )), Agent::SYSTEM);
             $agent->setFacter(
-                new SugarFacter(
-                    $this->getService('sugarcrm.application'),
-                    $this->getService('sugarcrm.pdo')
-                ),
+                new MultiFacterFacter(array(
+                    new SugarFacter(
+                        $this->getService('sugarcrm.application'),
+                        $this->getService('sugarcrm.pdo')
+                    ),
+                    new ArrayFacter($this->getCustomFacts($input, 'sugarcrm'))
+                )),
                 Agent::SUGARCRM
             );
             $agent->sendAll();

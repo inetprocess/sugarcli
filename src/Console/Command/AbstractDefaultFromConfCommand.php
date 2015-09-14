@@ -10,16 +10,41 @@ use SugarCli\Console\ConfigException;
 
 abstract class AbstractDefaultFromConfCommand extends AbstractContainerAwareCommand
 {
-    /**
-     * Return an array with the parameters needed with
-     * argument as key and and section.key as value
-     * @example array('path' => 'sugarcrm.path')
-     */
-    abstract protected function getConfigOptionMapping();
+    protected $config_options_mapping = array();
+    protected $config_options = array();
+
+    protected function getConfigOptionMapping()
+    {
+        return $this->config_options_mapping;
+    }
+
+    protected function getConfigOptions()
+    {
+        return $this->config_options;
+    }
+
+    protected function addConfigOptionMapping($name, $path)
+    {
+        $this->config_options_mapping[$name] = $path;
+        return $this;
+    }
+
+    protected function addConfigOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
+    {
+        $this->config_options[$name] = new InputOption($name, $shortcut, $mode, $description, $default);
+        return $this;
+    }
 
     public function __construct($name = null)
     {
+        // Parent will call $this->configure()
         parent::__construct($name);
+        $this->addConfigOption(
+            'path',
+            'p',
+            InputOption::VALUE_REQUIRED,
+            'Path to SugarCRM installation.'
+        );
         $this->configureConfigOptions();
     }
 
@@ -31,18 +56,6 @@ abstract class AbstractDefaultFromConfCommand extends AbstractContainerAwareComm
                 $this->getDefinition()->addOption($options[$name]);
             }
         }
-    }
-
-    protected function getConfigOptions()
-    {
-        return array(
-            'path' => new InputOption(
-                'path',
-                'p',
-                InputOption::VALUE_REQUIRED,
-                'Path to SugarCRM installation.'
-            ),
-        );
     }
 
     protected function getDefaultOption(InputInterface $input, $name)
