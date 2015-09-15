@@ -23,6 +23,9 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
         return new CommandTester($cmd);
     }
 
+    /**
+     * @group sugar
+     */
     public function testDefault()
     {
         $cmd = $this->getCommandTester();
@@ -78,12 +81,17 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     public function testYmlFormat()
     {
         $cmd = $this->getCommandTester();
-        $cmd->execute(array('--format' => 'yml', 'source' => array('system')));
+        $cmd->execute(array(
+            '--format' => 'yml',
+            'source' => array('system'),
+            '--custom-fact' => array('system.context:dev'),
+        ));
 
         $output = $cmd->getDisplay();
         $yml = Yaml::parse($output);
         $this->assertArrayHasKey('system', $yml);
         $this->assertArrayHasKey('sugarcrm', $yml);
         $this->assertNotEmpty($yml['system']);
+        $this->assertEquals('dev', $yml['system']['context']);
     }
 }

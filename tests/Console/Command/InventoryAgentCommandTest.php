@@ -30,6 +30,7 @@ class InventoryAgentCommandTest extends \PHPUnit_Framework_TestCase
         $ret = $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--account-name' => 'Test Agent',
+            '--custom-fact' => array('sugarcrm.context:dev'),
             'server' => getenv('INVENTORY_URL'),
             'username' => getenv('INVENTORY_USERNAME'),
             'password' => getenv('INVENTORY_PASSWORD'),
