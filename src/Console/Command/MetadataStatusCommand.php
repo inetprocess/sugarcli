@@ -19,6 +19,7 @@ class MetadataStatusCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
+        parent::configure();
         $this->setName('metadata:status')
             ->setDescription('Show the state of the fields_meta_data table compared to the dump file.')
             ->setHelp(<<<EOH
@@ -97,7 +98,7 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $this->setSugarPath($this->getDefaultOption($input, 'path'));
+        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $style = new OutputFormatterStyle(null, null, array('bold'));

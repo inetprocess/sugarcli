@@ -16,32 +16,20 @@ use Inet\SugarCRM\Exception\InstallerException;
 
 use SugarCli\Console\ExitCode;
 
-class InstallRunCommand extends AbstractDefaultFromConfCommand
+class InstallRunCommand extends AbstractConfigOptionCommand
 {
-    protected function getConfigOptionMapping()
-    {
-        return array(
-            'path' => 'sugarcrm.path',
-            'url' => 'sugarcrm.url',
-        );
-    }
-
-    protected function getConfigOptions()
-    {
-        $options = parent::getConfigOptions();
-        $options['url'] = new InputOption(
-            'url',
-            'u',
-            InputOption::VALUE_REQUIRED,
-            'Public url of SugarCRM.'
-        );
-        return $options;
-    }
-
     protected function configure()
     {
         $this->setName("install:run")
             ->setDescription('Extract and install SugarCRM.')
+            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->addConfigOptionMapping('url', 'sugarcrm.url')
+            ->addConfigOption(
+                'url',
+                'u',
+                InputOption::VALUE_REQUIRED,
+                'Public url of SugarCRM.'
+            )
             ->addOption(
                 'force',
                 'f',
@@ -66,11 +54,11 @@ class InstallRunCommand extends AbstractDefaultFromConfCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getDefaultOption($input, 'path'));
+        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $force = $input->getOption('force');
         $installer = new Installer(
             $this->getService('sugarcrm.application'),
-            $this->getDefaultOption($input, 'url'),
+            $this->getConfigOption($input, 'url'),
             $input->getOption('source'),
             $input->getOption('config')
         );

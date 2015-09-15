@@ -8,39 +8,31 @@ use Symfony\Component\Console\Input\InputInterface;
 
 use Inet\SugarCRM\Database\Metadata;
 
-abstract class AbstractMetadataCommand extends AbstractDefaultFromConfCommand
+abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
 {
     const METADATA_PATH = '../db/fields_meta_data.yaml';
 
-    protected function getConfigOptionMapping()
+    protected function getMetadataOption(InputInterface $input)
     {
-        return array(
-            'path' => 'sugarcrm.path',
-            'metadata-file' => 'metadata.file',
-        );
+        try {
+            $metadata = $this->getConfigOption($input, 'metadata-file');
+        } catch (\InvalidArgumentException $e) {
+            $metadata = $this->getConfigOption($input, 'path') . '/' . self::METADATA_PATH;
+        }
+        return $metadata;
     }
 
-    protected function getConfigOptions()
+    protected function configure()
     {
-        $options = parent::getConfigOptions();
-        $options['metadata-file'] = new InputOption(
+        $this->addConfigOptionMapping('path', 'sugarcrm.path')
+        ->addConfigOptionMapping('metadata-file', 'metadata.file')
+        ->addConfigOption(
             'metadata-file',
             'm',
             InputOption::VALUE_REQUIRED,
             'Path to the metadata file.' .
             ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>'
         );
-        return $options;
-    }
-
-    protected function getMetadataOption(InputInterface $input)
-    {
-        try {
-            $metadata = $this->getDefaultOption($input, 'metadata-file');
-        } catch (\InvalidArgumentException $e) {
-            $metadata = $this->getDefaultOption($input, 'path') . '/' . self::METADATA_PATH;
-        }
-        return $metadata;
     }
 
     protected function setDiffOptions(array $descriptions)

@@ -13,22 +13,18 @@ use SugarCli\Console\ExitCode;
 /**
  * Check command to verify that Sugar is present and installed.
  */
-class InstallCheckCommand extends AbstractDefaultFromConfCommand
+class InstallCheckCommand extends AbstractConfigOptionCommand
 {
-    protected function getConfigOptionMapping()
-    {
-        return array('path' => 'sugarcrm.path');
-    }
-
     protected function configure()
     {
         $this->setName("install:check")
-            ->setDescription('Check if SugarCRM is installed and configured.');
+            ->setDescription('Check if SugarCRM is installed and configured.')
+            ->addConfigOptionMapping('path', 'sugarcrm.path');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $this->getDefaultOption($input, 'path');
+        $path = $this->getConfigOption($input, 'path');
         $this->setSugarPath($path);
         $sugar = $this->getService('sugarcrm.application');
         if (!$sugar->isValid()) {

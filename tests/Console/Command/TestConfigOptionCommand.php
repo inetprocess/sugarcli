@@ -6,9 +6,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use SugarCli\Console\Command\AbstractDefaultFromConfCommand;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
-class TestFromConfCommand extends AbstractDefaultFromConfCommand
+class TestConfigOptionCommand extends AbstractConfigOptionCommand
 {
     protected function configure()
     {
@@ -24,9 +24,9 @@ class TestFromConfCommand extends AbstractDefaultFromConfCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $this->getDefaultOption($input, 'path');
+        $path = $this->getConfigOption($input, 'path');
         $output->writeln('path: ' . $path);
-        $url = $this->getDefaultOption($input, 'url');
+        $url = $this->getConfigOption($input, 'url');
         $output->writeln('url: ' . $url);
     }
 }

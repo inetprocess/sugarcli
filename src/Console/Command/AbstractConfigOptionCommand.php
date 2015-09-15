@@ -8,7 +8,7 @@ use Symfony\Component\Console\Input\InputInterface;
 
 use SugarCli\Console\ConfigException;
 
-abstract class AbstractDefaultFromConfCommand extends AbstractContainerAwareCommand
+abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
 {
     protected $config_options_mapping = array();
     protected $config_options = array();
@@ -58,7 +58,7 @@ abstract class AbstractDefaultFromConfCommand extends AbstractContainerAwareComm
         }
     }
 
-    protected function getDefaultOption(InputInterface $input, $name)
+    protected function getConfigOption(InputInterface $input, $name)
     {
         $defaults = $this->getConfigOptionMapping();
         if (!array_key_exists($name, $defaults)) {

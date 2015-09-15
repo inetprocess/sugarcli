@@ -18,6 +18,7 @@ class MetadataDumpCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
+        parent::configure();
         $this->setName('metadata:dumptofile')
             ->setDescription('Dump the contents of the table fields_meta_data for db migrations.')
             ->setHelp(<<<EOH
@@ -36,7 +37,7 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $this->setSugarPath($this->getDefaultOption($input, 'path'));
+        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $diff_opts = $this->getDiffOptions($input);

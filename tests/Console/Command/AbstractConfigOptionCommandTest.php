@@ -8,7 +8,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 use SugarCli\Console\Config;
 
-class AbstractDefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
+class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaults()
     {
@@ -19,7 +19,7 @@ class AbstractDefaultFromConfCommandTest extends \PHPUnit_Framework_TestCase
         $app->configure();
         $app->setAutoExit(false);
         $app->getContainer()->set('config', $config);
-        $app->add(new TestFromConfCommand($cmd_name));
+        $app->add(new TestConfigOptionCommand($cmd_name));
 
         $command = $app->find($cmd_name);
         $commandTester = new CommandTester($command);
@@ -56,9 +56,9 @@ EOF;
      */
     public function testWrongDefaultOptionsInvalidArgument()
     {
-        $cmd = new TestFromConfCommand('test');
+        $cmd = new TestConfigOptionCommand('test');
         $reflex = new \ReflectionClass($cmd);
-        $method = $reflex->getMethod('getDefaultOption');
+        $method = $reflex->getMethod('getConfigOption');
         $method->setAccessible(true);
         $method->invoke($cmd, new ArrayInput(array()), 'foo');
     }
@@ -76,7 +76,7 @@ EOF;
         $app->configure();
         $app->setAutoExit(false);
         $app->getContainer()->set('config', $config);
-        $app->add(new TestFromConfCommand($cmd_name));
+        $app->add(new TestConfigOptionCommand($cmd_name));
 
         $command = $app->find($cmd_name);
         $commandTester = new CommandTester($command);

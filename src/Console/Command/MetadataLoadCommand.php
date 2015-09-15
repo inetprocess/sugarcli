@@ -17,6 +17,7 @@ class MetadataLoadCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
+        parent::configure();
         $this->setName('metadata:loadfromfile')
             ->setDescription('Load the contents of the table fields_meta_data from a file.')
             ->setHelp(<<<EOH
@@ -47,7 +48,7 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getDefaultOption($input, 'path'));
+        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $logger = $this->getService('logger');
 
         $metadata_file = $this->getMetadataOption($input);

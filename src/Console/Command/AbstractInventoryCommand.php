@@ -5,7 +5,7 @@ namespace SugarCli\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 
-abstract class AbstractInventoryCommand extends AbstractDefaultFromConfCommand
+abstract class AbstractInventoryCommand extends AbstractConfigOptionCommand
 {
     protected function configure()
     {

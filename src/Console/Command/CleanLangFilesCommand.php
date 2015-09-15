@@ -16,17 +16,13 @@ use Inet\SugarCRM\LangFileCleaner;
 
 use SugarCli\Console\ExitCode;
 
-class CleanLangFilesCommand extends AbstractDefaultFromConfCommand
+class CleanLangFilesCommand extends AbstractConfigOptionCommand
 {
-    protected function getConfigOptionMapping()
-    {
-        return array('path' => 'sugarcrm.path');
-    }
-
     protected function configure()
     {
         $this->setName("clean:langfiles")
             ->setDescription('Sort php arrays in language files to make it easier for vcs programs.')
+            ->addConfigOptionMapping('path', 'sugarcrm.path')
             ->addOption(
                 'no-sort',
                 null,
@@ -43,7 +39,7 @@ class CleanLangFilesCommand extends AbstractDefaultFromConfCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $this->getDefaultOption($input, 'path');
+        $path = $this->getConfigOption($input, 'path');
         $this->setSugarPath($path);
         $sugar = $this->getService('sugarcrm.application');
         $sort = !$input->getOption('no-sort');
