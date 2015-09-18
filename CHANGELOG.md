@@ -1,10 +1,11 @@
 Changelog
 =========
 
-(Next release)
+1.5.0
 -----
-* Add configuration option `metadata.file` for option `--metadata-file` for `metadata:*` commands.
 * Add `inventory:agent` command.
+* Add configuration option `account.name` for option `--account-name` in `inventory:*` commands.
+* Add configuration option `metadata.file` for option `--metadata-file` in `metadata:*` commands.
 
 1.4.2
 -----
