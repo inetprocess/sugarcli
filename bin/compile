@@ -68,6 +68,7 @@ $finder->files()
     ->in(ROOT_DIR . '/src')
     ->in(ROOT_DIR . '/vendor/composer')
     ->in(ROOT_DIR . '/vendor/doctrine')
+    ->in(ROOT_DIR . '/vendor/guzzle')
     ->in(ROOT_DIR . '/vendor/inetprocess/sugarcrm')
     ->in(ROOT_DIR . '/vendor/jms')
     ->in(ROOT_DIR . '/vendor/phpcollection/phpcollection')
@@ -99,6 +100,8 @@ echo_step();
 
 // Add autoload and bin
 echo_step("Add autoload and bin files.");
+addFile($phar, ROOT_DIR . '/vendor/guzzle/guzzle/src/Guzzle/Http/Resources/cacert.pem');
+addFile($phar, ROOT_DIR . '/src/Inventory/InventoryService.json');
 addFile($phar, ROOT_DIR . '/vendor/autoload.php');
 addFile($phar, ROOT_DIR . '/bin/sugarcli');
 echo_step();
