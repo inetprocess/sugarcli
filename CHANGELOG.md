@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.5.1
+-----
+* Add `fqdn` fact to Hostname provider. `fqdn` doesn't depend on the `facter` command anymore.
+* Fix missing files in compile script.
+
 1.5.0
 -----
 * Add `inventory:agent` command.
