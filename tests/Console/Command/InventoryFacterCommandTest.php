@@ -26,10 +26,11 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     /**
      * @group sugar
      */
-    public function testDefault()
+    public function testJsonFormat()
     {
         $cmd = $this->getCommandTester();
         $cmd->execute(array(
+            '--format' => 'json',
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
         ));
 
@@ -78,11 +79,10 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertStringStartsWith('<?xml version="1.0" encoding="UTF-8"?>', $output);
     }
 
-    public function testYmlFormat()
+    public function testDefaultYmlFormat()
     {
         $cmd = $this->getCommandTester();
         $cmd->execute(array(
-            '--format' => 'yml',
             'source' => array('system'),
             '--custom-fact' => array('system.context:dev'),
         ));

@@ -35,7 +35,7 @@ class InventoryFacterCommand extends AbstractInventoryCommand
                 'f',
                 InputOption::VALUE_REQUIRED,
                 'Specify the output format. (json|yml|xml).',
-                'json'
+                'yml'
             );
     }
 
