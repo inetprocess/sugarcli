@@ -20,7 +20,7 @@ class MultiFacterFacter implements FacterInterface
     {
         $facts = array();
         foreach ($this->facters as $facter) {
-            $facts = array_merge($facts, $facter->getFacts());
+            $facts = array_replace_recursive($facts, $facter->getFacts());
         }
         return $facts;
     }

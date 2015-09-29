@@ -97,7 +97,7 @@ class ProviderFacter implements FacterInterface
     {
         $this->facts = array();
         foreach ($this->providers as $provider) {
-            $this->facts = array_merge($this->facts, $provider->getFacts());
+            $this->facts = array_replace_recursive($this->facts, $provider->getFacts());
         }
     }
 }

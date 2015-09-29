@@ -3,6 +3,7 @@
 namespace SugarCli\Inventory\Facter\SugarProvider;
 
 use SugarCli\Inventory\Facter\AbstractSugarProvider;
+use SugarCli\Utils\Utils;
 
 class SpaceUsage extends AbstractSugarProvider
 {
@@ -28,23 +29,15 @@ class SpaceUsage extends AbstractSugarProvider
         return $this->queryOne($stmt);
     }
 
-    public function humanize($bytes)
-    {
-        $si_prefix = array( 'B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB' );
-        $base = 1024;
-        $class = min((int)log($bytes, $base), count($si_prefix) - 1);
-        return sprintf('%1.2f', $bytes / pow($base, $class)) . ' ' . $si_prefix[$class];
-    }
-
     public function getFacts()
     {
         $disk_used = $this->getDiskSpaceUsage();
         $db_used = $this->getDBSpaceUsage();
         $facts = array(
             'disk_used_mb' => round($disk_used / (1024*1024), 2),
-            'disk_used' => $this->humanize($disk_used),
+            'disk_used' => Utils::humanize($disk_used),
             'db_used_mb' => round($db_used / (1024*1024), 2),
-            'db_used' => $this->humanize($db_used),
+            'db_used' => Utils::humanize($db_used),
         );
         return $facts;
     }
