@@ -10,6 +10,7 @@ class Linfo implements FacterInterface
 {
     public function getFacts()
     {
+        $old_error_reporting = error_reporting(0);
         $linfo = new Info();
         $parser = $linfo->getParser();
 
@@ -20,6 +21,7 @@ class Linfo implements FacterInterface
         $distro = $parser->getDistro();
 
         $ram = $parser->getRam();
+        error_reporting($old_error_reporting);
         return array(
             'fqdn' => $parser->getHostName(),
             'processors' => array(
