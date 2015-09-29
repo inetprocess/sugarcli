@@ -47,6 +47,7 @@ class ProviderFacter implements FacterInterface
         $finder->files()
             ->ignoreUnreadableDirs()
             ->in($this->providers_dir)
+            ->sortByName()
             ->name('*.php');
         foreach ($finder as $provider) {
             $this->registerProviderFromFile($provider);

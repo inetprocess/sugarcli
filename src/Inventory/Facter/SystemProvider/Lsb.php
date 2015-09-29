@@ -5,12 +5,12 @@ namespace SugarCli\Inventory\Facter\SystemProvider;
 use Symfony\Component\Process\Process;
 use SugarCli\Inventory\Facter\FacterInterface;
 
-class LSB implements FacterInterface
+class Lsb implements FacterInterface
 {
     public function parseOutput($output)
     {
         $lsb = array();
-        foreach (explode("\n", $output) as $line) {
+        foreach (explode("\n", trim($output)) as $line) {
             list($key, $value) = explode("\t", $line, 2);
             $lsb[trim($key, ':')] = $value;
         }
