@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.2
+-----
+* Use Linfo library for system facts to remove dependency on `facter` command. This can be used on any OS.
+
 1.5.1
 -----
 * Add `fqdn` fact to Hostname provider. `fqdn` doesn't depend on the `facter` command anymore.
