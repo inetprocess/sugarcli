@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "052085e5039e1dc9869592c44eaf9aa6",
+    "hash": "1d657af7305f30253cc34bc0e2f14680",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -225,11 +225,11 @@
         },
         {
             "name": "inetprocess/sugarcrm",
-            "version": "0.9",
+            "version": "dev-wip_rsauvatinet",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/sugarcrm",
-                "reference": "39d46d87626de65f5946829cb54524fb4720db8b"
+                "reference": "a4c5b8e615f62961f693550177e2578c26993387"
             },
             "require": {
                 "php": ">=5.3",
@@ -263,7 +263,7 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2015-09-02 11:49:27"
+            "time": "2015-09-30 16:28:57"
         },
         {
             "name": "jms/metadata",
@@ -428,12 +428,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jrgp/linfo.git",
-                "reference": "a186e0efdf2d83348d572762f5444aeee60cf308"
+                "reference": "f5cec13043e78afa80f8e0821b6ed62971c3a075"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jrgp/linfo/zipball/a186e0efdf2d83348d572762f5444aeee60cf308",
-                "reference": "a186e0efdf2d83348d572762f5444aeee60cf308",
+                "url": "https://api.github.com/repos/jrgp/linfo/zipball/f5cec13043e78afa80f8e0821b6ed62971c3a075",
+                "reference": "f5cec13043e78afa80f8e0821b6ed62971c3a075",
                 "shasum": ""
             },
             "require": {
@@ -470,7 +470,7 @@
                 "specs",
                 "system"
             ],
-            "time": "2015-09-24 08:28:34"
+            "time": "2015-09-29 14:18:06"
         },
         {
             "name": "phpcollection/phpcollection",
@@ -2146,6 +2146,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "inetprocess/sugarcrm": 20,
         "linfo/linfo": 20
     },
     "prefer-stable": false,

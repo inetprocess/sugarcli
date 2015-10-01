@@ -52,6 +52,7 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\MetadataDumpCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataLoadCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataStatusCommand();
+        $commands[] = new \SugarCli\Console\Command\UsersUpdateCommand();
         return $commands;
     }
 
