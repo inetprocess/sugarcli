@@ -22,7 +22,10 @@ class Lsb implements FacterInterface
         $process = new Process('lsb_release -cidr');
         $process->mustRun();
         $lsb = $this->parseOutput($process->getOutput());
-        list($major, $minor) = explode('.', $lsb['Release'], 2);
+        $version = explode('.', $lsb['Release'], 2);
+        $major = $version[0];
+        $minor = @$version[1];
+
         return array(
             'os' => array(
                 'name' => $lsb['Distributor ID'],
