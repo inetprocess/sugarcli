@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.5.3
+-----
+* Fix PHP notices from Facters Lsb and Linfo.
+
 1.5.2
 -----
 * Use Linfo library for system facts to remove dependency on `facter` command. This can be used on any OS.
