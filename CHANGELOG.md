@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+-----
+* Add commands `user:*` to manage sugarcrm users.
+
 1.5.3
 -----
 * Fix PHP notices from Facters Lsb and Linfo.

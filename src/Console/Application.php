@@ -10,6 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Reference;
 
+use Inet\SugarCRM\EntryPoint;
+
 /**
  * Run console application.
  * Configuration files can be found in:
@@ -52,7 +54,8 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\MetadataDumpCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataLoadCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataStatusCommand();
-        $commands[] = new \SugarCli\Console\Command\UsersUpdateCommand();
+        $commands[] = new \SugarCli\Console\Command\UserUpdateCommand();
+        $commands[] = new \SugarCli\Console\Command\UserListCommand();
         return $commands;
     }
 
@@ -90,6 +93,11 @@ class Application extends BaseApplication
             ->setFactory('Inet\SugarCRM\EntryPoint::createInstance')
             ->addArgument(new Reference('sugarcrm.application'))
             ->addArgument('1');
+    }
+
+    public function setEntryPoint(EntryPoint $entrypoint)
+    {
+        $this->container->set('sugarcrm.entrypoint', $entrypoint);
     }
 
 

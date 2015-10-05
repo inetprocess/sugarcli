@@ -18,4 +18,5 @@ class ExitCode
     // Sugar errors
     const EXIT_UNKNOWN_SUGAR_ERROR = 20;
     const EXIT_METADATA_NOT_FOUND = 21;
+    const EXIT_USER_NOT_FOUND = 22;
 }

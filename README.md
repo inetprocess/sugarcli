@@ -107,4 +107,19 @@ the system and the sugarcrm instance.
 This will send all the gathered facts to the inventory server.
 
 
+### User management
+
+#### List users of an instance.
+
+`./sugarcli.phar user:list --path <sugarcrm_path>` will give you a nice output of the users.
+You can also limit the result to a specific username (`--username`)  and change the output format (`--format`) to json, yml or xml.
+
+#### Create a new user
+`./sugarcli.phar user:create --path <sugarcrm_path> --password=mypasword --admin=yes myNewLogin` will create a new admin user
+with login myNewLogin and password mypasword.
+
+
+#### Update a user
+`./sugarcli.phar user:update --path <sugarcrm_path> --first-name=Admin --last-name='Test' myNewLogin` will update the user
+myNewLogin and set the first and last name.
 
