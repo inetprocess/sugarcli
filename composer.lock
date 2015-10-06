@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bbe11e93ff4e98b5e519089436603221",
+    "hash": "d74780e4ac5aa3504e8dbe76d6224042",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -225,7 +225,7 @@
         },
         {
             "name": "inetprocess/sugarcrm",
-            "version": "0.9.1-beta",
+            "version": "1.0.0-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/sugarcrm",

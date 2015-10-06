@@ -8,7 +8,10 @@ class Utils
 
     public static function humanize($bytes, $base = 1024)
     {
+        if (empty($bytes)) {
+            return '0 B';
+        }
         $class = min((int)log($bytes, $base), count(static::$si_prefix) - 1);
-        return sprintf('%1.2f', $bytes / pow($base, $class)) . ' ' . static::$si_prefix[$class];
+        return sprintf('%1.2F %s', $bytes / pow($base, $class), static::$si_prefix[$class]);
     }
 }

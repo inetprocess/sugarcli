@@ -1,9 +1,10 @@
 Changelog
 =========
 
-(unreleased)
+1.6.0
 -----
 * Add commands `user:*` to manage sugarcrm users.
+* Fix Division by zero warning.
 
 1.5.3
 -----
