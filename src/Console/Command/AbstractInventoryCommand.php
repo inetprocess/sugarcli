@@ -46,6 +46,7 @@ abstract class AbstractInventoryCommand extends AbstractConfigOptionCommand
             }
             $facts = array_replace_recursive($facts, $fact);
         }
+
         return $facts;
     }
 }

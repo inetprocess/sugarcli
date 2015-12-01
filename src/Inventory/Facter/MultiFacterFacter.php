@@ -22,6 +22,7 @@ class MultiFacterFacter implements FacterInterface
         foreach ($this->facters as $facter) {
             $facts = array_replace_recursive($facts, $facter->getFacts());
         }
+
         return $facts;
     }
 }

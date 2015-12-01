@@ -21,6 +21,7 @@ class SugarFacter extends ProviderFacter
 
     /**
      * Inject sugar application into providers.
+     *
      * @param string $class_name Name of the class to create.
      */
     public function factory($class_name)

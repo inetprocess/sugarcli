@@ -6,10 +6,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-
 use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\UsersManager;
-
 use SugarCli\Console\ExitCode;
 
 class UserUpdateCommand extends AbstractConfigOptionCommand
@@ -71,9 +69,10 @@ class UserUpdateCommand extends AbstractConfigOptionCommand
     protected function isCreate(InputInterface $input)
     {
         list($prefix, $cmd) = explode(':', $input->getFirstArgument(), 2);
-        if (substr_compare("create", $cmd, 0, strlen($cmd)) === 0) {
+        if (substr_compare('create', $cmd, 0, strlen($cmd)) === 0) {
             return true;
         }
+
         return $input->getOption('create');
     }
 
@@ -119,6 +118,7 @@ class UserUpdateCommand extends AbstractConfigOptionCommand
             }
         } catch (BeanNotFoundException $e) {
             $logger->error("User '{$user_name}' doesn't exists on the SugarCRM located at '{$path}'.");
+
             return ExitCode::EXIT_USER_NOT_FOUND;
         }
     }

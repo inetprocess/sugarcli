@@ -9,6 +9,7 @@ class Timestamp extends AbstractSugarProvider
     public function getFacts()
     {
         $date = new \DateTime();
+
         return array('facts_timestamp' => $date->getTimestamp());
     }
 }

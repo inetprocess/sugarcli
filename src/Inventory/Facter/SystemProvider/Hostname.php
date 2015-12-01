@@ -12,6 +12,7 @@ class Hostname implements FacterInterface
         $process = new Process('hostname --fqdn');
         $process->mustRun();
         $fqdn = trim($process->getOutput());
+
         return array(
             'fqdn' => $fqdn,
             'hostname' => gethostname()

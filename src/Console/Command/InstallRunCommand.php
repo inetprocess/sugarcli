@@ -6,21 +6,17 @@ namespace SugarCli\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Logger\ConsoleLogger;
-
 use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Installer;
 use Inet\SugarCRM\Exception\InstallerException;
-
 use SugarCli\Console\ExitCode;
 
 class InstallRunCommand extends AbstractConfigOptionCommand
 {
     protected function configure()
     {
-        $this->setName("install:run")
+        $this->setName('install:run')
             ->setDescription('Extract and install SugarCRM.')
             ->addConfigOptionMapping('path', 'sugarcrm.path')
             ->addConfigOptionMapping('url', 'sugarcrm.url')
@@ -69,6 +65,7 @@ class InstallRunCommand extends AbstractConfigOptionCommand
             $logger = $this->getService('logger');
             $logger->error('An error occured during the installation.');
             $logger->error($e->getMessage());
+
             return ExitCode::EXIT_INSTALL_ERROR;
         }
     }

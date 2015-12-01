@@ -8,9 +8,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Exception\UnsupportedFormatException;
-
 use Inet\SugarCRM\Application;
-
 use SugarCli\Console\ExitCode;
 use SugarCli\Inventory\Facter\ArrayFacter;
 use SugarCli\Inventory\Facter\MultiFacterFacter;
@@ -65,13 +63,13 @@ class InventoryFacterCommand extends AbstractInventoryCommand
             $all_facts['sugarcrm'] = $sugar_facter->getFacts();
         }
 
-
         $format = $input->getOption('format');
         $serial = SerializerBuilder::create()->build();
         try {
             $output->write($serial->serialize($all_facts, $format));
         } catch (UnsupportedFormatException $e) {
             $output->write("<comment>Format $format is not supported.</comment>\n");
+
             return ExitCode::EXIT_FORMAT_ERROR;
         }
     }

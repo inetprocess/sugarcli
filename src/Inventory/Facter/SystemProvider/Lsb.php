@@ -14,6 +14,7 @@ class Lsb implements FacterInterface
             list($key, $value) = explode("\t", $line, 2);
             $lsb[trim($key, ':')] = $value;
         }
+
         return $lsb;
     }
 

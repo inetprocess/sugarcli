@@ -8,11 +8,13 @@ class ProviderFacter implements FacterInterface
 {
     /**
      * Directory where providers can be found
+     *
      * @var
      */
     protected $providers_dir;
     /**
      * Namespace for the providers in the directory
+     *
      * @var
      */
     protected $providers_namespace;
@@ -88,6 +90,7 @@ class ProviderFacter implements FacterInterface
         if (is_null($this->facts)) {
             $this->populateFacts();
         }
+
         return $this->facts;
     }
 

@@ -2,16 +2,10 @@
 
 namespace SugarCli\Console\Command;
 
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
-
-use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Database\Metadata;
-use Inet\SugarCRM\Database\SugarPDO;
 use Inet\SugarCRM\Exception\SugarException;
-
 use SugarCli\Console\ExitCode;
 
 class MetadataDumpCommand extends AbstractMetadataCommand
@@ -42,7 +36,6 @@ EOH
 
         $diff_opts = $this->getDiffOptions($input);
 
-
         try {
             $meta = new Metadata($logger, $this->getService('sugarcrm.pdo'), $metadata_file);
             $base = array();
@@ -56,13 +49,14 @@ EOH
                 $diff_opts['mode'],
                 $diff_opts['fields']
             );
-            $logger->info("Fields metadata loaded from DB.");
+            $logger->info('Fields metadata loaded from DB.');
 
             $meta->writeFile($diff_res);
             $output->writeln("Updated file $metadata_file.");
         } catch (SugarException $e) {
             $logger->error('An error occured while dumping the metadata.');
             $logger->error($e->getMessage());
+
             return ExitCode::EXIT_UNKNOWN_SUGAR_ERROR;
         }
     }

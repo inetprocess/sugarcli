@@ -44,6 +44,7 @@ abstract class AbstractSugarProvider implements FacterInterface
                 $value = $result[0][0];
             }
         }
+
         return $value;
     }
 
@@ -51,6 +52,7 @@ abstract class AbstractSugarProvider implements FacterInterface
     {
         $process = new Process($cmd, $cwd);
         $process->mustRun();
+
         return $process->getOutput();
     }
 }

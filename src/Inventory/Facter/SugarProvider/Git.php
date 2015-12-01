@@ -3,7 +3,6 @@
 namespace SugarCli\Inventory\Facter\SugarProvider;
 
 use Symfony\Component\Process\Exception\ProcessFailedException;
-
 use SugarCli\Inventory\Facter\AbstractSugarProvider;
 
 class Git extends AbstractSugarProvider
@@ -15,6 +14,7 @@ class Git extends AbstractSugarProvider
         } catch (ProcessFailedException $e) {
             return false;
         }
+
         return true;
     }
 
@@ -24,6 +24,7 @@ class Git extends AbstractSugarProvider
             return rtrim($this->exec($cmd, $this->getPath()));
         } catch (ProcessFailedException $e) {
         }
+
         return null;
     }
 
@@ -33,6 +34,7 @@ class Git extends AbstractSugarProvider
             return substr_count($this->exec('git status --porcelain', $this->getPath()), "\n");
         } catch (ProcessFailedException $e) {
         }
+
         return null;
     }
 
@@ -49,6 +51,7 @@ class Git extends AbstractSugarProvider
         $facts['git']['branch'] = $this->execOrNull('git rev-parse --abbrev-ref HEAD');
         $facts['git']['origin'] = $this->execOrNull('git config --get remote.origin.url');
         $facts['git']['modified_files'] = $this->getModifiedFiles();
+
         return $facts;
     }
 }

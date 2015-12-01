@@ -22,6 +22,7 @@ class Linfo implements FacterInterface
 
         $ram = $parser->getRam();
         error_reporting($old_error_reporting);
+
         return array(
             'fqdn' => $parser->getHostName(),
             'processors' => array(

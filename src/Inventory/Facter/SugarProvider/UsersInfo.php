@@ -20,6 +20,7 @@ class UsersInfo extends AbstractSugarProvider
         }
         $facts['active'] = intval($facts['active']);
         $facts['admin'] = intval($facts['admin']);
+
         return array('users' => $facts);
     }
 }

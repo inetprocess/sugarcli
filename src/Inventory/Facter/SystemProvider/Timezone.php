@@ -10,6 +10,7 @@ class Timezone implements FacterInterface
     {
         $d = new \DateTime();
         $tz = $d->getTimezone();
+
         return array(
             'timezone' => $tz->getName(),
         );

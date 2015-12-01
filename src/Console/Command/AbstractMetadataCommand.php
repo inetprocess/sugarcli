@@ -5,7 +5,6 @@ namespace SugarCli\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
-
 use Inet\SugarCRM\Database\Metadata;
 
 abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
@@ -19,6 +18,7 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
         } catch (\InvalidArgumentException $e) {
             $metadata = $this->getConfigOption($input, 'path') . '/' . self::METADATA_PATH;
         }
+
         return $metadata;
     }
 
@@ -75,6 +75,7 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
                 $res |= $diff_opt;
             }
         }
+
         return array(
             'mode' => ($res) ?: Metadata::DIFF_ALL,
             'fields' => str_replace('.', '', $input->getArgument('fields'))

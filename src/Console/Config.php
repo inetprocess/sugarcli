@@ -4,7 +4,6 @@ namespace SugarCli\Console;
 
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-
 use Symfony\Component\Yaml\Parser;
 use Symfony\Component\Config\Definition\Processor;
 
@@ -15,7 +14,6 @@ class Config implements ConfigurationInterface
     protected $loaded = false;
 
     public $config_files = array();
-
 
     public function __construct(array $config_files = array())
     {
@@ -71,6 +69,7 @@ class Config implements ConfigurationInterface
                 ->end()
             ->end()
         ->end();
+
         return $tree_builder;
     }
 
@@ -100,6 +99,7 @@ class Config implements ConfigurationInterface
         if ($test_only) {
             return true;
         }
+
         return $data;
     }
 

@@ -5,9 +5,7 @@ namespace SugarCli\Inventory;
 use Guzzle\Service\Client as GClient;
 use Guzzle\Service\Description\ServiceDescription;
 use Guzzle\Http\Exception\ClientErrorResponseException;
-
 use Psr\Log\LoggerInterface;
-
 use SugarCli\Inventory\Facter\FacterInterface;
 
 /**
@@ -45,6 +43,7 @@ class Agent
         if (!isset($this->facters[$type])) {
             throw new \RuntimeException('No facter found for this type. Please set the facter object first.');
         }
+
         return $this->facters[$type];
     }
 
@@ -66,6 +65,7 @@ class Agent
     public function getServerFqdn()
     {
         $facts = $this->getFacts(self::SYSTEM);
+
         return $facts['fqdn'];
     }
 
@@ -93,6 +93,7 @@ class Agent
                 throw $e;
             }
         }
+
         return $id;
     }
 
@@ -137,9 +138,10 @@ class Agent
     /**
      * Send an entity.
      * Try put first if 404 create it with POST.
+     *
      * @param string $entity_name Entity name in CamelCase
-     * @param array $data Entity data to send.
-     * @param string $key_id Key of data to use as an id for the request.
+     * @param array  $data        Entity data to send.
+     * @param string $key_id      Key of data to use as an id for the request.
      */
     private function sendEntity($entity_name, array $data, $key_id)
     {

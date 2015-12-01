@@ -14,6 +14,7 @@ class Config extends AbstractSugarProvider
             'unique_key' => $sugar_config['unique_key'],
             'log_level' => $sugar_config['logger']['level'],
         );
+
         return $facts;
     }
 }

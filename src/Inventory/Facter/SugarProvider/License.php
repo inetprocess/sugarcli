@@ -24,6 +24,7 @@ class License extends AbstractSugarProvider
             $stmt->closeCursor();
         }
         $facts['users'] = intval($facts['users']);
+
         return array('license' => $facts);
     }
 }

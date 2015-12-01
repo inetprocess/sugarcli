@@ -14,6 +14,7 @@ class SpaceUsage extends AbstractSugarProvider
         if (preg_match('/(\d+)\s+\.$/', $du_output, $matches) === 1) {
             return $matches[1];
         }
+
         return null;
     }
 
@@ -26,6 +27,7 @@ class SpaceUsage extends AbstractSugarProvider
         $stmt = $this->getPdo()->prepare($sql);
         $sugar_config = $this->getApplication()->getSugarConfig();
         $stmt->bindValue(1, $sugar_config['dbconfig']['db_name']);
+
         return $this->queryOne($stmt);
     }
 
@@ -39,6 +41,7 @@ class SpaceUsage extends AbstractSugarProvider
             'db_used_mb' => round($db_used / (1024*1024), 2),
             'db_used' => Utils::humanize($db_used),
         );
+
         return $facts;
     }
 }

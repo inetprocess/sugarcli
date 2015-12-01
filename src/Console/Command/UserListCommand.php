@@ -4,18 +4,13 @@ namespace SugarCli\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\Table;
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Exception\UnsupportedFormatException;
-
-
-
 use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\Bean as BeanManager;
 use Inet\SugarCRM\UsersManager;
-
 use SugarCli\Console\ExitCode;
 
 class UserListCommand extends AbstractConfigOptionCommand
@@ -78,6 +73,7 @@ class UserListCommand extends AbstractConfigOptionCommand
             }
             $fields[$key] = $value;
         }
+
         return $fields;
     }
 
@@ -87,6 +83,7 @@ class UserListCommand extends AbstractConfigOptionCommand
         foreach ($bean_list as $bean) {
             $ret[] = $this->beanToArray($fields_name, $bean, $pretty, $lang);
         }
+
         return $ret;
     }
 
@@ -106,9 +103,9 @@ class UserListCommand extends AbstractConfigOptionCommand
                 $bm = new BeanManager($this->getService('sugarcrm.entrypoint'));
                 $bean_list = $bm->getList('Users');
             }
-
         } catch (BeanNotFoundException $e) {
             $logger->error("User '{$user_name}' doesn't exists on the SugarCRM located at '{$path}'.");
+
             return ExitCode::EXIT_USER_NOT_FOUND;
         }
         $format = $input->getOption('format');
@@ -126,6 +123,7 @@ class UserListCommand extends AbstractConfigOptionCommand
                 $output->write($serial->serialize($this->beanListToArray($fields, $bean_list), $format));
             } catch (UnsupportedFormatException $e) {
                 $output->write("<comment>Format $format is not supported.</comment>\n");
+
                 return ExitCode::EXIT_FORMAT_ERROR;
             }
         }

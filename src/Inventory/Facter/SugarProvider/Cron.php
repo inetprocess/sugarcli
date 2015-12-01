@@ -11,6 +11,7 @@ class Cron extends AbstractSugarProvider
         $crontabs = $this->exec('crontab -l');
         $path = rtrim($this->getPath(), '/');
         $re = '@^(\*\s+){5}.*' . $path . '.*cron.php.*$@m';
+
         return preg_match($re, $crontabs) === 1;
     }
 
@@ -25,6 +26,7 @@ class Cron extends AbstractSugarProvider
             $facts[$key] = $this->queryOne($stmt);
         }
         $facts['installed'] = $this->isCronInstalled();
+
         return array('cron' => $facts);
     }
 }

@@ -4,15 +4,9 @@ namespace SugarCli\Console\Command;
 
 use Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
-
-use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Database\Metadata;
-use Inet\SugarCRM\Database\SugarPDO;
 use Inet\SugarCRM\Exception\SugarException;
-
 use SugarCli\Console\ExitCode;
 
 class MetadataStatusCommand extends AbstractMetadataCommand
@@ -32,6 +26,7 @@ EOH
         if (empty($field_data['name']) || empty($field_data['custom_module'])) {
             throw new SugarException('Enable to find key \'name\' or \'custom_module\' for a field.');
         }
+
         return $field_data['custom_module'] . '.' . $field_data['name'];
     }
 
@@ -87,7 +82,7 @@ EOH
             foreach ($field_data[Metadata::MODIFIED] as $key => $value) {
                 $data[] = "$key: " . var_export($value, true);
             }
-            $modified_data = "{ " . implode(', ', $data) . " }";
+            $modified_data = '{ ' . implode(', ', $data) . ' }';
             $field_name = $this->getFieldDisplayName($field_data[Metadata::BASE]);
             $output->writeln("\t<fg=yellow>modified: {$field_name} {$modified_data}</fg=yellow>");
         }
@@ -108,6 +103,7 @@ EOH
             $logger->error("Unable to access metadata file {$metadata_file}.");
             $output->writeln('');
             $output->writeln("Use \"{$this->getProgramName()} metadata:dump\" first to dump the current table state.");
+
             return ExitCode::EXIT_METADATA_NOT_FOUND;
         }
 
@@ -131,12 +127,11 @@ EOH
             ) {
                 return ExitCode::EXIT_STATUS_MODIFICATIONS;
             }
-
         } catch (SugarException $e) {
             $logger->error('An error occured.');
             $logger->error($e->getMessage());
+
             return ExitCode::EXIT_UNKNOWN_SUGAR_ERROR;
         }
-
     }
 }

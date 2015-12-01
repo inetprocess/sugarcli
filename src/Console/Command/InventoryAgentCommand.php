@@ -8,10 +8,8 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Guzzle\Service\Client as GClient;
 use Guzzle\Http\Exception\RequestException;
-
 use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Exception\SugarException;
-
 use SugarCli\Console\ExitCode;
 use SugarCli\Inventory\Agent;
 use SugarCli\Inventory\Facter\ArrayFacter;
@@ -85,10 +83,12 @@ class InventoryAgentCommand extends AbstractInventoryCommand
         } catch (RequestException $e) {
             $logger->error('An error occured while contacting the inventory server.');
             $logger->error($e->getMessage());
+
             return ExitCode::EXIT_INVENTORY_ERROR;
         } catch (SugarException $e) {
             $logger->error('An error occured with the sugar application.');
             $logger->error($e->getMessage());
+
             return ExitCode::EXIT_UNKNOWN_SUGAR_ERROR;
         }
     }

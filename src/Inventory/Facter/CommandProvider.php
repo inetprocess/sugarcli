@@ -28,6 +28,7 @@ class CommandProvider implements FacterInterface
                 if (is_null($json)) {
                     return array();
                 }
+
                 return $json;
             } else {
                 return $this->parseFacts($output);
@@ -39,13 +40,16 @@ class CommandProvider implements FacterInterface
 
     /**
      * Run the command.
+     *
      * @param $cmd Command line to run
+     *
      * @return oupout of command
      */
     protected function runCommand($cmd)
     {
         $process = new Process($cmd);
         $process->mustRun();
+
         return $process->getOutput();
     }
 
@@ -64,6 +68,7 @@ class CommandProvider implements FacterInterface
             list($key, $value) = explode('=', $line, 2);
             $facts[$key] = $value;
         }
+
         return $facts;
     }
 }

@@ -2,11 +2,8 @@
 
 namespace SugarCli\Console\Command;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
-
-use SugarCli\Console\ConfigException;
 
 abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
 {
@@ -26,12 +23,14 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
     protected function addConfigOptionMapping($name, $path)
     {
         $this->config_options_mapping[$name] = $path;
+
         return $this;
     }
 
     protected function addConfigOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
     {
         $this->config_options[$name] = new InputOption($name, $shortcut, $mode, $description, $default);
+
         return $this;
     }
 
@@ -73,6 +72,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 sprintf('The "%s" option is not specified and not found in the config "%s"', $name, $defaults[$name])
             );
         }
+
         return $config->get($defaults[$name]);
     }
 }

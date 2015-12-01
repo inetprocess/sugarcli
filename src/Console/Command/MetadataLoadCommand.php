@@ -5,12 +5,8 @@ namespace SugarCli\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-
-use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Database\Metadata;
-use Inet\SugarCRM\Database\SugarPDO;
 use Inet\SugarCRM\Exception\SugarException;
-
 use SugarCli\Console\ExitCode;
 
 class MetadataLoadCommand extends AbstractMetadataCommand
@@ -59,6 +55,7 @@ EOH
             $logger->error("Unable to access metadata file {$metadata_file}.");
             $output->writeln('');
             $output->writeln("Use \"{$this->getProgramName()} metadata:dump\" first to dump the current table state.");
+
             return ExitCode::EXIT_METADATA_NOT_FOUND;
         }
 
@@ -80,14 +77,14 @@ EOH
 
             if ($input->getOption('force')) {
                 $meta->executeQueries($diff_res);
-                $output->writeln("DB updated successfuly.");
+                $output->writeln('DB updated successfuly.');
             } else {
                 $output->writeln('No action done. Use --force to execute the queries.');
             }
-
         } catch (SugarException $e) {
             $logger->error('An error occured while loading the metadata.');
             $logger->error($e->getMessage());
+
             return ExitCode::EXIT_UNKNOWN_SUGAR_ERROR;
         }
     }

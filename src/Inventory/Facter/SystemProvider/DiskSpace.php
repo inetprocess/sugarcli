@@ -16,6 +16,7 @@ class DiskSpace implements FacterInterface
         $facts['diskfree_mb'] = round($disk_free / (1024*1024), 2);
         $facts['disksize'] = Utils::humanize($disk_size);
         $facts['diskfree'] = Utils::humanize($disk_free);
+
         return $facts;
     }
 }
