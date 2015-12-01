@@ -45,6 +45,7 @@ class Application extends BaseApplication
     {
         $commands = parent::getDefaultCommands();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
+        $commands[] = new \SugarCli\Console\Command\HooksListCommand();
         $commands[] = new \SugarCli\Console\Command\InstallCheckCommand();
         $commands[] = new \SugarCli\Console\Command\InstallGetConfigCommand();
         $commands[] = new \SugarCli\Console\Command\InstallRunCommand();
