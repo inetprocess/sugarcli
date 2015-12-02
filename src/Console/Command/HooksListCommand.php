@@ -28,7 +28,7 @@ class HooksListCommand extends AbstractConfigOptionCommand
                 'compact',
                 null,
                 InputOption::VALUE_NONE,
-                "Activate compact mode"
+                'Activate compact mode'
             );
     }
 
@@ -76,7 +76,7 @@ class HooksListCommand extends AbstractConfigOptionCommand
         $hooksComs = $logicHook->getModulesLogicHooksDef();
         if (empty($hooksList)) {
             $tableData[] = array(
-                new TableCell("<error>No Hooks for that module</error>", array('colspan' => count($colsName)))
+                new TableCell('<error>No Hooks for that module</error>', array('colspan' => count($colsName)))
             );
         }
 
@@ -112,7 +112,6 @@ class HooksListCommand extends AbstractConfigOptionCommand
             if ($procHooks < $nbHooks) {
                 $tableData[] = new TableSeparator();
             }
-
         }
 
         $table->setRows($tableData);
