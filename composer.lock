@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "d74780e4ac5aa3504e8dbe76d6224042",
-    "content-hash": "efac753a4d01f614bd80705f2dd46228",
+    "hash": "3798e6dd02e0ff7684a7c09f606f6380",
+    "content-hash": "b89969b0b643847fded83edadd629d71",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -226,11 +226,11 @@
         },
         {
             "name": "inetprocess/sugarcrm",
-            "version": "1.0.0-beta",
+            "version": "1.1.2-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/sugarcrm",
-                "reference": "49c3f15c1cbd7ac924d88ef8532a62ac196da044"
+                "reference": "23710d8ece0e652f9fd958b9bcebabe25fc3cfb7"
             },
             "require": {
                 "php": ">=5.3",
@@ -264,7 +264,7 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2015-10-05 09:32:02"
+            "time": "2015-12-02 14:43:45"
         },
         {
             "name": "jms/metadata",
@@ -1198,28 +1198,28 @@
         },
         {
             "name": "fabpot/php-cs-fixer",
-            "version": "v1.10.3",
+            "version": "v1.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "5b446eb5d6cafeff20736de6468eba380a9ff64e"
+                "reference": "bd3ec2c2b774e0e127ac2c737ec646d9cf2f9eef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/5b446eb5d6cafeff20736de6468eba380a9ff64e",
-                "reference": "5b446eb5d6cafeff20736de6468eba380a9ff64e",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/bd3ec2c2b774e0e127ac2c737ec646d9cf2f9eef",
+                "reference": "bd3ec2c2b774e0e127ac2c737ec646d9cf2f9eef",
                 "shasum": ""
             },
             "require": {
                 "ext-tokenizer": "*",
                 "php": ">=5.3.6",
                 "sebastian/diff": "~1.1",
-                "symfony/console": "~2.3",
-                "symfony/event-dispatcher": "~2.1",
-                "symfony/filesystem": "~2.1",
-                "symfony/finder": "~2.1",
-                "symfony/process": "~2.3",
-                "symfony/stopwatch": "~2.5"
+                "symfony/console": "~2.3|~3.0",
+                "symfony/event-dispatcher": "~2.1|~3.0",
+                "symfony/filesystem": "~2.1|~3.0",
+                "symfony/finder": "~2.1|~3.0",
+                "symfony/process": "~2.3|~3.0",
+                "symfony/stopwatch": "~2.5|~3.0"
             },
             "require-dev": {
                 "satooshi/php-coveralls": "0.7.*@dev"
@@ -1248,7 +1248,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2015-11-30 20:15:33"
+            "time": "2015-12-01 22:34:33"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
@@ -1904,16 +1904,16 @@
         },
         {
             "name": "sebastian/environment",
-            "version": "1.3.2",
+            "version": "1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/environment.git",
-                "reference": "6324c907ce7a52478eeeaede764f48733ef5ae44"
+                "reference": "6e7133793a8e5a5714a551a8324337374be209df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6324c907ce7a52478eeeaede764f48733ef5ae44",
-                "reference": "6324c907ce7a52478eeeaede764f48733ef5ae44",
+                "url": "https://api.github.com/repos/sebastianbergmann/environment/zipball/6e7133793a8e5a5714a551a8324337374be209df",
+                "reference": "6e7133793a8e5a5714a551a8324337374be209df",
                 "shasum": ""
             },
             "require": {
@@ -1950,7 +1950,7 @@
                 "environment",
                 "hhvm"
             ],
-            "time": "2015-08-03 06:14:51"
+            "time": "2015-12-02 08:37:27"
         },
         {
             "name": "sebastian/exporter",
@@ -2159,25 +2159,25 @@
         },
         {
             "name": "symfony/stopwatch",
-            "version": "v2.8.0",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/stopwatch.git",
-                "reference": "5f1e2ebd1044da542d2b9510527836e8be92b1cb"
+                "reference": "6aeac8907e3e1340a0033b0a9ec075f8e6524800"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/5f1e2ebd1044da542d2b9510527836e8be92b1cb",
-                "reference": "5f1e2ebd1044da542d2b9510527836e8be92b1cb",
+                "url": "https://api.github.com/repos/symfony/stopwatch/zipball/6aeac8907e3e1340a0033b0a9ec075f8e6524800",
+                "reference": "6aeac8907e3e1340a0033b0a9ec075f8e6524800",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.9"
+                "php": ">=5.5.9"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.8-dev"
+                    "dev-master": "3.0-dev"
                 }
             },
             "autoload": {
@@ -2204,7 +2204,7 @@
             ],
             "description": "Symfony Stopwatch Component",
             "homepage": "https://symfony.com",
-            "time": "2015-10-30 20:15:42"
+            "time": "2015-10-30 23:35:59"
         }
     ],
     "aliases": [],
