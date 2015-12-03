@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0ed921428c857f775795acde5ee364a1",
-    "content-hash": "e030dec16de8f76cfc9cfaae25dd1eaf",
+    "hash": "45893937f49292e506fa2ba468928e5d",
+    "content-hash": "4a9f33da039b88d4ec28e0a4a2a4187c",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -425,7 +425,7 @@
         },
         {
             "name": "linfo/linfo",
-            "version": "dev-master",
+            "version": "v3.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jrgp/linfo.git",
@@ -2210,8 +2210,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "inetprocess/sugarcrm": 20,
-        "linfo/linfo": 20
+        "inetprocess/sugarcrm": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
