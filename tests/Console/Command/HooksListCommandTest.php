@@ -69,13 +69,13 @@ class HooksListCommandTest extends \PHPUnit_Framework_TestCase
         $cmd = $this->getCommandTester();
         $result = $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
-            '--module' => 'Meetings'
+            '--module' => 'Opportunities'
         ));
         $output = $cmd->getDisplay();
         $this->assertEquals(0, $cmd->getStatusCode());
-        $msg = 'Check that your Sugar instance has the default Hook before_relationship_update for Meetings';
-        $this->assertContains('Hooks definition for Meetings', $output, $msg);
-        $this->assertContains('before_relationship_update', $output, $msg);
+        $msg = 'Check that your Sugar instance has the default Hook before_relationship_update for Opportunities';
+        $this->assertContains('Hooks definition for Opportunities', $output, $msg);
+        $this->assertContains('before_save', $output, $msg);
     }
 
     public function testListHookCompactRightModule()
