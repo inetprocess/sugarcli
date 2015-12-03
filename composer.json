@@ -37,5 +37,10 @@
             "SugarCli\\Tests\\": "tests/"
         }
     },
+    "config": {
+        "platform": {
+            "php": "5.3.29"
+        }
+    },
     "bin": ["bin/sugarcli"]
 }
