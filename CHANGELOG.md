@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.7.0
+-----
+* Add command `hooks:list` to display a list of hooks for a module.
+* Add command `system:quickrepair` to do a quick repair and rebuild of SugarCRM.
+
 1.6.0
 -----
 * Add commands `user:*` to manage sugarcrm users.
