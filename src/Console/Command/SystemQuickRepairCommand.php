@@ -24,6 +24,7 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
 
         $progress = new ProgressIndicator($output);
         $progress->start('Starting...');
+        $progress->advance(); 
         $sugarSystem = new SugarSystem($sugarEP);
         $progress->setMessage('Working...');
         $sugarSystem->repair();
