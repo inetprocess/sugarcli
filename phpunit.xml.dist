@@ -23,6 +23,10 @@
     </logging>
 
     <php>
+        <!-- E_ALL | E_STRICT -->
+        <ini name='error_reporting' value='2251932767' />
+
+
         <env name='SUGARCLI_DB_USER' value='' />
         <env name='SUGARCLI_DB_PASSWORD' value='' />
         <env name='SUGARCLI_DB_NAME' value='sugarcrm' />

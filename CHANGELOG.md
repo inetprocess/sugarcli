@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.7.1
+-----
+* Small fixes with older versions of sugar.
+* Enable `E_NOTICE` and `E_STRICT` for tests.
+
 1.7.0
 -----
 * Add command `hooks:list` to display a list of hooks for a module.
