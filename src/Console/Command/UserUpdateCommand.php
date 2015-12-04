@@ -72,7 +72,6 @@ class UserUpdateCommand extends AbstractConfigOptionCommand
         if (substr_compare('create', $cmd, 0, strlen($cmd)) === 0) {
             return true;
         }
-
         return $input->getOption('create');
     }
 
@@ -84,7 +83,8 @@ class UserUpdateCommand extends AbstractConfigOptionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = $this->getService('logger');
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
+        $path = $this->getConfigOption($input, 'path');
+        $this->setSugarPath($path);
         $user_name = $input->getArgument('username');
         $password = $input->getOption('password');
         $admin = $input->getOption('admin');
@@ -101,8 +101,9 @@ class UserUpdateCommand extends AbstractConfigOptionCommand
             $um = new UsersManager($this->getService('sugarcrm.entrypoint'));
             if ($this->isCreate($input)) {
                 $um->createUser($user_name, $additionnal_fields);
-                if (is_null($activated)) {
-                    $um->activate($user_name);
+                // Users are active by default.
+                if (is_null($active)) {
+                    $active = true;
                 }
             } else {
                 $um->updateUser($user_name, $additionnal_fields);

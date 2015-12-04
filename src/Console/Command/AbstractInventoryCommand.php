@@ -27,10 +27,11 @@ abstract class AbstractInventoryCommand extends AbstractConfigOptionCommand
         $custom_facts = $input->getOption('custom-fact');
         $facts = array();
         foreach ($custom_facts as $custom_fact) {
-            list($path, $value) = explode(':', $custom_fact, 2);
-            if (empty($value)) {
+            $exploded_fact = explode(':', $custom_fact, 2);
+            if (empty($exploded_fact[1])) {
                 throw new \InvalidArgumentException("Invalid format for --custom-fact '$custom_fact'");
             }
+            list($path, $value) = $exploded_fact;
             if ($path === $prefix) {
                 return $value;
             }

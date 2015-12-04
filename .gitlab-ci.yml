@@ -6,3 +6,6 @@ phpunit:
     script:
         - bin/phpunit --color=never
         - php -dphar.readonly=0 bin/compile
+    cache:
+        paths:
+            - vendor

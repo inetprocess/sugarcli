@@ -50,6 +50,12 @@ class UserListCommand extends AbstractConfigOptionCommand
             );
     }
 
+    /**
+     * Fetch values for fields name from bean
+     * @param $pretty if true, will return the display name from the language.
+     * @param $lang language to use in pretty mode. Default to en_us.
+     * @return An array of key => value pairs.
+     */
     public function beanToArray(array $fields_name, \SugarBean $bean, $pretty = true, $lang = 'en_us')
     {
         if ($pretty) {
@@ -64,7 +70,9 @@ class UserListCommand extends AbstractConfigOptionCommand
                 $key = $md[$field_name]['vname'];
                 switch ($md[$field_name]['type']) {
                     case 'enum':
-                        $value = $md[$field_name]['options_list'][$value] ?: $value;
+                        if (isset($md[$field_name]['options_list'][$value])) {
+                            $value = $md[$field_name]['options_list'][$value];
+                        }
                         break;
                     case 'bool':
                         $value = $value ? self::BOOL_TRUE : self::BOOL_FALSE;
@@ -90,7 +98,8 @@ class UserListCommand extends AbstractConfigOptionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = $this->getService('logger');
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
+        $path = $this->getConfigOption($input, 'path');
+        $this->setSugarPath($path);
         $user_name = $input->getOption('username');
         $lang = $input->getOption('lang');
         $fields = explode(',', $input->getOption('fields'));

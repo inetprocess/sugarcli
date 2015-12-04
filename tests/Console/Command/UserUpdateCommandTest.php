@@ -114,6 +114,23 @@ class UserUpdateCommandTest extends DatabaseTestCase
         ));
     }
 
+    public function testCreateUserInactive()
+    {
+        self::deleteTestUsers();
+        $cmd = $this->getCommandTester();
+        $ret = $cmd->execute(array(
+            'command' => 'user:create',
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            'username' => self::USERNAME,
+            '--active' => 'no',
+        ));
+        $this->assertEquals(0, $ret);
+        $this->assertUserEquals(array(
+            'user_name' => self::USERNAME,
+            'status' => 'Inactive',
+        ));
+    }
+
     public function booleanProvider()
     {
         return array(
