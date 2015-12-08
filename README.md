@@ -123,3 +123,44 @@ with login myNewLogin and password mypasword.
 `./sugarcli.phar user:update --path <sugarcrm_path> --first-name=Admin --last-name='Test' myNewLogin` will update the user
 myNewLogin and set the first and last name.
 
+
+### System
+
+#### Do a Quick Repair & Rebuild
+`./sugarcli.phar system:quickrepair --path <sugarcrm_path>` will do a basic Quick Repair & Rebuild of your SugarCRM instance.
+You can also use `--database` to see if Vardefs are synchronized with the Database.
+If they are not in sync you can run the queries by adding `--force`.
+
+Finally, if you want to have the full output from SugarCRM, add the verbose (`--verbose`) option.
+
+Example:
+```
+sugarcli system:quickrepair --database
+Reparation:
+ - Repair Done.
+
+Database Messages:
+Database tables are synced with vardefs
+```
+
+### Logic Hooks
+
+#### List the existing logic hooks for a module
+`./sugarcli.phar system:quickrepair --path <sugarcrm_path> --module <module>` will generate of list of hooks for the specified module.
+
+That command lists the hooks with, for each, its Weight, description, the file where the class is defined, the method called, and where it's defined.
+
+You can also use `--compact` to have the basic informations about hooks (Weight / Description / Method).
+
+Example for a module with no Hooks:
+```
+sugarcli hooks:list --module Contacts --compact
++-----------+-------------+--------+
+| Hooks definition for Contacts    |
++-----------+-------------+--------+
+| Weight    | Description | Method |
++-----------+-------------+--------+
+| No Hooks for that module         |
++-----------+-------------+--------+
+
+```

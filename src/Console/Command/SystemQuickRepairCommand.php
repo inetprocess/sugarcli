@@ -46,6 +46,11 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
         $messages = $sugarSystem->repair($input->getOption('force'), true);
         $progress->finish('<info>Repair Done.</info>');
 
+        if ($output->isVerbose()) {
+            $output->writeln(PHP_EOL . '<comment>General Messages</comment>: ');
+            $output->writeln($messages[0]);
+        }
+
         if ($input->getOption('database') === false) {
             return;
         }
