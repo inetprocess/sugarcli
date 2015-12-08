@@ -44,7 +44,7 @@ class SystemQuickRepairCommandTest extends \PHPUnit_Framework_TestCase
         $cmd = $this->getCommandTester();
 
         /* THE FOLLOWING IS NOT WORKING BECAUSE SUGAR DOES VERY STRANGE THINGS
-        $checkFile = getenv('SUGARCLI_SUGAR_PATH') . '/custom/modules/Meetings/Ext/LogicHooks/logichooks.ext.php';
+        $checkFile = getenv('SUGARCLI_SUGAR_PATH') . '/cache/class_map.php';
         $this->assertFileExists($checkFile, 'That file is used to test my repair');
         unlink($checkFile);
         $this->assertFileNotExists($checkFile, 'That file is used to test my repair');
