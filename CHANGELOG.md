@@ -1,9 +1,11 @@
 Changelog
 =========
 
-(unreleased)
+1.7.2
 -----
-* Better error message on die from SugarCRM.
+* Better error message on die() from SugarCRM.
+* Ouput for `system:quickrepair`.
+* Option to execute SQL from `system:quickrepair`.
 
 1.7.1
 -----
