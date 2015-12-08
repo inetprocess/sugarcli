@@ -43,7 +43,7 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
         $progress->advance();
         $sugarSystem = new SugarSystem($sugarEP);
         $progress->setMessage('Working...');
-        $messages = $sugarSystem->repair($input->getOption('force'), true);
+        $messages = $sugarSystem->repair($input->getOption('force'));
         $progress->finish('<info>Repair Done.</info>');
 
         if ($output->isVerbose()) {
