@@ -52,8 +52,10 @@ class UserListCommand extends AbstractConfigOptionCommand
 
     /**
      * Fetch values for fields name from bean
+     *
      * @param $pretty if true, will return the display name from the language.
      * @param $lang language to use in pretty mode. Default to en_us.
+     *
      * @return An array of key => value pairs.
      */
     public function beanToArray(array $fields_name, \SugarBean $bean, $pretty = true, $lang = 'en_us')

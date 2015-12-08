@@ -5,6 +5,7 @@ namespace SugarCli\Console;
 use Symfony\Component\Console\Application as BaseApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Output\ConsoleOutputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
@@ -27,6 +28,21 @@ class Application extends BaseApplication
      * Services container for dependency injection.
      */
     protected $container;
+
+    /**
+     * Replicate the autoExit feature even if we use the registerShutdownFunction.
+     */
+    protected $autoExitOnShutdown = true;
+
+    /**
+     * Indicate status of the run in case we have called the registerShutdownFunction
+     */
+    protected $runOk = false;
+
+    public function setAutoExit($boolean)
+    {
+        $this->autoExitOnShutdown = (bool) $boolean;
+    }
 
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
@@ -102,10 +118,56 @@ class Application extends BaseApplication
         $this->container->set('sugarcrm.entrypoint', $entrypoint);
     }
 
+    /**
+     * Shutdown function. If $runOk is not true, code did not reach the end of the run method.
+     * This means the script was interrupted before.
+     * We try to fetch the output from the command.
+     */
+    public static function shutdownFunction($app)
+    {
+        if (!$app->runOk) {
+            $message = 'exit() or die() called before the end of the command.' . PHP_EOL;
+            if ($ob_out = ob_get_clean()) {
+                $message .= 'Catched output:' . PHP_EOL . $ob_out;
+            }
+            $e = new \RuntimeException($message);
+            $output = $app->getContainer()->get('console.output');
+            if ($output instanceof ConsoleOutputInterface) {
+                $app->renderException($e, $output->getErrorOutput());
+            } else {
+                $app->renderException($e, $output);
+            }
+            // Used to get 100% coverage on unit tests.
+            defined('PHPUNIT_SUGARCLI_TESTSUITE') || exit(ExitCode::EXIT_UNKNOWN_ERROR);
+        }
+    }
+
+    /**
+     * Register a shutdown function in case a die or exit is called during code execution.
+     * This can happen in SugarCRM code.
+     */
+    public function registerShutdownFunction()
+    {
+        register_shutdown_function(array(__CLASS__, 'shutdownFunction'), $this);
+    }
+
     public function run(InputInterface $input = null, OutputInterface $output = null)
     {
+        // AutoExit from symfony is disabled and replaced by our own.
+        parent::setAutoExit(false);
         $this->configure($input, $output);
 
-        return parent::run($input, $output);
+        $exitCode = parent::run($input, $output);
+        // We passed the original run command. The shutdown function will not raise any errors.
+        $this->runOk = true;
+
+        if ($this->autoExitOnShutdown) {
+            if ($exitCode > 255) {
+                $exitCode = 255;
+            }
+            defined('PHPUNIT_SUGARCLI_TESTSUITE') || exit($exitCode);
+        }
+
+        return $exitCode;
     }
 }

@@ -5,6 +5,7 @@ namespace SugarCli\Console;
 class ExitCode
 {
     // SugarCli errors [0-10]
+    const EXIT_UNKNOWN_ERROR = 1;
     const EXIT_STATUS_MODIFICATIONS = 2;
     const EXIT_FORMAT_ERROR = 3;
     const EXIT_INVENTORY_ERROR = 4;

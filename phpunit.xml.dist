@@ -23,6 +23,8 @@
     </logging>
 
     <php>
+        <const name="PHPUNIT_SUGARCLI_TESTSUITE" value="true" />
+
         <!-- E_ALL | E_STRICT -->
         <ini name='error_reporting' value='2251932767' />
 

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+-----
+* Better error message on die from SugarCRM.
+
 1.7.1
 -----
 * Small fixes with older versions of sugar.

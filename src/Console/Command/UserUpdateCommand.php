@@ -72,6 +72,7 @@ class UserUpdateCommand extends AbstractConfigOptionCommand
         if (substr_compare('create', $cmd, 0, strlen($cmd)) === 0) {
             return true;
         }
+
         return $input->getOption('create');
     }
 
