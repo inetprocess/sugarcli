@@ -226,11 +226,11 @@
         },
         {
             "name": "inetprocess/sugarcrm",
-            "version": "1.1.6-beta",
+            "version": "1.1.7-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/sugarcrm",
-                "reference": "cacb5ae2a0bc7f79e67aa9c80e12cec4bc92f0cb"
+                "reference": "4e55d93084ed5027866cfe37d46174df1336200e"
             },
             "require": {
                 "php": ">=5.3",
@@ -264,7 +264,7 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2015-12-08 14:00:03"
+            "time": "2015-12-08 17:52:27"
         },
         {
             "name": "jms/metadata",
