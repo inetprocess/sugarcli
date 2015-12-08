@@ -47,17 +47,13 @@ class HooksListCommand extends AbstractConfigOptionCommand
 
         $hooksList = array();
 
-        $colsName = array('Weight', 'Description', 'File', 'Class', 'Method');
+        $colsName = array('Weight', 'Description', 'File', 'Class', 'Method', 'Defined In');
         if ($compact) {
             $colsName = array('Weight', 'Description', 'Method');
         }
 
-        $headers = array(
-            array(
-                new TableCell("<comment>Hooks definition for $module</comment>", array('colspan' => count($colsName)))
-            ),
-            $colsName,
-        );
+        $title = new TableCell("<comment>Hooks definition for $module</comment>", array('colspan' => count($colsName)));
+        $headers = array(array($title), $colsName);
 
         try {
             $table = new Table($output);
@@ -83,13 +79,14 @@ class HooksListCommand extends AbstractConfigOptionCommand
         $procHooks = 0;
         $nbHooks = count($hooksList);
         foreach ($hooksList as $type => $hooks) {
-            $com = '';
+            $com = 'No description';
             if (array_key_exists($type, $hooksComs)) {
                 $com = $hooksComs[$type];
             }
             $tableData[] = array(
                 new TableCell("<comment>$type ($com)</comment>", array('colspan' => count($colsName)))
             );
+
             foreach ($hooks as $hook) {
                 // New line every 5 words
                 $words = explode(' ', $hook['Description']);
@@ -102,6 +99,7 @@ class HooksListCommand extends AbstractConfigOptionCommand
                 if ($compact) {
                     unset($hook['File']);
                     unset($hook['Class']);
+                    unset($hook['Defined In']);
                 }
 
                 $tableData[] = array_values($hook);
