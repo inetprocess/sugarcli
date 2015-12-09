@@ -298,7 +298,7 @@ Database tables are synced with vardefs
 
 
 ## Logic Hooks
-The main command is `./sugarcli.phar logichooks`
+The main command is `./sugarcli.phar hooks`
 
 Subcommands are:
 ```bash
