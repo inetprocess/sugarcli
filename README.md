@@ -19,7 +19,7 @@ It will build the `sugarcli.phar` at the top of the git project.
 
 
 # Configuration
-You can save some configurations options in different location. The latter one will override the previous one.
+You can save some configurations options in different location. The latter one will override the previous one:
 `/etc/sugarclirc`
 `$HOME/.sugarclirc`
 `./.sugarclirc`
@@ -48,20 +48,24 @@ The main command is `./sugarcli.phar clean:langfiles`
 ```
 ### Test run
 `./sugarcli.phar clean:langfiles --test path/to/sugar`
+
 This will parse the custom languages files from sugar. It should return the files as is.
+
 
 ### Clean without sorting.
 `./sugarcli.phar clean:langfiles --no-sort path/to/sugar`
+
 This will clean the lang files by removing unecessary whitespaces and remove duplicates in variables definitions.
 
 ### Clean and sort
 `./sugarcli.phar clean:langfiles path/to/sugar`
-This will clean and sort the language files.
-All defined variables will be sorted by name.
+
+This will clean and sort the language files. All defined variables will be sorted by name.
 
 
 ## Install a SugarCRM
 The main command is `./sugarcli.phar install`
+
 Subcommands are :
 ```bash
 ./sugarcli.phar install:config:get
@@ -71,8 +75,9 @@ Subcommands are :
 
 ### Configure your installation
 `./sugarcli.phar install:config:get` will create a `config_si.php` in the current directory.
-This provides default settings for the installer. You will need to complete some require parameters
-like db information, usernames and passwords. Required fields are in the form `<VALUE>`.
+
+This provides default settings for the installer. You will need to complete some require parameters like db information, usernames and passwords. Required fields are in the form `<VALUE>`.
+
 ### `install:config:get` - Parameters
 ```bash
 -c, --config=CONFIG   Write to this file instead of config_si.php. [default: "config_si.php"]
@@ -86,9 +91,13 @@ like db information, usernames and passwords. Required fields are in the form `<
 
 ### Run the installer
 `./sugarcli.phar install:run [-f|--force] [-s|--source[="..."]] [-c|--config[="..."]] path url`
+
 You need to specify an installation path and the public url for your sugar installation.
+
 The installer will extract a SugarCRM installation package named sugar.zip or specified with the `--source` option.
+
 It will use the `--config` option to use for the installation.
+
 ### `install:run` - Parameters
 ```bash
 -f, --force           Force installer to remove target directory if present.
@@ -108,9 +117,11 @@ Use `-v` or `-vv` to add more verbose output.
 
 ## Manage `fields_meta_data` table.
 By default the metadata definition file will be `<sugar_path>/../db/fields_meta_data.yaml`.
+
 You can override it with the `--metadata-file` parameter for all the sub-commands.
 
 The main command is `./sugarcli.phar metadata`
+
 Subcommands are :
 ```bash
 ./sugarcli.phar metadata:loadfromfile
@@ -121,6 +132,7 @@ Subcommands are :
 ### Load definition to the database.
 `sugarcli metadata:load`
 Load fields defined in the meta data file to update the database.
+
 ### `metadata:loadfromfile` Parameters
 ```bash
 -s, --sql                          Print the sql queries that would have been executed.
@@ -134,9 +146,13 @@ Load fields defined in the meta data file to update the database.
 
 ### Write metadata to a file.
 `sugarcli metadata:dump`
+
 You can dump the current DB fields meta data contents into the definition file.
+
 You can also use the `--add`, `--del`, `--update` flags to only add, delete or update fields.
+
 The fields specified after the command line will allow you to act only on specific fields.
+
 ### `metadata:dumptofile` Parameters
 ```bash
 -a, --add                          Add new fields from the DB to the definition file.
@@ -148,7 +164,9 @@ The fields specified after the command line will allow you to act only on specif
 
 ### Get the Status
 `sugarcli metadata:status -p path/to/sugar`
+
 This will show which fields are differing between the definition file and the database.
+
 ### `metadata:status` Parameters
 ```bash
 -p, --path=PATH                    Path to SugarCRM installation.
@@ -158,6 +176,7 @@ This will show which fields are differing between the definition file and the da
 
 ## Inventory
 The main command is `./sugarcli.phar inventory`
+
 Subcommands are :
 ```bash
 ./sugarcli.phar inventory:facter
@@ -167,6 +186,7 @@ Subcommands are :
 ### Get Facts about your environment.
 `./sugarcli.phar inventory:facter --path <sugracrm_path> --format yml` will give you a yaml file with various information about
 the system and the sugarcrm instance.
+
 ### `inventory:facter` Parameters
 ```bash
 -F, --custom-fact=CUSTOM-FACT  Add or override facts. Format: path.to.fact:value (multiple values allowed)
@@ -176,7 +196,9 @@ the system and the sugarcrm instance.
 
 ### Report information to an inventory server.
 `./sugarcli.phar inventory:agent --path <sugarcrm_path> --account-name 'Name of client' <inventory_url> <username> <password>`
+
 This will send all the gathered facts to the inventory server.
+
 ### `inventory:agent` Parameters
 ```bash
 -F, --custom-fact=CUSTOM-FACT    Add or override facts. Format: path.to.fact:value (multiple values allowed)
@@ -187,6 +209,7 @@ This will send all the gathered facts to the inventory server.
 
 ## User management
 The main command is `./sugarcli.phar user`
+
 Subcommands are :
 ```bash
 ./sugarcli.phar user:update
@@ -197,6 +220,7 @@ Subcommands are :
 ### Update a user
 `./sugarcli.phar user:update --path <sugarcrm_path> --first-name=Admin --last-name='Test' myNewLogin` will update the user
 myNewLogin and set the first and last name.
+
 ### `user:update` Parameters
 ```bash
 -c, --create                 Create the user instead of updating it. Optional if called with users:create.
@@ -211,6 +235,7 @@ myNewLogin and set the first and last name.
 ### Create a new user
 `./sugarcli.phar user:create --path <sugarcrm_path> --password=mypasword --admin=yes myNewLogin` will create a new admin user
 with login myNewLogin and password mypasword.
+
 ### `user:create` Parameters
 ```bash
 -c, --create                 Create the user instead of updating it. Optional if called with users:create.
@@ -225,7 +250,9 @@ with login myNewLogin and password mypasword.
 
 ### List users of an instance.
 `./sugarcli.phar user:list --path <sugarcrm_path>` will give you a nice output of the users.
+
 You can also limit the result to a specific username (`--username`)  and change the output format (`--format`) to json, yml or xml.
+
 ### `user:list` Parameters
 ```bash
 -u, --username=USERNAME  Login of the user.
@@ -238,6 +265,7 @@ You can also limit the result to a specific username (`--username`)  and change 
 
 ## System
 The main command is `./sugarcli.phar system`
+
 Subcommands are:
 ```bash
 ./sugarcli.phar system:quickrepair
@@ -245,10 +273,13 @@ Subcommands are:
 
 ### Do a Quick Repair & Rebuild
 `./sugarcli.phar system:quickrepair --path <sugarcrm_path>` will do a basic Quick Repair & Rebuild of your SugarCRM instance.
+
 You can also use `--database` to see if Vardefs are synchronized with the Database.
+
 If they are not in sync you can run the queries by adding `--force`.
 
 Finally, if you want to have the full output from SugarCRM, add the verbose (`--verbose`) option.
+
 ### `system:quickrepair` Parameters
 ```bash
 -d, --database        Manage database changes.
@@ -268,6 +299,7 @@ Database tables are synced with vardefs
 
 ## Logic Hooks
 The main command is `./sugarcli.phar logichooks`
+
 Subcommands are:
 ```bash
 ./sugarcli.phar hooks:list
