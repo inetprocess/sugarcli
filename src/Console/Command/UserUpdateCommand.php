@@ -84,8 +84,8 @@ class UserUpdateCommand extends AbstractConfigOptionCommand
 
     protected function isCreate(InputInterface $input)
     {
-        list($prefix, $cmd) = explode(':', $input->getFirstArgument(), 2);
-        if (substr_compare('create', $cmd, 0, strlen($cmd)) === 0) {
+        $cmd = explode(':', $input->getFirstArgument(), 2);
+        if (substr_compare('create', $cmd[1], 0, strlen($cmd[1])) === 0) {
             return true;
         }
 
