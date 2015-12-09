@@ -2,14 +2,14 @@
 /**
  * SugarCLI
  *
- * PHP Version 5.3 -> 5.6
+ * PHP Version 5.3 -> 5.4
  * SugarCRM Versions 6.5 - 7.6
  *
  * @author Rémi Sauvat
  * @author Emmanuel Dyan
  * @copyright 2005-2015 iNet Process
  *
- * @package inetprocess/sugarcli
+ * @package inetprocess/sugarcrm
  *
  * @license GNU General Public License v2.0
  *
@@ -26,6 +26,7 @@ use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableSeparator;
 use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\LogicHook;
+use SugarCli\Utils\Utils;
 
 class HooksListCommand extends AbstractConfigOptionCommand
 {
@@ -53,21 +54,35 @@ class HooksListCommand extends AbstractConfigOptionCommand
 
     /**
      * Run the command
-     * @param     InputInterface     $input
-     * @param     OutputInterface    $output
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->setSugarPath($this->getConfigOption($input, 'path'));
         $module = $input->getOption('module');
-        $compact = $input->getOption('compact');
-        $sugarEP = $this->getService('sugarcrm.entrypoint');
-        $validModules = array_keys($sugarEP->getBeansList());
 
         if (empty($module)) {
             throw new \InvalidArgumentException('You must define the module with --module');
         }
 
+        $table = new Table($output);
+        $headers = $this->generateTableHeaders($module, $input->getOption('compact'));
+        $table->setHeaders($headers);
+        $table->setRows($this->generateTableRows($module, $input->getOption('compact'), count($headers[1])));
+        $table->render();
+    }
+
+    /**
+     * Generate the headers
+     *
+     * @param bool $compact
+     *
+     * @return array
+     */
+    protected function generateTableHeaders($module, $compact)
+    {
         $colsName = array('Weight', 'Description', 'File', 'Class', 'Method', 'Defined In');
         if ($compact) {
             $colsName = array('Weight', 'Description', 'Method');
@@ -76,21 +91,23 @@ class HooksListCommand extends AbstractConfigOptionCommand
         $title = new TableCell("<comment>Hooks definition for $module</comment>", array('colspan' => count($colsName)));
         $headers = array(array($title), $colsName);
 
-        $table = new Table($output);
-        $table->setHeaders($headers);
-        $table->setRows($this->generateTableRows($logicHook));
-        $table->render();
+        return $headers;
     }
 
     /**
      * Generate all the rows by getting the hooks from sugarcrm
-     * @return    [type]    [description]
+     *
+     * @param string  $module
+     * @param bool    $compact
+     * @param integer $numCols
+     *
+     * @return array
      */
-    protected function generateTableRows()
+    protected function generateTableRows($module, $compact, $numCols)
     {
-        $tableData = array();
+        $validModules = array_keys($this->getService('sugarcrm.entrypoint')->getBeansList());
         try {
-            $logicHook = new LogicHook($sugarEP);
+            $logicHook = new LogicHook($this->getService('sugarcrm.entrypoint'));
             $hooksList = $logicHook->getModuleHooks($module);
         } catch (BeanNotFoundException $e) {
             $msg = "Unknown module '$module'. Valid modules are:" . PHP_EOL;
@@ -98,9 +115,10 @@ class HooksListCommand extends AbstractConfigOptionCommand
             throw new \InvalidArgumentException($msg);
         }
 
+        $tableData = array();
         if (empty($hooksList)) {
             $tableData[] = array(
-                new TableCell('<error>No Hooks for that module</error>', array('colspan' => count($colsName)))
+                new TableCell('<error>No Hooks for that module</error>', array('colspan' => $numCols))
             );
         }
 
@@ -108,21 +126,13 @@ class HooksListCommand extends AbstractConfigOptionCommand
         $procHooks = 0;
         $nbHooks = count($hooksList);
         foreach ($hooksList as $type => $hooks) {
-            $com = 'No description';
-            if (array_key_exists($type, $hooksComs)) {
-                $com = $hooksComs[$type];
-            }
+            $com = (array_key_exists($type, $hooksComs) ? $hooksComs[$type] : 'No description');
             $tableData[] = array(
-                new TableCell("<comment>$type ($com)</comment>", array('colspan' => count($colsName)))
+                new TableCell("<comment>$type ($com)</comment>", array('colspan' => $numCols))
             );
 
             foreach ($hooks as $hook) {
-                // New line every 5 words
-                $words = explode(' ', $hook['Description']);
-                for ($i = 0; $i < count($words); $i++) {
-                    $words[$i] = ($i !== 0 && $i%5 === 0 ? PHP_EOL : '') . $words[$i];
-                }
-                $hook['Description'] = implode(' ', $words);
+                $hook['Description'] = Utils::newLineEveryXWords($hook['Description'], 5);
 
                 // Remove useless fields if in compact mode
                 if ($compact) {
@@ -135,8 +145,7 @@ class HooksListCommand extends AbstractConfigOptionCommand
             }
 
             // Create a separator if I am not
-            $procHooks++;
-            if ($procHooks < $nbHooks) {
+            if (++$procHooks < $nbHooks) {
                 $tableData[] = new TableSeparator();
             }
         }
