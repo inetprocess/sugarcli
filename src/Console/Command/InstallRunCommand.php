@@ -1,7 +1,21 @@
 <?php
 /**
- * Check command to verify that Sugar is present and installed.
+ * SugarCLI
+ *
+ * PHP Version 5.3 -> 5.6
+ * SugarCRM Versions 6.5 - 7.6
+ *
+ * @author Rémi Sauvat
+ * @author Emmanuel Dyan
+ * @copyright 2005-2015 iNet Process
+ *
+ * @package inetprocess/sugarcli
+ *
+ * @license GNU General Public License v2.0
+ *
+ * @link http://www.inetprocess.com
  */
+
 namespace SugarCli\Console\Command;
 
 use Symfony\Component\Console\Input\InputInterface;
@@ -12,6 +26,9 @@ use Inet\SugarCRM\Installer;
 use Inet\SugarCRM\Exception\InstallerException;
 use SugarCli\Console\ExitCode;
 
+/**
+ * Check command to verify that Sugar is present and installed.
+ */
 class InstallRunCommand extends AbstractConfigOptionCommand
 {
     protected function configure()

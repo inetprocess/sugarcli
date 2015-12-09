@@ -1,4 +1,20 @@
 <?php
+/**
+ * SugarCLI
+ *
+ * PHP Version 5.3 -> 5.6
+ * SugarCRM Versions 6.5 - 7.6
+ *
+ * @author Rémi Sauvat
+ * @author Emmanuel Dyan
+ * @copyright 2005-2015 iNet Process
+ *
+ * @package inetprocess/sugarcli
+ *
+ * @license GNU General Public License v2.0
+ *
+ * @link http://www.inetprocess.com
+ */
 
 namespace SugarCli\Console\Command;
 
@@ -13,6 +29,9 @@ use Inet\SugarCRM\LogicHook;
 
 class HooksListCommand extends AbstractConfigOptionCommand
 {
+    /**
+     * Configure the command
+     */
     protected function configure()
     {
         $this->setName('hooks:list')
@@ -32,9 +51,13 @@ class HooksListCommand extends AbstractConfigOptionCommand
             );
     }
 
+    /**
+     * Run the command
+     * @param     InputInterface     $input
+     * @param     OutputInterface    $output
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $logger = $this->getService('logger');
         $this->setSugarPath($this->getConfigOption($input, 'path'));
         $module = $input->getOption('module');
         $compact = $input->getOption('compact');
@@ -45,8 +68,6 @@ class HooksListCommand extends AbstractConfigOptionCommand
             throw new \InvalidArgumentException('You must define the module with --module');
         }
 
-        $hooksList = array();
-
         $colsName = array('Weight', 'Description', 'File', 'Class', 'Method', 'Defined In');
         if ($compact) {
             $colsName = array('Weight', 'Description', 'Method');
@@ -55,12 +76,20 @@ class HooksListCommand extends AbstractConfigOptionCommand
         $title = new TableCell("<comment>Hooks definition for $module</comment>", array('colspan' => count($colsName)));
         $headers = array(array($title), $colsName);
 
+        $table = new Table($output);
+        $table->setHeaders($headers);
+        $table->setRows($this->generateTableRows($logicHook));
+        $table->render();
+    }
+
+    /**
+     * Generate all the rows by getting the hooks from sugarcrm
+     * @return    [type]    [description]
+     */
+    protected function generateTableRows()
+    {
+        $tableData = array();
         try {
-            $table = new Table($output);
-            // Output table
-            //$table->setStyle('borderless');
-            $table->setHeaders($headers);
-            $tableData = array();
             $logicHook = new LogicHook($sugarEP);
             $hooksList = $logicHook->getModuleHooks($module);
         } catch (BeanNotFoundException $e) {
@@ -69,13 +98,13 @@ class HooksListCommand extends AbstractConfigOptionCommand
             throw new \InvalidArgumentException($msg);
         }
 
-        $hooksComs = $logicHook->getModulesLogicHooksDef();
         if (empty($hooksList)) {
             $tableData[] = array(
                 new TableCell('<error>No Hooks for that module</error>', array('colspan' => count($colsName)))
             );
         }
 
+        $hooksComs = $logicHook->getModulesLogicHooksDef();
         $procHooks = 0;
         $nbHooks = count($hooksList);
         foreach ($hooksList as $type => $hooks) {
@@ -112,7 +141,6 @@ class HooksListCommand extends AbstractConfigOptionCommand
             }
         }
 
-        $table->setRows($tableData);
-        $table->render();
+        return $tableData;
     }
 }
