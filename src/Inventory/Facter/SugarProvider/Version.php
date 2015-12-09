@@ -1,15 +1,14 @@
 <?php
 /**
- * SugarCLI
+ * Inventory
  *
  * PHP Version 5.3 -> 5.4
  * SugarCRM Versions 6.5 - 7.6
  *
  * @author Rémi Sauvat
- * @author Emmanuel Dyan
  * @copyright 2005-2015 iNet Process
  *
- * @package inetprocess/sugarcrm
+ * @package inetprocess/inventory
  *
  * @license GNU General Public License v2.0
  *

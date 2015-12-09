@@ -26,6 +26,19 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
     protected $config_options_mapping = array();
     protected $config_options = array();
 
+    public function __construct($name = null)
+    {
+        // Parent will call $this->configure()
+        parent::__construct($name);
+        $this->addConfigOption(
+            'path',
+            'p',
+            InputOption::VALUE_REQUIRED,
+            'Path to SugarCRM installation.'
+        );
+        $this->configureConfigOptions();
+    }
+
     protected function getConfigOptionMapping()
     {
         return $this->config_options_mapping;
@@ -48,19 +61,6 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
         $this->config_options[$name] = new InputOption($name, $shortcut, $mode, $description, $default);
 
         return $this;
-    }
-
-    public function __construct($name = null)
-    {
-        // Parent will call $this->configure()
-        parent::__construct($name);
-        $this->addConfigOption(
-            'path',
-            'p',
-            InputOption::VALUE_REQUIRED,
-            'Path to SugarCRM installation.'
-        );
-        $this->configureConfigOptions();
     }
 
     protected function configureConfigOptions()
