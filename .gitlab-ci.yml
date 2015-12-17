@@ -1,5 +1,6 @@
 # Used to test and build on gitlab-ci
 before_script:
+    - /run.sh
     - composer install --quiet -o
 
 phpunit:
