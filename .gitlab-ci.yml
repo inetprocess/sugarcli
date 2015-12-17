@@ -3,6 +3,7 @@ before_script:
     - composer install --quiet -o
 
 phpunit:
+    image: inet/sugarcrm:7.6.0.0-PRO
     script:
         - bin/phpunit --color=never
         - php -dphar.readonly=0 bin/compile
