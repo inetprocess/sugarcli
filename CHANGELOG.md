@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+-----
+* Support for CI run with docker image.
+
 1.7.2
 -----
 * Better error message on die() from SugarCRM.
