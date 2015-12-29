@@ -4,22 +4,23 @@
         {
             "type": "git",
             "url": "https://github.com/inetprocess/sugarcrm"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/inetprocess/inventory"
         }
     ],
     "require": {
         "php": ">=5.3.3",
         "guzzle/guzzle": "~3.9",
         "inetprocess/sugarcrm": "^1.1-dev",
+        "inetprocess/inventory": "@dev",
         "jms/serializer": "~0.16",
-        "psr/log": "~1",
         "symfony/config": "~2",
         "symfony/console": "^2.8",
         "symfony/dependency-injection": "~2",
         "symfony/filesystem": "~2",
-        "symfony/finder": "~2",
-        "symfony/process": "~2",
         "symfony/yaml": "~2",
-        "linfo/linfo": "^3.0",
         "ramsey/array_column": "^1.1"
     },
     "require-dev": {

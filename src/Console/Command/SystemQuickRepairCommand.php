@@ -43,7 +43,7 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
                  'force',
                  'f',
                  InputOption::VALUE_NONE,
-                 'Really execute the SQL queries (displayed by using -v).'
+                 'Really execute the SQL queries (displayed by using -d).'
              );
     }
 

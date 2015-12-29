@@ -27,11 +27,11 @@ use Guzzle\Http\Exception\RequestException;
 use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Exception\SugarException;
 use SugarCli\Console\ExitCode;
-use SugarCli\Inventory\Agent;
-use SugarCli\Inventory\Facter\ArrayFacter;
-use SugarCli\Inventory\Facter\MultiFacterFacter;
-use SugarCli\Inventory\Facter\SugarFacter;
-use SugarCli\Inventory\Facter\SystemFacter;
+use Inet\Inventory\Agent;
+use Inet\Inventory\Facter\ArrayFacter;
+use Inet\Inventory\Facter\MultiFacterFacter;
+use Inet\Inventory\Facter\SugarFacter;
+use Inet\Inventory\Facter\SystemFacter;
 
 class InventoryAgentCommand extends AbstractInventoryCommand
 {

@@ -24,31 +24,6 @@ namespace SugarCli\Utils;
 class Utils
 {
     /**
-     * List of Prefixes
-     *
-     * @var array
-     */
-    public static $siPrefix = array( 'B', 'KB', 'MB', 'GB', 'TB', 'EB', 'ZB', 'YB' );
-
-    /**
-     * Humanize the size bu add a Prefix
-     *
-     * @param integer $bytes
-     * @param integer $base
-     *
-     * @return string Readable size
-     */
-    public static function humanize($bytes, $base = 1024)
-    {
-        if (empty($bytes)) {
-            return '0 B';
-        }
-        $class = min((int)log($bytes, $base), count(static::$siPrefix) - 1);
-
-        return sprintf('%1.2F %s', $bytes / pow($base, $class), static::$siPrefix[$class]);
-    }
-
-    /**
      * Create a new line every X words
      *
      * @param string  $sentence

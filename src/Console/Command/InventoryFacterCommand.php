@@ -18,18 +18,18 @@
 
 namespace SugarCli\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use JMS\Serializer\SerializerBuilder;
-use JMS\Serializer\Exception\UnsupportedFormatException;
+use Inet\Inventory\Facter\ArrayFacter;
+use Inet\Inventory\Facter\MultiFacterFacter;
+use Inet\Inventory\Facter\SugarFacter;
+use Inet\Inventory\Facter\SystemFacter;
 use Inet\SugarCRM\Application;
+use JMS\Serializer\Exception\UnsupportedFormatException;
+use JMS\Serializer\SerializerBuilder;
 use SugarCli\Console\ExitCode;
-use SugarCli\Inventory\Facter\ArrayFacter;
-use SugarCli\Inventory\Facter\MultiFacterFacter;
-use SugarCli\Inventory\Facter\SugarFacter;
-use SugarCli\Inventory\Facter\SystemFacter;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 class InventoryFacterCommand extends AbstractInventoryCommand
 {
