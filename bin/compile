@@ -112,7 +112,7 @@ echo_step();
 // Add autoload and bin
 echo_step("Add autoload and bin files.");
 addFile($phar, ROOT_DIR . '/vendor/guzzle/guzzle/src/Guzzle/Http/Resources/cacert.pem');
-addFile($phar, ROOT_DIR . '/vendor/inetprocess/inventory/src/InventoryService.json');
+addFile($phar, ROOT_DIR . '/vendor/inetprocess/libinventoryclient/src/InventoryService.json');
 addFile($phar, ROOT_DIR . '/vendor/autoload.php');
 addFile($phar, ROOT_DIR . '/bin/sugarcli');
 echo_step();
