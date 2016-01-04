@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "376bccfca497783d8b12e97d4895b934",
-    "content-hash": "0ed56f84df94743e719fa8333bd6c757",
+    "hash": "141f560f810f8a8acb5cfc80f0d781a4",
+    "content-hash": "6f333594206df86a4e83abc4a63ec713",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -225,19 +225,20 @@
             "time": "2015-03-18 18:23:50"
         },
         {
-            "name": "inetprocess/inventory",
+            "name": "inetprocess/libinventoryclient",
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/inetprocess/inventory",
-                "reference": "6b68e7da9700466024bad337d7c45b9441535625"
+                "url": "https://github.com/inetprocess/libinventoryclient",
+                "reference": "b2cfbf837c6dbebbe87c0fb18ee67e5d6afd30a9"
             },
             "require": {
                 "guzzle/guzzle": "~3.9",
-                "inetprocess/sugarcrm": "^1.1-dev",
+                "inetprocess/libsugarcrm": "^1.1-dev",
                 "linfo/linfo": "^3.0",
                 "php": ">=5.3.3",
                 "psr/log": "~1",
+                "ramsey/array_column": "^1.1",
                 "symfony/finder": "~2",
                 "symfony/process": "~2"
             },
@@ -266,14 +267,14 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2015-12-29 18:19:03"
+            "time": "2016-01-04 17:23:04"
         },
         {
-            "name": "inetprocess/sugarcrm",
+            "name": "inetprocess/libsugarcrm",
             "version": "1.1.7-beta",
             "source": {
                 "type": "git",
-                "url": "https://github.com/inetprocess/sugarcrm",
+                "url": "https://github.com/inetprocess/libsugarcrm",
                 "reference": "4e55d93084ed5027866cfe37d46174df1336200e"
             },
             "require": {
@@ -2257,8 +2258,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "inetprocess/sugarcrm": 20,
-        "inetprocess/inventory": 20
+        "inetprocess/libinventoryclient": 20,
+        "inetprocess/libsugarcrm": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

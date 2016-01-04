@@ -327,3 +327,16 @@ The command `./sugarcli.phar hooks:list --module Contacts --compact` gives that 
 | No Hooks for that module         |
 +-----------+-------------+--------+
 ```
+
+# Development
+## Run tests
+Copy the file `phpunit.xml.dist` to `phpunit.xml` and edit the environment variables.
+
+Run the full test suite with `bin/phpunit` or exclude groups to avoid required external resources `bin/phpunit --exclude-group inventory,sugarcrm-db`
+
+__Available groups__:
+* inventory
+* sugarcrm-db
+* sugarcrm-path
+* sugarcrm-url
+

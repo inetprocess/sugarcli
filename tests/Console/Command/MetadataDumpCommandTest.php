@@ -9,11 +9,12 @@ use SugarCli\Util\TestLogger;
 
 use SugarCli\Tests\Console\Command\MetadataTestCase;
 
+/**
+ * @group sugarcrm-db
+ * @group sugarcrm-path
+ */
 class MetadataDumpCommandTest extends MetadataTestCase
 {
-    /**
-     * @group db
-     */
     public function testDump()
     {
         $test_dump_yaml = __DIR__ . '/metadata/test_dump.yaml';
@@ -34,9 +35,6 @@ class MetadataDumpCommandTest extends MetadataTestCase
         $fsys->remove($test_dump_yaml);
     }
 
-    /**
-     * @group db
-     */
     public function testWithNewFile()
     {
         $test_dump_yaml = __DIR__ . '/metadata/new_file.yaml';
@@ -63,9 +61,6 @@ class MetadataDumpCommandTest extends MetadataTestCase
     }
 
 
-    /**
-     * @group db
-     */
     public function testUpdateOnly()
     {
         $test_dump_yaml = __DIR__ . '/metadata/test_dump.yaml';
@@ -88,9 +83,6 @@ class MetadataDumpCommandTest extends MetadataTestCase
     }
 
 
-    /**
-     * @group db
-     */
     public function testFailure()
     {
         $test_dump_yaml = __DIR__ . '/metadata_unknwown_dir/new_file.yaml';
