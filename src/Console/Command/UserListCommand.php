@@ -76,26 +76,28 @@ class UserListCommand extends AbstractConfigOptionCommand
      */
     public function beanToArray(array $fields_name, \SugarBean $bean, $pretty = true, $lang = 'en_us')
     {
-        if ($pretty) {
-            $bm = new BeanManager($this->getService('sugarcrm.entrypoint'));
-            $md = $bm->getModuleFields('Users', $lang);
-        }
         $fields = array();
         foreach ($fields_name as $field_name) {
             $key = $field_name;
-            $value = $bean->$field_name;
-            if ($pretty) {
-                $key = $md[$field_name]['vname'];
-                switch ($md[$field_name]['type']) {
-                    case 'enum':
-                        if (isset($md[$field_name]['options_list'][$value])) {
-                            $value = $md[$field_name]['options_list'][$value];
-                        }
-                        break;
-                    case 'bool':
-                        $value = $value ? self::BOOL_TRUE : self::BOOL_FALSE;
-                        break;
-                }
+            $fields[$key] = $bean->$field_name;
+            if (!$pretty) {
+                continue;
+            }
+
+            if (!isset($md)) {
+                $bm = new BeanManager($this->getService('sugarcrm.entrypoint'));
+                $md = $bm->getModuleFields('Users', $lang);
+            }
+            $key = $md[$field_name]['vname'];
+            switch ($md[$field_name]['type']) {
+                case 'enum':
+                    if (isset($md[$field_name]['options_list'][$value])) {
+                        $value = $md[$field_name]['options_list'][$value];
+                    }
+                    break;
+                case 'bool':
+                    $value = $value ? self::BOOL_TRUE : self::BOOL_FALSE;
+                    break;
             }
             $fields[$key] = $value;
         }
