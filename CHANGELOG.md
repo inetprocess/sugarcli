@@ -1,5 +1,10 @@
 Changelog
 =========
+1.8.0
+----
+* The code has been cleaned to be published on GitHub (First public Release)
+* Inventory is now an independant library
+* README updated
 
 1.7.2
 -----
