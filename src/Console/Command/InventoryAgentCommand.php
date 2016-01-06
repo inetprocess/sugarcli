@@ -24,7 +24,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Guzzle\Service\Client as GClient;
 use Guzzle\Http\Exception\RequestException;
-use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Exception\SugarException;
 use SugarCli\Console\ExitCode;
 use Inet\Inventory\Agent;

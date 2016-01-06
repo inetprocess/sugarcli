@@ -1,5 +1,6 @@
 {
     "name": "inet/sugarcli",
+    "description": "SugarCli is a command line tool to install and manage SugarCRM installations.",
     "license": "GPL-2.0",
     "minimum-stability": "stable",
     "require": {

@@ -35,7 +35,8 @@ class Utils
     {
         // New line every 5 words
         $words = explode(' ', $sentence);
-        for ($i = 0; $i < count($words); $i++) {
+        $numWords = count($words);
+        for ($i = 0; $i < $numWords; $i++) {
             $words[$i] = ($i !== 0 && $i%$cutEvery === 0 ? PHP_EOL : '') . $words[$i];
         }
 

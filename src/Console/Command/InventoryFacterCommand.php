@@ -22,7 +22,6 @@ use Inet\Inventory\Facter\ArrayFacter;
 use Inet\Inventory\Facter\MultiFacterFacter;
 use Inet\Inventory\Facter\SugarFacter;
 use Inet\Inventory\Facter\SystemFacter;
-use Inet\SugarCRM\Application;
 use JMS\Serializer\Exception\UnsupportedFormatException;
 use JMS\Serializer\SerializerBuilder;
 use SugarCli\Console\ExitCode;
@@ -60,14 +59,14 @@ class InventoryFacterCommand extends AbstractInventoryCommand
             'sugarcrm' => array()
         );
         $source = $input->getArgument('source');
-        if (in_array('all', $source) or in_array('system', $source)) {
+        if (in_array('all', $source) || in_array('system', $source)) {
             $facter = new MultiFacterFacter(array(
                 new SystemFacter(),
                 new ArrayFacter($this->getCustomFacts($input, 'system'))
             ));
             $all_facts['system'] = $facter->getFacts();
         }
-        if (in_array('all', $source) or in_array('sugarcrm', $source)) {
+        if (in_array('all', $source) || in_array('sugarcrm', $source)) {
             $this->setSugarPath($this->getConfigOption($input, 'path'));
             $sugar_facter = new MultiFacterFacter(array(
                 new SugarFacter(
