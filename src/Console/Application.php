@@ -105,7 +105,7 @@ class Application extends BaseApplication
 
     public function configure(InputInterface $input = null, OutputInterface $output = null)
     {
-        if ($output == null) {
+        if (is_null($output)) {
             $output = new ConsoleOutput();
         }
         $this->container = new ContainerBuilder();
