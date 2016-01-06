@@ -1,6 +1,5 @@
 * Delete all records from a module
 * Config file in home user
-* repair & rebuild
 * ServerCheck (plug-able external module)
     * Add custom facts from cmd line.
 * Anonymization
