@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e9fbf241be6a09b59baf0314d613a4de",
-    "content-hash": "a89097de850c0b2edd0c16094d3f673b",
+    "hash": "4ba4ff8ef917c184902c9ab7937588ca",
+    "content-hash": "1b352b2cdfb52b26f36c4a9be7cab9b9",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -226,11 +226,17 @@
         },
         {
             "name": "inetprocess/libinventoryclient",
-            "version": "dev-master",
+            "version": "v1.0.1-beta",
             "source": {
                 "type": "git",
-                "url": "https://github.com/inetprocess/libinventoryclient",
-                "reference": "e903d3488e9d7703ecef57c870337fd77ae0e45c"
+                "url": "https://github.com/inetprocess/libinventoryclient.git",
+                "reference": "89b8948bc2b0a3edbc7137b37b4baf2aa356da5b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inetprocess/libinventoryclient/zipball/89b8948bc2b0a3edbc7137b37b4baf2aa356da5b",
+                "reference": "89b8948bc2b0a3edbc7137b37b4baf2aa356da5b",
+                "shasum": ""
             },
             "require": {
                 "guzzle/guzzle": "~3.9",
@@ -252,11 +258,10 @@
                     "Inet\\Inventory\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Inet\\Inventory\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
             "authors": [
                 {
                     "name": "Rémi Sauvat",
@@ -267,15 +272,21 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2016-01-05 14:49:37"
+            "time": "2016-01-06 15:53:03"
         },
         {
             "name": "inetprocess/libsugarcrm",
-            "version": "1.1.7-beta",
+            "version": "1.1.8-beta",
             "source": {
                 "type": "git",
-                "url": "https://github.com/inetprocess/libsugarcrm",
-                "reference": "4e55d93084ed5027866cfe37d46174df1336200e"
+                "url": "https://github.com/inetprocess/libsugarcrm.git",
+                "reference": "90c5f54eae69eec0957bee071e4be21cc602936a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/90c5f54eae69eec0957bee071e4be21cc602936a",
+                "reference": "90c5f54eae69eec0957bee071e4be21cc602936a",
+                "shasum": ""
             },
             "require": {
                 "php": ">=5.3",
@@ -294,11 +305,10 @@
                     "Inet\\SugarCRM\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Inet\\SugarCRM\\Tests\\": "tests/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
             "authors": [
                 {
                     "name": "Emmanuel Dyan",
@@ -307,9 +317,10 @@
             ],
             "description": "This library provides a various classes to interact with SugarCRM",
             "keywords": [
+                "sugarcli",
                 "sugarcrm"
             ],
-            "time": "2015-12-08 17:52:27"
+            "time": "2016-01-06 15:49:13"
         },
         {
             "name": "jms/metadata",
@@ -2258,8 +2269,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "inetprocess/libinventoryclient": 20,
-        "inetprocess/libsugarcrm": 20
+        "inetprocess/libinventoryclient": 10,
+        "inetprocess/libsugarcrm": 10
     },
     "prefer-stable": false,
     "prefer-lowest": false,
