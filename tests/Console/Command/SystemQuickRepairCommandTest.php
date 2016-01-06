@@ -11,6 +11,9 @@ use Inet\SugarCRM\Application as SugarApp;
 use Inet\SugarCRM\EntryPoint;
 use SugarCli\Console\Application;
 
+/**
+ * @group sugarcrm-path
+ */
 class SystemQuickRepairCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function getEntryPointInstance()

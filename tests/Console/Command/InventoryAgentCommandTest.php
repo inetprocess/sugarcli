@@ -24,6 +24,10 @@ class InventoryAgentCommandTest extends \PHPUnit_Framework_TestCase
         return new CommandTester($cmd);
     }
 
+    /**
+     * @group inventory
+     * @group sugarcrm-path
+     */
     public function testSuccess()
     {
         $cmd = $this->getCommandTester();
@@ -40,6 +44,9 @@ class InventoryAgentCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Successfuly sent report to inventory server.' . PHP_EOL, $cmd->getDisplay());
     }
 
+    /**
+     * @group sugarcrm-path
+     */
     public function testFailInventory()
     {
         $cmd = $this->getCommandTester();

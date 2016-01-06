@@ -8,14 +8,12 @@ use SugarCli\Console\Application;
 use SugarCli\Util\TestLogger;
 
 /**
- * @group db
+ * @group sugarcrm-db
+ * @group sugarcrm-path
  */
 class MetadataStatusCommandTest extends MetadataTestCase
 {
 
-    /**
-     * @group db
-     */
     public function testStatus()
     {
         $cmd = $this->app->find('metadata:status');
@@ -64,9 +62,6 @@ class MetadataStatusCommandTest extends MetadataTestCase
         }
     }
 
-    /**
-     * @group db
-     */
     public function testMissingMetadataFile()
     {
         $logger = $this->app->getContainer()->get('logger');

@@ -16,7 +16,8 @@ use SugarCli\Console\Application;
 use SugarCli\Console\Command\UserUpdateCommand;
 
 /**
- * @group sugarcrm
+ * @group sugarcrm-db
+ * @group sugarcrm-path
  */
 class UserUpdateCommandTest extends DatabaseTestCase
 {

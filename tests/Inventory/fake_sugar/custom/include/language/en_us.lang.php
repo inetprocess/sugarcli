@@ -1,3 +1,0 @@
-<?php
-
-$GLOBALS['test'] = 'foo';

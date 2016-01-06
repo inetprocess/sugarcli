@@ -5,10 +5,15 @@ if (ini_get('phar.readonly') == '1') {
     echo "usage: php -dphar.readonly=0 $argv[0]\n";
     exit(1);
 }
+function exception_error_handler($errno, $errstr, $errfile, $errline)
+{
+    throw new ErrorException($errstr, $errno, 0, $errfile, $errline);
+}
+set_error_handler("exception_error_handler");
 
 
 define('ROOT_DIR', dirname(__DIR__));
-define('BUILD_TARGET', ROOT_DIR . '/build//sugarcli.phar');
+define('BUILD_TARGET', ROOT_DIR . '/build/sugarcli.phar');
 
 require ROOT_DIR . '/vendor/autoload.php';
 
@@ -28,6 +33,10 @@ function echo_step($msg = null)
 function addFile($phar, $file)
 {
     $path = str_replace(ROOT_DIR . '/', '', $file);
+    if (!is_readable($file)) {
+        print "Error: Unable to read or file is missing: $file" . PHP_EOL;
+        exit(1);
+    }
     $content = file_get_contents($file);
     /* print "addFile: $path = $file\n"; */
 
@@ -69,7 +78,7 @@ $finder->files()
     ->in(ROOT_DIR . '/vendor/composer')
     ->in(ROOT_DIR . '/vendor/doctrine')
     ->in(ROOT_DIR . '/vendor/guzzle')
-    ->in(ROOT_DIR . '/vendor/inetprocess/sugarcrm')
+    ->in(ROOT_DIR . '/vendor/inetprocess')
     ->in(ROOT_DIR . '/vendor/jms')
     ->in(ROOT_DIR . '/vendor/linfo')
     ->in(ROOT_DIR . '/vendor/phpcollection/phpcollection')
@@ -103,7 +112,7 @@ echo_step();
 // Add autoload and bin
 echo_step("Add autoload and bin files.");
 addFile($phar, ROOT_DIR . '/vendor/guzzle/guzzle/src/Guzzle/Http/Resources/cacert.pem');
-addFile($phar, ROOT_DIR . '/src/Inventory/InventoryService.json');
+addFile($phar, ROOT_DIR . '/vendor/inetprocess/libinventoryclient/src/InventoryService.json');
 addFile($phar, ROOT_DIR . '/vendor/autoload.php');
 addFile($phar, ROOT_DIR . '/bin/sugarcli');
 echo_step();

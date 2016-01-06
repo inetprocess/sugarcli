@@ -7,6 +7,10 @@ use Symfony\Component\Filesystem\Filesystem;
 
 use SugarCli\Util\TestLogger;
 
+/**
+ * @group sugarcrm-db
+ * @group sugarcrm-path
+ */
 class MetadataLoadCommandTest extends MetadataTestCase
 {
     protected $commandTester = null;
@@ -24,9 +28,6 @@ class MetadataLoadCommandTest extends MetadataTestCase
         $this->commandTester = null;
     }
 
-    /**
-     * @group db
-     */
     public function testLoad()
     {
         $this->commandTester->execute(
@@ -43,9 +44,6 @@ class MetadataLoadCommandTest extends MetadataTestCase
         $this->assertTablesEqual($this->getDataSet()->getTable('fields_meta_data'), $queryTable);
     }
 
-    /**
-     * @group db
-     */
     public function testSql()
     {
 
@@ -71,9 +69,6 @@ EOS;
         $this->assertEquals($expected_sql, $this->commandTester->getDisplay());
     }
 
-    /**
-     * @group db
-     */
     public function testForce()
     {
         $this->commandTester->execute(
@@ -95,9 +90,6 @@ EOS;
         $this->assertTablesEqual($expected->getTable('fields_meta_data'), $queryTable);
     }
 
-    /**
-     * @group db
-     */
     public function testWrongMetadataFile()
     {
         $logger = $this->app->getContainer()->get('logger');
@@ -114,9 +106,6 @@ EOS;
 
     }
 
-    /**
-     * @group db
-     */
     public function testWrongSugarDir()
     {
         $logger = $this->app->getContainer()->get('logger');

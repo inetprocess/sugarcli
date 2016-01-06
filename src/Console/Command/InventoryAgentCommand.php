@@ -1,4 +1,20 @@
 <?php
+/**
+ * SugarCLI
+ *
+ * PHP Version 5.3 -> 5.4
+ * SugarCRM Versions 6.5 - 7.6
+ *
+ * @author Rémi Sauvat
+ * @author Emmanuel Dyan
+ * @copyright 2005-2015 iNet Process
+ *
+ * @package inetprocess/sugarcrm
+ *
+ * @license GNU General Public License v2.0
+ *
+ * @link http://www.inetprocess.com
+ */
 
 namespace SugarCli\Console\Command;
 
@@ -11,11 +27,11 @@ use Guzzle\Http\Exception\RequestException;
 use Inet\SugarCRM\Application;
 use Inet\SugarCRM\Exception\SugarException;
 use SugarCli\Console\ExitCode;
-use SugarCli\Inventory\Agent;
-use SugarCli\Inventory\Facter\ArrayFacter;
-use SugarCli\Inventory\Facter\MultiFacterFacter;
-use SugarCli\Inventory\Facter\SugarFacter;
-use SugarCli\Inventory\Facter\SystemFacter;
+use Inet\Inventory\Agent;
+use Inet\Inventory\Facter\ArrayFacter;
+use Inet\Inventory\Facter\MultiFacterFacter;
+use Inet\Inventory\Facter\SugarFacter;
+use Inet\Inventory\Facter\SystemFacter;
 
 class InventoryAgentCommand extends AbstractInventoryCommand
 {

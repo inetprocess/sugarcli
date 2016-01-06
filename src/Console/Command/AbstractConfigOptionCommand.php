@@ -1,4 +1,20 @@
 <?php
+/**
+ * SugarCLI
+ *
+ * PHP Version 5.3 -> 5.4
+ * SugarCRM Versions 6.5 - 7.6
+ *
+ * @author Rémi Sauvat
+ * @author Emmanuel Dyan
+ * @copyright 2005-2015 iNet Process
+ *
+ * @package inetprocess/sugarcrm
+ *
+ * @license GNU General Public License v2.0
+ *
+ * @link http://www.inetprocess.com
+ */
 
 namespace SugarCli\Console\Command;
 
@@ -9,6 +25,19 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
 {
     protected $config_options_mapping = array();
     protected $config_options = array();
+
+    public function __construct($name = null)
+    {
+        // Parent will call $this->configure()
+        parent::__construct($name);
+        $this->addConfigOption(
+            'path',
+            'p',
+            InputOption::VALUE_REQUIRED,
+            'Path to SugarCRM installation.'
+        );
+        $this->configureConfigOptions();
+    }
 
     protected function getConfigOptionMapping()
     {
@@ -32,19 +61,6 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
         $this->config_options[$name] = new InputOption($name, $shortcut, $mode, $description, $default);
 
         return $this;
-    }
-
-    public function __construct($name = null)
-    {
-        // Parent will call $this->configure()
-        parent::__construct($name);
-        $this->addConfigOption(
-            'path',
-            'p',
-            InputOption::VALUE_REQUIRED,
-            'Path to SugarCRM installation.'
-        );
-        $this->configureConfigOptions();
     }
 
     protected function configureConfigOptions()

@@ -24,7 +24,7 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @group sugar
+     * @group sugarcrm-path
      */
     public function testJsonFormat()
     {
@@ -53,6 +53,9 @@ class InventoryFacterCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(3, $cmd->getStatusCode());
     }
 
+    /**
+     * @group sugarcrm-path
+     */
     public function testSugarcrmOnly()
     {
         $cmd = $this->getCommandTester();
