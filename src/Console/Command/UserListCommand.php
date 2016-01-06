@@ -79,7 +79,7 @@ class UserListCommand extends AbstractConfigOptionCommand
         $fields = array();
         foreach ($fields_name as $field_name) {
             $key = $field_name;
-            $fields[$key] = $bean->$field_name;
+            $fields[$key] = $value = $bean->$field_name;
             if (!$pretty) {
                 continue;
             }
