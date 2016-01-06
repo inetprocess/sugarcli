@@ -10,6 +10,8 @@
             "url": "https://github.com/inetprocess/libinventoryclient"
         }
     ],
+    "license": "GPL-2.0",
+    "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.3",
         "guzzle/guzzle": "~3.9",
