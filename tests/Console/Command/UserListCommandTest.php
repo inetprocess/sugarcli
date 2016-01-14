@@ -89,4 +89,42 @@ class UserListCommandTest extends \PHPUnit_Framework_TestCase
         ));
         $this->assertEquals(3, $cmd->getStatusCode());
     }
+
+    public function testRawOutput()
+    {
+        $cmd = $this->getCommandTester();
+        $cmd->execute(array(
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            '--format' => 'json',
+            '--raw' => null,
+            '--username' => 'admin',
+            '-F' => 'id,user_name',
+        ));
+        $this->assertEquals(0, $cmd->getStatusCode());
+        $data = json_decode($cmd->getDisplay(), true);
+        $expected_data = array(array(
+            'id' => '1',
+            'user_name' => 'admin',
+        ));
+        $this->assertEquals($expected_data, $data);
+    }
+
+    public function testPrettyOutput()
+    {
+        $cmd = $this->getCommandTester();
+        $cmd->execute(array(
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            '--format' => 'json',
+            '--lang' => 'fr_FR',
+            '--username' => 'admin',
+            '-F' => 'id,user_name',
+        ));
+        $this->assertEquals(0, $cmd->getStatusCode());
+        $data = json_decode($cmd->getDisplay(), true);
+        $expected_data = array(array(
+            'ID' => '1',
+            'Login' => 'admin',
+        ));
+        $this->assertEquals($expected_data, $data);
+    }
 }

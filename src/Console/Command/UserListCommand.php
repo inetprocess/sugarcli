@@ -63,56 +63,12 @@ class UserListCommand extends AbstractConfigOptionCommand
                 InputOption::VALUE_REQUIRED,
                 'Lang for display.',
                 'en_us'
+            )->addOption(
+                'raw',
+                'r',
+                InputOption::VALUE_NONE,
+                'Display raw data.'
             );
-    }
-
-    /**
-     * Fetch values for fields name from bean
-     *
-     * @param $pretty if true, will return the display name from the language.
-     * @param $lang language to use in pretty mode. Default to en_us.
-     *
-     * @return An array of key => value pairs.
-     */
-    public function beanToArray(array $fields_name, \SugarBean $bean, $pretty = true, $lang = 'en_us')
-    {
-        $fields = array();
-        foreach ($fields_name as $field_name) {
-            $key = $field_name;
-            $fields[$key] = $value = $bean->$field_name;
-            if (!$pretty) {
-                continue;
-            }
-
-            if (!isset($md)) {
-                $bm = new BeanManager($this->getService('sugarcrm.entrypoint'));
-                $md = $bm->getModuleFields('Users', $lang);
-            }
-            $key = $md[$field_name]['vname'];
-            switch ($md[$field_name]['type']) {
-                case 'enum':
-                    if (isset($md[$field_name]['options_list'][$value])) {
-                        $value = $md[$field_name]['options_list'][$value];
-                    }
-                    break;
-                case 'bool':
-                    $value = $value ? self::BOOL_TRUE : self::BOOL_FALSE;
-                    break;
-            }
-            $fields[$key] = $value;
-        }
-
-        return $fields;
-    }
-
-    public function beanListToArray(array $fields_name, array $bean_list, $pretty = true, $lang = 'en_us')
-    {
-        $ret = array();
-        foreach ($bean_list as $bean) {
-            $ret[] = $this->beanToArray($fields_name, $bean, $pretty, $lang);
-        }
-
-        return $ret;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -123,13 +79,14 @@ class UserListCommand extends AbstractConfigOptionCommand
         $user_name = $input->getOption('username');
         $lang = $input->getOption('lang');
         $fields = explode(',', $input->getOption('fields'));
+        $pretty = !$input->getOption('raw');
+        $bm = new BeanManager($this->getService('sugarcrm.entrypoint'));
         $bean_list = array();
         try {
             if (!empty($user_name)) {
                 $um = new UsersManager($this->getService('sugarcrm.entrypoint'));
                 $bean_list[] = $um->getUserBeanByName($user_name);
             } else {
-                $bm = new BeanManager($this->getService('sugarcrm.entrypoint'));
                 $bean_list = $bm->getList('Users');
             }
         } catch (BeanNotFoundException $e) {
@@ -142,14 +99,17 @@ class UserListCommand extends AbstractConfigOptionCommand
             // Output table
             $table = new Table($output);
             $table->setStyle('borderless');
-            $fields_data = $this->beanListToArray($fields, $bean_list, true, $lang);
+            $fields_data = $bm->beanListToArray($fields, $bean_list, $pretty, $lang);
             $table->setHeaders(array_keys($fields_data[0]));
             $table->setRows($fields_data);
             $table->render();
         } else {
             $serial = SerializerBuilder::create()->build();
             try {
-                $output->write($serial->serialize($this->beanListToArray($fields, $bean_list), $format));
+                $output->write($serial->serialize(
+                    $bm->beanListToArray($fields, $bean_list, $pretty, $lang),
+                    $format
+                ));
             } catch (UnsupportedFormatException $e) {
                 $output->write("<comment>Format $format is not supported.</comment>\n");
 
