@@ -24,6 +24,6 @@ mirror:
     only:
         - master
     script:
-        - git push git@github.com:inetprocess/sugarcli.git master
+        - git push git@github.com:inetprocess/sugarcli.git HEAD:master
         - git push --tags git@github.com:inetprocess/sugarcli.git
 
