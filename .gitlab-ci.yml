@@ -1,11 +1,28 @@
-# Used to test and build on gitlab-ci
-before_script:
-    - composer install --quiet -o
+# Automatic build and test against SugarCRM 7.X
+# Push to github on success.
+
+stages:
+    - test
+    - build
+    - publish
 
 phpunit:
+    stage: test
     script:
+        - composer install --quiet -o
         - bin/phpunit --color=never
+phar:
+    stage: build
+    script:
+        - composer install --no-dev --quiet -o
         - php -dphar.readonly=0 bin/compile
-    cache:
+    artifacts:
         paths:
-            - vendor
+            - build/sugarcli.phar
+mirror:
+    stage: publish
+    only:
+        - master
+    script:
+        - git push --mirror git@github.com:inetprocess/sugarcli.git
+
