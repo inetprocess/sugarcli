@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "4ba4ff8ef917c184902c9ab7937588ca",
+    "hash": "e340bedfe0ed96101eca8e2d8c731937",
     "content-hash": "1b352b2cdfb52b26f36c4a9be7cab9b9",
     "packages": [
         {
@@ -276,16 +276,16 @@
         },
         {
             "name": "inetprocess/libsugarcrm",
-            "version": "1.1.8-beta",
+            "version": "1.1.9-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/libsugarcrm.git",
-                "reference": "90c5f54eae69eec0957bee071e4be21cc602936a"
+                "reference": "66f8bb4d26638a454c20e3ca49f06aaf45f97261"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/90c5f54eae69eec0957bee071e4be21cc602936a",
-                "reference": "90c5f54eae69eec0957bee071e4be21cc602936a",
+                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/66f8bb4d26638a454c20e3ca49f06aaf45f97261",
+                "reference": "66f8bb4d26638a454c20e3ca49f06aaf45f97261",
                 "shasum": ""
             },
             "require": {
@@ -320,7 +320,7 @@
                 "sugarcli",
                 "sugarcrm"
             ],
-            "time": "2016-01-06 15:49:13"
+            "time": "2016-01-14 10:28:51"
         },
         {
             "name": "jms/metadata",

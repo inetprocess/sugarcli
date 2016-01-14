@@ -1,5 +1,11 @@
 Changelog
 =========
+
+1.8.1
+----
+* Fixes from analysis tools reports.
+* Update libsugarcrm to 1.1.9-beta
+
 1.8.0
 ----
 * The code has been cleaned to be published on GitHub (First public Release)
