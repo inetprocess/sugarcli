@@ -4,7 +4,8 @@ Changelog
 1.8.1
 ----
 * Fixes from analysis tools reports.
-* Update libsugarcrm to 1.1.9-beta
+* Update libsugarcrm to 1.1.10-beta
+* Improvements to `user:list`
 
 1.8.0
 ----
