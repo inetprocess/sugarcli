@@ -18,6 +18,8 @@
 
 namespace SugarCli\Utils;
 
+use Symfony\Component\Yaml\Dumper as YamlDumper;
+
 /**
  * Various Utils
  */
@@ -41,5 +43,28 @@ class Utils
         }
 
         return implode(' ', $words);
+    }
+
+    /**
+     * Generate a YAML file from an array
+     *
+     * @param array  $data
+     * @param string $outputFile
+     *
+     * @throws \InvalidArgumentException
+     */
+    public static function generateYaml(array $data, $outputFile)
+    {
+        $outputFileDir = dirname($outputFile);
+        if (!is_dir($outputFileDir)) {
+            throw new \InvalidArgumentException("$outputFileDir is not a valid directory (" . __FUNCTION__ . ')');
+        }
+
+        $dumper = new YamlDumper();
+        $dumper->setIndentation(4);
+        $yaml = $dumper->dump($data, 3);
+        file_put_contents($outputFile, $yaml);
+
+        return true;
     }
 }

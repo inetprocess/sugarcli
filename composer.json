@@ -5,6 +5,7 @@
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.3",
+        "csanquer/colibri-csv" : "1.1.*",
         "guzzle/guzzle": "~3.9",
         "inetprocess/libinventoryclient": "^1.0-beta",
         "inetprocess/libsugarcrm": "^1.1-beta",

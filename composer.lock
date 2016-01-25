@@ -4,9 +4,68 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e340bedfe0ed96101eca8e2d8c731937",
-    "content-hash": "1b352b2cdfb52b26f36c4a9be7cab9b9",
+    "hash": "83b1a762dd102ef2e59ab6d7d58097ac",
+    "content-hash": "fd755087062e0d0a0435d94da383f1e1",
     "packages": [
+        {
+            "name": "csanquer/colibri-csv",
+            "version": "v1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/csanquer/colibri-csv.git",
+                "reference": "b2928b1add8dcb8d2525989bb10b5d11a4251931"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/csanquer/colibri-csv/zipball/b2928b1add8dcb8d2525989bb10b5d11a4251931",
+                "reference": "b2928b1add8dcb8d2525989bb10b5d11a4251931",
+                "shasum": ""
+            },
+            "require": {
+                "ext-mbstring": "*",
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "doctrine/inflector": "~1.0",
+                "fzaninotto/faker": "~1.3",
+                "symfony/stopwatch": "~2.4"
+            },
+            "suggest": {
+                "ext-iconv": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "CSanquer\\ColibriCsv\\": "src/",
+                    "CSanquer\\ColibriCsv\\Tests\\": "tests/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL-3.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Charles Sanquer",
+                    "email": "charles.sanquer@gmail.com"
+                }
+            ],
+            "description": "Lightweight and performant CSV reader and writer library",
+            "keywords": [
+                "csv",
+                "export",
+                "import",
+                "parser",
+                "reader",
+                "writer"
+            ],
+            "time": "2014-11-09 11:14:39"
+        },
         {
             "name": "doctrine/annotations",
             "version": "v1.2.7",
@@ -276,16 +335,16 @@
         },
         {
             "name": "inetprocess/libsugarcrm",
-            "version": "1.1.10-beta",
+            "version": "1.1.11-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/libsugarcrm.git",
-                "reference": "c84a0a3545f50a4719cb341738edd962c2e49851"
+                "reference": "be95c295c4a7134e85a51aa67c89c76f6b18aadb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/c84a0a3545f50a4719cb341738edd962c2e49851",
-                "reference": "c84a0a3545f50a4719cb341738edd962c2e49851",
+                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/be95c295c4a7134e85a51aa67c89c76f6b18aadb",
+                "reference": "be95c295c4a7134e85a51aa67c89c76f6b18aadb",
                 "shasum": ""
             },
             "require": {
@@ -307,12 +366,16 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0"
+                "Apache-2.0"
             ],
             "authors": [
                 {
                     "name": "Emmanuel Dyan",
                     "email": "emmanuel.dyan@inetprocess.com"
+                },
+                {
+                    "name": "Rémi Sauvat",
+                    "email": "remi.sauvat@inetprocess.com"
                 }
             ],
             "description": "This library provides a various classes to interact with SugarCRM",
@@ -320,7 +383,7 @@
                 "sugarcli",
                 "sugarcrm"
             ],
-            "time": "2016-01-14 14:31:03"
+            "time": "2016-01-20 16:37:19"
         },
         {
             "name": "jms/metadata",
@@ -1044,16 +1107,16 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.0.1",
+            "version": "v1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "49ff736bd5d41f45240cec77b44967d76e0c3d25"
+                "reference": "1289d16209491b584839022f29257ad859b8532d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/49ff736bd5d41f45240cec77b44967d76e0c3d25",
-                "reference": "49ff736bd5d41f45240cec77b44967d76e0c3d25",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/1289d16209491b584839022f29257ad859b8532d",
+                "reference": "1289d16209491b584839022f29257ad859b8532d",
                 "shasum": ""
             },
             "require": {
@@ -1065,7 +1128,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.0-dev"
+                    "dev-master": "1.1-dev"
                 }
             },
             "autoload": {
@@ -1099,7 +1162,7 @@
                 "portable",
                 "shim"
             ],
-            "time": "2015-11-20 09:19:13"
+            "time": "2016-01-20 09:13:37"
         },
         {
             "name": "symfony/process",
@@ -1257,16 +1320,16 @@
         },
         {
             "name": "fabpot/php-cs-fixer",
-            "version": "v1.11",
+            "version": "v1.11.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FriendsOfPHP/PHP-CS-Fixer.git",
-                "reference": "bd3ec2c2b774e0e127ac2c737ec646d9cf2f9eef"
+                "reference": "2c9f8298181f059c5077abda78019b9a0c9a7cc0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/bd3ec2c2b774e0e127ac2c737ec646d9cf2f9eef",
-                "reference": "bd3ec2c2b774e0e127ac2c737ec646d9cf2f9eef",
+                "url": "https://api.github.com/repos/FriendsOfPHP/PHP-CS-Fixer/zipball/2c9f8298181f059c5077abda78019b9a0c9a7cc0",
+                "reference": "2c9f8298181f059c5077abda78019b9a0c9a7cc0",
                 "shasum": ""
             },
             "require": {
@@ -1307,7 +1370,7 @@
                 }
             ],
             "description": "A tool to automatically fix PHP code style",
-            "time": "2015-12-01 22:34:33"
+            "time": "2016-01-20 19:00:28"
         },
         {
             "name": "phpdocumentor/reflection-docblock",
