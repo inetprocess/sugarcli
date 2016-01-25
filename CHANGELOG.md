@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(Unreleased)
+----
+* Added a new command to extract the list of fields and relationships from a module as a CSV file
+
 1.8.1
 ----
 * Fixes from analysis tools reports.
