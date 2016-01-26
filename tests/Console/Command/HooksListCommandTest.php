@@ -70,7 +70,7 @@ class HooksListCommandTest extends \PHPUnit_Framework_TestCase
     public function testListHookRightModule()
     {
         $cmd = $this->getCommandTester();
-        $result = $cmd->execute(array(
+        $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--module' => 'Opportunities'
         ));
@@ -84,7 +84,7 @@ class HooksListCommandTest extends \PHPUnit_Framework_TestCase
     public function testListHookCompactRightModule()
     {
         $cmd = $this->getCommandTester();
-        $result = $cmd->execute(array(
+        $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--module' => 'Meetings',
             '--compact' => null,
@@ -100,7 +100,7 @@ class HooksListCommandTest extends \PHPUnit_Framework_TestCase
     public function testListHookRightModuleEmptyHooks()
     {
         $cmd = $this->getCommandTester();
-        $result = $cmd->execute(array(
+        $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--module' => 'Leads'
         ));
