@@ -1,0 +1,20 @@
+{
+    "require-dev": {
+        "inetprocess/libsugarcrm": "^1-beta"
+    },
+    "autoload": {
+        "psr-0": {
+            "": "include/lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Inet\\SugarCRM\\Tests\\": "vendor/inetprocess/libsugarcrm/tests/"
+        }
+    },
+    "config": {
+         "platform": {
+            "php": "[[PHP_VERSION]]"
+         }
+    }
+}

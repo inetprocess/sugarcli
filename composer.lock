@@ -335,16 +335,16 @@
         },
         {
             "name": "inetprocess/libsugarcrm",
-            "version": "1.1.12-beta",
+            "version": "1.1.13-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/libsugarcrm.git",
-                "reference": "aeae6f9ec6976a97392f5bc61c5ef7cb0735f012"
+                "reference": "6e16851a7f9af07c90395338fbfe38085d2fe1fc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/aeae6f9ec6976a97392f5bc61c5ef7cb0735f012",
-                "reference": "aeae6f9ec6976a97392f5bc61c5ef7cb0735f012",
+                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/6e16851a7f9af07c90395338fbfe38085d2fe1fc",
+                "reference": "6e16851a7f9af07c90395338fbfe38085d2fe1fc",
                 "shasum": ""
             },
             "require": {
@@ -383,7 +383,7 @@
                 "sugarcli",
                 "sugarcrm"
             ],
-            "time": "2016-01-26 13:24:53"
+            "time": "2016-01-27 14:02:54"
         },
         {
             "name": "jms/metadata",
