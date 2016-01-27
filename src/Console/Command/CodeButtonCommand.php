@@ -27,6 +27,12 @@ use Inet\SugarCRM\MetadataParser;
 class CodeButtonCommand extends AbstractConfigOptionCommand
 {
     /**
+     * Store Options values
+     * @var    array
+     */
+    protected $options = array();
+
+    /**
      * Configure the command
      */
     protected function configure()
@@ -73,69 +79,74 @@ class CodeButtonCommand extends AbstractConfigOptionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->setSugarPath($this->getConfigOption($input, 'path'));
-        $ep = $this->getService('sugarcrm.entrypoint');
-        $bm = new BeanManager($ep);
-        $module = $input->getOption('module');
+        $this->checkOptions($input);
+
+        $utils = new MetadataParser($this->getService('sugarcrm.entrypoint'));
+        $langPath = "custom/Extension/modules/{$this->options['module']}/Ext/Language";
+        $recordView = "custom/modules/{$this->options['module']}/clients/base/views/record/record.php";
+        switch ($this->options['action']) {
+            case 'add':
+                $utils->addButtonInRecordView($this->options['module'], $this->options['name']);
+                if ($input->getOption('javascript') === true) {
+                    $output->writeln('<comment>--javascript is experimental !</comment>');
+                    $this->addJsToRecord($this->options['name'], $input, $output);
+                }
+                $output->writeln('Button Added as well as its label.');
+                $output->writeln("Check <info>$langPath</info> and <info>$recordView</info>");
+                break;
+            case 'delete':
+                $utils->deleteButtonInRecordView($this->options['module'], $this->options['name']);
+                $output->writeln('Button Deleted as well as its label.');
+                $output->writeln("Check <info>$langPath</info> and <info>$recordView</info>");
+                $output->writeln("You must manually remove your method {$this->options['name']} in the record.js file");
+                break;
+        }
+    }
+
+    /**
+     * Check required options and their values
+     * @param     InputInterface    $input
+     */
+    protected function checkOptions(InputInterface $input)
+    {
+        $this->options['module'] = $input->getOption('module');
         // Get the file as a parameter
-        if (empty($module)) {
-            $moduleList = array_keys($ep->getBeansList());
+        if (empty($this->options['module'])) {
+            $moduleList = array_keys($this->getService('sugarcrm.entrypoint')->getBeansList());
             $msg = 'You must define the module with --module';
             $msg.= PHP_EOL . PHP_EOL . 'List of Available modules: ' . PHP_EOL;
             $msg.= '    - ' . implode(PHP_EOL . '    - ', $moduleList);
             throw new \InvalidArgumentException($msg);
         }
 
-        $action = $input->getOption('action');
-        if (empty($action) || !in_array($action, array('add', 'delete'))) {
+        $this->options['action'] = $input->getOption('action');
+        if (empty($this->options['action']) || !in_array($this->options['action'], array('add', 'delete'))) {
             throw new \InvalidArgumentException('Action must be "--action add" or "--action delete"');
         }
 
-        $name = $input->getOption('name');
-        if (empty($name)) {
+        $this->options['name'] = $input->getOption('name');
+        if (empty($this->options['name'])) {
             throw new \InvalidArgumentException('You must define the button\'s name');
         }
 
-        $type = $input->getOption('type');
-        if (empty($type) || !in_array($type, array('dropdown'))) {
+        $this->options['type'] = $input->getOption('type');
+        if (empty($this->options['type']) || !in_array($this->options['type'], array('dropdown'))) {
             throw new \InvalidArgumentException('Type must be "--type dropdown" (for now)');
-        }
-
-        $utils = new MetadataParser($ep);
-        $langPath = "custom/Extension/modules/$module/Ext/Language";
-        $recordView = "custom/modules/$module/clients/base/views/record/record.php";
-        switch ($action) {
-            case 'add':
-                $utils->addButtonInRecordView($module, $input->getOption('name'));
-                if ($input->getOption('javascript') === true) {
-                    $output->writeln('<comment>--javascript is experimental !</comment>');
-                    $this->addJsToRecord($module, $name, $input, $output);
-                }
-                $output->writeln('Button Added as well as its label.');
-                $output->writeln("Check <info>$langPath</info> and <info>$recordView</info>");
-                break;
-            case 'delete':
-                $utils->deleteButtonInRecordView($module, $input->getOption('name'));
-                $output->writeln('Button Deleted as well as its label.');
-                $output->writeln("Check <info>$langPath</info> and <info>$recordView</info>");
-                $output->writeln("You must manually remove your method $name in the record.js file");
-                break;
         }
     }
 
     /**
      * Add Javascript to the record view
      *
-     * @param string          $module
-     * @param string          $name
      * @param InputInterface  $input
      * @param OutputInterface $output
      */
-    protected function addJsToRecord($module, $name, InputInterface $input, OutputInterface $output)
+    protected function addJsToRecord(InputInterface $input, OutputInterface $output)
     {
         // identify first the record.js file
         $recordJs = $this->getConfigOption($input, 'path');
         $recordJs.= "/custom/modules/$module/clients/base/views/record/record.js";
-        $btnName = 'btn' . ucfirst(strtolower($name));
+        $btnName = 'btn' . ucfirst(strtolower($this->options['name']));
         $today = date('Y-m-d \a\t H:i:s');
         if (file_exists($recordJs)) {
             $jsCode = "    ,
