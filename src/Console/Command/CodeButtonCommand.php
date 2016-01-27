@@ -89,7 +89,7 @@ class CodeButtonCommand extends AbstractConfigOptionCommand
                 $utils->addButtonInRecordView($this->options['module'], $this->options['name']);
                 if ($input->getOption('javascript') === true) {
                     $output->writeln('<comment>--javascript is experimental !</comment>');
-                    $this->addJsToRecord($this->options['name'], $input, $output);
+                    $this->addJsToRecord($input, $output);
                 }
                 $output->writeln('Button Added as well as its label.');
                 $output->writeln("Check <info>$langPath</info> and <info>$recordView</info>");
