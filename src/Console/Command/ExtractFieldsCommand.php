@@ -11,7 +11,7 @@
  *
  * @package inetprocess/sugarcrm
  *
- * @license GNU General Public License v2.0
+ * @license Apache License 2.0
  *
  * @link http://www.inetprocess.com
  */
@@ -52,7 +52,7 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
                          defined by --module to SugarCRM'
              )->setHelp(
                  'This command will extract the fields list for any module of SugarCRM' . PHP_EOL .
-                 "Usage: ./bin/console <info>extract:fields --module Accounts</info>"
+                 'Usage: ./bin/console <info>extract:fields --module Accounts</info>'
              )->addConfigOptionMapping(
                  'path',
                  'sugarcrm.path'
@@ -87,12 +87,11 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
         // Get the file as a parameter
         if (empty($this->module)) {
             $moduleList = array_keys($ep->getBeansList());
-            $msg = "You must define the module with --module";
+            $msg = 'You must define the module with --module';
             $msg.= PHP_EOL . PHP_EOL . 'List of Available modules: ' . PHP_EOL;
             $msg.= '    - ' . implode(PHP_EOL . '    - ', $moduleList);
             throw new \InvalidArgumentException($msg);
         }
-
 
         ########### FIELDS
         $moduleFields = $bm->getModuleFields($this->module, $input->getOption('lang'), true);

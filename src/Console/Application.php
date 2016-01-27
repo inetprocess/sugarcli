@@ -11,7 +11,7 @@
  *
  * @package inetprocess/sugarcrm
  *
- * @license GNU General Public License v2.0
+ * @license Apache License 2.0
  *
  * @link http://www.inetprocess.com
  */
@@ -79,6 +79,7 @@ class Application extends BaseApplication
     {
         $commands = parent::getDefaultCommands();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
+        $commands[] = new \SugarCli\Console\Command\CodeButtonCommand();
         $commands[] = new \SugarCli\Console\Command\CodeSetupComposerCommand();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();

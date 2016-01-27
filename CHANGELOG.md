@@ -4,6 +4,9 @@ Changelog
 (Unreleased)
 ----
 * Added a new command to extract the list of fields and relationships from a module as a CSV file
+* Added a new command to install composer in custom/
+* Added a new command to add a button to a recordview of any module + the JS corresponding
+* Changed the license to GPL
 
 1.8.1
 ----

@@ -11,7 +11,7 @@
  *
  * @package inetprocess/sugarcrm
  *
- * @license GNU General Public License v2.0
+ * @license Apache License 2.0
  *
  * @link http://www.inetprocess.com
  */
