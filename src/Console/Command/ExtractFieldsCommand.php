@@ -120,7 +120,7 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
         ));
         $file = $this->module . '-Fields.' .  date('Y-m-d') . '.csv';
         //Open the csv file to write
-        $writer->open(__DIR__ . '/../../../' . $file);
+        $writer->open(getcwd() . '/' . $file);
         $writer->writeRows($moduleFields);
         $writer->close();
 
@@ -139,7 +139,7 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
         ));
         $file = $this->module . '-Relationships.' .  date('Y-m-d') . '.csv';
         //Open the csv file to write
-        $writer->open(__DIR__ . '/../../../' . $file);
+        $writer->open(getcwd() . '/' . $file);
         $writer->writeRows($moduleRelationships);
         $writer->close();
 

@@ -58,6 +58,7 @@ function addFile($phar, $file)
     $phar[$path]->compress(Phar::GZ);
 }
 
+mkdir(dirname(BUILD_TARGET), 0750, true);
 
 // Remove existing phar file to rewrite it.
 if (file_exists(BUILD_TARGET)) {
