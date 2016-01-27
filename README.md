@@ -328,6 +328,17 @@ The command `./sugarcli.phar hooks:list --module Contacts --compact` gives that 
 +-----------+-------------+--------+
 ```
 
+## Data Extractor
+### Extract fields and relationships for a module
+`./sugarcli.phar extract:fields --path <sugarcrm_path> --module <module>` will extract all the fields defined for a module, with theirs parameters (Label, content of dropdowns, dbType, etc ...) and write 2 csv files containing the data.
+### Parameters
+```
+-m, --module=MODULE   Module's name.
+    --lang=LANG       SugarCRM Language [default: "fr_FR"]
+-p, --path=PATH       Path to SugarCRM installation.
+```
+
+
 ## Code Generator
 The main command is `./sugarcli.phar code`
 
