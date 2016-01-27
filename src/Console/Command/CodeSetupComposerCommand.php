@@ -82,20 +82,15 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
         $finder->name('composer.json')->in($sugarPath . '/custom')->depth('== 0');
         $composerJson = (count($finder) === 0 ? false : true);
 
-        if (!empty($composerUtil) && empty($composerJson)) {
-            $msg = "Looks like you don't have a composer.json but you have the Util.";
-        } elseif (empty($composerUtil) && !empty($composerJson)) {
-            $msg = "Looks like you have a composer.json but you don't have the Util.";
-        } elseif (empty($composerUtil) && empty($composerJson)) {
-            $msg = 'Looks like you have neither a composer.json nor the Util.';
-        } elseif ($input->getOption('reinstall') === true) {
-            $msg = 'Everything is installed but will reinstall';
-        } else {
+        if (!empty($composerUtil) && !empty($composerJson) && $input->getOption('reinstall') === false) {
             $output->writeln('<info>Everything seems fine ! Used --reinstall to reinstall</info>');
-
+            $msg = "Looks like you don't have a composer.json but you have the Util.";
             return;
         }
 
+        $msg = "Composer Util: " . ($composerUtil ? '✔' : '✕') . PHP_EOL;
+        $msg.= "composer.json: " . ($composerJson ? '✔' : '✕') . PHP_EOL;
+        $msg.= ($input->getOption('reinstall') ? 'Will Reinstall (require --do to have an effect)' : '');
         $output->writeln("<comment>$msg</comment>");
 
         if ($input->getOption('reinstall') === false) {
@@ -113,7 +108,7 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
         }
 
         $output->writeln('<info>Job done !</info>');
-        if ($input->getOption('no-quickrepair') === false) {
+        if ($input->getOption('no-quickrepair') === false && $input->getOption('do') === true) {
             $output->writeln('Launching a quick repair and rebuild</info>');
             $this->doQuickRepair($output);
         }

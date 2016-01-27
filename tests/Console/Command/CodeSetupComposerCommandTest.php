@@ -69,7 +69,8 @@ class CodeSetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
         $output = $cmd->getDisplay();
         $this->assertEquals(0, $cmd->getStatusCode());
-        $this->assertContains("Looks like you have neither a composer.json nor the Util", $output);
+        $this->assertContains("Composer Util: ✕", $output);
+        $this->assertContains("composer.json: ✕", $output);
         $this->assertContains('Will install it', $output);
         $this->assertFileNotExists($this->composerJson);
         $this->assertFileNotExists($this->composerPhp);
@@ -126,7 +127,8 @@ class CodeSetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
         $output = $cmd->getDisplay();
         $this->assertEquals(0, $cmd->getStatusCode());
-        $this->assertContains("Looks like you don't have a composer.json but you have the Util.", $output);
+        $this->assertContains("Composer Util: ✔", $output);
+        $this->assertContains("composer.json: ✕", $output);
         $this->assertFileExists($this->composerJson);
         $this->assertFileExists($this->composerPhp);
     }
@@ -191,7 +193,9 @@ class CodeSetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         ));
 
         $output = $cmd->getDisplay();
-        $this->assertContains("Everything is installed but will reinstall", $output);
+        $this->assertContains("Composer Util: ✔", $output);
+        $this->assertContains("composer.json: ✔", $output);
+        $this->assertContains("Will Reinstall (require --do to have an effect)", $output);
         $this->assertEquals(0, $cmd->getStatusCode());
         $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents($this->composerJson));
         $this->assertJson(file_get_contents($this->composerJson));
