@@ -84,7 +84,6 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
 
         if (!empty($composerUtil) && !empty($composerJson) && $input->getOption('reinstall') === false) {
             $output->writeln('<info>Everything seems fine ! Used --reinstall to reinstall</info>');
-            $msg = "Looks like you don't have a composer.json but you have the Util.";
             return;
         }
 

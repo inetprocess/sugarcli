@@ -145,7 +145,7 @@ class CodeButtonCommand extends AbstractConfigOptionCommand
     {
         // identify first the record.js file
         $recordJs = $this->getConfigOption($input, 'path');
-        $recordJs.= "/custom/modules/$module/clients/base/views/record/record.js";
+        $recordJs.= "/custom/modules/{$this->options['module']}/clients/base/views/record/record.js";
         $btnName = 'btn' . ucfirst(strtolower($this->options['name']));
         $today = date('Y-m-d \a\t H:i:s');
         if (file_exists($recordJs)) {
