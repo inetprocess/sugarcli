@@ -37,4 +37,5 @@ class ExitCode
     const EXIT_METADATA_NOT_FOUND = 21;
     const EXIT_USER_NOT_FOUND = 22;
     const EXIT_UNKNOWN_BEAN_TYPE = 23;
+    const EXIT_RELS_NOT_FOUND = 24;
 }

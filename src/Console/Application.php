@@ -91,6 +91,9 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\MetadataDumpCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataLoadCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataStatusCommand();
+        $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsDumpCommand();
+        $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
+        $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsStatusCommand();
         $commands[] = new \SugarCli\Console\Command\SystemQuickRepairCommand();
         $commands[] = new \SugarCli\Console\Command\UserUpdateCommand();
         $commands[] = new \SugarCli\Console\Command\UserListCommand();

@@ -34,10 +34,10 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
              ->setDescription('Do a quick repair and rebuild.')
              ->addConfigOptionMapping('path', 'sugarcrm.path')
              ->addOption(
-                 'database',
-                 'd',
+                 'no-database',
+                 null,
                  InputOption::VALUE_NONE,
-                 'Manage database changes.'
+                 'Do not manage database changes.'
              )
              ->addOption(
                  'force',
@@ -66,7 +66,7 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
             $output->writeln($messages[0]);
         }
 
-        if ($input->getOption('database') === false) {
+        if ($input->getOption('no-database') === true) {
             return;
         }
 

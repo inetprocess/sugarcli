@@ -130,6 +130,13 @@ EOH
             $db_fields = $meta->loadFromDb();
             $diff = $meta->diff($db_fields, $dump_fields);
 
+            if (empty($diff[Metadata::ADD])
+              && empty($diff[Metadata::UPDATE])
+              && empty($diff[Metadata::DEL])) {
+                $output->writeln('<info>Metadata are synced</info>');
+                return;
+            }
+
             $this->writeAdd($output, $diff[Metadata::ADD]);
             $this->writeUpdate($output, $diff[Metadata::UPDATE]);
             $this->writeDel($output, $diff[Metadata::DEL]);
