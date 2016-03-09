@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "167763720f1fc7824af9b70f62b9f773",
-    "content-hash": "fd755087062e0d0a0435d94da383f1e1",
+    "hash": "ec58169027115d72cbb2238257bdd745",
+    "content-hash": "1ab9319886e321e1a04136458ff1aab6",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
@@ -187,6 +187,58 @@
                 "parser"
             ],
             "time": "2014-09-09 13:34:57"
+        },
+        {
+            "name": "fzaninotto/faker",
+            "version": "v1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/fzaninotto/Faker.git",
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/fzaninotto/Faker/zipball/d0190b156bcca848d401fb80f31f504f37141c8d",
+                "reference": "d0190b156bcca848d401fb80f31f504f37141c8d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "~4.0",
+                "squizlabs/php_codesniffer": "~1.5"
+            },
+            "suggest": {
+                "ext-intl": "*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.5.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Faker\\": "src/Faker/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "François Zaninotto"
+                }
+            ],
+            "description": "Faker is a PHP library that generates fake data for you.",
+            "keywords": [
+                "data",
+                "faker",
+                "fixtures"
+            ],
+            "time": "2015-05-29 06:29:14"
         },
         {
             "name": "guzzle/guzzle",
@@ -384,6 +436,53 @@
                 "sugarcrm"
             ],
             "time": "2016-02-23 13:12:57"
+        },
+        {
+            "name": "inetprocess/neuralyzer",
+            "version": "v0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/inetprocess/neuralyzer.git",
+                "reference": "0ee1cd0dfee5a28aa1c2d476e73831c7c96e967b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/inetprocess/neuralyzer/zipball/0ee1cd0dfee5a28aa1c2d476e73831c7c96e967b",
+                "reference": "0ee1cd0dfee5a28aa1c2d476e73831c7c96e967b",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "@stable",
+                "php": ">=5.3",
+                "symfony/config": "~2",
+                "symfony/console": "^2.8",
+                "symfony/yaml": "~2"
+            },
+            "require-dev": {
+                "phpunit/dbunit": "~1.3",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Inet\\Neuralyzer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Emmanuel Dyan",
+                    "email": "emmanuel.dyan@inetprocess.com"
+                }
+            ],
+            "description": "Library and CLI for Data anonymization",
+            "keywords": [
+                "anonymization"
+            ],
+            "time": "2016-01-05 16:30:24"
         },
         {
             "name": "jms/metadata",

@@ -9,6 +9,7 @@
         "guzzle/guzzle": "~3.9",
         "inetprocess/libinventoryclient": "^1.0-beta",
         "inetprocess/libsugarcrm": "^1.1-beta",
+        "inetprocess/neuralyzer": "^0.5",
         "jms/serializer": "~0.16",
         "symfony/config": "^2.8",
         "symfony/console": "^2.8",
