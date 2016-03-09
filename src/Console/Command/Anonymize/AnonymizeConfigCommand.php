@@ -48,6 +48,7 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
         'oauth_tokens',
         'relationships',
         'upgrade_history',
+        'team_sets.*',
         'tracker_sessions',
         'user_preferences',
         'users_feeds',

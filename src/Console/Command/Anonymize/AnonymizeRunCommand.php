@@ -69,6 +69,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
         $pretend = $input->getOption('force') === true ? false : true;
         if ($pretend === false) {
             $output->writeln("<error>Be careful, the anonymization is going to start</error>");
+            $output->writeln("<error>That will overwrite every data in the Database !</error>" . PHP_EOL);
             $helper = $this->getHelper('question');
             $question = new Question('If you are sure, please type "yes" in uppercase' . PHP_EOL);
             $confirmation = $helper->ask($input, $output, $question);
@@ -115,14 +116,15 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
             }
         }
 
-        $data = $pdo->query("SHOW TABLES LIKE '%_audit'");
+        $db = $pdo->query('select database()')->fetchColumn();
+        $data = $pdo->query("SHOW TABLES WHERE tables_in_{$db}
+                             LIKE '%_audit' OR tables_in_sugar7 LIKE '%_cache'");
         foreach ($data as $row) {
             $table = $row[0];
             $output->writeln("<info>Emptying $table</info>");
             $pdo->query("TRUNCATE TABLE `$table`");
         }
 
-        $db = $pdo->query('select database()')->fetchColumn();
 
         // Get memory and execution time information
         $event = $stopwatch->stop('Anon');

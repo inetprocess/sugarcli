@@ -68,6 +68,15 @@ class AnonymizeGuesser extends Guesser
             '.*\.email_address_caps' => array(
                 'method' => 'email',
             ),
+            'accounts.name' => array(
+                'method' => 'company',
+            ),
+            'teams.name' => array(
+                'method' => 'domainWord',
+            ),
+            'teams.name_2' => array(
+                'method' => 'domainWord',
+            ),
             'users.user_name' => array(
                 'method' => 'userName',
             ),
