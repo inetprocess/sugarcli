@@ -118,7 +118,9 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
         $db = $pdo->query('select database()')->fetchColumn();
         $data = $pdo->query("SHOW TABLES WHERE tables_in_{$db}
-                             LIKE '%_audit' OR tables_in_sugar7 LIKE '%_cache'");
+                             LIKE '%_audit' OR tables_in_sugar7 LIKE '%_cache'
+                             OR tables_in_sugar7 LIKE 'tracker'
+                             OR tables_in_sugar7 LIKE 'tracker_%'");
         foreach ($data as $row) {
             $table = $row[0];
             $output->writeln("<info>Emptying $table</info>");
