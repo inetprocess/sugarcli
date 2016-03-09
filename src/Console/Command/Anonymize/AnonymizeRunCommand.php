@@ -23,6 +23,7 @@ use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 
 class AnonymizeRunCommand extends AbstractConfigOptionCommand
 {
@@ -39,10 +40,10 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
                 'Path to the configuration file',
                 'anonymization.yml'
             )->addOption(
-                'pretend',
+                'force',
                 null,
                 InputOption::VALUE_NONE,
-                "Don't run the queries"
+                "Run the queries"
             )->addOption(
                 'sql',
                 null,
@@ -63,6 +64,19 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
         $this->setSugarPath($this->getConfigOption($input, 'path'));
         $pdo = $this->getService('sugarcrm.pdo');
+
+        // Make sure that we don't anonymize production
+        $pretend = $input->getOption('force') === true ? false : true;
+        if ($pretend === false) {
+            $output->writeln("<error>Be careful, the anonymization is going to start</error>");
+            $helper = $this->getHelper('question');
+            $question = new Question('If you are sure, please type "yes" in uppercase' . PHP_EOL);
+            $confirmation = $helper->ask($input, $output, $question);
+            if ($confirmation !== 'YES') {
+                $output->writeln("Bye !");
+                return;
+            }
+        }
 
         // Anon READER
         $reader = new \Inet\Neuralyzer\Configuration\Reader($input->getOption('file'));
@@ -90,7 +104,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
             $output->writeln("<info>Anonymizing $table</info>");
             $queries = $anon->processEntity($table, function () use ($bar) {
                 $bar->advance();
-            }, $input->getOption('pretend'), $input->getOption('sql'));
+            }, $pretend, $input->getOption('sql'));
 
             $output->writeln(PHP_EOL);
 
@@ -117,7 +131,12 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
         $time = ($time > 180 ? round($time / 60, 2) . 'mins' : "$time sec");
 
         // Final message
-        $output->writeln(PHP_EOL . "<comment>Done in $time (consuming {$memory}Mb). To export the db run: </comment>");
-        $output->writeln(" mysqldump $db | bzip2 > $db." . date('Ymd-Hi') . ".sql.bz2");
+        $output->writeln(PHP_EOL . "<comment>Done in $time (consuming {$memory}Mb)</comment>");
+        if ($pretend === false) {
+            $output->writeln(PHP_EOL . "<comment>To export the db run: </comment>");
+            $output->writeln(" mysqldump $db | bzip2 > $db." . date('Ymd-Hi') . ".sql.bz2");
+        } else {
+            $output->writeln(PHP_EOL . "<error>The anonymization didn't run. Use --force to run it.</error>");
+        }
     }
 }
