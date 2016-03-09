@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "ec58169027115d72cbb2238257bdd745",
-    "content-hash": "1ab9319886e321e1a04136458ff1aab6",
+    "hash": "9d14d45d749148f8241c452e291a090d",
+    "content-hash": "b2f5d3b796501fedd067bf9881097e54",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
@@ -387,16 +387,16 @@
         },
         {
             "name": "inetprocess/libsugarcrm",
-            "version": "1.1.17-beta",
+            "version": "1.1.18-beta",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/libsugarcrm.git",
-                "reference": "4156e96e12263f3adb5217fe7100fd5016752bbf"
+                "reference": "fa48db029840ebc47138a01d81d8813a36919582"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/4156e96e12263f3adb5217fe7100fd5016752bbf",
-                "reference": "4156e96e12263f3adb5217fe7100fd5016752bbf",
+                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/fa48db029840ebc47138a01d81d8813a36919582",
+                "reference": "fa48db029840ebc47138a01d81d8813a36919582",
                 "shasum": ""
             },
             "require": {
@@ -435,20 +435,20 @@
                 "sugarcli",
                 "sugarcrm"
             ],
-            "time": "2016-02-23 13:12:57"
+            "time": "2016-03-09 15:17:58"
         },
         {
             "name": "inetprocess/neuralyzer",
-            "version": "v0.5",
+            "version": "0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/neuralyzer.git",
-                "reference": "0ee1cd0dfee5a28aa1c2d476e73831c7c96e967b"
+                "reference": "21e76a004f3ffcbc936513629952c5d617212b2f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/neuralyzer/zipball/0ee1cd0dfee5a28aa1c2d476e73831c7c96e967b",
-                "reference": "0ee1cd0dfee5a28aa1c2d476e73831c7c96e967b",
+                "url": "https://api.github.com/repos/inetprocess/neuralyzer/zipball/21e76a004f3ffcbc936513629952c5d617212b2f",
+                "reference": "21e76a004f3ffcbc936513629952c5d617212b2f",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
             "keywords": [
                 "anonymization"
             ],
-            "time": "2016-01-05 16:30:24"
+            "time": "2016-03-09 14:58:43"
         },
         {
             "name": "jms/metadata",
