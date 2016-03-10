@@ -38,17 +38,27 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Path to the configuration file',
-                'anonymization.yml'
+                '../db/anonymization.yml'
             )->addOption(
                 'force',
                 null,
                 InputOption::VALUE_NONE,
                 "Run the queries"
             )->addOption(
+                'remove-deleted',
+                null,
+                InputOption::VALUE_NONE,
+                "Remove all records with deleted = 1. Won't be launched if --force is not set"
+            )->addOption(
+                'clean-cstm',
+                null,
+                InputOption::VALUE_NONE,
+                "Clean all records in _cstm that are not in the main table. Won't be launched if --force is not set"
+            )->addOption(
                 'sql',
                 null,
                 InputOption::VALUE_NONE,
-                'Display the SQL'
+                'Display the SQL of UPDATE queries'
             )->addOption(
                 'table',
                 null,
@@ -64,6 +74,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
         $this->setSugarPath($this->getConfigOption($input, 'path'));
         $pdo = $this->getService('sugarcrm.pdo');
+        $ep = $this->getService('sugarcrm.entrypoint'); // go to sugar folder to make sure we are in the right folder
 
         // Make sure that we don't anonymize production
         $pretend = $input->getOption('force') === true ? false : true;
@@ -93,6 +104,30 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
         }
 
         foreach ($tables as $table) {
+            // removing deleted from the tables which have that field
+            if ($input->getOption('remove-deleted') === true && $pretend === false) {
+                $deletedField = $pdo->query("SHOW COLUMNS FROM `$table` LIKE 'deleted'")->fetchColumn();
+                if (!empty($deletedField)) {
+                    $del = $pdo->query("DELETE FROM $table WHERE deleted = 1");
+                    if ($del === false) {
+                        throw new \PDOException("Can't run the query to delete records from $table");
+                    }
+                    $output->writeln("<info>Removed " . $del->rowCount() . " deleted records from $table</info>");
+                }
+            }
+
+            // Clean custom table if asked, with id not in the main table
+            if ($input->getOption('clean-cstm') === true && substr($table, -5) === '_cstm' && $pretend === false) {
+                $del = $pdo->query(
+                    "DELETE FROM $table WHERE id_c NOT IN (SELECT id FROM `" . substr($table, 0, -5) . "`)"
+                );
+                if ($del === false) {
+                    throw new \PDOException("Can't run the query to delete records from $table");
+                }
+                $output->writeln("<info>Removed " . $del->rowCount() . " useless records from $table</info>");
+            }
+
+
             $result = $pdo->query("SELECT COUNT(1) FROM $table");
             $data = $result->fetchAll(\PDO::FETCH_COLUMN);
             $total = (int)$data[0];
@@ -116,11 +151,14 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
             }
         }
 
-        $db = $pdo->query('select database()')->fetchColumn();
-        $data = $pdo->query("SHOW TABLES WHERE tables_in_{$db}
-                             LIKE '%_audit' OR tables_in_sugar7 LIKE '%_cache'
-                             OR tables_in_sugar7 LIKE 'tracker'
-                             OR tables_in_sugar7 LIKE 'tracker_%'");
+        $db = $pdo->query('SELECT DATABASE()')->fetchColumn();
+        $data = $pdo->query($sql = "SHOW TABLES WHERE `tables_in_{$db}`
+                                    LIKE '%_audit' OR `tables_in_{$db}` LIKE '%_cache'
+                                    OR `tables_in_{$db}` LIKE 'tracker'
+                                    OR `tables_in_{$db}` LIKE 'tracker_%'");
+        if ($data === false) {
+            throw new \PDOException("Can't run the query to empty audit and trackers: " . PHP_EOL . $sql);
+        }
         foreach ($data as $row) {
             $table = $row[0];
             $output->writeln("<info>Emptying $table</info>");
@@ -138,7 +176,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
         $output->writeln(PHP_EOL . "<comment>Done in $time (consuming {$memory}Mb)</comment>");
         if ($pretend === false) {
             $output->writeln(PHP_EOL . "<comment>To export the db run: </comment>");
-            $output->writeln(" mysqldump $db | bzip2 > $db." . date('Ymd-Hi') . ".sql.bz2");
+            $output->writeln(" mysqldump --skip-lock-tables $db | bzip2 > $db." . date('Ymd-Hi') . ".sql.bz2");
         } else {
             $output->writeln(PHP_EOL . "<error>The anonymization didn't run. Use --force to run it.</error>");
         }

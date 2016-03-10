@@ -77,6 +77,8 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
         '.*\.module_name',
         '.*\.parent_type',
         '.*\.primary_account',
+        // Rels
+        '.*_c\..*_(ida|idb)',
         // Users
         'users.(is_admin|status|sugar_login|user_hash|external_auth_only|portal_only|is_group)',
     );
@@ -91,7 +93,7 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
                 null,
                 InputOption::VALUE_REQUIRED,
                 'Path to the configuration file',
-                'anonymization.yml'
+                '../db/anonymization.yml'
             )->addOption(
                 'ignore-table',
                 null,
@@ -131,6 +133,7 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
         ));
 
         $data = $writer->generateConfFromDB($pdo, $guesser);
+        // go to my current folder
         $writer->save($data, $input->getOption('file'));
 
         $output->writeln('<comment>Configuration written to ' . $input->getOption('file') . '</comment>');
