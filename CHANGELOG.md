@@ -1,11 +1,13 @@
 Changelog
 =========
 
-(Unreleased)
+1.9.0
 ----
-* Added a new command to extract the list of fields and relationships from a module as a CSV file
-* Added a new command to install composer in custom/
-* Added a new command to add a button to a recordview of any module + the JS corresponding
+* Added new commands `anonymize:*` to anonymize a SugarCRM database
+* Added a new command `code:button` to add a button to a recordview of any module + the JS corresponding
+* Added a new command `code:setupcomposer` to install composer.json in custom/
+* Added a new command `extract:fields` to extract the list of fields and relationships from a module as a CSV file
+* Added new commands `rels:*` to manage the `relationships` table like `fields_metadata`
 * Changed the license to GPL
 
 1.8.1
