@@ -181,11 +181,9 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
             $moduleFields = array();
             // Try to retrieve with multiple manners and catch the message
             try {
-                $moduleTable = $bm->getModuleTable($module);
                 $moduleFields = $bm->getModuleFields($module);
             } catch (\Exception $e) {
                 try {
-                    $moduleTable = $bm->getModuleTable($moduleSingular);
                     $moduleFields = $bm->getModuleFields($moduleSingular);
                 } catch (\Exception $e) {
                     $wontRetrieve = $e->getMessage();
