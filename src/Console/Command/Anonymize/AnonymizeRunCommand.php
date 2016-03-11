@@ -74,20 +74,11 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
         $this->setSugarPath($this->getConfigOption($input, 'path'));
         $pdo = $this->getService('sugarcrm.pdo');
-        $ep = $this->getService('sugarcrm.entrypoint'); // go to sugar folder to make sure we are in the right folder
+        $this->getService('sugarcrm.entrypoint'); // go to sugar folder to make sure we are in the right folder
 
         // Make sure that we don't anonymize production
-        $pretend = $input->getOption('force') === true ? false : true;
-        if ($pretend === false) {
-            $output->writeln("<error>Be careful, the anonymization is going to start</error>");
-            $output->writeln("<error>That will overwrite every data in the Database !</error>" . PHP_EOL);
-            $helper = $this->getHelper('question');
-            $question = new Question('If you are sure, please type "yes" in uppercase' . PHP_EOL);
-            $confirmation = $helper->ask($input, $output, $question);
-            if ($confirmation !== 'YES') {
-                $output->writeln("Bye !");
-                return;
-            }
+        if ($input->getOption('force') === true && $this->askConfirmation($input, $output) === false) {
+            return;
         }
 
         // Anon READER
@@ -103,31 +94,12 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
             $tables = $reader->getEntities();
         }
 
+        $pretend = ($input->getOption('force') === true ? false : true);
         foreach ($tables as $table) {
-            // removing deleted from the tables which have that field
-            if ($input->getOption('remove-deleted') === true && $pretend === false) {
-                $deletedField = $pdo->query("SHOW COLUMNS FROM `$table` LIKE 'deleted'")->fetchColumn();
-                if (!empty($deletedField)) {
-                    $del = $pdo->query("DELETE FROM $table WHERE deleted = 1");
-                    if ($del === false) {
-                        throw new \PDOException("Can't run the query to delete records from $table");
-                    }
-                    $output->writeln("<info>Removed " . $del->rowCount() . " deleted records from $table</info>");
-                }
-            }
+            // Do I need to clean the table ?
+            $this->cleanTable($input, $output, $pdo, $table);
 
-            // Clean custom table if asked, with id not in the main table
-            if ($input->getOption('clean-cstm') === true && substr($table, -5) === '_cstm' && $pretend === false) {
-                $del = $pdo->query(
-                    "DELETE FROM $table WHERE id_c NOT IN (SELECT id FROM `" . substr($table, 0, -5) . "`)"
-                );
-                if ($del === false) {
-                    throw new \PDOException("Can't run the query to delete records from $table");
-                }
-                $output->writeln("<info>Removed " . $del->rowCount() . " useless records from $table</info>");
-            }
-
-
+            // Start to work
             $result = $pdo->query("SELECT COUNT(1) FROM $table");
             $data = $result->fetchAll(\PDO::FETCH_COLUMN);
             $total = (int)$data[0];
@@ -151,20 +123,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
             }
         }
 
-        $db = $pdo->query('SELECT DATABASE()')->fetchColumn();
-        $data = $pdo->query($sql = "SHOW TABLES WHERE `tables_in_{$db}`
-                                    LIKE '%_audit' OR `tables_in_{$db}` LIKE '%_cache'
-                                    OR `tables_in_{$db}` LIKE 'tracker'
-                                    OR `tables_in_{$db}` LIKE 'tracker_%'");
-        if ($data === false) {
-            throw new \PDOException("Can't run the query to empty audit and trackers: " . PHP_EOL . $sql);
-        }
-        foreach ($data as $row) {
-            $table = $row[0];
-            $output->writeln("<info>Emptying $table</info>");
-            $pdo->query("TRUNCATE TABLE `$table`");
-        }
-
+        $this->cleanAuditAndTrackers($output, $pdo);
 
         // Get memory and execution time information
         $event = $stopwatch->stop('Anon');
@@ -174,11 +133,101 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
         // Final message
         $output->writeln(PHP_EOL . "<comment>Done in $time (consuming {$memory}Mb)</comment>");
-        if ($pretend === false) {
+        $db = $this->getDb($pdo);
+        if ($input->getOption('force') === true) {
             $output->writeln(PHP_EOL . "<comment>To export the db run: </comment>");
             $output->writeln(" mysqldump --skip-lock-tables $db | bzip2 > $db." . date('Ymd-Hi') . ".sql.bz2");
         } else {
             $output->writeln(PHP_EOL . "<error>The anonymization didn't run. Use --force to run it.</error>");
+        }
+    }
+
+    /**
+     * Get the current DB Name
+     * @param     \PDO      $pdo
+     * @return    string
+     */
+    protected function getDb(\PDO $pdo)
+    {
+        return $pdo->query('SELECT DATABASE()')->fetchColumn();
+    }
+
+    /**
+     * Clean all tables %_audit and tracker%
+     * @param     OutputInterface    $output
+     * @param     \PDO               $pdo
+     */
+    protected function cleanAuditAndTrackers(OutputInterface $output, \PDO $pdo)
+    {
+        $db = $this->getDb($pdo);
+        $data = $pdo->query(
+            $sql = "SHOW TABLES WHERE `tables_in_{$db}`
+                    LIKE '%_audit' OR `tables_in_{$db}` LIKE '%_cache'
+                    OR `tables_in_{$db}` LIKE 'tracker'
+                    OR `tables_in_{$db}` LIKE 'tracker_%'"
+        );
+
+        if ($data === false) {
+            throw new \PDOException("Can't run the query to empty audit and trackers: " . PHP_EOL . $sql);
+        }
+        foreach ($data as $row) {
+            $table = $row[0];
+            $output->writeln("<info>Emptying $table</info>");
+            $pdo->query("TRUNCATE TABLE `$table`");
+        }
+    }
+
+    /**
+     * Clean the current table : remove deleted and/or the records not in cstm
+     * @param     InputInterface     $input
+     * @param     OutputInterface    $output
+     * @param     \PDO               $pdo
+     * @param     string             $table
+     */
+    protected function cleanTable(InputInterface $input, OutputInterface $output, \PDO $pdo, $table)
+    {
+        if ($input->getOption('force') === false) {
+            return;
+        }
+        // removing deleted from the tables which have that field
+        if ($input->getOption('remove-deleted') === true) {
+            $deletedField = $pdo->query("SHOW COLUMNS FROM `$table` LIKE 'deleted'")->fetchColumn();
+            if (!empty($deletedField)) {
+                $del = $pdo->query("DELETE FROM $table WHERE deleted = 1");
+                if ($del === false) {
+                    throw new \PDOException("Can't run the query to delete records from $table");
+                }
+                $output->writeln("<info>Removed " . $del->rowCount() . " deleted records from $table</info>");
+            }
+        }
+
+        // Clean custom table if asked, with id not in the main table
+        if ($input->getOption('clean-cstm') === true && substr($table, -5) === '_cstm') {
+            $del = $pdo->query(
+                "DELETE FROM $table WHERE id_c NOT IN (SELECT id FROM `" . substr($table, 0, -5) . "`)"
+            );
+            if ($del === false) {
+                throw new \PDOException("Can't run the query to delete records from $table");
+            }
+            $output->writeln("<info>Removed " . $del->rowCount() . " useless records from $table</info>");
+        }
+    }
+
+    /**
+     * Ask a confirmation to force
+     * @param     InputInterface     $input
+     * @param     OutputInterface    $output
+     */
+    protected function askConfirmation(InputInterface $input, OutputInterface $output)
+    {
+        $output->writeln("<error>Be careful, the anonymization is going to start</error>");
+        $output->writeln("<error>That will overwrite every data in the Database !</error>" . PHP_EOL);
+        $helper = $this->getHelper('question');
+        $question = new Question('If you are sure, please type "yes" in uppercase' . PHP_EOL);
+        $confirmation = $helper->ask($input, $output, $question);
+        if ($confirmation !== 'YES') {
+            $output->writeln("Bye !");
+            return false;
         }
     }
 }
