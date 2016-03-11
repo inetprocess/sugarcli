@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9d14d45d749148f8241c452e291a090d",
-    "content-hash": "b2f5d3b796501fedd067bf9881097e54",
+    "hash": "01d14225ae6354553d2945a2fc822b19",
+    "content-hash": "164f63cc6ba5b0581cff7b2195e33f1c",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
@@ -439,16 +439,16 @@
         },
         {
             "name": "inetprocess/neuralyzer",
-            "version": "0.6",
+            "version": "v0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/neuralyzer.git",
-                "reference": "21e76a004f3ffcbc936513629952c5d617212b2f"
+                "reference": "ffefc43eba60f05444c77b072d80d07da6bd678e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/neuralyzer/zipball/21e76a004f3ffcbc936513629952c5d617212b2f",
-                "reference": "21e76a004f3ffcbc936513629952c5d617212b2f",
+                "url": "https://api.github.com/repos/inetprocess/neuralyzer/zipball/ffefc43eba60f05444c77b072d80d07da6bd678e",
+                "reference": "ffefc43eba60f05444c77b072d80d07da6bd678e",
                 "shasum": ""
             },
             "require": {
@@ -482,7 +482,7 @@
             "keywords": [
                 "anonymization"
             ],
-            "time": "2016-03-09 14:58:43"
+            "time": "2016-03-10 09:01:34"
         },
         {
             "name": "jms/metadata",
@@ -1209,7 +1209,7 @@
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.1.0",
+            "version": "v1.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
