@@ -4,7 +4,7 @@
     "license": "Apache-2.0",
     "minimum-stability": "stable",
     "require": {
-        "php": ">=5.3.3",
+        "php": ">=5.3.9",
         "csanquer/colibri-csv" : "1.1.*",
         "guzzle/guzzle": "~3.9",
         "inetprocess/libinventoryclient": "^1.0-beta",
@@ -36,7 +36,7 @@
     },
     "config": {
         "platform": {
-            "php": "5.3"
+            "php": "5.3.9"
         }
     },
     "bin": ["bin/sugarcli"]

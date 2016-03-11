@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "01d14225ae6354553d2945a2fc822b19",
-    "content-hash": "164f63cc6ba5b0581cff7b2195e33f1c",
+    "hash": "b543c70da047ed5d01c37ed2a9a81c17",
+    "content-hash": "dec5011342cc78ca1ec66b015ed02b68",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
@@ -2442,10 +2442,10 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.9"
     },
     "platform-dev": [],
     "platform-overrides": {
-        "php": "5.3.29"
+        "php": "5.3.9"
     }
 }
