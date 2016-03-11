@@ -84,11 +84,12 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
 
         if (!empty($composerUtil) && !empty($composerJson) && $input->getOption('reinstall') === false) {
             $output->writeln('<info>Everything seems fine ! Used --reinstall to reinstall</info>');
+
             return;
         }
 
-        $msg = "Composer Util: " . ($composerUtil ? '✔' : '✕') . PHP_EOL;
-        $msg.= "composer.json: " . ($composerJson ? '✔' : '✕') . PHP_EOL;
+        $msg = 'Composer Util: ' . ($composerUtil ? '✔' : '✕') . PHP_EOL;
+        $msg.= 'composer.json: ' . ($composerJson ? '✔' : '✕') . PHP_EOL;
         $msg.= ($input->getOption('reinstall') ? 'Will Reinstall (require --do to have an effect)' : '');
         $output->writeln("<comment>$msg</comment>");
 

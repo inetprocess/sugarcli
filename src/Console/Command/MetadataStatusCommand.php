@@ -134,6 +134,7 @@ EOH
               && empty($diff[Metadata::UPDATE])
               && empty($diff[Metadata::DEL])) {
                 $output->writeln('<info>Metadata are synced</info>');
+
                 return;
             }
 

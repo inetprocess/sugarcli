@@ -18,7 +18,6 @@
 
 namespace SugarCli\Console\Command\Relationships;
 
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Inet\SugarCRM\Database\Relationship;

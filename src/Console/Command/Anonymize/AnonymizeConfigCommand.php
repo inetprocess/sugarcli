@@ -22,13 +22,13 @@ use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Inet\SugarCRM\Bean as BeanManager;
 
 class AnonymizeConfigCommand extends AbstractConfigOptionCommand
 {
     /**
      * Table to ignore by default
-     * @var    array
+     *
+     * @var array
      */
     protected $ignoredTables = array(
         '.*_audit',
@@ -61,7 +61,8 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
 
     /**
      * Fields to protect. Format table.field (regex accepted)
-     * @var    array
+     *
+     * @var array
      */
     protected $ignoreFields = array(
         '.*\.id',
@@ -209,7 +210,6 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
                     'method' => $field['type'] === 'enum' ? 'randomElement' : 'randomElements',
                 );
             }
-
         }
 
         return $dropdowns;

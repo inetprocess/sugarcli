@@ -43,7 +43,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
                 'force',
                 null,
                 InputOption::VALUE_NONE,
-                "Run the queries"
+                'Run the queries'
             )->addOption(
                 'remove-deleted',
                 null,
@@ -135,8 +135,8 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
         $output->writeln(PHP_EOL . "<comment>Done in $time (consuming {$memory}Mb)</comment>");
         $db = $this->getDb($pdo);
         if ($input->getOption('force') === true) {
-            $output->writeln(PHP_EOL . "<comment>To export the db run: </comment>");
-            $output->writeln(" mysqldump --skip-lock-tables $db | bzip2 > $db." . date('Ymd-Hi') . ".sql.bz2");
+            $output->writeln(PHP_EOL . '<comment>To export the db run: </comment>');
+            $output->writeln(" mysqldump --skip-lock-tables $db | bzip2 > $db." . date('Ymd-Hi') . '.sql.bz2');
         } else {
             $output->writeln(PHP_EOL . "<error>The anonymization didn't run. Use --force to run it.</error>");
         }
@@ -144,8 +144,10 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
     /**
      * Get the current DB Name
-     * @param     \PDO      $pdo
-     * @return    string
+     *
+     * @param \PDO $pdo
+     *
+     * @return string
      */
     protected function getDb(\PDO $pdo)
     {
@@ -154,8 +156,9 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
     /**
      * Clean all tables %_audit and tracker%
-     * @param     OutputInterface    $output
-     * @param     \PDO               $pdo
+     *
+     * @param OutputInterface $output
+     * @param \PDO            $pdo
      */
     protected function cleanAuditAndTrackers(OutputInterface $output, \PDO $pdo)
     {
@@ -179,10 +182,11 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
 
     /**
      * Clean the current table : remove deleted and/or the records not in cstm
-     * @param     InputInterface     $input
-     * @param     OutputInterface    $output
-     * @param     \PDO               $pdo
-     * @param     string             $table
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
+     * @param \PDO            $pdo
+     * @param string          $table
      */
     protected function cleanTable(InputInterface $input, OutputInterface $output, \PDO $pdo, $table)
     {
@@ -197,36 +201,38 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
                 if ($del === false) {
                     throw new \PDOException("Can't run the query to delete records from $table");
                 }
-                $output->writeln("<info>Removed " . $del->rowCount() . " deleted records from $table</info>");
+                $output->writeln('<info>Removed ' . $del->rowCount() . " deleted records from $table</info>");
             }
         }
 
         // Clean custom table if asked, with id not in the main table
         if ($input->getOption('clean-cstm') === true && substr($table, -5) === '_cstm') {
             $del = $pdo->query(
-                "DELETE FROM $table WHERE id_c NOT IN (SELECT id FROM `" . substr($table, 0, -5) . "`)"
+                "DELETE FROM $table WHERE id_c NOT IN (SELECT id FROM `" . substr($table, 0, -5) . '`)'
             );
             if ($del === false) {
                 throw new \PDOException("Can't run the query to delete records from $table");
             }
-            $output->writeln("<info>Removed " . $del->rowCount() . " useless records from $table</info>");
+            $output->writeln('<info>Removed ' . $del->rowCount() . " useless records from $table</info>");
         }
     }
 
     /**
      * Ask a confirmation to force
-     * @param     InputInterface     $input
-     * @param     OutputInterface    $output
+     *
+     * @param InputInterface  $input
+     * @param OutputInterface $output
      */
     protected function askConfirmation(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln("<error>Be careful, the anonymization is going to start</error>");
-        $output->writeln("<error>That will overwrite every data in the Database !</error>" . PHP_EOL);
+        $output->writeln('<error>Be careful, the anonymization is going to start</error>');
+        $output->writeln('<error>That will overwrite every data in the Database !</error>' . PHP_EOL);
         $helper = $this->getHelper('question');
         $question = new Question('If you are sure, please type "yes" in uppercase' . PHP_EOL);
         $confirmation = $helper->ask($input, $output, $question);
         if ($confirmation !== 'YES') {
-            $output->writeln("Bye !");
+            $output->writeln('Bye !');
+
             return false;
         }
     }

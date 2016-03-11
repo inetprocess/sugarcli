@@ -19,7 +19,6 @@
 namespace SugarCli\Utils;
 
 use Inet\Neuralyzer\Guesser;
-use Inet\Neuralyzer\Exception\InetAnonGuesserException;
 
 /**
  * AnonymizeGuesser for SugarCRM
@@ -28,7 +27,8 @@ class AnonymizeGuesser extends Guesser
 {
     /**
      * New cols mapping defined from outside
-     * @var    array
+     *
+     * @var array
      */
     protected $extraColsNameMapping = array();
 
@@ -88,7 +88,8 @@ class AnonymizeGuesser extends Guesser
 
     /**
      * Set new mapping from outside
-     * @param    array    $extraColsNameMapping
+     *
+     * @param array $extraColsNameMapping
      */
     public function setExtraColsNameMapping(array $extraColsNameMapping)
     {

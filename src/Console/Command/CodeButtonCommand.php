@@ -21,14 +21,14 @@ namespace SugarCli\Console\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Inet\SugarCRM\Bean as BeanManager;
 use Inet\SugarCRM\MetadataParser;
 
 class CodeButtonCommand extends AbstractConfigOptionCommand
 {
     /**
      * Store Options values
-     * @var    array
+     *
+     * @var array
      */
     protected $options = array();
 
@@ -105,7 +105,8 @@ class CodeButtonCommand extends AbstractConfigOptionCommand
 
     /**
      * Check required options and their values
-     * @param     InputInterface    $input
+     *
+     * @param InputInterface $input
      */
     protected function checkOptions(InputInterface $input)
     {

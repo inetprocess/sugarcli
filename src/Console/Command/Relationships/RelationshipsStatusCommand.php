@@ -66,6 +66,7 @@ EOH
               && empty($diff[Relationship::UPDATE])
               && empty($diff[Relationship::DEL])) {
                 $output->writeln('<info>Relationships are synced</info>');
+
                 return;
             }
 
