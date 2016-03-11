@@ -58,7 +58,9 @@ function addFile($phar, $file)
     $phar[$path]->compress(Phar::GZ);
 }
 
-mkdir(dirname(BUILD_TARGET), 0750, true);
+if (!file_exists(dirname(BUILD_TARGET))) {
+    mkdir(dirname(BUILD_TARGET), 0750, true);
+}
 
 // Remove existing phar file to rewrite it.
 if (file_exists(BUILD_TARGET)) {
@@ -77,7 +79,9 @@ $finder->files()
     ->name('*.php')
     ->in(ROOT_DIR . '/src')
     ->in(ROOT_DIR . '/vendor/composer')
+    ->in(ROOT_DIR . '/vendor/csanquer')
     ->in(ROOT_DIR . '/vendor/doctrine')
+    ->in(ROOT_DIR . '/vendor/fzaninotto')
     ->in(ROOT_DIR . '/vendor/guzzle')
     ->in(ROOT_DIR . '/vendor/inetprocess')
     ->in(ROOT_DIR . '/vendor/jms')
