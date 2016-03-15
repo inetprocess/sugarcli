@@ -543,7 +543,7 @@ You can change the content of the file once generated to match your criteras.
 
 ```
 #### Example
-The command `./sugarcli.phar anonymize:run --table=accounts --table=accounts_cstm --force` gives an output that looks like:
+The command `./sugarcli.phar anonymize:run --table=accounts --force` gives an output that looks like:
 ```
 Be careful, the anonymization is going to start
 That will overwrite every data in the Database !
