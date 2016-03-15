@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.9.1
+----
+* Updated documentation
+
 1.9.0
 ----
 * Added new commands `anonymize:*` to anonymize a SugarCRM database

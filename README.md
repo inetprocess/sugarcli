@@ -55,25 +55,16 @@ __Available groups__:
 
 
 # Commands
-[Clean language files](#clean-language-files)
-
-[Install a SugarCRM](#install-a-sugarcrm)
-
-[Manage `fields_meta_data` and `relationships` tables](#manage-fields_meta_data-table)
-
-[Inventory](#inventory)
-
-[User Management](#user-management)
-
-[System](#system)
-
-[Logic Hooks](#logic-hooks)
-
-[Vardefs Extractor](#vardefs-extractor)
-
-[Code Generator](#code-generator)
-
-[Data Anonymization](data-anonymization)
+* [Clean language files](#clean-language-files)
+* [Install a SugarCRM](#install-a-sugarcrm)
+* [Manage `fields_meta_data` and `relationships` tables](#manage-fields_meta_data-table)
+* [Inventory](#inventory)
+* [User Management](#user-management)
+* [System](#system)
+* [Logic Hooks](#logic-hooks)
+* [Vardefs Extractor](#vardefs-extractor)
+* [Code Generator](#code-generator)
+* [Data Anonymization](data-anonymization)
 
 
 
