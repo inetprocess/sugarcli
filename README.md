@@ -56,15 +56,26 @@ __Available groups__:
 
 # Commands
 [Clean language files](#clean-language-files)
+
 [Install a SugarCRM](#install-a-sugarcrm)
+
 [Manage `fields_meta_data` and `relationships` tables](#manage-fields_meta_data-table)
+
 [Inventory](#inventory)
+
 [User Management](#user-management)
+
 [System](#system)
+
 [Logic Hooks](#logic-hooks)
+
 [Vardefs Extractor](#vardefs-extractor)
+
 [Code Generator](#code-generator)
+
 [Data Anonymization](data-anonymization)
+
+
 
 ## Clean language files
 The main command is `./sugarcli.phar clean:langfiles`
@@ -170,11 +181,11 @@ Subcommands are :
 
 The following explanations are made for `metadata` but are similar for `rels`
 
-### Load definition to the database (Example with `metadata`)
-`sugarcli metadata:load`
+### Load definition to the database
+`sugarcli {type}:loadfromfile`
 Load fields defined in the meta data file to update the database.
 
-#### `metadata:load` Parameters
+#### `metadata:loadfromfile` Parameters
 ```bash
 -s, --sql                          Print the sql queries that would have been executed.
 -f, --force                        Really execute the SQL queries to modify the database.
@@ -185,7 +196,7 @@ Load fields defined in the meta data file to update the database.
 -m, --metadata-file=METADATA-FILE  Path to the metadata file. (default: "<sugar_path>/../db/fields_meta_data.yaml")
 ```
 
-#### `rels:load` Parameters
+#### `rels:loadfromfile` Parameters
 ```bash
 -s, --sql             Print the sql queries that would have been executed.
 -f, --force           Really execute the SQL queries to modify the database.
@@ -197,14 +208,14 @@ Load fields defined in the meta data file to update the database.
 ```
 
 
-### Write definition to a file (Example with `metadata`)
-`sugarcli metadata:dump`
+### Write definition to a file
+`sugarcli {type}:dump`
 
-You can dump the current DB fields meta data contents into the definition file.
+You can dump the current DB fields_meta_data (or relationships) contents into the definition file.
 
-You can also use the `--add`, `--del`, `--update` flags to only add, delete or update fields.
+You can also use the `--add`, `--del`, `--update` flags to only add, delete or update fields (or relationships).
 
-The fields specified after the command line will allow you to act only on specific fields.
+The fields specified after the command line will allow you to act only on specific fields (or relationships).
 
 #### `metadata:dumptofile` Parameters
 ```bash
@@ -225,8 +236,8 @@ The fields specified after the command line will allow you to act only on specif
 ```
 
 
-### Get the Status (Example with `metadata`)
-`sugarcli metadata:status -p path/to/sugar`
+### Get the Status
+`sugarcli {type}:status -p path/to/sugar`
 
 This will show which fields are differing between the definition file and the database.
 
