@@ -64,7 +64,7 @@ __Available groups__:
 * [Logic Hooks](#logic-hooks)
 * [Vardefs Extractor](#vardefs-extractor)
 * [Code Generator](#code-generator)
-* [Data Anonymization](data-anonymization)
+* [Data Anonymization](#data-anonymization)
 
 
 
