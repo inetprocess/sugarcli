@@ -100,7 +100,10 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
             $this->cleanTable($input, $output, $pdo, $table);
 
             // Start to work
-            $result = $pdo->query("SELECT COUNT(1) FROM $table");
+            $result = $pdo->query($sql = "SELECT COUNT(1) FROM $table");
+            if ($result === false) {
+                throw new \PDOException("Error in SQL: $sql, are you sure $table exists ?");
+            }
             $data = $result->fetchAll(\PDO::FETCH_COLUMN);
             $total = (int)$data[0];
             if ($total === 0) {
