@@ -4,6 +4,7 @@ Changelog
 1.9.1
 ----
 * Updated documentation
+* Updated composer.json to add missing symfony/stopwatch
 
 1.9.0
 ----
