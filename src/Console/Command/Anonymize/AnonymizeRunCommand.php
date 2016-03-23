@@ -112,6 +112,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
             }
 
             $bar = new ProgressBar($output, $total);
+            $bar->setRedrawFrequency($total > 100 ? 100 : 0);
             $output->writeln("<info>Anonymizing $table</info>");
             $queries = $anon->processEntity($table, function () use ($bar) {
                 $bar->advance();
