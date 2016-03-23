@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+----
+* Optional `--url` parameter in `install:run` command if url is set in configuration file.
+
 1.9.1
 ----
 * Updated documentation

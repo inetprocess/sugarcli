@@ -64,15 +64,35 @@ class InstallRunCommand extends AbstractConfigOptionCommand
             );
     }
 
+    public function getUrlFromConfigSi($config_si)
+    {
+        if (!is_readable($config_si)) {
+            throw new \InvalidArgumentException(
+                sprintf('The config file "%s" is not readable.', $config_si)
+            );
+        }
+        require($config_si);
+        if (empty($sugar_config_si['setup_site_url'])) {
+            throw new \InvalidArgumentException('"setup_site_url" is not set in configuration file.');
+        }
+        return $sugar_config_si['setup_site_url'];
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->setSugarPath($this->getConfigOption($input, 'path'));
         $force = $input->getOption('force');
+        $config_si = $input->getOption('config');
+        try {
+            $url = $this->getConfigOption($input, 'url');
+        } catch (\InvalidArgumentException $e) {
+            $url = $this->getUrlFromConfigSi($config_si);
+        }
         $installer = new Installer(
             $this->getService('sugarcrm.application'),
-            $this->getConfigOption($input, 'url'),
+            $url,
             $input->getOption('source'),
-            $input->getOption('config')
+            $config_si
         );
         try {
             $installer->run($force);
