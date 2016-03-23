@@ -83,7 +83,7 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
         $composerJson = (count($finder) === 0 ? false : true);
 
         if (!empty($composerUtil) && !empty($composerJson) && $input->getOption('reinstall') === false) {
-            $output->writeln('<info>Everything seems fine ! Used --reinstall to reinstall</info>');
+            $output->writeln('<info>Everything seems fine ! Use --reinstall to reinstall</info>');
 
             return;
         }
@@ -110,7 +110,8 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
         $output->writeln('<info>Job done !</info>');
         if ($input->getOption('no-quickrepair') === false && $input->getOption('do') === true) {
             $output->writeln('Launching a quick repair and rebuild</info>');
-            $this->doQuickRepair($output);
+            $this->getService('sugarcrm.system')->repair();
+            $output->writeln('<info>Repair Done.</info>');
         }
     }
 

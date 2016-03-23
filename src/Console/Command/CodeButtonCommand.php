@@ -178,6 +178,7 @@ class CodeButtonCommand extends AbstractConfigOptionCommand
             $output->writeln("JS created check $recordJs");
         }
 
-        $this->doQuickRepair($output);
+        $this->getService('sugarcrm.system')->repair();
+        $output->writeln('<info>Repair Done.</info>');
     }
 }

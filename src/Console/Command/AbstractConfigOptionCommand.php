@@ -20,7 +20,6 @@ namespace SugarCli\Console\Command;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
-use Inet\SugarCRM\System as SugarSystem;
 
 abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
 {
@@ -91,16 +90,5 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
         }
 
         return $config->get($defaults[$name]);
-    }
-
-    /**
-     * Launch a simple quick repair and rebuild
-     */
-    protected function doQuickRepair($output)
-    {
-        // Can't call the command directly because of dependency injection
-        $sugarSystem = new SugarSystem($this->getService('sugarcrm.entrypoint'));
-        $sugarSystem->repair();
-        $output->writeln('<info>Repair Done.</info>');
     }
 }

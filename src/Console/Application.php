@@ -137,6 +137,9 @@ class Application extends BaseApplication
              ->setFactory('Inet\SugarCRM\EntryPoint::createInstance')
              ->addArgument(new Reference('sugarcrm.application'))
              ->addArgument('1');
+        ## Register SugarSystem
+        $this->container->register('sugarcrm.system', 'Inet\SugarCRM\System')
+            ->addArgument(new Reference('sugarcrm.entrypoint'));
     }
 
     public function setEntryPoint(EntryPoint $entrypoint)
