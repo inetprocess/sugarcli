@@ -85,9 +85,9 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\CodeSetupComposerCommand();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();
-        $commands[] = new \SugarCli\Console\Command\InstallCheckCommand();
-        $commands[] = new \SugarCli\Console\Command\InstallGetConfigCommand();
-        $commands[] = new \SugarCli\Console\Command\InstallRunCommand();
+        $commands[] = new \SugarCli\Console\Command\Install\CheckCommand();
+        $commands[] = new \SugarCli\Console\Command\Install\GetConfigCommand();
+        $commands[] = new \SugarCli\Console\Command\Install\RunCommand();
         $commands[] = new \SugarCli\Console\Command\InventoryAgentCommand();
         $commands[] = new \SugarCli\Console\Command\InventoryFacterCommand();
         $commands[] = new \SugarCli\Console\Command\MetadataDumpCommand();

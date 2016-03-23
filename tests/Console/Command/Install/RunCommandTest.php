@@ -1,13 +1,14 @@
 <?php
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\Install;
 
 use Symfony\Component\Filesystem\Filesystem;
+use SugarCli\Tests\Console\Command\CommandTestCase;
 
 /**
  * @group sugarcrm-url
  * @group sugarcrm-path
  */
-class InstallRunCommandTest extends CommandTestCase
+class RunCommandTest extends CommandTestCase
 {
     public function testFailedRun()
     {

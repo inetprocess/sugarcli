@@ -1,8 +1,10 @@
 <?php
 
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\Install;
 
-class InstallCheckCommandTest extends CommandTestCase
+use SugarCli\Tests\Console\Command\CommandTestCase;
+
+class CheckCommandTest extends CommandTestCase
 {
     public function testInstalled()
     {
@@ -24,10 +26,9 @@ class InstallCheckCommandTest extends CommandTestCase
 
     public function testNotInstalled()
     {
-        @unlink(__DIR__ . '/metadata/fake_sugar/config.php');
         $ret = $this->getCommandTester('install:check')
             ->execute(array(
-                '--path' => __DIR__ . '/metadata/fake_sugar',
+                '--path' => __DIR__ . '/uninstalled',
             ));
         $this->assertEquals(12, $ret);
     }

@@ -1,9 +1,10 @@
 <?php
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\Install;
 
+use SugarCli\Tests\Console\Command\CommandTestCase;
 use Symfony\Component\Filesystem\Filesystem;
 
-class InstallGetConfigCommandTest extends CommandTestCase
+class GetConfigCommandTest extends CommandTestCase
 {
     public function getTestDir()
     {
@@ -12,7 +13,7 @@ class InstallGetConfigCommandTest extends CommandTestCase
 
     public function getRessourceConfig()
     {
-        return __DIR__ . '/../../../res/config_si.php';
+        return __DIR__ . '/../../../../res/config_si.php';
     }
 
     public function testDefaults()

@@ -7,7 +7,7 @@ class LangFileCleaner extends CommandTestCase
     {
         $ret = $this->getCommandTester('clean:langfiles')
             ->execute(array(
-                '--path' => __DIR__ . '/install/fake_sugar',
+                '--path' => __DIR__ . '/Install/install/fake_sugar',
                 '--test' => '',
             ));
         $this->assertEquals(0, $ret);

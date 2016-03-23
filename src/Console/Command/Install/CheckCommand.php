@@ -16,16 +16,17 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Install;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use SugarCli\Console\ExitCode;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
 /**
  * Check command to verify that Sugar is present and installed.
  */
-class InstallCheckCommand extends AbstractConfigOptionCommand
+class CheckCommand extends AbstractConfigOptionCommand
 {
     protected function configure()
     {

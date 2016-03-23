@@ -16,7 +16,7 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Install;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -28,7 +28,7 @@ use SugarCli\Console\ExitCode;
 /**
  * Check command to verify that Sugar is present and installed.
  */
-class InstallGetConfigCommand extends Command
+class GetConfigCommand extends Command
 {
     protected function configure()
     {
@@ -53,7 +53,7 @@ class InstallGetConfigCommand extends Command
     {
         $config_file = $input->getOption('config');
         $logger = $this->getApplication()->getContainer()->get('logger');
-        $config_res = __DIR__ . '/../../../res/config_si.php';
+        $config_res = __DIR__ . '/../../../../res/config_si.php';
 
         $fsys = new Filesystem();
         if ($fsys->exists($config_file)) {
