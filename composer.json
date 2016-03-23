@@ -17,6 +17,7 @@
         "symfony/filesystem": "^2.8",
         "symfony/finder": "^2.8",
         "symfony/process": "^2.8",
+        "symfony/stopwatch": "^2.8",
         "symfony/yaml": "^2.8"
     },
     "require-dev": {
