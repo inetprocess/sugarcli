@@ -32,6 +32,7 @@ class UpdateCommand extends AbstractConfigOptionCommand
     protected $fields_mapping = array(
         'first-name' => 'first_name',
         'last-name' => 'last_name',
+        'email' => 'email1',
     );
 
     protected function configure()
@@ -68,6 +69,12 @@ class UpdateCommand extends AbstractConfigOptionCommand
                 'P',
                 InputOption::VALUE_REQUIRED,
                 'Password of the user.'
+            )
+            ->addOption(
+                'email',
+                'e',
+                InputOption::VALUE_REQUIRED,
+                'Principal email address of the user.'
             )
             ->addOption(
                 'admin',

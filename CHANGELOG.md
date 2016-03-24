@@ -4,6 +4,7 @@ Changelog
 (unreleased)
 ----
 * Optional `--url` parameter in `install:run` command if url is set in configuration file.
+* Add `--email` option for `user:update` command to set email address of a user.
 
 1.9.1
 ----
