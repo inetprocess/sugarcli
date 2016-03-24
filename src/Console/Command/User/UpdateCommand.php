@@ -16,7 +16,7 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\User;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -25,8 +25,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\UsersManager;
 use SugarCli\Console\ExitCode;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
-class UserUpdateCommand extends AbstractConfigOptionCommand
+class UpdateCommand extends AbstractConfigOptionCommand
 {
     protected $fields_mapping = array(
         'first-name' => 'first_name',

@@ -97,8 +97,8 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsStatusCommand();
         $commands[] = new \SugarCli\Console\Command\SystemQuickRepairCommand();
-        $commands[] = new \SugarCli\Console\Command\UserUpdateCommand();
-        $commands[] = new \SugarCli\Console\Command\UserListCommand();
+        $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
+        $commands[] = new \SugarCli\Console\Command\User\ListCommand();
 
         return $commands;
     }

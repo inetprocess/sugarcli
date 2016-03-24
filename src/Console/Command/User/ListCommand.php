@@ -16,7 +16,7 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\User;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -28,8 +28,9 @@ use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\Bean as BeanManager;
 use Inet\SugarCRM\UsersManager;
 use SugarCli\Console\ExitCode;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
-class UserListCommand extends AbstractConfigOptionCommand
+class ListCommand extends AbstractConfigOptionCommand
 {
     const BOOL_TRUE = "\xE2\x9C\x94";
     const BOOL_FALSE = "\xE2\x9C\x95";

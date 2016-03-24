@@ -174,7 +174,7 @@ class CodeSetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         ));
 
         $output = $cmd->getDisplay();
-        $this->assertContains("Everything seems fine ! Used --reinstall to reinstall", $output);
+        $this->assertContains("Everything seems fine ! Use --reinstall to reinstall", $output);
         $this->assertEquals(0, $cmd->getStatusCode());
         $this->assertEquals("test", file_get_contents($this->composerJson));
     }

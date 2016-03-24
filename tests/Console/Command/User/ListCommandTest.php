@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\User;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -14,7 +14,7 @@ use SugarCli\Console\Application;
 /**
  * @group sugarcrm-path
  */
-class UserListCommandTest extends \PHPUnit_Framework_TestCase
+class ListCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function getEntryPointInstance()
     {

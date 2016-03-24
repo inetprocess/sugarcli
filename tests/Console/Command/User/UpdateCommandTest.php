@@ -1,5 +1,5 @@
 <?php
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\User;
 
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\StreamOutput;
@@ -13,13 +13,13 @@ use Inet\SugarCRM\EntryPoint;
 use SugarCli\Tests\TestsUtil\ArrayDataSet;
 use SugarCli\Tests\TestsUtil\DatabaseTestCase;
 use SugarCli\Console\Application;
-use SugarCli\Console\Command\UserUpdateCommand;
+use SugarCli\Console\Command\User\UpdateCommand;
 
 /**
  * @group sugarcrm-db
  * @group sugarcrm-path
  */
-class UserUpdateCommandTest extends DatabaseTestCase
+class UpdateCommandTest extends DatabaseTestCase
 {
     const USERNAME = 'Test PHPUnit sugarcli';
 
@@ -147,7 +147,7 @@ class UserUpdateCommandTest extends DatabaseTestCase
      */
     public function testGetBoolean($expected, $actual)
     {
-        $cmd = new UserUpdateCommand();
+        $cmd = new UpdateCommand();
         $this->assertEquals($expected, $cmd->getBoolean($actual));
     }
 
