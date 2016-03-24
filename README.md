@@ -297,7 +297,8 @@ myNewLogin and set the first and last name.
 -c, --create                 Create the user instead of updating it. Optional if called with users:create.
 -f, --first-name=FIRST-NAME  First name of the user.
 -l, --last-name=LAST-NAME    Last name of the user.
--P, --password=PASSWORD      Password of the user.
+-P, --password=PASSWORD      Password of the user [UNSAFE].
+    --ask-password           Ask for user password.
 -a, --admin=ADMIN            Make the user administrator. [yes/no]
 -A, --active=ACTIVE          Make the user active. [yes/no]
 -p, --path=PATH              Path to SugarCRM installation.
@@ -312,7 +313,8 @@ with login myNewLogin and password mypasword.
 -c, --create                 Create the user instead of updating it. Optional if called with users:create.
 -f, --first-name=FIRST-NAME  First name of the user.
 -l, --last-name=LAST-NAME    Last name of the user.
--P, --password=PASSWORD      Password of the user.
+-P, --password=PASSWORD      Password of the user [UNSAFE].
+    --ask-password           Ask for user password.
 -a, --admin=ADMIN            Make the user administrator. [yes/no]
 -A, --active=ACTIVE          Make the user active. [yes/no]
 -p, --path=PATH              Path to SugarCRM installation.
