@@ -18,10 +18,11 @@
 
 namespace SugarCli\Console\Command\User;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
 use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\UsersManager;
 use SugarCli\Console\ExitCode;
@@ -68,7 +69,13 @@ class UpdateCommand extends AbstractConfigOptionCommand
                 'password',
                 'P',
                 InputOption::VALUE_REQUIRED,
-                'Password of the user.'
+                'Password of the user. [UNSAFE]'
+            )
+            ->addOption(
+                'ask-password',
+                null,
+                InputOption::VALUE_NONE,
+                'Ask for user password.'
             )
             ->addOption(
                 'email',
@@ -114,6 +121,12 @@ class UpdateCommand extends AbstractConfigOptionCommand
         $password = $input->getOption('password');
         $admin = $input->getOption('admin');
         $active = $input->getOption('active');
+
+        if ($input->getOption('ask-password')) {
+            $helper = $this->getHelper('question');
+            $question = new Question("Please enter the new password for user $user_name: ", null);
+            $password = $helper->ask($input, $output, $question);
+        }
 
         $additionnal_fields = array();
         foreach ($this->fields_mapping as $option => $field_name) {

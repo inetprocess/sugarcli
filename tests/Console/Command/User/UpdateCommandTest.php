@@ -23,6 +23,8 @@ class UpdateCommandTest extends DatabaseTestCase
 {
     const USERNAME = 'Test PHPUnit sugarcli';
 
+    protected $command = null;
+
     public static function deleteTestUsers()
     {
         $sql = "DELETE FROM users WHERE user_name=?";
@@ -76,8 +78,21 @@ class UpdateCommandTest extends DatabaseTestCase
             new StreamOutput(fopen('php://memory', 'w', false))
         );
         $app->setEntryPoint($this->getEntryPointInstance());
-        $cmd = $app->find($cmd_name);
-        return new CommandTester($cmd);
+        $this->command = $app->find($cmd_name);
+        return new CommandTester($this->command);
+    }
+
+    public function getCommand()
+    {
+        return $this->command;
+    }
+
+    public function getInputStream($input)
+    {
+        $stream = fopen('php://memory', 'w+', false);
+        fputs($stream, $input);
+        rewind($stream);
+        return $stream;
     }
 
     /**********************
@@ -182,5 +197,21 @@ class UpdateCommandTest extends DatabaseTestCase
             '--active' => 'no',
         ));
         $this->assertEquals(22, $ret);
+    }
+
+    public function testAskPassword()
+    {
+        $before_password = $this->getUserQueryTable(array('user_hash'))->getValue(0, 'user_hash');
+        $cmd = $this->getCommandTester('user:update');
+        $this->getCommand()
+            ->getHelper('question')
+            ->setInputStream($this->getInputStream("testpassword\n"));
+        $ret = $cmd->execute(array(
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            'username' => self::USERNAME,
+            '--ask-password' => null,
+        ));
+        $after_password = $this->getUserQueryTable(array('user_hash'))->getValue(0, 'user_hash');
+        $this->assertNotEquals($before_password, $after_password);
     }
 }
