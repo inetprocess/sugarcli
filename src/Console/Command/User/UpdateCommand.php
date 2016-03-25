@@ -125,7 +125,8 @@ class UpdateCommand extends AbstractConfigOptionCommand
         if ($input->getOption('ask-password')) {
             $helper = $this->getHelper('question');
             $question = new Question("Please enter the new password for user $user_name: ", null);
-            $question->setHidden(true);
+            defined('PHPUNIT_SUGARCLI_TESTSUITE') || $question->setHidden(true);
+            defined('PHPUNIT_SUGARCLI_TESTSUITE') || $question->setHiddenFallback(true);
             $password = $helper->ask($input, $output, $question);
         }
 

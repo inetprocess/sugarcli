@@ -206,11 +206,14 @@ class UpdateCommandTest extends DatabaseTestCase
         $this->getCommand()
             ->getHelper('question')
             ->setInputStream($this->getInputStream("testpassword\n"));
-        $ret = $cmd->execute(array(
-            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
-            'username' => self::USERNAME,
-            '--ask-password' => null,
-        ));
+        $ret = $cmd->execute(
+            array(
+                '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+                'username' => self::USERNAME,
+                '--ask-password' => null,
+            ),
+            array('interactive' => true)
+        );
         $after_password = $this->getUserQueryTable(array('user_hash'))->getValue(0, 'user_hash');
         $this->assertNotEquals($before_password, $after_password);
     }
