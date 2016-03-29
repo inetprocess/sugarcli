@@ -16,14 +16,15 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Code;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Inet\SugarCRM\MetadataParser;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
-class CodeButtonCommand extends AbstractConfigOptionCommand
+class ButtonCommand extends AbstractConfigOptionCommand
 {
     /**
      * Store Options values
@@ -171,7 +172,7 @@ class CodeButtonCommand extends AbstractConfigOptionCommand
             file_put_contents($recordJs, $jsContent);
             $output->writeln('JS file exist, updated it');
         } else {
-            $jsContent = file_get_contents(__DIR__ . '/../../../res/code_templates/record.js');
+            $jsContent = file_get_contents(__DIR__ . '/../../../../res/code_templates/record.js');
             // replace the vars
             $jsContent = str_replace('[[name]]', $btnName, $jsContent);
             file_put_contents($recordJs, $jsContent);

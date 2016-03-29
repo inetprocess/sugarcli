@@ -16,14 +16,15 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Code;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Finder\Finder;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
-class CodeSetupComposerCommand extends AbstractConfigOptionCommand
+class SetupComposerCommand extends AbstractConfigOptionCommand
 {
     /**
      * Configure the command
@@ -122,7 +123,7 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
      */
     protected function createComposerUtil($utilsPath)
     {
-        copy(__DIR__ . '/../../../res/code_templates/composer.php', "{$utilsPath}/composer.php");
+        copy(__DIR__ . '/../../../../res/code_templates/composer.php', "{$utilsPath}/composer.php");
 
         return " --> Util installed in $utilsPath/composer.php";
     }
@@ -137,7 +138,7 @@ class CodeSetupComposerCommand extends AbstractConfigOptionCommand
         $phpVersion = explode('.', PHP_VERSION);
         $phpVersion = "{$phpVersion[0]}.{$phpVersion[1]}";
 
-        $jsonContent = file_get_contents(__DIR__ . '/../../../res/code_templates/composer.json');
+        $jsonContent = file_get_contents(__DIR__ . '/../../../../res/code_templates/composer.json');
         // replace the vars
         $jsonContent = str_replace('[[PHP_VERSION]]', $phpVersion, $jsonContent);
         file_put_contents($sugarPath . '/custom/composer.json', $jsonContent);

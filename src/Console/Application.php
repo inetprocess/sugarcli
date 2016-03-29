@@ -94,8 +94,8 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeConfigCommand();
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeRunCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
-        $commands[] = new \SugarCli\Console\Command\CodeButtonCommand();
-        $commands[] = new \SugarCli\Console\Command\CodeSetupComposerCommand();
+        $commands[] = new \SugarCli\Console\Command\Code\ButtonCommand();
+        $commands[] = new \SugarCli\Console\Command\Code\SetupComposerCommand();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();
         $commands[] = new \SugarCli\Console\Command\Install\CheckCommand();
@@ -110,9 +110,8 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsStatusCommand();
         $commands[] = new \SugarCli\Console\Command\SystemQuickRepairCommand();
-        $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
         $commands[] = new \SugarCli\Console\Command\User\ListCommand();
-
+        $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
         return $commands;
     }
 
