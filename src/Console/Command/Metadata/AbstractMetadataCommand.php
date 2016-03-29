@@ -16,12 +16,13 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Metadata;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Inet\SugarCRM\Database\Metadata;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
 abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
 {

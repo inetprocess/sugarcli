@@ -104,9 +104,9 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\Install\RunCommand();
         $commands[] = new \SugarCli\Console\Command\InventoryAgentCommand();
         $commands[] = new \SugarCli\Console\Command\InventoryFacterCommand();
-        $commands[] = new \SugarCli\Console\Command\MetadataDumpCommand();
-        $commands[] = new \SugarCli\Console\Command\MetadataLoadCommand();
-        $commands[] = new \SugarCli\Console\Command\MetadataStatusCommand();
+        $commands[] = new \SugarCli\Console\Command\Metadata\DumpCommand();
+        $commands[] = new \SugarCli\Console\Command\Metadata\LoadCommand();
+        $commands[] = new \SugarCli\Console\Command\Metadata\StatusCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsDumpCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsStatusCommand();

@@ -1,5 +1,5 @@
 <?php
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\Metadata;
 
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Filesystem\Filesystem;
@@ -7,13 +7,11 @@ use Symfony\Component\Filesystem\Filesystem;
 use SugarCli\Console\Application;
 use SugarCli\Util\TestLogger;
 
-use SugarCli\Tests\Console\Command\MetadataTestCase;
-
 /**
  * @group sugarcrm-db
  * @group sugarcrm-path
  */
-class MetadataDumpCommandTest extends MetadataTestCase
+class DumpCommandTest extends MetadataTestCase
 {
     public function testDump()
     {

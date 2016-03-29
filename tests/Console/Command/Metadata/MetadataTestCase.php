@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\Metadata;
 
 use SugarCli\Console\Application;
 use SugarCli\Tests\TestsUtil\DatabaseTestCase;

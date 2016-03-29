@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\Metadata;
 
 use Symfony\Component\Console\Tester\CommandTester;
 
@@ -11,7 +11,7 @@ use SugarCli\Util\TestLogger;
  * @group sugarcrm-db
  * @group sugarcrm-path
  */
-class MetadataStatusCommandTest extends MetadataTestCase
+class StatusCommandTest extends MetadataTestCase
 {
 
     public function testStatus()

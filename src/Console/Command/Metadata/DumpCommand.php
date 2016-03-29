@@ -16,7 +16,7 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Metadata;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -24,7 +24,7 @@ use Inet\SugarCRM\Database\Metadata;
 use Inet\SugarCRM\Exception\SugarException;
 use SugarCli\Console\ExitCode;
 
-class MetadataDumpCommand extends AbstractMetadataCommand
+class DumpCommand extends AbstractMetadataCommand
 {
     protected function configure()
     {
