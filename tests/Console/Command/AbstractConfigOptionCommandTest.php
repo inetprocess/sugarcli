@@ -5,6 +5,7 @@ namespace SugarCli\Tests\Console\Command;
 use SugarCli\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
+use SugarCli\Tests\TestsUtil\Util;
 
 use SugarCli\Console\Config;
 
@@ -12,8 +13,9 @@ class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaults()
     {
+        $config_path = Util::getRelativePath(__DIR__ . '/../yaml');
         $cmd_name = 'test:default';
-        $config = new Config(array(__DIR__ . '/../yaml/complete.yaml'));
+        $config = new Config(array($config_path . '/complete.yaml'));
         $config->load();
         $app = new Application();
         $app->configure();
@@ -26,8 +28,9 @@ class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester->execute(
             array('command' => $cmd_name)
         );
+        $sugar_path = $config_path . 'toto/';
         $expected = <<<EOF
-path: toto
+path: $sugar_path
 url: titi
 
 EOF;

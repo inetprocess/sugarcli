@@ -18,10 +18,11 @@
 
 namespace SugarCli\Console;
 
-use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Yaml\Parser;
+use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Parser;
 
 class Config implements ConfigurationInterface
 {
@@ -29,11 +30,25 @@ class Config implements ConfigurationInterface
 
     protected $loaded = false;
 
+    protected $fs;
+
     public $config_files = array();
 
     public function __construct(array $config_files = array())
     {
         $this->config_files = $config_files;
+        $this->fs = new Filesystem();
+    }
+
+    public function getRelativePath($conf_path, $sugar_path)
+    {
+        if (!$this->fs->isAbsolutePath($sugar_path)) {
+            if (!$this->fs->isAbsolutePath($conf_path)) {
+                $conf_path = getcwd() . '/' . $conf_path;
+            }
+            $sugar_path = dirname($conf_path) . '/' . $sugar_path;
+        }
+        return $this->fs->makePathRelative($sugar_path, getcwd());
     }
 
     /**
@@ -45,7 +60,12 @@ class Config implements ConfigurationInterface
         $parsed_confs = array();
         foreach ($this->config_files as $conf) {
             if (is_readable($conf)) {
-                $parsed_confs[] = $yaml->parse(file_get_contents($conf));
+                $parsed_conf = $yaml->parse(file_get_contents($conf));
+                // Change sugarcrm.path to a relative path from the configfile and current directory.
+                if (isset($parsed_conf['sugarcrm']['path'])) {
+                    $parsed_conf['sugarcrm']['path'] = $this->getRelativePath($conf, $parsed_conf['sugarcrm']['path']);
+                }
+                $parsed_confs[] = $parsed_conf;
             }
         }
         //Validate and merge configuration.

@@ -63,6 +63,7 @@ class Application extends BaseApplication
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
         parent::__construct($name, $version);
+        // TODO: Look for files in all parents folder from current dir
         $this->setConfigPaths(array(
             '/etc/' . self::CONFIG_NAME,
             getenv('HOME') . '/.' . self::CONFIG_NAME,

@@ -6,6 +6,7 @@ Changelog
 * Optional `--url` parameter in `install:run` command if url is set in configuration file.
 * Add `--email` option for `user:update` command to set email address of a user.
 * Add `--ask-password` option for `user:update` command to ask for password
+* Option `sugarcrm.path` is now relative to the configuration file instead of current directory.
 
 1.9.1
 ----

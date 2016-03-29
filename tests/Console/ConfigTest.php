@@ -3,11 +3,39 @@
 namespace SugarCli\Tests\Console;
 
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\Filesystem\Filesystem;
 
+use SugarCli\Tests\TestsUtil\Util;
 use SugarCli\Console\Config;
 
 class ConfigTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @dataProvider pathProvider
+     */
+    public function testGetRelativePath($expected, $conf_path, $sugar_path)
+    {
+        $conf = new Config();
+        $actual = $conf->getRelativePath($conf_path, $sugar_path);
+        $this->assertEquals($expected, $actual);
+    }
+
+    public function pathProvider()
+    {
+        $test_path = getcwd() . '/' . 'baz';
+        return array(
+            //set #0
+            array('conf/bar/', 'conf/foo.yaml', 'bar'),
+            //set #1
+            array(Util::getRelativePath('/var/www/'), '/etc/sugarclirc', '/var/www'),
+            //set #2
+            array(Util::getRelativePath('/var/www/'), 'conf/sugarclirc', '/var/www'),
+            //set #3
+            array(Util::getRelativePath('/etc/www/'), '/etc/sugarclirc', 'www'),
+            //set #4
+            array('baz/', getcwd() . '/.sugarcli', 'baz'),
+        );
+    }
 
     /**
      * @dataProvider configProvider
@@ -85,12 +113,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function yamlProvider()
     {
+        $sugar_path = Util::getRelativePath(__DIR__ . '/yaml/toto');
         return array(
             array(array(), array( 'empty.yaml')),
             array(
                 array(
                     'sugarcrm' => array(
-                        'path' => 'toto',
+                        'path' => $sugar_path,
                         'url' => 'titi',
                     ),
                 ),
@@ -99,7 +128,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             array(
                 array(
                     'sugarcrm' => array(
-                        'path' => 'toto',
+                        'path' => $sugar_path,
                         'url' => 'bar',
                     ),
                 ),
@@ -112,12 +141,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetValue()
     {
+        $sugar_path = Util::getRelativePath(__DIR__ . '/yaml/../yaml/toto');
         $conf = new Config(array(__DIR__ . '/yaml/../yaml/complete.yaml'));
         $conf->load();
-        $this->assertEquals('toto', $conf->get('sugarcrm.path'));
+        $this->assertEquals($sugar_path, $conf->get('sugarcrm.path'));
         $this->assertEquals('titi', $conf->get('sugarcrm.url'));
         $this->assertEquals(
-            array('path' => 'toto', 'url' => 'titi'),
+            array('path' => $sugar_path, 'url' => 'titi'),
             $conf->get('sugarcrm')
         );
 
