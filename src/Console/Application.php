@@ -38,8 +38,6 @@ class Application extends BaseApplication
 {
     const CONFIG_NAME = 'sugarclirc';
 
-    public $config_paths = array();
-
     /**
      * Services container for dependency injection.
      */
@@ -63,12 +61,26 @@ class Application extends BaseApplication
     public function __construct($name = 'UNKNOWN', $version = 'UNKNOWN')
     {
         parent::__construct($name, $version);
-        // TODO: Look for files in all parents folder from current dir
-        $this->setConfigPaths(array(
-            '/etc/' . self::CONFIG_NAME,
-            getenv('HOME') . '/.' . self::CONFIG_NAME,
-            '.' . self::CONFIG_NAME
-        ));
+    }
+
+    /**
+     * Load configuration files from
+     * - /etc/sugarclirc
+     * - /home/<username>/.sugarclirc
+     * - Every .sugarclirc files found in parent folders from the current dir.
+     * Order is important as the latests paths will override values from firsts paths.
+     */
+    public function getConfigFilesPaths()
+    {
+        $paths = array();
+        $cur_path = getcwd();
+        while ($cur_path != '/' && $cur_path != '.') {
+            $paths[] = $cur_path . '/.' . self::CONFIG_NAME;
+            $cur_path = dirname($cur_path);
+        }
+        $paths[] = getenv('HOME') . '/.' . self::CONFIG_NAME;
+        $paths[] = '/etc/' . self::CONFIG_NAME;
+        return array_reverse($paths);
     }
 
     /**
@@ -104,11 +116,6 @@ class Application extends BaseApplication
         return $commands;
     }
 
-    public function setConfigPaths(array $config_paths)
-    {
-        $this->config_paths = $config_paths;
-    }
-
     public function getContainer()
     {
         return $this->container;
@@ -124,7 +131,7 @@ class Application extends BaseApplication
         $this->container->register('logger', 'Symfony\Component\Console\Logger\ConsoleLogger')
              ->addArgument(new Reference('console.output'));
         $this->container->register('config', 'SugarCli\Console\Config')
-             ->addArgument($this->config_paths)
+             ->addArgument($this->getConfigFilesPaths())
              ->addMethodCall('load');
 
         ########### SugarCRM

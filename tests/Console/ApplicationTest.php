@@ -12,6 +12,25 @@ use SugarCli\Tests\TestsUtil\TestCommand;
 class ApplicationTest extends \PHPUnit_Framework_TestCase
 {
 
+    public function testGetConfigFilesPaths()
+    {
+        $app = new Application();
+        $paths = $app->getConfigFilesPaths();
+
+        $expected = array(
+            '/etc/sugarclirc',
+            getenv('HOME') . '/.sugarclirc',
+        );
+        $cur_path = '';
+        foreach (explode('/', trim(getcwd(), '/')) as $part) {
+            $cur_path .= '/' . $part;
+            $expected[] = $cur_path . '/.sugarclirc';
+        }
+
+        // This also asserts for order.
+        $this->assertEquals($expected, $paths);
+    }
+
     public function testContainer()
     {
         $app = new Application('test', 'beta');
