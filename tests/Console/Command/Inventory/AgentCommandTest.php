@@ -1,5 +1,5 @@
 <?php
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\Inventory;
 
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Yaml;
@@ -8,7 +8,7 @@ use Psr\Log\NullLogger;
 
 use SugarCli\Console\Application;
 
-class InventoryAgentCommandTest extends \PHPUnit_Framework_TestCase
+class AgentCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function getFakeSugarPath()
     {

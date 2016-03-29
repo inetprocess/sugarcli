@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Inventory;
 
 use Symfony\Component\Console\Input\StringInput;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -12,7 +12,7 @@ class AbstractInventoryCommandTest extends \PHPUnit_Framework_TestCase
     public function testGetCustomFacts()
     {
         $mock = $this->getMockForAbstractClass(
-            'SugarCli\Console\Command\AbstractInventoryCommand',
+            'SugarCli\Console\Command\Inventory\AbstractInventoryCommand',
             array('test')
         );
         $input = new StringInput(
@@ -36,7 +36,7 @@ class AbstractInventoryCommandTest extends \PHPUnit_Framework_TestCase
     public function testGetCustomFactsInvalid()
     {
         $mock = $this->getMockForAbstractClass(
-            'SugarCli\Console\Command\AbstractInventoryCommand',
+            'SugarCli\Console\Command\Inventory\AbstractInventoryCommand',
             array('test')
         );
         $input = new ArrayInput(array(

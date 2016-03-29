@@ -16,10 +16,11 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Inventory;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
 abstract class AbstractInventoryCommand extends AbstractConfigOptionCommand
 {

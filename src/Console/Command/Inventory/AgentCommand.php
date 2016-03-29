@@ -16,23 +16,23 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Inventory;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
-use Guzzle\Service\Client as GClient;
 use Guzzle\Http\Exception\RequestException;
-use Inet\SugarCRM\Exception\SugarException;
-use SugarCli\Console\ExitCode;
+use Guzzle\Service\Client as GClient;
 use Inet\Inventory\Agent;
 use Inet\Inventory\Facter\ArrayFacter;
 use Inet\Inventory\Facter\MultiFacterFacter;
 use Inet\Inventory\Facter\SugarFacter;
 use Inet\Inventory\Facter\SystemFacter;
+use Inet\SugarCRM\Exception\SugarException;
+use SugarCli\Console\ExitCode;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
-class InventoryAgentCommand extends AbstractInventoryCommand
+class AgentCommand extends AbstractInventoryCommand
 {
     protected function configure()
     {

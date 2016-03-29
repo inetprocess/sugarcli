@@ -16,7 +16,7 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\Inventory;
 
 use Inet\Inventory\Facter\ArrayFacter;
 use Inet\Inventory\Facter\MultiFacterFacter;
@@ -30,7 +30,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class InventoryFacterCommand extends AbstractInventoryCommand
+class FacterCommand extends AbstractInventoryCommand
 {
     protected function configure()
     {
