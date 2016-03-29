@@ -95,6 +95,7 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeRunCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ButtonCommand();
+        $commands[] = new \SugarCli\Console\Command\Code\ExecuteFileCommand();
         $commands[] = new \SugarCli\Console\Command\Code\SetupComposerCommand();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();

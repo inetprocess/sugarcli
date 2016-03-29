@@ -420,6 +420,7 @@ Subcommands are:
 ```bash
 ./sugarcli.phar code:setupcomposer
 ./sugarcli.phar code:button
+./sugarcli.phar code:execute:file
 ```
 
 ### Install composer in custom/
@@ -456,13 +457,10 @@ The file affected are :
 As described, the --javascript is experimental. If you don't have a record.js file that should work well, else you have to check the generated file to make sure it didn't break anything.
 
 
-
-
-
-
-
-
-
+### Execute a php file from the SugarCRM context
+`./sugracli.phar code:execute:file --path <sugarcrm_path> [--user-id='1'] <test.php>` will execute the file `test.php` by loading
+first the sugarcrm environment. So the script can directly use the classes and db from sugar.
+You can also set the user_id from the command line to have another one than the default administrator.
 
 
 
