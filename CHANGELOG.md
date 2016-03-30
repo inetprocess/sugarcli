@@ -1,7 +1,7 @@
 Changelog
 =========
 
-(unreleased)
+1.10.0
 ----
 * New command `code:execute:file` to run a php script from SugarCRM context.
 * Option `sugarcrm.path` is now relative to the configuration file instead of current directory.
