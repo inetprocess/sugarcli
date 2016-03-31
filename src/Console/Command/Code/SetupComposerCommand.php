@@ -66,7 +66,9 @@ class SetupComposerCommand extends AbstractConfigOptionCommand
         // first check that composer is available
         exec('/bin/which composer', $ret);
         if (empty($ret)) {
-            $output->writeln('<error>Make sure that composer is installed and available in your path</error>');
+            $output->writeln(
+                '<error>Make sure that composer is installed and available in your environment PATH.</error>'
+            );
         }
 
         // Find the util

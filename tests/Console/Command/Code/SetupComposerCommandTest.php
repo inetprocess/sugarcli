@@ -56,13 +56,19 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         }
         $this->assertFileNotExists(self::$composerJson);
         $this->assertFileNotExists(self::$composerPhp);
+        // Force display of message for missing composer
+        $env_PATH = getenv('PATH');
+        putenv('PATH=');
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
         ));
+        // Put env back to normal
+        putenv('PATH=' . $env_PATH);
 
         $output = $cmd->getDisplay();
         $this->assertEquals(0, $cmd->getStatusCode());
+        $this->assertContains('Make sure that composer is installed and available in your environment PATH.', $output);
         $this->assertContains("Composer Util: ✕", $output);
         $this->assertContains("composer.json: ✕", $output);
         $this->assertContains('Will install it', $output);
@@ -82,9 +88,13 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         if (is_file(self::$composerPhp)) {
             unlink(self::$composerPhp);
         }
+        if (is_dir(dirname(self::$composerPhp))) {
+            rmdir(dirname(self::$composerPhp));
+        }
 
         $this->assertFileNotExists(self::$composerJson);
         $this->assertFileNotExists(self::$composerPhp);
+        $this->assertFileNotExists(dirname(self::$composerPhp));
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
