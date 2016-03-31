@@ -10,58 +10,52 @@ use Psr\Log\NullLogger;
 use Inet\SugarCRM\Application as SugarApp;
 use Inet\SugarCRM\EntryPoint;
 use SugarCli\Console\Application;
+use SugarCli\Tests\TestsUtil\Util;
 
 /**
  * @group sugarcrm-path
  */
 class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 {
-    protected $composerJson;
-    protected $composerPhp;
+    protected static $composerJson;
+    protected static $composerPhp;
 
-    public function getEntryPointInstance()
+    public static $cmd_name = 'code:setupcomposer';
+
+    public static function setUpBeforeClass()
     {
-        if (!EntryPoint::isCreated()) {
-            $logger = new NullLogger;
-            EntryPoint::createInstance(
-                new SugarApp($logger, getenv('SUGARCLI_SUGAR_PATH')),
-                '1'
-            );
-            $this->assertInstanceOf('Inet\SugarCRM\EntryPoint', EntryPoint::getInstance());
-        }
-        return EntryPoint::getInstance();
+        self::$composerJson = realpath(getenv('SUGARCLI_SUGAR_PATH')) . '/custom/composer.json';
+        self::$composerPhp = realpath(getenv('SUGARCLI_SUGAR_PATH'))
+            . '/custom/Extension/application/Ext/Utils/composer.php';
     }
 
-    public function getCommandTester($cmd_name = 'code:setupcomposer')
+    public static function tearDownAfterClass()
     {
-        $app = new Application();
-        $app->configure(
-            new ArrayInput(array()),
-            new StreamOutput(fopen('php://memory', 'w', false))
-        );
-        $app->setEntryPoint($this->getEntryPointInstance());
-        $cmd = $app->find($cmd_name);
-
-        $this->composerJson = getenv('SUGARCLI_SUGAR_PATH') . '/custom/composer.json';
-        $this->composerPhp = getenv('SUGARCLI_SUGAR_PATH') . '/custom/Extension/application/Ext/Utils/composer.php';
-
-        return new CommandTester($cmd);
+        // Cleanup composer files.
+        // remove the composer.json file and composer.php
+        if (is_file(self::$composerJson)) {
+            unlink(self::$composerJson);
+        }
+        // remove the composer.json file and composer.php
+        if (is_file(self::$composerPhp)) {
+            unlink(self::$composerPhp);
+        }
     }
 
     public function testNoFile()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = Util::getTester(self::$cmd_name)->tester;
 
         // remove the composer.json file and composer.php
-        if (is_file($this->composerJson)) {
-            unlink($this->composerJson);
+        if (is_file(self::$composerJson)) {
+            unlink(self::$composerJson);
         }
         // remove the composer.json file and composer.php
-        if (is_file($this->composerPhp)) {
-            unlink($this->composerPhp);
+        if (is_file(self::$composerPhp)) {
+            unlink(self::$composerPhp);
         }
-        $this->assertFileNotExists($this->composerJson);
-        $this->assertFileNotExists($this->composerPhp);
+        $this->assertFileNotExists(self::$composerJson);
+        $this->assertFileNotExists(self::$composerPhp);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
@@ -72,25 +66,25 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertContains("Composer Util: ✕", $output);
         $this->assertContains("composer.json: ✕", $output);
         $this->assertContains('Will install it', $output);
-        $this->assertFileNotExists($this->composerJson);
-        $this->assertFileNotExists($this->composerPhp);
+        $this->assertFileNotExists(self::$composerJson);
+        $this->assertFileNotExists(self::$composerPhp);
     }
 
     public function testJsonAndPhp()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = Util::getTester(self::$cmd_name)->tester;
 
         // remove the composer.json file and composer.php
-        if (is_file($this->composerJson)) {
-            unlink($this->composerJson);
+        if (is_file(self::$composerJson)) {
+            unlink(self::$composerJson);
         }
         // remove the composer.json file and composer.php
-        if (is_file($this->composerPhp)) {
-            unlink($this->composerPhp);
+        if (is_file(self::$composerPhp)) {
+            unlink(self::$composerPhp);
         }
 
-        $this->assertFileNotExists($this->composerJson);
-        $this->assertFileNotExists($this->composerPhp);
+        $this->assertFileNotExists(self::$composerJson);
+        $this->assertFileNotExists(self::$composerPhp);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
@@ -99,26 +93,26 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
         $output = $cmd->getDisplay();
         $this->assertEquals(0, $cmd->getStatusCode());
-        $this->assertFileExists($this->composerJson);
-        $this->assertFileExists($this->composerPhp);
+        $this->assertFileExists(self::$composerJson);
+        $this->assertFileExists(self::$composerPhp);
         $this->assertContains(
             "require_once(__DIR__ . '/../../../vendor/autoload.php');",
-            file_get_contents($this->composerPhp)
+            file_get_contents(self::$composerPhp)
         );
-        $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents($this->composerJson));
-        $this->assertJson(file_get_contents($this->composerJson));
+        $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents(self::$composerJson));
+        $this->assertJson(file_get_contents(self::$composerJson));
     }
 
     public function testNoJsonButPhp()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = Util::getTester(self::$cmd_name)->tester;
 
         // remove the composer.json file and composer.php
-        if (is_file($this->composerJson)) {
-            unlink($this->composerJson);
+        if (is_file(self::$composerJson)) {
+            unlink(self::$composerJson);
         }
 
-        $this->assertFileNotExists($this->composerJson);
+        $this->assertFileNotExists(self::$composerJson);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
@@ -129,20 +123,20 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(0, $cmd->getStatusCode());
         $this->assertContains("Composer Util: ✔", $output);
         $this->assertContains("composer.json: ✕", $output);
-        $this->assertFileExists($this->composerJson);
-        $this->assertFileExists($this->composerPhp);
+        $this->assertFileExists(self::$composerJson);
+        $this->assertFileExists(self::$composerPhp);
     }
 
     public function testJsonNoPhp()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = Util::getTester(self::$cmd_name)->tester;
 
         // remove the composer.json file and composer.php
-        if (is_file($this->composerPhp)) {
-            unlink($this->composerPhp);
+        if (is_file(self::$composerPhp)) {
+            unlink(self::$composerPhp);
         }
 
-        $this->assertFileNotExists($this->composerPhp);
+        $this->assertFileNotExists(self::$composerPhp);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
@@ -151,22 +145,22 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
         $output = $cmd->getDisplay();
         $this->assertEquals(0, $cmd->getStatusCode());
-        $this->assertFileExists($this->composerJson);
-        $this->assertFileExists($this->composerPhp);
+        $this->assertFileExists(self::$composerJson);
+        $this->assertFileExists(self::$composerPhp);
         $this->assertContains(
             "require_once(__DIR__ . '/../../../vendor/autoload.php');",
-            file_get_contents($this->composerPhp)
+            file_get_contents(self::$composerPhp)
         );
-        $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents($this->composerJson));
-        $this->assertJson(file_get_contents($this->composerJson));
+        $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents(self::$composerJson));
+        $this->assertJson(file_get_contents(self::$composerJson));
     }
 
     public function testJsonPhp()
     {
-        $cmd = $this->getCommandTester();
-        file_put_contents($this->composerJson, 'test');
-        $this->assertFileExists($this->composerJson);
-        $this->assertFileExists($this->composerPhp);
+        $cmd = Util::getTester(self::$cmd_name)->tester;
+        file_put_contents(self::$composerJson, 'test');
+        $this->assertFileExists(self::$composerJson);
+        $this->assertFileExists(self::$composerPhp);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
@@ -176,15 +170,15 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         $output = $cmd->getDisplay();
         $this->assertContains("Everything seems fine ! Use --reinstall to reinstall", $output);
         $this->assertEquals(0, $cmd->getStatusCode());
-        $this->assertEquals("test", file_get_contents($this->composerJson));
+        $this->assertEquals("test", file_get_contents(self::$composerJson));
     }
 
     public function testJsonPhpReinstall()
     {
-        $cmd = $this->getCommandTester();
-        file_put_contents($this->composerJson, 'test');
-        $this->assertFileExists($this->composerJson);
-        $this->assertFileExists($this->composerPhp);
+        $cmd = Util::getTester(self::$cmd_name)->tester;
+        file_put_contents(self::$composerJson, 'test');
+        $this->assertFileExists(self::$composerJson);
+        $this->assertFileExists(self::$composerPhp);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--no-quickrepair' => null,
@@ -197,7 +191,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertContains("composer.json: ✔", $output);
         $this->assertContains("Will Reinstall (require --do to have an effect)", $output);
         $this->assertEquals(0, $cmd->getStatusCode());
-        $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents($this->composerJson));
-        $this->assertJson(file_get_contents($this->composerJson));
+        $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents(self::$composerJson));
+        $this->assertJson(file_get_contents(self::$composerJson));
     }
 }
