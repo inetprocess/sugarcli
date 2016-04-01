@@ -9,6 +9,8 @@ use Psr\Log\NullLogger;
 
 use Inet\SugarCRM\Application as SugarApp;
 use Inet\SugarCRM\EntryPoint;
+use Symfony\Component\Finder\Finder;
+use Symfony\Component\Filesystem\Filesystem;
 use SugarCli\Console\Application;
 use SugarCli\Tests\TestsUtil\Util;
 
@@ -19,6 +21,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 {
     protected static $composerJson;
     protected static $composerPhp;
+    protected static $custom_utils;
 
     public static $cmd_name = 'code:setupcomposer';
 
@@ -27,6 +30,10 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         self::$composerJson = realpath(getenv('SUGARCLI_SUGAR_PATH')) . '/custom/composer.json';
         self::$composerPhp = realpath(getenv('SUGARCLI_SUGAR_PATH'))
             . '/custom/Extension/application/Ext/Utils/composer.php';
+        self::$custom_utils = realpath(getenv('SUGARCLI_SUGAR_PATH'))
+            . '/custom/application/Ext/Utils/custom_utils.ext.php';
+        $fs = new Filesystem();
+        $fs->remove(dirname(self::$composerPhp));
     }
 
     public static function tearDownAfterClass()
@@ -149,7 +156,6 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertFileNotExists(self::$composerPhp);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
-            '--no-quickrepair' => null,
             '--do' => null,
         ));
 
@@ -160,6 +166,10 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
         $this->assertContains(
             "require_once(__DIR__ . '/../../../vendor/autoload.php');",
             file_get_contents(self::$composerPhp)
+        );
+        $this->assertContains(
+            "require_once(__DIR__ . '/../../../vendor/autoload.php');",
+            file_get_contents(self::$custom_utils)
         );
         $this->assertContains('"inetprocess/libsugarcrm": "^1-beta"', file_get_contents(self::$composerJson));
         $this->assertJson(file_get_contents(self::$composerJson));

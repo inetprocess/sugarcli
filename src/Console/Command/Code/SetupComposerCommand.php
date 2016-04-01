@@ -113,7 +113,7 @@ class SetupComposerCommand extends AbstractConfigOptionCommand
         $output->writeln('<info>Job done !</info>');
         if ($input->getOption('no-quickrepair') === false && $input->getOption('do') === true) {
             $output->writeln('Launching a quick repair and rebuild</info>');
-            $this->getService('sugarcrm.system')->repair();
+            $this->getService('sugarcrm.system')->rebuildApplication();
             $output->writeln('<info>Repair Done.</info>');
         }
     }
