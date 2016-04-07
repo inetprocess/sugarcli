@@ -1,6 +1,12 @@
 Changelog
 =========
 
+(unreleased)
+----
+* Use box to compile phar
+* Faster repair for `code:setupcomposer`
+* Better code coverage
+
 1.10.0
 ----
 * New command `code:execute:file` to run a php script from SugarCRM context.

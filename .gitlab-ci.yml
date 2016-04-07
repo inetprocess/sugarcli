@@ -15,6 +15,7 @@ phar:
     stage: build
     script:
         - composer install --no-dev --quiet -o
+        - mkdir build
         - php -dphar.readonly=0 bin/box build
     artifacts:
         paths:

@@ -5,6 +5,7 @@ php:
 
 install:
     - composer install --no-dev --quiet -o
+    - mkdir build
 
 script:
     - php -dphar.readonly=0 bin/box build
