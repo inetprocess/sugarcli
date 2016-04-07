@@ -7,7 +7,7 @@ install:
     - composer install --no-dev --quiet -o
 
 script:
-    - php -dphar.readonly=0 bin/compile
+    - php -dphar.readonly=0 bin/box build
 
 deploy:
     provider: releases

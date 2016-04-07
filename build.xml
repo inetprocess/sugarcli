@@ -5,11 +5,11 @@
     <property name="mainPhingDir" value="reports/phing-reports" />
 
     <property name="pkgPHPVersions" value="5.3 -> 5.4" />
-    <property name="pkgSugarCRMVersions" value="6.5 - 7.6" />
-    <property name="pkgCopyright" value="2005-2015 iNet Process" />
-    <property name="pkgName" value="inetprocess/sugarcrm" />
+    <property name="pkgSugarCRMVersions" value="6.5 -> 7.6" />
+    <property name="pkgCopyright" value="2005-2016 iNet Process" />
+    <property name="pkgName" value="inetprocess/sugarcli" />
     <property name="pkgLicense" value="Apache License 2.0" />
-    <property name="pkgLink" value="http://www.inetprocess.com" />
+    <property name="pkgLink" value="https://github.com/inetprocess/sugarcli" />
 
     <target name="mainloop">
         <!-- Deleting old reports and creating an empty folder -->

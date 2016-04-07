@@ -15,7 +15,7 @@ phar:
     stage: build
     script:
         - composer install --no-dev --quiet -o
-        - php -dphar.readonly=0 bin/compile
+        - php -dphar.readonly=0 bin/box build
     artifacts:
         paths:
             - build/sugarcli.phar

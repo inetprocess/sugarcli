@@ -1,0 +1,52 @@
+{
+    "alias": "sugarcli.phar",
+    "algorithm": "SHA512",
+    "banner": "SugarCLI\n\nPHP Version 5.3 -> 5.4\nSugarCRM Versions 6.5 - 7.6\n\n@author Rémi Sauvat\n@author Emmanuel Dyan\n@copyright 2005-2015 iNet Process\n\n@package inetprocess/sugarcrm\n\n@license Apache License 2.0\n\n@link https://github.com/inetprocess/sugarcli\n",
+    "chmod": "0755",
+    "compression": "GZ",
+    "finder-bin": [
+        {
+            "ignoreVCS": true,
+            "ignoreDotFiles": true,
+            "name": "*.php",
+            "in": [
+                "src",
+                "vendor/composer",
+                "vendor/csanquer",
+                "vendor/doctrine",
+                "vendor/fzaninotto",
+                "vendor/guzzle",
+                "vendor/inetprocess",
+                "vendor/jms",
+                "vendor/linfo",
+                "vendor/phpcollection/phpcollection",
+                "vendor/phpoption/phpoption",
+                "vendor/psr",
+                "vendor/ramsey",
+                "vendor/symfony"
+            ],
+            "exclude": [
+                "test",
+                "tests",
+                "Tests"
+            ]
+        },
+        {
+            "ignoreVCS": true,
+            "ignoreDotFiles": true,
+            "in": "res"
+        }
+    ],
+    "files-bin": [
+        "vendor/guzzle/guzzle/src/Guzzle/Http/Resources/cacert.pem",
+        "vendor/inetprocess/libinventoryclient/src/InventoryService.json",
+        "vendor/autoload.php"
+    ],
+    "files": [
+        "bin/sugarcli"
+    ],
+    "git-version": "sugarcli_version",
+    "main": "/bin/sugarcli",
+    "output": "build/sugarcli.phar",
+    "stub": true
+}

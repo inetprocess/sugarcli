@@ -1,7 +1,18 @@
 {
-    "name": "inet/sugarcli",
+    "name": "inetprocess/sugarcli",
     "description": "SugarCli is a command line tool to install and manage SugarCRM installations.",
     "license": "Apache-2.0",
+    "keywords": ["sugarcrm", "sugarcli"],
+    "authors": [
+        {
+            "name": "Emmanuel Dyan",
+            "email": "emmanuel.dyan@inetprocess.com"
+        },
+        {
+            "name": "Rémi Sauvat",
+            "email": "remi.sauvat@inetprocess.com"
+        }
+    ],
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.3.9",
