@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "3ad59735bb22479b4138b520f56f9b55",
-    "content-hash": "fc6c5ed8048c6513af59acca4a814833",
+    "hash": "86ace62b6ab5d42442445627968dafdd",
+    "content-hash": "3cf41a90cfbb286abdae7a7a575d14da",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
