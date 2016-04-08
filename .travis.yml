@@ -8,6 +8,7 @@ install:
     - mkdir build
 
 script:
+    - ulimit -Sn 4096
     - php -dphar.readonly=0 bin/box build
 
 deploy:

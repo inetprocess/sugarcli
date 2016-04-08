@@ -16,6 +16,7 @@ phar:
     script:
         - composer install --no-dev --quiet -o
         - mkdir build
+        - ulimit -Sn 4096
         - php -dphar.readonly=0 bin/box build
     artifacts:
         paths:
