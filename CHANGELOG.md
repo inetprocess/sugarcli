@@ -1,7 +1,7 @@
 Changelog
 =========
 
-(unreleased)
+1.10.1
 ----
 * Use box to compile phar
 * Faster repair for `code:setupcomposer`
