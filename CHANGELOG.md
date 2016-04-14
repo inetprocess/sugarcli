@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.10.2
+----
+* Bugfix: Update libsugarcrm to fix output on command `system:quickrepair`
+
 1.10.1
 ----
 * Use box to compile phar
