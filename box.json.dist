@@ -19,6 +19,7 @@
                 "vendor/inetprocess",
                 "vendor/jms",
                 "vendor/linfo",
+                "vendor/padraic",
                 "vendor/phpcollection/phpcollection",
                 "vendor/phpoption/phpoption",
                 "vendor/psr",

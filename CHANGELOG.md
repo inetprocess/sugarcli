@@ -1,9 +1,10 @@
 Changelog
 =========
 
-(unreleased)
+1.11.0
 ----
 * `install:run` doesn't need a web server installation is done offline.
+* New command `self-update` to automatically update to the latest version.
 
 1.10.2
 ----
