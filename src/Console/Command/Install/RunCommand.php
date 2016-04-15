@@ -36,12 +36,11 @@ class RunCommand extends AbstractConfigOptionCommand
         $this->setName('install:run')
             ->setDescription('Extract and install SugarCRM.')
             ->addConfigOptionMapping('path', 'sugarcrm.path')
-            ->addConfigOptionMapping('url', 'sugarcrm.url')
-            ->addConfigOption(
+            ->addOption(
                 'url',
                 'u',
                 InputOption::VALUE_REQUIRED,
-                'Public url of SugarCRM.'
+                '<comment>[DEPRECATED]</comment> This option does nothing and is only kept for backward compatibility.'
             )
             ->addOption(
                 'force',
@@ -64,34 +63,13 @@ class RunCommand extends AbstractConfigOptionCommand
                 'config_si.php'
             );
     }
-
-    public function getUrlFromConfigSi($config_si)
-    {
-        if (!is_readable($config_si)) {
-            throw new \InvalidArgumentException(
-                sprintf('The config file "%s" is not readable.', $config_si)
-            );
-        }
-        require($config_si);
-        if (empty($sugar_config_si['setup_site_url'])) {
-            throw new \InvalidArgumentException('"setup_site_url" is not set in configuration file.');
-        }
-        return $sugar_config_si['setup_site_url'];
-    }
-
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->setSugarPath($this->getConfigOption($input, 'path'));
         $force = $input->getOption('force');
         $config_si = $input->getOption('config');
-        try {
-            $url = $this->getConfigOption($input, 'url');
-        } catch (\InvalidArgumentException $e) {
-            $url = $this->getUrlFromConfigSi($config_si);
-        }
         $installer = new Installer(
             $this->getService('sugarcrm.application'),
-            $url,
             $input->getOption('source'),
             $config_si
         );

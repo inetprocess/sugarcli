@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "86ace62b6ab5d42442445627968dafdd",
-    "content-hash": "3cf41a90cfbb286abdae7a7a575d14da",
+    "hash": "e93144fc4705c17f6ce1e99cd5fb98c3",
+    "content-hash": "97fde51171f8f6cdf1b57aa8195b917e",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
@@ -337,16 +337,16 @@
         },
         {
             "name": "inetprocess/libinventoryclient",
-            "version": "v1.0.1-beta",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/libinventoryclient.git",
-                "reference": "89b8948bc2b0a3edbc7137b37b4baf2aa356da5b"
+                "reference": "73664b695c386eac152b13e78beb0beed1d8c708"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/libinventoryclient/zipball/89b8948bc2b0a3edbc7137b37b4baf2aa356da5b",
-                "reference": "89b8948bc2b0a3edbc7137b37b4baf2aa356da5b",
+                "url": "https://api.github.com/repos/inetprocess/libinventoryclient/zipball/73664b695c386eac152b13e78beb0beed1d8c708",
+                "reference": "73664b695c386eac152b13e78beb0beed1d8c708",
                 "shasum": ""
             },
             "require": {
@@ -371,7 +371,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "GPL-2.0"
+                "Apache-2.0"
             ],
             "authors": [
                 {
@@ -383,20 +383,20 @@
             "keywords": [
                 "sugarcrm"
             ],
-            "time": "2016-01-06 15:53:03"
+            "time": "2016-04-15 11:40:43"
         },
         {
             "name": "inetprocess/libsugarcrm",
-            "version": "1.1.22-beta",
+            "version": "1.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/libsugarcrm.git",
-                "reference": "bfde11310c341e8a3ca565bbe3802b6d22291608"
+                "reference": "64592ded1d01f8e86e4552ad2eca84c2bce6a2d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/bfde11310c341e8a3ca565bbe3802b6d22291608",
-                "reference": "bfde11310c341e8a3ca565bbe3802b6d22291608",
+                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/64592ded1d01f8e86e4552ad2eca84c2bce6a2d0",
+                "reference": "64592ded1d01f8e86e4552ad2eca84c2bce6a2d0",
                 "shasum": ""
             },
             "require": {
@@ -404,6 +404,7 @@
                 "psr/log": "~1.0",
                 "symfony/filesystem": "~2",
                 "symfony/finder": "~2",
+                "symfony/process": "^2.8",
                 "symfony/yaml": "~2"
             },
             "require-dev": {
@@ -435,7 +436,7 @@
                 "sugarcli",
                 "sugarcrm"
             ],
-            "time": "2016-04-14 09:39:51"
+            "time": "2016-04-15 11:34:39"
         },
         {
             "name": "inetprocess/neuralyzer",
@@ -2435,10 +2436,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "inetprocess/libinventoryclient": 10,
-        "inetprocess/libsugarcrm": 10
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

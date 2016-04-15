@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+----
+* `install:run` doesn't need a web server installation is done offline.
+
 1.10.2
 ----
 * Bugfix: Update libsugarcrm to fix output on command `system:quickrepair`
