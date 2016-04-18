@@ -114,4 +114,33 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         rewind($err->getStream());
         $this->assertContains('exit()', stream_get_contents($err->getStream()));
     }
+
+    public function testRunAsRoot()
+    {
+        $stub = $this->getMock(
+            'SugarCli\Console\Application',
+            array('isRunByRoot'),
+            array('test', 'test')
+        );
+        $stub->method('isRunByRoot')->willReturn(true);
+        $stub->setAutoExit(false);
+        $stub->add(new TestCommand());
+        $selfupdate_cmd = new TestCommand();
+        $selfupdate_cmd->setName('self-update');
+        $stub->add($selfupdate_cmd);
+        $tester = new ApplicationTester($stub);
+        $tester->run(array(
+            'command' => 'test:command',
+        ));
+        $this->assertEquals(6, $tester->getStatusCode());
+        $this->assertEquals('You are not allowed to run this command as root.' . PHP_EOL, $tester->getDisplay());
+
+        $tester = new ApplicationTester($stub);
+        $tester->run(array(
+            'command' => 'self-update',
+        ));
+        $this->assertEquals(0, $tester->getStatusCode());
+        $this->assertEquals(PHP_EOL, $tester->getDisplay());
+
+    }
 }

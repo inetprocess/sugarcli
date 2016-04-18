@@ -19,6 +19,7 @@
 namespace SugarCli\Console;
 
 use Symfony\Component\Console\Application as BaseApplication;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
@@ -207,5 +208,42 @@ class Application extends BaseApplication
         }
 
         return $exitCode;
+    }
+
+    /**
+     * @override To limit access as root user
+     */
+    public function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
+    {
+        if ($this->isRunByRoot() and !$this->isWhitelistedForRoot($command)) {
+            $output->writeln('<error>You are not allowed to run this command as root.</error>');
+            return ExitCode::EXIT_COMMAND_AS_ROOT_DENIED;
+        }
+        return parent::doRunCommand($command, $input, $output);
+    }
+
+    public function isRunByRoot()
+    {
+        if (extension_loaded('posix')) {
+            return (posix_geteuid() === 0);
+        }
+        // @codeCoverageIgnoreStart
+        // We don't know so we will let the user run the application
+        return false;
+        // @codeCoverageIgnoreEnd
+    }
+
+    public function getWhitelistedRootCommands()
+    {
+        return array(
+            'help',
+            'list',
+            'self-update',
+        );
+    }
+
+    public function isWhitelistedForRoot(Command $command)
+    {
+        return in_array($command->getName(), $this->getWhitelistedRootCommands());
     }
 }

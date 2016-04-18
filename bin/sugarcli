@@ -6,11 +6,6 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
-if (posix_getuid() === 0 or posix_geteuid() === 0) {
-    echo 'Error: You are not allowed to run this program as root.' . PHP_EOL;
-    exit(1);
-}
-
 // Load composer
 require_once(dirname(__DIR__) . '/vendor/autoload.php');
 
