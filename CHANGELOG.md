@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.11.1
+----
+* Allow root user to run help and self-update commands. Root check is disabled is posix extension is not loaded.
+
 1.11.0
 ----
 * `install:run` doesn't need a web server installation is done offline.
