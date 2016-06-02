@@ -1,58 +1,71 @@
 {
-    "name": "inetprocess/sugarcli",
-    "description": "SugarCli is a command line tool to install and manage SugarCRM installations.",
-    "license": "Apache-2.0",
-    "keywords": ["sugarcrm", "sugarcli"],
-    "authors": [
-        {
-            "name": "Emmanuel Dyan",
-            "email": "emmanuel.dyan@inetprocess.com"
-        },
-        {
-            "name": "Rémi Sauvat",
-            "email": "remi.sauvat@inetprocess.com"
-        }
-    ],
-    "minimum-stability": "stable",
-    "require": {
-        "php": ">=5.3.9",
-        "ext-curl": "*",
-        "ext-Reflection": "*",
-        "csanquer/colibri-csv" : "1.1.*",
-        "guzzle/guzzle": "~3.9",
-        "inetprocess/libinventoryclient": "^1.0",
-        "inetprocess/libsugarcrm": "^1.2",
-        "inetprocess/neuralyzer": "~0.6",
-        "jms/serializer": "~0.16",
-        "padraic/phar-updater": "^1.0",
-        "symfony/config": "^2.8",
-        "symfony/console": "^2.8",
-        "symfony/dependency-injection": "^2.8",
-        "symfony/filesystem": "^2.8",
-        "symfony/finder": "^2.8",
-        "symfony/process": "^2.8",
-        "symfony/stopwatch": "^2.8",
-        "symfony/yaml": "^2.8"
+  "name": "nyt/sugarcli-nyt",
+  "description": "SugarCli-NYT is a command line tool to install and manage SugarCRM installations with customizations for The New York Times.",
+  "license": "Apache-2.0",
+  "keywords": [
+    "sugarcrm",
+    "sugarcli",
+    "The New York Times"
+  ],
+  "authors": [
+    {
+      "name": "Sugar Team, The New York Times",
+      "email": "nytcsdev@nytimes.com",
+      "role": "Fork Development Team"
     },
-    "require-dev": {
-        "phpunit/phpunit": "~4",
-        "phpunit/dbunit": "~1.3",
-        "fabpot/php-cs-fixer": "^1.10"
+    {
+      "name": "Emmanuel Dyan",
+      "email": "emmanuel.dyan@inetprocess.com",
+      "role": "Original Developer"
     },
-    "autoload": {
-        "psr-4": {
-            "SugarCli\\": "src/"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "SugarCli\\Tests\\": "tests/"
-        }
-    },
-    "config": {
-        "platform": {
-            "php": "5.3.9"
-        }
-    },
-    "bin": ["bin/sugarcli"]
+    {
+      "name": "Rémi Sauvat",
+      "email": "remi.sauvat@inetprocess.com",
+      "role": "Original Developer"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.3.9",
+    "ext-curl": "*",
+    "ext-Reflection": "*",
+    "csanquer/colibri-csv": "1.1.*",
+    "guzzle/guzzle": "~3.9",
+    "inetprocess/libinventoryclient": "^1.0",
+    "inetprocess/libsugarcrm": "^1.2",
+    "inetprocess/neuralyzer": "~0.6",
+    "jms/serializer": "~0.16",
+    "padraic/phar-updater": "^1.0",
+    "symfony/config": "^2.8",
+    "symfony/console": "^2.8",
+    "symfony/dependency-injection": "^2.8",
+    "symfony/filesystem": "^2.8",
+    "symfony/finder": "^2.8",
+    "symfony/process": "^2.8",
+    "symfony/stopwatch": "^2.8",
+    "symfony/yaml": "^2.8"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4",
+    "phpunit/dbunit": "~1.3",
+    "fabpot/php-cs-fixer": "^1.10"
+  },
+  "autoload": {
+    "psr-4": {
+      "SugarCli\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "SugarCli\\Tests\\": "tests/"
+    }
+  },
+  "config": {
+    "platform": {
+      "php": "5.3.9"
+    }
+  },
+  "bin": [
+    "bin/sugarcli"
+  ]
 }
