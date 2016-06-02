@@ -1,5 +1,5 @@
 {
-  "name": "nytm/sugarcli-nyt",
+  "name": "nyt/sugarcli",
   "description": "SugarCli-NYT is a command line tool to install and manage SugarCRM installations with customizations for The New York Times.",
   "license": "Apache-2.0",
   "keywords": [
