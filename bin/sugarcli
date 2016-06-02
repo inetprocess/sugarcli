@@ -6,8 +6,25 @@ if (PHP_SAPI !== 'cli') {
     exit(1);
 }
 
-// Load composer
-require_once(dirname(__DIR__) . '/vendor/autoload.php');
+foreach (array(__DIR__ . '/../../autoload.php', __DIR__ . '/../vendor/autoload.php', __DIR__ . '/vendor/autoload.php') as $file) {
+    if (file_exists($file)) {
+        define('PHPUNIT_COMPOSER_INSTALL', $file);
+        break;
+    }
+}
+
+unset($file);
+
+if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
+    fwrite(STDERR,
+        'You need to set up the project dependencies using the following commands:' . PHP_EOL .
+        'wget http://getcomposer.org/composer.phar' . PHP_EOL .
+        'php composer.phar install' . PHP_EOL
+    );
+    die(1);
+}
+
+require_once PHPUNIT_COMPOSER_INSTALL;
 
 // Set error reporting to avoid messages from sugar code.
 error_reporting(error_reporting() & ~E_NOTICE & ~E_STRICT);
