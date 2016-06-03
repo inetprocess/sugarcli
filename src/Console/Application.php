@@ -215,7 +215,7 @@ class Application extends BaseApplication
      */
     public function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
-        if ($this->isRunByRoot() and !$this->isWhitelistedForRoot($command)) {
+        if ($this->isRunByRoot() and !$this->isRootPermitted($input) and !$this->isWhitelistedForRoot($command)) {
             $output->writeln('<error>You are not allowed to run this command as root.</error>');
             return ExitCode::EXIT_COMMAND_AS_ROOT_DENIED;
         }
@@ -245,5 +245,11 @@ class Application extends BaseApplication
     public function isWhitelistedForRoot(Command $command)
     {
         return in_array($command->getName(), $this->getWhitelistedRootCommands());
+    }
+
+    public function isRootPermitted(InputInterface $input)
+    {
+        // Check if the root user is allowed to execute any command
+        return stripos($input->__toString(), 'permissive-root') !== false;
     }
 }

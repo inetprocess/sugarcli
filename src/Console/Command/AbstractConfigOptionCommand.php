@@ -36,6 +36,16 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
             InputOption::VALUE_REQUIRED,
             'Path to SugarCRM installation.'
         );
+
+        // Add a new option that relaxes the restriction on root user command execution
+        $this->addConfigOption(
+            'permissive-root',
+            null,
+            InputOption::VALUE_NONE,
+            'Do not restrict access to root user.'
+        );
+        $this->addConfigOptionMapping('permissive-root', 'permissive-root');
+
         $this->configureConfigOptions();
     }
 
