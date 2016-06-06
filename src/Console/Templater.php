@@ -107,24 +107,31 @@ class Templater
             throw new \BadMethodCallException('You must define a replacement string');
         }
 
-        // Get the placeholder from the template type
-        $placeholder = null;
+        // Get the type name from the template type
+        $typeName = null;
 
         switch ($type) {
             case TemplateTypeEnum::MODULE:
-                $placeholder = '__module__';
+                $typeName = 'module';
                 break;
             case TemplateTypeEnum::FIELD:
-                $placeholder = '__field__';
+                $typeName = 'field';
                 break;
             case TemplateTypeEnum::RELATIONSHIP:
-                $placeholder = '__relationship__';
+                $typeName = 'relationship';
                 break;
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
         }
 
-        // Replace and return all instances of the placeholder within the template path and the template file extension
-        return str_replace('.twig', '', str_replace($placeholder, $replace, $template));
+        // Format placeholder name with type directory as reference
+        $placeholder = '__'. $typeName. '__';
+
+        // Returned replaced placeholders within the template path, the template type directory, and template file extension
+        return preg_replace('/\.twig$/', '',
+            preg_replace('/^'. $typeName. '\//', '',
+                str_replace($placeholder, $replace, $template)
+            )
+        );
     }
 }
