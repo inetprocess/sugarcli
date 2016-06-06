@@ -22,9 +22,11 @@
 
 namespace SugarCli\Console\Command\Code;
 
+use SugarCli\Console\TemplateTypeEnum;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Filesystem\Filesystem;
 use Inet\SugarCRM\MetadataParser;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Utils\Utils;
@@ -76,8 +78,11 @@ class ModuleCommand extends AbstractConfigOptionCommand
             'module' => $this->options['name']
         );
 
-        $script = $templater->processTemplate('module/modules/__module__/__module___sugar.php.twig', $params);
+        $currentTemplatePath = 'module/modules/__module__/__module___sugar.php.twig';
+        $script = $templater->processTemplate($currentTemplatePath, $params);
         echo PHP_EOL. PHP_EOL. $script;
+        echo PHP_EOL. PHP_EOL. Templater::replaceTemplateName($currentTemplatePath, TemplateTypeEnum::MODULE,
+                $this->options['name']);
     }
 
     /**
