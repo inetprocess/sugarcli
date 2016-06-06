@@ -18,6 +18,9 @@
 
 /test
 
+# Template cache
+res/code_templates/cache
+
 .sugarcli_testrc
 .sugarclirc
 .idea/

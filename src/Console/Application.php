@@ -2,18 +2,22 @@
 /**
  * SugarCLI
  *
- * PHP Version 5.3 -> 5.4
- * SugarCRM Versions 6.5 - 7.6
+ * PHP Version 5.3 -> 5.5
+ * SugarCRM Versions 6.5 - 7.7
  *
  * @author Rémi Sauvat
  * @author Emmanuel Dyan
+ * @author Joe Cora
  * @copyright 2005-2015 iNet Process
+ * @copyright 2016 The New York Times
  *
- * @package inetprocess/sugarcrm
+ * @package nyt/sugarcli-nyt
  *
  * @license Apache License 2.0
  *
  * @link http://www.inetprocess.com
+ *
+ * @since 1.11.1 Added NYT commands; Added Twig template service
  */
 
 namespace SugarCli\Console;
@@ -98,6 +102,7 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\Code\ButtonCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ExecuteFileCommand();
         $commands[] = new \SugarCli\Console\Command\Code\SetupComposerCommand();
+        $commands[] = new \SugarCli\Console\Command\Code\ModuleCommand();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();
         $commands[] = new \SugarCli\Console\Command\Install\CheckCommand();
@@ -135,6 +140,7 @@ class Application extends BaseApplication
         $this->container->register('config', 'SugarCli\Console\Config')
              ->addArgument($this->getConfigFilesPaths())
              ->addMethodCall('load');
+        $this->container->register('templater', 'SugarCli\Console\Templater');
 
         ########### SugarCRM
         $this->container->register('sugarcrm.application', 'Inet\SugarCRM\Application')
