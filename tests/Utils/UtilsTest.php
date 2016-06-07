@@ -8,6 +8,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
 {
     /*
      * Tests a base module name with a 3-letter prefix is correct
+     * @see Utils::baseModuleName
      */
     public function testBaseModuleNameWithFullPrefix()
     {
@@ -21,6 +22,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
 
     /*
      * Tests a base module name with a 1-letter prefix is correct
+     * @see Utils::baseModuleName
      */
     public function testBaseModuleNameWithSmallPrefix()
     {
@@ -34,6 +36,7 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
 
     /*
      * Tests a base module name without a prefix is correct
+     * @see Utils::baseModuleName
      */
     public function testBaseModuleNameWithPrefix()
     {
@@ -44,4 +47,5 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals($expected_base, $actual_base);
     }
+
 }

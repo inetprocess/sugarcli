@@ -28,13 +28,17 @@ class TemplateTypeEnum
 
 class Templater
 {
-    // Class members
+    // Class members /////////////////////////////////////////////////////
     /*
-     * @var Twig_Environment $twig The Twig template handler
+     * @var Twig_Environment $twig          Twig template handler
      */
     protected $twig;
+    /*
+     * @var string $templatesPath           path to the templates directory
+     */
+    protected $templatesPath;
 
-    // Class methods
+    // Class methods /////////////////////////////////////////////////////
     /*
      * This is the constructor for the Templater class that takes an optional path to the templates and cache if the
      * default locations need amended.
@@ -46,7 +50,9 @@ class Templater
     {
         // Check if the default paths need applied
         if ($templatesPath === null) {
-            $templatesPath = __DIR__ . '/../../res/code_templates';
+            $this->templatesPath = __DIR__ . '/../../res/code_templates';
+        } else {
+            $this->templatesPath = $templatesPath;
         }
 
         if ($cachePath === null) {
@@ -54,7 +60,7 @@ class Templater
         }
 
         // Load and setup Twig
-        $twigLoader = new Twig_Loader_Filesystem($templatesPath);
+        $twigLoader = new Twig_Loader_Filesystem($this->templatesPath);
         $this->twig = new Twig_Environment($twigLoader, array(
             'cache' => $cachePath
         ));
@@ -70,7 +76,8 @@ class Templater
      * @return string                       string produced from parameter replacement in template
      * @throws BadMethodCallException       throw exception when a template is not defined
      */
-    public function processTemplate($template, array $params = array()) {
+    public function processTemplate($template, array $params = array())
+    {
         // Confirm that a template parameter is defined
         if (empty($template)) {
             throw new \BadMethodCallException('You must define a template');
@@ -82,7 +89,17 @@ class Templater
         return $template->render($params);
     }
 
-    // Utility methods
+    /*
+     * This is a getter method to retrieve the templates path
+     *
+     * @return string                       path to the templates directory
+     */
+    public function getTemplatesPath()
+    {
+        return $this->templatesPath;
+    }
+
+    // Utility methods ///////////////////////////////////////////////////
     /*
      * This utility method takes a template name, a template type descriptor, and the string to replace the placeholder
      * for the type. A string produced from the template name replacement along with template file extension (.twig) is
@@ -96,7 +113,8 @@ class Templater
      *                                      throw exception when a replacement string is not defined
      *                                      throw exception when the template type is not identified
      */
-    public static function replaceTemplateName($template, $type, $replace) {
+    public static function replaceTemplateName($template, $type, $replace)
+    {
         // Confirm that a template parameter is defined
         if (empty($template)) {
             throw new \BadMethodCallException('You must define a template');
