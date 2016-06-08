@@ -18,6 +18,7 @@ namespace SugarCli\Console\Command\Code;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
+use Inet\SugarCRM\EntryPoint;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\Templater;
 use SugarCli\Console\TemplateTypeEnum;
@@ -98,8 +99,10 @@ class ModuleCommand extends AbstractConfigOptionCommand
         $newModuleBase = Utils::baseModuleName($this->options['name']);
 
         // Check that the module name or the prefix removed variant are not already defined
-        $moduleList = array_keys($this->getService('sugarcrm.entrypoint')->getBeansList());
-        
+        /** @var EntryPoint $sugarEntryPoint */
+        $sugarEntryPoint = $this->getService('sugarcrm.entrypoint');
+        $moduleList = array_keys($sugarEntryPoint->getBeansList());
+
         foreach ($moduleList as $moduleName) {
             // Get the base module name for the current module and throw exception if match is found
             if ($newModuleBase == Utils::baseModuleName($moduleName)) {
