@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\tests\Utils;
+namespace SugarCli\Tests\Utils;
 
 use SugarCli\Utils\Utils;
 

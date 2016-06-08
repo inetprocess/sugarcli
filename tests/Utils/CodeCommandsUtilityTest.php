@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\tests\Utils;
+namespace SugarCli\Tests\Utils;
 
 use Symfony\Component\Finder\Tests\Iterator\MockFileListIterator;
 use SugarCli\Utils\CodeCommandsUtility;
