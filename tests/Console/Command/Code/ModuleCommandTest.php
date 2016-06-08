@@ -2,8 +2,6 @@
 
 namespace SugarCli\Tests\Console\Command\Code;
 
-use Symfony\Component\Console\Application;
-use SugarCli\Console\Command\Code\ModuleCommand;
 use ReflectionMethod;
 
 class ModuleCommandTest extends \PHPUnit_Framework_TestCase
