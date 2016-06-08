@@ -60,9 +60,7 @@ class ModuleCommand extends AbstractConfigOptionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Set the Sugar path from one of the specified locations and verify commandline options
-        $sugarPath = $this->getConfigOption($input, 'path');
-
-        $this->setSugarPath($sugarPath);
+        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $this->checkOptions($input);
 
         // Retrieve the templater service from app container
@@ -72,7 +70,11 @@ class ModuleCommand extends AbstractConfigOptionCommand
         // Process an write the files from the template for the module
         $templateWriter = new CodeCommandsUtility($templater);
 
-        $templateWriter->writeFilesFromTemplatesForType($this->options['name'], TemplateTypeEnum::MODULE, $sugarPath);
+        $templateWriter->writeFilesFromTemplatesForType($this->options['name'], TemplateTypeEnum::MODULE,
+            $this->getService('sugarcrm.entrypoint')->getPath());
+
+        // Output success message
+        $output->writeln('File and directory structure for custom module, '. $this->options['name']. ', added.');
         
         // Everything went fine
         return 0;
