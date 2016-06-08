@@ -60,12 +60,10 @@ class ModuleCommand extends AbstractConfigOptionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Set the Sugar path from one of the specified locations and verify commandline options
-        /*$sugarPath = $this->getConfigOption($input, 'path');
+        $sugarPath = $this->getConfigOption($input, 'path');
 
         $this->setSugarPath($sugarPath);
-        $this->checkOptions($input);*/
-        $sugarPath = '/Users/206958/Desktop/git_repos/ecomm-sugar-oreo/sugarcrm';
-        $this->options['name'] = 'Contacts_NYT';
+        $this->checkOptions($input);
 
         // Retrieve the templater service from app container
         /** @var Templater $templater */
