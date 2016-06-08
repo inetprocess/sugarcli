@@ -11,7 +11,7 @@
  * @copyright 2005-2015 iNet Process
  * @copyright 2016 The New York Times
  *
- * @package inetprocess/sugarcrm
+ * @package nyt/sugarcli-nyt
  *
  * @license Apache License 2.0
  *

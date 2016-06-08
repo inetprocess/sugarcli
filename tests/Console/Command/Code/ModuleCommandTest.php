@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\tests\Console\Command\Code;
+namespace SugarCli\Tests\Console\Command\Code;
 
 use SugarCli\Console\Command\Code\ModuleCommand;
 
