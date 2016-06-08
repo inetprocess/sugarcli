@@ -6,18 +6,11 @@
  * SugarCRM Versions 6.5 - 7.7
  *
  * @author Joe Cora
- * @author Rémi Sauvat
- * @author Emmanuel Dyan
  * @copyright 2016 The New York Times
- * @copyright 2005-2015 iNet Process
  *
  * @package nyt/sugarcli-nyt
  *
  * @license Apache License 2.0
- *
- * @link http://www.inetprocess.com
- *
- * @since 1.11.1 Used ButtonCommand class as a template
  */
 
 namespace SugarCli\Console\Command\Code;
@@ -25,15 +18,15 @@ namespace SugarCli\Console\Command\Code;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Filesystem\Filesystem;
-use Inet\SugarCRM\MetadataParser;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\Templater;
 use SugarCli\Console\TemplateTypeEnum;
+use SugarCli\Utils\CodeCommandsUtility;
 use SugarCli\Utils\Utils;
 
 class ModuleCommand extends AbstractConfigOptionCommand
 {
+    // Class members /////////////////////////////////////////////////////
     /**
      * Store Options values
      *
@@ -41,6 +34,7 @@ class ModuleCommand extends AbstractConfigOptionCommand
      */
     protected $options = array();
 
+    // Class methods /////////////////////////////////////////////////////
     /**
      * Configure the command
      */
@@ -61,28 +55,29 @@ class ModuleCommand extends AbstractConfigOptionCommand
     /**
      * Run the command
      *
-     * @param InputInterface  $input
-     * @param OutputInterface $output
+     * @inheritdoc
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Set the Sugar path from one of the specified locations and verify commandline options
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
-        $this->checkOptions($input);
+        /*$sugarPath = $this->getConfigOption($input, 'path');
+
+        $this->setSugarPath($sugarPath);
+        $this->checkOptions($input);*/
+        $sugarPath = '/Users/206958/Desktop/git_repos/ecomm-sugar-oreo/sugarcrm';
+        $this->options['name'] = 'Contacts_NYT';
 
         // Retrieve the templater service from app container
+        /** @var Templater $templater */
         $templater = $this->getContainer()->get('templater');
 
-        // Use module name to replace placeholder values in templates
-        $params = array(
-            'module' => $this->options['name']
-        );
+        // Process an write the files from the template for the module
+        $templateWriter = new CodeCommandsUtility($templater);
 
-        $currentTemplatePath = 'module/modules/__module__/__module___sugar.php.twig';
-        $script = $templater->processTemplate($currentTemplatePath, $params);
-        echo PHP_EOL. PHP_EOL. $script;
-        echo PHP_EOL. PHP_EOL. Templater::replaceTemplateName($currentTemplatePath, TemplateTypeEnum::MODULE,
-                $this->options['name']);
+        $templateWriter->writeFilesFromTemplatesForType($this->options['name'], TemplateTypeEnum::MODULE, $sugarPath);
+        
+        // Everything went fine
+        return 0;
     }
 
     /**
@@ -98,7 +93,7 @@ class ModuleCommand extends AbstractConfigOptionCommand
         if (empty($this->options['name'])) {
             throw new \InvalidArgumentException('You must define the new module\'s name');
         }
-        
+
         // Get the base module name for the new module
         $newModuleBase = Utils::baseModuleName($this->options['name']);
 
@@ -108,10 +103,11 @@ class ModuleCommand extends AbstractConfigOptionCommand
         foreach ($moduleList as $moduleName) {
             // Get the base module name for the current module and throw exception if match is found
             if ($newModuleBase == Utils::baseModuleName($moduleName)) {
-                $msg  = 'You must define a unique name for the module';
-                $msg .= PHP_EOL . PHP_EOL . 'New module name, '. $this->options['name']. ', matched the module '. $moduleName. ' with the prefixes removed.';
+                $errorMsg  = 'You must define a unique name for the module';
+                $errorMsg .= PHP_EOL . PHP_EOL . 'New module name, '. $this->options['name']. ', matched the module ';
+                $errorMsg .= $moduleName. ' with the prefixes removed.';
 
-                throw new \InvalidArgumentException($msg);
+                throw new \InvalidArgumentException($errorMsg);
             }
         }
     }

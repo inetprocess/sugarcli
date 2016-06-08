@@ -11,8 +11,15 @@
  * Copyright (C) SugarCRM Inc. All rights reserved.
  */
 
-$dictionary['NYT_Contacts'] = array(
-    'table' => 'nyt_contacts',
+/**
+ * @author SugarCli
+ * SugarCli created file
+ * NO CHANGES TO THIS FILE SHOULD BE MADE. IGNORE WHILE REVIEWING CODE
+ */
+
+
+$dictionary['{{ module }}'] = array(
+    'table' => '{{ module|lower }}',
     'audited' => true,
     'activity_enabled' => false,
     'duplicate_merge' => true,
@@ -28,4 +35,4 @@ $dictionary['NYT_Contacts'] = array(
 if (!class_exists('VardefManager')){
     require_once 'include/SugarObjects/VardefManager.php';
 }
-VardefManager::createVardef('NYT_Contacts','NYT_Contacts', array('basic','team_security','assignable','taggable'));
+VardefManager::createVardef('{{ module }}','{{ module }}', array('basic','team_security','assignable','taggable'));
