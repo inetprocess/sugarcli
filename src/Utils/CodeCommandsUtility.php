@@ -105,7 +105,7 @@ class CodeCommandsUtility
                     throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
                 }
 
-                $subTypeName = $replacements['type']. '/';
+                $subTypeName = '/'. $replacements['type'];
 
                 break;
             case TemplateTypeEnum::RELATIONSHIP:
