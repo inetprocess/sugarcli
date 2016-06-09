@@ -39,6 +39,10 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
         $tester = new CodeCommandsUtility($mockTemplater, $mockFs, $mockFinder);
 
         // Perform the test
-        $tester->writeFilesFromTemplatesForType('Tester', TemplateTypeEnum::MODULE, '/tmp');
+        $replacements = array(
+            'module' => 'Tester'
+        );
+
+        $tester->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::MODULE, '/tmp');
     }
 }

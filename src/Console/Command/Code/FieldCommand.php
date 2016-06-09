@@ -25,9 +25,18 @@ use SugarCli\Console\TemplateTypeEnum;
 use SugarCli\Utils\CodeCommandsUtility;
 use SugarCli\Utils\Utils;
 
-class ModuleCommand extends AbstractConfigOptionCommand
+class FieldCommand extends AbstractConfigOptionCommand
 {
     // Class members /////////////////////////////////////////////////////
+    /**
+     * Static list of available field types for a field
+     *
+     * @var array $fieldtypes
+     */
+    public static $fieldtypes = array(
+        'bool',
+        'varchar'
+    );
     /**
      * Store Options values
      *
@@ -42,14 +51,26 @@ class ModuleCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         // Configure the command with its name and options
-        $this->setName('code:module')
-            ->setDescription('Add the skeleton code for a custom module')
+        $this->setName('code:field')
+            ->setDescription('Add the skeleton code for a custom field')
             ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->addOption(
+                'module',
+                'm',
+                InputOption::VALUE_REQUIRED,
+                'Module Name'
+            )
             ->addOption(
                 'name',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Module Name'
+                'Field Name'
+            )
+            ->addOption(
+                'type',
+                't',
+                InputOption::VALUE_REQUIRED,
+                'Field Type; Available values: '. join(', ', self::$fieldtypes)
             );
     }
 
@@ -66,7 +87,7 @@ class ModuleCommand extends AbstractConfigOptionCommand
 
         // Prepare replacement values array for template writing
         $replacements = array(
-            'module' => $this->options['name']
+            'module' => $this->options['module']
         );
 
         // Retrieve the templater service from app container
@@ -76,7 +97,7 @@ class ModuleCommand extends AbstractConfigOptionCommand
         // Process an write the files from the template for the module
         $templateWriter = new CodeCommandsUtility($templater);
 
-        $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::MODULE,
+        $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::FIELD,
             $this->getService('sugarcrm.entrypoint')->getPath());
 
         // Output success message
@@ -94,29 +115,28 @@ class ModuleCommand extends AbstractConfigOptionCommand
     protected function checkOptions(InputInterface $input)
     {
         // Confirm that the module name exists
+        $this->options['module'] = $input->getOption('module');
+
+        if (empty($this->options['module'])) {
+            throw new \InvalidArgumentException('You must define the module\'s name');
+        }
+
+        // Confirm that the field name exists
         $this->options['name'] = $input->getOption('name');
 
         if (empty($this->options['name'])) {
-            throw new \InvalidArgumentException('You must define the new module\'s name');
+            throw new \InvalidArgumentException('You must define the new field\'s name');
         }
 
-        // Get the base module name for the new module
-        $newModuleBase = Utils::baseModuleName($this->options['name']);
+        // Confirm that the field type is available
+        $this->options['type'] = $input->getOption('type');
 
-        // Check that the module name or the prefix removed variant are not already defined
-        /** @var EntryPoint $sugarEntryPoint */
-        $sugarEntryPoint = $this->getService('sugarcrm.entrypoint');
-        $moduleList = array_keys($sugarEntryPoint->getBeansList());
+        if (!in_array($this->options['type'], self::$fieldtypes)) {
+            $errorMsg  = 'You must define a valid field type';
+            $errorMsg .= PHP_EOL . PHP_EOL . 'Available field types are:';
+            $errorMsg .= PHP_EOL. "\t". join(PHP_EOL. "\t", self::$fieldtypes);
 
-        foreach ($moduleList as $moduleName) {
-            // Get the base module name for the current module and throw exception if match is found
-            if ($newModuleBase == Utils::baseModuleName($moduleName)) {
-                $errorMsg  = 'You must define a unique name for the module';
-                $errorMsg .= PHP_EOL . PHP_EOL . 'New module name, '. $this->options['name']. ', matched the module ';
-                $errorMsg .= $moduleName. ' with the prefixes removed.';
-
-                throw new \InvalidArgumentException($errorMsg);
-            }
+            throw new \InvalidArgumentException($errorMsg);
         }
     }
 }

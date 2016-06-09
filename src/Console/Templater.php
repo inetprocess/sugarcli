@@ -103,7 +103,8 @@ class Templater
     /*
      * This utility method takes a template name, a template type descriptor, and the string to replace the placeholder
      * for the type. A string produced from the template name replacement along with template file extension (.twig) is
-     * returned.
+     * returned. Any preceding subdirectories that are used for organization, e.g., "field/bool/" for fields, are
+     * stripped out of returned name.
      *
      * @param string $template              the path to the Twig template
      * @param (TemplateTypeEnum) $type      the type of the specified template as an enumeration
@@ -127,6 +128,7 @@ class Templater
 
         // Get the type name from the template type
         $typeName = null;
+        $subTypeMatch = null;
 
         switch ($type) {
             case TemplateTypeEnum::MODULE:
@@ -134,6 +136,7 @@ class Templater
                 break;
             case TemplateTypeEnum::FIELD:
                 $typeName = 'field';
+                $subTypeMatch = '.+?\/';
                 break;
             case TemplateTypeEnum::RELATIONSHIP:
                 $typeName = 'relationship';
@@ -147,7 +150,7 @@ class Templater
 
         // Returned replaced placeholders within the template path, the template type directory, and template file extension
         return preg_replace('/\.twig$/', '',
-            preg_replace('/^'. $typeName. '\//', '',
+            preg_replace('/^'. $typeName. '\/'. $subTypeMatch. '/', '',
                 str_replace($placeholder, $replace, $template)
             )
         );

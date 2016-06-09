@@ -17,8 +17,9 @@ namespace SugarCli\Utils;
 
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
-use SugarCli\Console\Templater;
 use Symfony\Component\Finder\SplFileInfo;
+use SugarCli\Console\Templater;
+use SugarCli\Console\TemplateTypeEnum;
 
 class CodeCommandsUtility
 {
@@ -64,39 +65,76 @@ class CodeCommandsUtility
 
     /*
      * This method handles taking all templates for a particular template type, replacing all placeholder values,
-     * and writing the processed file to the appropriate location within the Sugar path.
+     * and writing the processed file to the appropriate location within the Sugar path. For "module" type, the
+     * directory structure is created, otherwise the structure already needs to be present.
      *
-     * @param string $name                  the name to use for replacements, e.g., module name, field name, etc.
+     * @param array $replacements           an array of replacement values, e.g., module name, field name, etc., that
+     *                                         are needed to process the templates for a particular type
      * @param (TemplateTypeEnum) $type      the type of the specified template as an enumeration
+     *                                         module - needs "module" key/value in $replacements
+     *                                         field - needs "module", "field", and "type" key/value in $replacements
+     *                                         relationship - TBD
      * @param string $sugarPath             path to a running Sugar location
-     * @requires |$name| > 0
-     * @requires $type is valid TemplateTypeEnum value
      * @requires $sugarPath is valid Sugar path
      */
-    public function writeFilesFromTemplatesForType($name, $type, $sugarPath)
+    public function writeFilesFromTemplatesForType(array $replacements, $type, $sugarPath)
     {
-        // Use module name to replace placeholder values in templates
-        $params = array(
-            'module' => $name
-        );
+        // Setup template replacement options based on type and confirm needed values are present in replacements array
+        $typeName = null;
+        $subTypeName = null;
+
+        switch ($type) {
+            case TemplateTypeEnum::MODULE:
+                $typeName = 'module';
+
+                // Verify required replacements
+                if (!isset($replacements['module'])) {
+                    throw new \BadMethodCallException('"module" must be specified in replacements array parameter');
+                }
+
+                break;
+            case TemplateTypeEnum::FIELD:
+                $typeName = 'field';
+
+                // Verify required replacements
+                if (!isset($replacements['module'])) {
+                    throw new \BadMethodCallException('"module" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['field'])) {
+                    throw new \BadMethodCallException('"field" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['type'])) {
+                    throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
+                }
+
+                $subTypeName = $replacements['type']. '/';
+
+                break;
+            case TemplateTypeEnum::RELATIONSHIP:
+                $typeName = 'relationship';
+                break;
+            default:
+                throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
+        }
 
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
         // location
-        $moduleTemplateDir = 'module';
-
-        $this->finder->files()->in($this->templater->getTemplatesPath(). '/'. $moduleTemplateDir)->name('*.twig');
+        $this->finder->files()->in($this->templater->getTemplatesPath(). '/'. $typeName. $subTypeName)->name('*.twig');
 
         /** @var SplFileInfo $fileTemplate */
         foreach ($this->finder as $fileTemplate) {
             // Get the template contents and perform replacement, replace placeholder in path, and create processed
             // template file in Sugar path and filename
-            $currentTemplatePath = $moduleTemplateDir. '/'. $fileTemplate->getRelativePath();
+            $currentTemplatePath = $typeName. $subTypeName. '/'. $fileTemplate->getRelativePath();
             $currentTemplateFilename = $fileTemplate->getBasename();
 
-            $currentContent = $this->templater->processTemplate($currentTemplatePath. '/'. $currentTemplateFilename, $params);
+            $currentContent = $this->templater->processTemplate($currentTemplatePath. '/'. $currentTemplateFilename,
+                $replacements);
 
-            $replacedFilePath = Templater::replaceTemplateName($currentTemplatePath, $type, $name);
-            $replacedFileName = Templater::replaceTemplateName($currentTemplateFilename, $type, $name);
+            // Module name is only replacement needed in path names
+            $replacedFilePath = Templater::replaceTemplateName($currentTemplatePath, TemplateTypeEnum::MODULE,
+                $replacements['module']);
+            
+            // Filename replacement is dependent upon type
+            $replacedFileName = Templater::replaceTemplateName($currentTemplateFilename, $type, $replacements[$typeName]);
 
             // Create the processed file path and make new file with contents
             $this->fs->mkdir($sugarPath. '/'. $replacedFilePath);
