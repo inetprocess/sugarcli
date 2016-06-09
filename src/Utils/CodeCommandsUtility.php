@@ -136,9 +136,18 @@ class CodeCommandsUtility
             // Filename replacement is dependent upon type
             $replacedFileName = Templater::replaceTemplateName($currentTemplateFilename, $type, $replacements[$typeName]);
 
-            // Create the processed file path and make new file with contents
-            $this->fs->mkdir($sugarPath. '/'. $replacedFilePath);
-            $this->fs->dumpFile($sugarPath. '/'. $replacedFilePath. '/'. $replacedFileName, $currentContent);
+            // For new modules, create the directory structure, otherwise, throw exception if path does not exist
+            $writePath = $sugarPath. '/'. $replacedFilePath;
+
+            if ($type == TemplateTypeEnum::MODULE) {
+                // Create the processed file path
+                $this->fs->mkdir($writePath);
+            } elseif (!$this->fs->exists($writePath)) {
+                throw new \DomainException('the path, '. $writePath. ', does not already exist');
+            }
+
+            // Create the new file with contents
+            $this->fs->dumpFile($writePath. '/'. $replacedFileName, $currentContent);
         }
     }
 }
