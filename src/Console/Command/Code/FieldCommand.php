@@ -87,21 +87,23 @@ class FieldCommand extends AbstractConfigOptionCommand
 
         // Prepare replacement values array for template writing
         $replacements = array(
-            'module' => $this->options['module']
+            'module' => $this->options['module'],
+            'field' => $this->options['name'],
+            'type' => $this->options['type']
         );
 
         // Retrieve the templater service from app container
         /** @var Templater $templater */
         $templater = $this->getContainer()->get('templater');
 
-        // Process an write the files from the template for the module
+        // Process and write the files from the templates for a field
         $templateWriter = new CodeCommandsUtility($templater);
 
         $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::FIELD,
             $this->getService('sugarcrm.entrypoint')->getPath());
 
         // Output success message
-        $output->writeln('File and directory structure for custom module, '. $this->options['name']. ', added.');
+        $output->writeln('Files for custom '. $this->options['type']. ' field, '. $this->options['name']. ', for module, '. $this->options['module']. ', added.');
         
         // Everything went fine
         return 0;

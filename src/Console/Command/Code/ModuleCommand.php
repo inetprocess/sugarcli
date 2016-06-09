@@ -73,14 +73,14 @@ class ModuleCommand extends AbstractConfigOptionCommand
         /** @var Templater $templater */
         $templater = $this->getContainer()->get('templater');
 
-        // Process an write the files from the template for the module
+        // Process and write the files from the templates for a module
         $templateWriter = new CodeCommandsUtility($templater);
 
         $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::MODULE,
             $this->getService('sugarcrm.entrypoint')->getPath());
 
         // Output success message
-        $output->writeln('File and directory structure for custom module, '. $this->options['name']. ', added.');
+        $output->writeln('Directory structure and files for custom module, '. $this->options['name']. ', added.');
         
         // Everything went fine
         return 0;
