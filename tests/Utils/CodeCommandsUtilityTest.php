@@ -2,7 +2,8 @@
 
 namespace SugarCli\Tests\Utils;
 
-use Symfony\Component\Finder\Tests\Iterator\MockFileListIterator;
+use ArrayIterator;
+use Symfony\Component\Finder\Tests\Iterator\MockSplFileInfo;
 use SugarCli\Utils\CodeCommandsUtility;
 use SugarCli\Console\TemplateTypeEnum;
 
@@ -23,7 +24,16 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
         $mockFinder = $this->getMockBuilder('Symfony\Component\Finder\Finder')
             ->disableOriginalConstructor()
             ->getMock();
-        $mockFinderIterator = new MockFileListIterator(array('Dummy1.php.twig', 'Dummy2.php.twig'));
+
+        $mockFile1 = new MockSplFileInfo(array(
+            'relativePath' => __DIR__,
+            'relativePathname' => 'dummy1.php.twig',
+        ));
+        $mockFile2 = new MockSplFileInfo(array(
+            'relativePath' => __DIR__,
+            'relativePathname' => 'dummy2.php.twig',
+        ));
+        $mockFinderIterator = new ArrayIterator(array($mockFile1, $mockFile2));
 
         // Configure mocks
         $mockFinder->method('files')
@@ -44,5 +54,55 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
         );
 
         $tester->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::MODULE, '/tmp');
+    }
+
+    /*
+     * Tests writing files from templates for a field with mocked dependencies
+     * @see writeFilesFromTemplatesForType
+     */
+    public function testWriteFilesFromTemplatesForTypeField() {
+        // Created mocked dependencies
+        $mockTemplater = $this->getMockBuilder('SugarCli\Console\Templater')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockFs = $this->getMockBuilder('Symfony\Component\Filesystem\Filesystem')
+            ->getMock();
+        $mockFinder = $this->getMockBuilder('Symfony\Component\Finder\Finder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockFile1 = new MockSplFileInfo(array(
+            'relativePath' => __DIR__,
+            'relativePathname' => 'dummy1.php.twig',
+        ));
+        $mockFile2 = new MockSplFileInfo(array(
+            'relativePath' => __DIR__,
+            'relativePathname' => 'dummy2.php.twig',
+        ));
+        $mockFinderIterator = new ArrayIterator(array($mockFile1, $mockFile2));
+
+        // Configure mocks
+        $mockFinder->method('files')
+            ->willReturn($mockFinder);
+        $mockFinder->method('in')
+            ->willReturn($mockFinder);
+        $mockFinder->method('name')
+            ->willReturn($mockFinder);
+        $mockFinder->method('getIterator')
+            ->willReturn($mockFinderIterator);
+        $mockFs->method('exists')
+            ->willReturn(true);
+
+        // Create tester with mocks
+        $tester = new CodeCommandsUtility($mockTemplater, $mockFs, $mockFinder);
+
+        // Perform the test
+        $replacements = array(
+            'module' => 'Tester',
+            'field' => 'Tester',
+            'type' => 'date'
+        );
+
+        $tester->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::FIELD, '/tmp');
     }
 }
