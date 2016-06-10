@@ -6,14 +6,22 @@
 
 // {{ field }} field definition
 $dictionary["{{ module }}"]["fields"]["{{ field }}"] = array(
-    // Basic GUID data field features
+    // Basic text data field features
     'name' => '{{ field }}',
     'vname' => 'LBL_{{ field|upper }}',
-    'type' => 'id',
+    'type' => 'text',
+    'required' => false,
+    'max_size' => 1056,
+    'default' => '',
     'comment' => '',
     'help' => '',
     // Sugar search features
-    'unified_search' => false,
+    'unified_search' => true,
+    'full_text_search' => array(
+        'enabled' => true,
+        'searchable' => true,
+        'boost' => 1.00
+    ),
     // Sugar operational features
     'reportable' => true,
     'audited' => false,

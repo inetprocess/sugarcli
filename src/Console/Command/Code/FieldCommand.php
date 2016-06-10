@@ -36,7 +36,10 @@ class FieldCommand extends AbstractConfigOptionCommand
     public static $fieldtypes = array(
         'id',
         'bool',
-        'varchar'
+        'varchar',
+        'text',
+        'datetime',
+        'date'
     );
     /**
      * Store Options values
