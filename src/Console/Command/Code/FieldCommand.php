@@ -34,6 +34,7 @@ class FieldCommand extends AbstractConfigOptionCommand
      * @var array $fieldtypes
      */
     public static $fieldtypes = array(
+        'id',
         'bool',
         'varchar'
     );

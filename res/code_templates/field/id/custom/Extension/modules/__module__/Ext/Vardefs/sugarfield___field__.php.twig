@@ -6,16 +6,14 @@
 
 // {{ field }} field definition
 $dictionary["{{ module }}"]["fields"]["{{ field }}"] = array(
-    // Basic bool data field features
+    // Basic ID data field features
     'name' => '{{ field }}',
     'vname' => 'LBL_{{ field|upper }}',
-    'type' => 'bool',
-    'required' => false,
-    'default' => true,
+    'type' => 'id',
     'comment' => '',
     'help' => '',
     // Sugar search features
-    'unified_search' => true,
+    'unified_search' => false,
     // Sugar operational features
     'reportable' => true,
     'audited' => false,
