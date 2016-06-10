@@ -105,7 +105,7 @@ class ModuleCommand extends AbstractConfigOptionCommand
 
         foreach ($moduleList as $moduleName) {
             // Get the base module name for the current module and throw exception if match is found
-            if ($newModuleBase == Utils::baseModuleName($moduleName)) {
+            if (strcasecmp($newModuleBase, Utils::baseModuleName($moduleName)) == 0) {
                 $errorMsg  = 'You must define a unique name for the module';
                 $errorMsg .= PHP_EOL . PHP_EOL . 'New module name, '. $this->options['name']. ', matched the module ';
                 $errorMsg .= $moduleName. ' with the prefixes removed.';
