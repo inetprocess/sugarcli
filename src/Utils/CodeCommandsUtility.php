@@ -123,14 +123,16 @@ class CodeCommandsUtility
         foreach ($this->finder as $fileTemplate) {
             // Get the template contents and perform replacement, replace placeholder in path, and create processed
             // template file in Sugar path and filename
+            echo $fileTemplate->getRelativePath(). PHP_EOL;
             $currentTemplatePath = $typeName. $subTypeName. '/'. $fileTemplate->getRelativePath();
             $currentTemplateFilename = $fileTemplate->getBasename();
 
             $currentContent = $this->templater->processTemplate($currentTemplatePath. '/'. $currentTemplateFilename,
                 $replacements);
 
-            // Module name is only replacement needed in path names
-            $replacedFilePath = Templater::replaceTemplateName($currentTemplatePath, TemplateTypeEnum::MODULE,
+            // Start with type-specific replacements then do module name replacements in path names
+            $replacedFilePath = Templater::replaceTemplateName($currentTemplatePath, $type, $replacements[$typeName]);
+            $replacedFilePath = Templater::replaceTemplateName($replacedFilePath, TemplateTypeEnum::MODULE,
                 $replacements['module']);
             
             // Filename replacement is dependent upon type
