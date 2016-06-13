@@ -18,12 +18,10 @@ namespace SugarCli\Console\Command\Code;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Inet\SugarCRM\EntryPoint;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\Templater;
 use SugarCli\Console\TemplateTypeEnum;
 use SugarCli\Utils\CodeCommandsUtility;
-use SugarCli\Utils\Utils;
 
 class FieldCommand extends AbstractConfigOptionCommand
 {
