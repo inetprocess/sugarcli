@@ -17,7 +17,7 @@ namespace SugarCli\Console;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
-use DaveDevelopment\TwigInflection\Twig\Extension;
+use DaveDevelopment\TwigInflection\Twig\Extension\Inflection;
 
 class TemplateTypeEnum
 {
