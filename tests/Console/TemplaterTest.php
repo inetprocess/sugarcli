@@ -68,6 +68,36 @@ class TemplaterTest extends \PHPUnit_Framework_TestCase
     }
 
     /*
+     * Tests replacing a placeholder and formatting template name for a relationship from left module
+     * @see Templater::replaceTemplateName
+     */
+    public function testReplaceTemplateNameRelationshipLeft()
+    {
+        $module_name = 'relationship-left/custom/Extension/modules/Module_Test/Ext/Vardefs/relationship_to___relationship-left__.php.twig';
+        $replacement = 'Relationship_Test';
+        $expected_name = 'custom/Extension/modules/Module_Test/Ext/Vardefs/relationship_to_'. $replacement. '.php';
+
+        $actual_name = Templater::replaceTemplateName($module_name, TemplateTypeEnum::RELATIONSHIP_LEFT, $replacement);
+
+        $this->assertEquals($expected_name, $actual_name);
+    }
+
+    /*
+     * Tests replacing a placeholder and formatting template name for a relationship from right module
+     * @see Templater::replaceTemplateName
+     */
+    public function testReplaceTemplateNameRelationshipRight()
+    {
+        $module_name = 'relationship-right/custom/Extension/modules/Module_Test/Ext/Vardefs/relationship_to___relationship-right__.php.twig';
+        $replacement = 'Relationship_Test';
+        $expected_name = 'custom/Extension/modules/Module_Test/Ext/Vardefs/relationship_to_'. $replacement. '.php';
+
+        $actual_name = Templater::replaceTemplateName($module_name, TemplateTypeEnum::RELATIONSHIP_RIGHT, $replacement);
+
+        $this->assertEquals($expected_name, $actual_name);
+    }
+
+    /*
      * Tests exception missing template name
      * @see Templater::replaceTemplateName
      */

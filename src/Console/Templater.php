@@ -24,6 +24,8 @@ class TemplateTypeEnum
     const MODULE = 1;
     const FIELD = 2;
     const RELATIONSHIP = 3;
+    const RELATIONSHIP_LEFT = 3.1;
+    const RELATIONSHIP_RIGHT = 3.2;
 }
 
 class Templater
@@ -102,7 +104,7 @@ class Templater
     // Utility methods ///////////////////////////////////////////////////
     /*
      * This utility method takes a template name, a template type descriptor, and the string to replace the placeholder
-     * for the type. A string produced from the template name replacement along with template file extension (.twig) is
+     * for the type. A string produced from the template name replacement and template file extension (.twig) removal is
      * returned. Any preceding subdirectories that are used for organization, e.g., "field/bool/" for fields, are
      * stripped out of returned name.
      *
@@ -140,6 +142,14 @@ class Templater
                 break;
             case TemplateTypeEnum::RELATIONSHIP:
                 $typeName = 'relationship';
+                break;
+            case TemplateTypeEnum::RELATIONSHIP_LEFT:
+                // Relationships to right module name only need changed for left module relationships
+                $typeName = 'relationship-left';
+                break;
+            case TemplateTypeEnum::RELATIONSHIP_RIGHT:
+                // Relationships to left module name only need changed for right module relationships
+                $typeName = 'relationship-right';
                 break;
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');

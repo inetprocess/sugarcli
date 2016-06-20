@@ -17,7 +17,7 @@
  *
  * @link http://www.inetprocess.com
  *
- * @since 1.11.1 Added baseModuleName method
+ * @since 1.11.1 Added baseModuleName and conventionalRelationshipName methods
  */
 
 namespace SugarCli\Utils;
@@ -79,7 +79,7 @@ class Utils
      *
      * @param string $module_name
      * @requires |$module_name| > 0
-     * @return string base module name
+     * @return string                       base module name
      */
     public static function baseModuleName($module_name)
     {
@@ -88,5 +88,22 @@ class Utils
 
         // Return the second match (1st is prefix; 2nd is base)
         return $matches[2];
+    }
+
+    /**
+     * Return a conventional relationship name from left and right module names
+     * Conventional name is treated as: lower($left_module_name) + '_to_' + lower($right_module_name)
+     *
+     * @author Joe Cora
+     *
+     * @param string $left_module_name
+     * @param string $right_module_name
+     * @requires |$left_module_name| > 0
+     * @requires |$right_module_name| > 0
+     * @return string                       conventional relationship name
+     */
+    public static function conventionalRelationshipName($left_module_name, $right_module_name)
+    {
+        return strtolower($left_module_name). '_to_'. strtolower($right_module_name);
     }
 }
