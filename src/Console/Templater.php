@@ -17,6 +17,7 @@ namespace SugarCli\Console;
 
 use Twig_Environment;
 use Twig_Loader_Filesystem;
+use DaveDevelopment\TwigInflection\Twig\Extension;
 
 class TemplateTypeEnum
 {
@@ -66,6 +67,9 @@ class Templater
         $this->twig = new Twig_Environment($twigLoader, array(
             'cache' => $cachePath
         ));
+        
+        // Add Twig extensions
+        $this->twig->addExtension(new Inflection());
     }
 
     /*
