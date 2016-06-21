@@ -84,7 +84,7 @@ class Utils
     public static function baseModuleName($module_name)
     {
         // Perform regex to match pattern for Sugar module names with prefix defined
-        preg_match('/^([a-zA-Z]{1,3}_){0,1}(.+)$/', $module_name, $matches);
+        preg_match('/^([a-zA-Z]{1,5}_){0,1}(.+)$/', $module_name, $matches);
 
         // Return the second match (1st is prefix; 2nd is base)
         return $matches[2];
