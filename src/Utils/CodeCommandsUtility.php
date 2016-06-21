@@ -19,7 +19,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
 use SugarCli\Console\Templater;
-use SugarCli\Utils\Utils;
 
 class CodeCommandsUtility
 {
@@ -79,7 +78,7 @@ class CodeCommandsUtility
         // Specify replacements placeholder values in templates
         $params = array(
             'module' => $name,
-            'module-base' => Utils::baseModuleName($name)
+            'module_base' => Utils::baseModuleName($name)
         );
 
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
