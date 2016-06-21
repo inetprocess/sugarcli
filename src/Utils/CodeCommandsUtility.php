@@ -78,8 +78,10 @@ class CodeCommandsUtility
         // Specify replacements placeholder values in templates
         $params = array(
             'module' => $name,
-            'module_base' => Utils::baseModuleName($name)
+            'module-base' => Utils::baseModuleName($name)
         );
+
+        var_dump($params);
 
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
         // location
