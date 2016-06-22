@@ -172,6 +172,7 @@ class CodeCommandsUtility
 
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
         // location
+        $this->finder->files()->rewind();
         $this->finder->files()->in($this->templater->getTemplatesPath(). '/'. $typeName. $subTypeName)->name('*.twig');
 
         /** @var SplFileInfo $fileTemplate */
