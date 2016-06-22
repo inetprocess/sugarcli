@@ -18,7 +18,6 @@ namespace SugarCli\Console\Command\Code;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputOption;
-use Inet\SugarCRM\EntryPoint;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\Templater;
 use SugarCli\Console\TemplateTypeEnum;
@@ -92,6 +91,7 @@ class FieldCommand extends AbstractConfigOptionCommand
         // Prepare replacement values array for template writing
         $replacements = array(
             'module' => $this->options['module'],
+            'moduleBase' => Utils::baseModuleName($this->options['module']),
             'field' => $this->options['name'],
             'type' => $this->options['type']
         );

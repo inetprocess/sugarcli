@@ -66,7 +66,8 @@ class ModuleCommand extends AbstractConfigOptionCommand
 
         // Prepare replacement values array for template writing
         $replacements = array(
-            'module' => $this->options['name']
+            'module' => $this->options['name'],
+            'moduleBase' => Utils::baseModuleName($this->options['name'])
         );
 
         // Retrieve the templater service from app container
