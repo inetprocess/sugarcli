@@ -23,13 +23,6 @@ class {{ module }}_sugar extends Basic {
     public $object_name = '{{ module }}';
     public $table_name = '{{ module|lower }}';
     public $importable = false;
-    public $team_id;
-    public $team_set_id;
-    public $team_count;
-    public $team_name;
-    public $team_link;
-    public $team_count_link;
-    public $teams;
     public $assigned_user_id;
     public $assigned_user_name;
     public $assigned_user_link;
@@ -52,6 +45,7 @@ class {{ module }}_sugar extends Basic {
     public $following_link;
     public $my_favorite;
     public $favorite_link;
+    public $disable_row_level_security = true;
     
     /**
      * This is a deprecated method, please start using __construct() as this

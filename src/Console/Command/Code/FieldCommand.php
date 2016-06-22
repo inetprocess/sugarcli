@@ -90,6 +90,7 @@ class FieldCommand extends AbstractConfigOptionCommand
         // Prepare replacement values array for template writing
         $replacements = array(
             'module' => $this->options['module'],
+            'moduleBase' => Utils::baseModuleName($this->options['module']),
             'field' => $this->options['name'],
             'type' => $this->options['type']
         );

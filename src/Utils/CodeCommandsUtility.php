@@ -65,7 +65,7 @@ class CodeCommandsUtility
 
     /*
      * This method handles taking all templates for a particular template type, replacing all placeholder values,
-     * and writing the processed file to the appropriate location within the Sugar path. For "module" type, the
+     * and writing the processed file to the appropriate location within the Sugar path.
      * directory structure is created, otherwise the structure already needs to be present.
      *
      * @param array $replacements           an array of replacement values, e.g., module name, field name, etc., that
