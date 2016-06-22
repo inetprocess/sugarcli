@@ -172,14 +172,11 @@ class CodeCommandsUtility
 
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
         // location
-        $this->finder->files()->rewind();
         $this->finder->files()->in($this->templater->getTemplatesPath(). '/'. $typeName. $subTypeName)->name('*.twig');
 
         /** @var SplFileInfo $fileTemplate */
         foreach ($this->finder as $fileTemplate) {
-            echo "Rel Path: ". $fileTemplate->getRelativePath(). PHP_EOL;
-
-                // Get the template contents and perform replacement, replace placeholder in path, and create processed
+            // Get the template contents and perform replacement, replace placeholder in path, and create processed
             // template file in Sugar path and filename
             $currentTemplatePath = $typeName. $subTypeName. '/'. $fileTemplate->getRelativePath();
             $currentTemplateFilename = $fileTemplate->getBasename();
@@ -208,5 +205,14 @@ class CodeCommandsUtility
             // Create the new file with contents
             $this->fs->dumpFile($writePath. '/'. $replacedFileName, $currentContent);
         }
+    }
+
+    /*
+     * This method resets the code commands utility object to its original, post-construction state.
+     */
+    public function reset()
+    {
+        // Reset the finder object by instantiating a new one
+        $this->finder = new Finder();
     }
 }
