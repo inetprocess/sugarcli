@@ -4,15 +4,15 @@
  * SugarCli created file
  */
 
-// Relationship foreign key field to {{ module-left }}
-$dictionary["{{ module-right }}"]["fields"]["{{ module-left|singularize|lower }}_id"] = array(
+// Relationship foreign key field to {{ moduleLeft }}
+$dictionary["{{ moduleRight }}"]["fields"]["{{ moduleLeft|singularize|lower }}_id"] = array(
     // Basic foreign ID referenced field features
-    'name' => '{{ module-left|singularize|lower }}_id',
-    'vname' => 'LBL_{{ module-left|singularize|upper }}_ID',
+    'name' => '{{ moduleLeft|singularize|lower }}_id',
+    'vname' => 'LBL_{{ moduleLeft|singularize|upper }}_ID',
     'type' => 'id',
     'dbType' => 'id',
-    'module' => '{{ module-right }}',
-    'table' => '{{ module-right|lower }}',
+    'module' => '{{ moduleRight }}',
+    'table' => '{{ moduleRight|lower }}',
     'required' => false,
     'isnull' => true,
     'comment' => '',
@@ -30,16 +30,16 @@ $dictionary["{{ module-right }}"]["fields"]["{{ module-left|singularize|lower }}
     'hideacl' => true
 );
 
-// Relationship link field to {{ module-left }}
-$dictionary["{{ module-right }}"]["fields"]["{{ module-left|singularize|lower }}"] = array (
-    'name' => '{{ module-left|singularize|lower }}',
+// Relationship link field to {{ moduleLeft }}
+$dictionary["{{ moduleRight }}"]["fields"]["{{ moduleLeft|singularize|lower }}"] = array (
+    'name' => '{{ moduleLeft|singularize|lower }}',
     'type' => 'link',
     'relationship' => '{{ relationship }}',
     'source' => 'non-db',
-    'module' => '{{ module-left }}',
+    'module' => '{{ moduleLeft }}',
     'bean_name' => false,
     'side' => 'right',
     'vname' => 'LBL_{{ relationship|upper }}_LEFT_TITLE',
-    'id_name' => '{{ module-left|singularize|lower }}_id',
+    'id_name' => '{{ moduleLeft|singularize|lower }}_id',
     'link-type' => 'one'
 );

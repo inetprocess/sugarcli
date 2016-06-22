@@ -148,8 +148,8 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
 
         // Perform the test
         $replacements = array(
-            'module-left' => 'Left_Tester',
-            'module-right' => 'Right_Tester',
+            'moduleLeft' => 'Left_Tester',
+            'moduleRight' => 'Right_Tester',
             'type' => 'one-to-many'
         );
 
@@ -198,8 +198,8 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
 
         // Perform the test
         $replacements = array(
-            'module-left' => 'Left_Tester',
-            'module-right' => 'Right_Tester',
+            'moduleLeft' => 'Left_Tester',
+            'moduleRight' => 'Right_Tester',
             'type' => 'one-to-many'
         );
 
@@ -248,8 +248,8 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
 
         // Perform the test
         $replacements = array(
-            'module-left' => 'Left_Tester',
-            'module-right' => 'Right_Tester',
+            'moduleLeft' => 'Left_Tester',
+            'moduleRight' => 'Right_Tester',
             'type' => 'one-to-many'
         );
 

@@ -130,40 +130,40 @@ class CodeCommandsUtility
                 $typeName = 'relationship-left';
 
                 // Verify required replacements
-                if (!isset($replacements['module-left'])) {
-                    throw new \BadMethodCallException('"module-left" must be specified in replacements array parameter');
-                } elseif (!isset($replacements['module-right'])) {
-                    throw new \BadMethodCallException('"module-right" must be specified in replacements array parameter');
+                if (!isset($replacements['moduleLeft'])) {
+                    throw new \BadMethodCallException('"moduleLeft" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['moduleRight'])) {
+                    throw new \BadMethodCallException('"moduleRight" must be specified in replacements array parameter');
                 } elseif (!isset($replacements['type'])) {
                     throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
                 }
 
                 // Prepare the relationship name in the replacements
-                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['module-left'], $replacements['module-right']);
+                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['moduleLeft'], $replacements['moduleRight']);
 
                 // Prepare the relationship side specifics for replacements
-                $replacements['module'] = $replacements['module-left'];
-                $replacements['relationship-left'] = $replacements['module-right'];
+                $replacements['module'] = $replacements['moduleLeft'];
+                $replacements['relationship-left'] = $replacements['moduleRight'];
 
                 break;
             case TemplateTypeEnum::RELATIONSHIP_RIGHT:
                 $typeName = 'relationship-right';
 
                 // Verify required replacements
-                if (!isset($replacements['module-left'])) {
-                    throw new \BadMethodCallException('"module-left" must be specified in replacements array parameter');
-                } elseif (!isset($replacements['module-right'])) {
-                    throw new \BadMethodCallException('"module-right" must be specified in replacements array parameter');
+                if (!isset($replacements['moduleLeft'])) {
+                    throw new \BadMethodCallException('"moduleLeft" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['moduleRight'])) {
+                    throw new \BadMethodCallException('"moduleRight" must be specified in replacements array parameter');
                 } elseif (!isset($replacements['type'])) {
                     throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
                 }
 
                 // Prepare the relationship name in the replacements
-                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['module-left'], $replacements['module-right']);
+                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['moduleLeft'], $replacements['moduleRight']);
 
                 // Prepare the relationship side specifics for replacements
-                $replacements['module'] = $replacements['module-right'];
-                $replacements['relationship-right'] = $replacements['module-left'];
+                $replacements['module'] = $replacements['moduleRight'];
+                $replacements['relationship-right'] = $replacements['moduleLeft'];
 
                 break;
             default:

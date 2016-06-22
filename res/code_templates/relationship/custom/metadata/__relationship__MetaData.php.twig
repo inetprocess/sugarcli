@@ -4,20 +4,20 @@
  * SugarCli created file
  */
 
-// {{ module-left|replace({'_': ' '}) }} and {{ module-right|replace({'_': ' '}) }} relationship
+// {{ moduleLeft|replace({'_': ' '}) }} and {{ moduleRight|replace({'_': ' '}) }} relationship
 $dictionary["{{ relationship }}"] = array(
     'true_relationship_type' => '{{ type }}',
     'relationships' => array(
         '{{ relationship }}' => array(
-            'lhs_module' => '{{ module-left }}',
-            'lhs_table' => '{{ module-left|lower }}',
+            'lhs_module' => '{{ moduleLeft }}',
+            'lhs_table' => '{{ moduleLeft|lower }}',
             'lhs_key' => 'id',
-            'rhs_module' => '{{ module-right }}',
-            'rhs_table' => '{{ module-right|lower }}',
-            'rhs_key' => '{{ module-left|singularize|lower }}_id',
+            'rhs_module' => '{{ moduleRight }}',
+            'rhs_table' => '{{ moduleRight|lower }}',
+            'rhs_key' => '{{ moduleLeft|singularize|lower }}_id',
             'relationship_type' => '{{ type }}',
-            'join_table' => '{{ module-right|lower }}',
-            'join_key_lhs' => '{{ module-left|singularize|lower }}_id',
+            'join_table' => '{{ moduleRight|lower }}',
+            'join_key_lhs' => '{{ moduleLeft|singularize|lower }}_id',
             'join_key_rhs' => 'id',
         )
     )
