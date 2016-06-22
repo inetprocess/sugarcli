@@ -25,8 +25,8 @@ class TemplateTypeEnum
     const MODULE = 1;
     const FIELD = 2;
     const RELATIONSHIP = 3;
-    const RELATIONSHIP_LEFT = 3.1;
-    const RELATIONSHIP_RIGHT = 3.2;
+    const RELATIONSHIP_LEFT = 4;
+    const RELATIONSHIP_RIGHT = 5;
 }
 
 class Templater
