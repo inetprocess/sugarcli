@@ -85,8 +85,8 @@ class RelationshipCommand extends AbstractConfigOptionCommand
 
         // Prepare replacement values array for template writing
         $replacements = array(
-            'module-left' => $this->options['module-left'],
-            'module-right' => $this->options['module-right'],
+            'moduleLeft' => $this->options['module-left'],
+            'moduleRight' => $this->options['module-right'],
             'type' => $this->options['type']
         );
 
