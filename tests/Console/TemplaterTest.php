@@ -43,7 +43,7 @@ class TemplaterTest extends \PHPUnit_Framework_TestCase
      */
     public function testReplaceTemplateNameField()
     {
-        $module_name = 'field/custom/Extension/modules/Module_Test/Ext/Vardefs/sugarfield___field__.php.twig';
+        $module_name = 'field/bool/custom/Extension/modules/Module_Test/Ext/Vardefs/sugarfield___field__.php.twig';
         $replacement = 'Field_Test';
         $expected_name = 'custom/Extension/modules/Module_Test/Ext/Vardefs/sugarfield_'. $replacement. '.php';
 

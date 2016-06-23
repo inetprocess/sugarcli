@@ -1,0 +1,34 @@
+<?php
+/**
+ * @author SugarCli
+ * SugarCli created file
+ */
+
+// {{ field }} field definition
+$dictionary["{{ module }}"]["fields"]["{{ field }}"] = array(
+    // Basic varchar data field features
+    'name' => '{{ field }}',
+    'vname' => 'LBL_{{ field|upper }}',
+    'type' => 'bool',
+    'required' => false,
+    'len' => 255,
+    'max_size' => 255,
+    'default' => '',
+    'comment' => '',
+    'help' => '',
+    // Sugar search features
+    'unified_search' => true,
+    'full_text_search' => array(
+        'enabled' => true,
+        'searchable' => true,
+        'boost' => 1.00
+    ),
+    // Sugar operational features
+    'reportable' => true,
+    'audited' => false,
+    'massupdate' => false,
+    'importable' => false,
+    'calculated' => false,
+    'merge_filter' => 'disabled',
+    'duplicate_merge' => 'disabled'
+);
