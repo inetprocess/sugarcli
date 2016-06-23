@@ -48,6 +48,10 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             'SugarCli\Console\Config',
             $app->getContainer()->get('config')
         );
+        $this->assertInstanceOf(
+            'SugarCli\Console\Templater',
+            $app->getContainer()->get('templater')
+        );
         $this->assertTrue($app->getContainer()->get('config')->isLoaded());
     }
 

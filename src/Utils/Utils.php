@@ -2,18 +2,22 @@
 /**
  * SugarCLI
  *
- * PHP Version 5.3 -> 5.4
- * SugarCRM Versions 6.5 - 7.6
+ * PHP Version 5.3 -> 5.5
+ * SugarCRM Versions 6.5 - 7.7
  *
  * @author Rémi Sauvat
  * @author Emmanuel Dyan
+ * @author Joe Cora
  * @copyright 2005-2015 iNet Process
+ * @copyright 2016 The New York Times
  *
- * @package inetprocess/sugarcrm
+ * @package nyt/sugarcli-nyt
  *
  * @license Apache License 2.0
  *
  * @link http://www.inetprocess.com
+ *
+ * @since 1.11.1 Added baseModuleName method
  */
 
 namespace SugarCli\Utils;
@@ -66,5 +70,23 @@ class Utils
         file_put_contents($outputFile, $yaml);
 
         return true;
+    }
+
+    /**
+     * Return the base module name with the prefix removed
+     *
+     * @author Joe Cora
+     *
+     * @param string $module_name
+     * @requires |$module_name| > 0
+     * @return string base module name
+     */
+    public static function baseModuleName($module_name)
+    {
+        // Perform regex to match pattern for Sugar module names with prefix defined
+        preg_match('/^([a-zA-Z]{1,5}_){0,1}(.+)$/', $module_name, $matches);
+
+        // Return the second match (1st is prefix; 2nd is base)
+        return $matches[2];
     }
 }

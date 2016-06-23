@@ -43,7 +43,8 @@
     "symfony/finder": "^2.8",
     "symfony/process": "^2.8",
     "symfony/stopwatch": "^2.8",
-    "symfony/yaml": "^2.8"
+    "symfony/yaml": "^2.8",
+    "twig/twig": "~1.0"
   },
   "require-dev": {
     "phpunit/phpunit": "~4",
