@@ -22,7 +22,6 @@ use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\Templater;
 use SugarCli\Console\TemplateTypeEnum;
 use SugarCli\Utils\CodeCommandsUtility;
-use SugarCli\Utils\Utils;
 
 class FieldCommand extends AbstractConfigOptionCommand
 {

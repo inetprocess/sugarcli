@@ -1,0 +1,19 @@
+<?php
+/**
+ * @author SugarCli
+ * SugarCli created file
+ */
+
+// Relationship link field to {{ moduleRight|replace({'_': ' '}) }}
+$dictionary["{{ moduleLeft }}"]["fields"]["{{ moduleRight|lower }}"] = array(
+    'name' => '{{ moduleRight|singularize|lower }}',
+    'type' => 'link',
+    'relationship' => '{{ relationship }}',
+    'source' => 'non-db',
+    'module' => '{{ moduleRight }}',
+    'bean_name' => false,
+    'vname' => 'LBL_{{ relationship|upper }}_LEFT_TITLE',
+    'id_name' => 'id',
+    'link-type' => '{{ type|split('-')[2] }}',
+    'side' => 'left',
+);

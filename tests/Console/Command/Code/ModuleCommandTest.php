@@ -6,6 +6,10 @@ use ReflectionMethod;
 
 class ModuleCommandTest extends \PHPUnit_Framework_TestCase
 {
+    /*
+     * Tests a valid set of options
+     * @see checkOptions
+     */
     public function testCheckOptionsValid() {
         // Created mocked dependencies
         $mockSugarEntrypoint = $this->getMockBuilder('Inet\SugarCRM\EntryPoint')

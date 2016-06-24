@@ -62,4 +62,18 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expected_base, $actual_base);
     }
 
+    /*
+     * Tests the generation of a conventional relationship name
+     * @see Utils::conventionalRelationshipName
+     */
+    public function testConventionalRelationshipName()
+    {
+        $lmodule_name = 'Lefty_Module';
+        $rmodule_name = 'rightY_ModulE';
+        $expected_relationship = 'lefty_module_to_righty_module';
+
+        $actual_relationship = Utils::conventionalRelationshipName($lmodule_name, $rmodule_name);
+
+        $this->assertEquals($expected_relationship, $actual_relationship);
+    }
 }

@@ -68,15 +68,14 @@ class CodeCommandsUtility
      * and writing the processed file to the appropriate location within the Sugar path.
      * directory structure is created, otherwise the structure already needs to be present.
      *
-     * @param string $name                  the name to use for replacements, e.g., module name, field name, etc.
-     *                                         are needed to process the templates for a particular type
+     * @param array $replacements           an array of replacement values, e.g., module name, field name, etc., that
+     *                                          are needed to process the templates for a particular type
      * @param (TemplateTypeEnum) $type      the type of the specified template as an enumeration
-     *                                         module - needs "module" key/value in $replacements
-     *                                         field - needs "module", "field", and "type" key/value in $replacements
-     *                                         relationship - TBD
+     *                                          module - needs "module" key/value in $replacements
+     *                                          field - needs "module", "field", and "type" key/value in $replacements
+     *                                          relationship - needs "left-module", "right-module", and "type" key/value
+     *                                              in $replacements (all relationship components)
      * @param string $sugarPath             path to a running Sugar location
-     * @requires |$name| > 0
-     * @requires $type is valid TemplateTypeEnum value
      * @requires $sugarPath is valid Sugar path
      */
     public function writeFilesFromTemplatesForType(array $replacements, $type, $sugarPath)
@@ -112,6 +111,60 @@ class CodeCommandsUtility
                 break;
             case TemplateTypeEnum::RELATIONSHIP:
                 $typeName = 'relationship';
+
+                // Verify required replacements
+                if (!isset($replacements['moduleLeft'])) {
+                    throw new \BadMethodCallException('"moduleLeft" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['moduleRight'])) {
+                    throw new \BadMethodCallException('"moduleRight" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['type'])) {
+                    throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
+                }
+
+                // Prepare the relationship name in the replacements
+                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['moduleLeft'], $replacements['moduleRight']);
+                $replacements['module'] = 'Placeholder'; // Module is never replaced in templates for this type
+
+                break;
+            case TemplateTypeEnum::RELATIONSHIP_LEFT:
+                $typeName = 'relationship-left';
+
+                // Verify required replacements
+                if (!isset($replacements['moduleLeft'])) {
+                    throw new \BadMethodCallException('"moduleLeft" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['moduleRight'])) {
+                    throw new \BadMethodCallException('"moduleRight" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['type'])) {
+                    throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
+                }
+
+                // Prepare the relationship name in the replacements
+                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['moduleLeft'], $replacements['moduleRight']);
+
+                // Prepare the relationship side specifics for replacements
+                $replacements['module'] = $replacements['moduleLeft'];
+                $replacements['relationship-left'] = $replacements['moduleRight'];
+
+                break;
+            case TemplateTypeEnum::RELATIONSHIP_RIGHT:
+                $typeName = 'relationship-right';
+
+                // Verify required replacements
+                if (!isset($replacements['moduleLeft'])) {
+                    throw new \BadMethodCallException('"moduleLeft" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['moduleRight'])) {
+                    throw new \BadMethodCallException('"moduleRight" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['type'])) {
+                    throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
+                }
+
+                // Prepare the relationship name in the replacements
+                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['moduleLeft'], $replacements['moduleRight']);
+
+                // Prepare the relationship side specifics for replacements
+                $replacements['module'] = $replacements['moduleRight'];
+                $replacements['relationship-right'] = $replacements['moduleLeft'];
+
                 break;
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
@@ -152,5 +205,14 @@ class CodeCommandsUtility
             // Create the new file with contents
             $this->fs->dumpFile($writePath. '/'. $replacedFileName, $currentContent);
         }
+    }
+
+    /*
+     * This method resets the code commands utility object to its original, post-construction state.
+     */
+    public function reset()
+    {
+        // Reset the finder object by instantiating a new one
+        $this->finder = new Finder();
     }
 }
