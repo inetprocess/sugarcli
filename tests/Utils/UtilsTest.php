@@ -63,6 +63,34 @@ class UtilsTest extends \PHPUnit_Framework_TestCase
     }
 
     /*
+     * Tests a Sugar core module with separate bean name
+     * @see Utils::baseModuleName
+     */
+    public function testModuleBeanNameWithCoreModule()
+    {
+        $module_name = 'Contacts';
+        $expected_bean = 'Contact';
+
+        $actual_bean = Utils::moduleBeanName($module_name);
+
+        $this->assertEquals($expected_bean, $actual_bean);
+    }
+
+    /*
+     * Tests a non-Sugar core module with same bean name
+     * @see Utils::baseModuleName
+     */
+    public function testModuleBeanNameWithNonCoreModule()
+    {
+        $module_name = 'Modules';
+        $expected_bean = 'Modules';
+
+        $actual_bean = Utils::moduleBeanName($module_name);
+
+        $this->assertEquals($expected_bean, $actual_bean);
+    }
+
+    /*
      * Tests the generation of a conventional relationship name
      * @see Utils::conventionalRelationshipName
      */

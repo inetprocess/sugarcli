@@ -29,6 +29,38 @@ use Symfony\Component\Yaml\Dumper as YamlDumper;
  */
 class Utils
 {
+    /** @var array $coreModuleBeans         assoc. array of module name keys to bean name values */
+    private static $coreModuleBeans = array(
+        'Accounts' => 'Account',
+        'Bugs' => 'Bug',
+        'Calls' => 'Call',
+        'Cases' => 'Case',
+        'Contacts' => 'Contact',
+        'Contracts' => 'Contract',
+        'Documents' => 'Document',
+        'Emails' => 'Email',
+        'Employees' => 'Employee',
+        'Forecasts' => 'ForecastOpportunities',
+        'ForecastWorksheets' => 'ForecastWorksheet',
+        'KBContents' => 'KBContent',
+        'Leads' => 'Lead',
+        'Manufacturers' => 'Manufacturer',
+        'Meetings' => 'Meeting',
+        'Notes' => 'Note',
+        'Opportunities' => 'Opportunity',
+        'ProductCategories' => 'ProductCategory',
+        'Products' => 'Product',
+        'ProductTemplates' => 'ProductTemplate',
+        'ProspectLists' => 'ProspectList',
+        'Prospects' => 'Prospect',
+        'Quotas' => 'Quota',
+        'Quotes' => 'Quote',
+        'Reports' => 'SavedReport',
+        'RevenueLineItems' => 'RevenueLineItem',
+        'Tasks' => 'Task'
+    );
+
+
     /**
      * Create a new line every X words
      *
@@ -88,6 +120,26 @@ class Utils
 
         // Return the second match (1st is prefix; 2nd is base)
         return $matches[2];
+    }
+
+    /**
+     * Return the bean name for Sugar core modules otherwise returns the incoming module name itself
+     *
+     * @author Joe Cora
+     *
+     * @param string $module_name
+     * @requires |$module_name| > 0
+     * @return string                       module bean name
+     */
+    public static function moduleBeanName($module_name)
+    {
+        // Check if the module name is in the core module list. Return the bean name for the core module or return
+        //    the module name itself if module is not found
+        if (array_key_exists($module_name, self::$coreModuleBeans)) {
+            return self::$coreModuleBeans[$module_name];
+        } else {
+            return $module_name;
+        }
     }
 
     /**
