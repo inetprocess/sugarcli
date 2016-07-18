@@ -5,7 +5,7 @@
  */
 
 // Relationship link field to {{ moduleRight|replace({'_': ' '}) }}
-$dictionary["{{ moduleLeft }}"]["fields"]["{{ moduleRight|lower }}"] = array(
+$dictionary["{{ moduleBean }}"]["fields"]["{{ moduleRight|singularize|lower }}"] = array(
     'name' => '{{ moduleRight|singularize|lower }}',
     'type' => 'link',
     'relationship' => '{{ relationship }}',

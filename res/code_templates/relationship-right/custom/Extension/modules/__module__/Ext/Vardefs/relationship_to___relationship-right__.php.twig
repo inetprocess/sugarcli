@@ -4,8 +4,8 @@
  * SugarCli created file
  */
 
-// Relationship link field to {{ moduleLeft }}
-$dictionary["{{ moduleRight }}"]["fields"]["{{ moduleLeft|singularize|lower }}"] = array (
+// Relationship link field to {{ moduleLeft|replace({'_': ' '}) }}
+$dictionary["{{ moduleBean }}"]["fields"]["{{ moduleLeft|singularize|lower }}"] = array (
     'name' => '{{ moduleLeft|singularize|lower }}',
     'type' => 'link',
     'relationship' => '{{ relationship }}',

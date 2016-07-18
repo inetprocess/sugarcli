@@ -143,6 +143,7 @@ class CodeCommandsUtility
 
                 // Prepare the relationship side specifics for replacements
                 $replacements['module'] = $replacements['moduleLeft'];
+                $replacements['moduleBean'] = Utils::moduleBeanName($replacements['moduleLeft']);
                 $replacements['relationship-left'] = $replacements['moduleRight'];
 
                 break;
@@ -163,6 +164,7 @@ class CodeCommandsUtility
 
                 // Prepare the relationship side specifics for replacements
                 $replacements['module'] = $replacements['moduleRight'];
+                $replacements['moduleBean'] = Utils::moduleBeanName($replacements['moduleRight']);
                 $replacements['relationship-right'] = $replacements['moduleLeft'];
 
                 break;
