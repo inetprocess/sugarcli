@@ -44,10 +44,15 @@ class CleanCommand extends AbstractConfigOptionCommand
                 InputOption::VALUE_NONE,
                 "Clean all records in _cstm that are not in the main table. Won't be launched if --force is not set"
             )->addOption(
-                'clean-audit',
+                'clean-history',
                 null,
                 InputOption::VALUE_NONE,
-                "Clean *_audit and trackers"
+                "Clean *_audit, job_queue and trackers"
+            )->addOption(
+                'clean-activities',
+                null,
+                InputOption::VALUE_NONE,
+                "Clean activities_* and trackers"
             )->addOption(
                 'table',
                 null,
@@ -66,8 +71,8 @@ class CleanCommand extends AbstractConfigOptionCommand
         $this->getService('sugarcrm.entrypoint'); // go to sugar folder to make sure we are in the right folder
 
         if ($input->getOption('remove-deleted') === false && $input->getOption('clean-cstm') === false
-          && $input->getOption('clean-audit') === false) {
-            $msg = 'You need to set at least --remove-deleted or --clean-cstm or --clean-audit';
+          && $input->getOption('clean-history') === false && $input->getOption('clean-activities') === false) {
+            $msg = 'You need to set at least --remove-deleted or --clean-xxxxxx';
             throw new \InvalidArgumentException($msg);
         }
 
@@ -89,10 +94,18 @@ class CleanCommand extends AbstractConfigOptionCommand
             $this->cleanDeletedAndCustomTable($input, $output, $pdo, $table);
         }
 
+        $tables = $input->getOption('table');
+        $auditJobQueueAndTrackerTables = $this->getAuditJobQueueAndTrackersTables($input, $pdo);
+        foreach ($auditJobQueueAndTrackerTables as $table) {
+            if ((!empty($tables) && in_array($table, $tables)) || empty($tables)) {
+                $pdo->query("TRUNCATE TABLE `$table`");
+                $output->writeln("<info>Removed everything from $table</info>");
+            }
+        }
 
         $tables = $input->getOption('table');
-        $auditAndTrackerTables = $this->getAuditAndTrackersTables($input, $pdo);
-        foreach ($auditAndTrackerTables as $table) {
+        $activitiesTables = $this->getActivitiesTables($input, $pdo);
+        foreach ($activitiesTables as $table) {
             if ((!empty($tables) && in_array($table, $tables)) || empty($tables)) {
                 $pdo->query("TRUNCATE TABLE `$table`");
                 $output->writeln("<info>Removed everything from $table</info>");
@@ -152,6 +165,7 @@ class CleanCommand extends AbstractConfigOptionCommand
         $data = $pdo->query(
             $sql = "SHOW TABLES WHERE `tables_in_{$db}`
                     NOT LIKE '%_audit' AND `tables_in_{$db}` NOT LIKE '%_cache'
+                    AND `tables_in_{$db}` NOT LIKE 'job_queue'
                     AND `tables_in_{$db}` NOT LIKE 'tracker'
                     AND `tables_in_{$db}` NOT LIKE 'tracker_%'"
         );
@@ -167,14 +181,14 @@ class CleanCommand extends AbstractConfigOptionCommand
 
 
     /**
-     * Clean all tables %_audit and tracker%
+     * Get all tables %_audit, job_queue and tracker%
      *
      * @param OutputInterface $output
      * @param \PDO            $pdo
      */
-    protected function getAuditAndTrackersTables(InputInterface $input, \PDO $pdo)
+    protected function getAuditJobQueueAndTrackersTables(InputInterface $input, \PDO $pdo)
     {
-        if ($input->getOption('clean-audit') === false) {
+        if ($input->getOption('clean-history') === false) {
             return array();
         }
 
@@ -182,12 +196,41 @@ class CleanCommand extends AbstractConfigOptionCommand
         $data = $pdo->query(
             $sql = "SHOW TABLES WHERE `tables_in_{$db}`
                     LIKE '%_audit' OR `tables_in_{$db}` LIKE '%_cache'
+                    OR `tables_in_{$db}` LIKE 'job_queue'
                     OR `tables_in_{$db}` LIKE 'tracker'
                     OR `tables_in_{$db}` LIKE 'tracker_%'"
         );
 
         if ($data === false) {
-            throw new \PDOException("Can't run the query to empty audit and trackers: " . PHP_EOL . $sql);
+            throw new \PDOException("Can't run the query to get audit, job queue and trackers: " . PHP_EOL . $sql);
+        }
+        $tables = array();
+        foreach ($data as $row) {
+            $tables[] = $row[0];
+        }
+
+        return $tables;
+    }
+
+    /**
+     * Get all tables activities%
+     *
+     * @param OutputInterface $output
+     * @param \PDO            $pdo
+     */
+    protected function getActivitiesTables(InputInterface $input, \PDO $pdo)
+    {
+        if ($input->getOption('clean-activities') === false) {
+            return array();
+        }
+
+        $db = $this->getDb($pdo);
+        $data = $pdo->query(
+            $sql = "SHOW TABLES WHERE `tables_in_{$db}` LIKE 'activities%'"
+        );
+
+        if ($data === false) {
+            throw new \PDOException("Can't run the query to empty activities tables: " . PHP_EOL . $sql);
         }
         $tables = array();
         foreach ($data as $row) {
