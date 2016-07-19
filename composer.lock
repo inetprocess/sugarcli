@@ -384,16 +384,16 @@
         },
         {
             "name": "inetprocess/libsugarcrm",
-            "version": "1.2.2",
+            "version": "1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/libsugarcrm.git",
-                "reference": "c7c6bb99d5a7265223af3ee1d1351a41c47f4f0c"
+                "reference": "cb0433f0528ecaf3088cd231cf5d1de30e907125"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/c7c6bb99d5a7265223af3ee1d1351a41c47f4f0c",
-                "reference": "c7c6bb99d5a7265223af3ee1d1351a41c47f4f0c",
+                "url": "https://api.github.com/repos/inetprocess/libsugarcrm/zipball/cb0433f0528ecaf3088cd231cf5d1de30e907125",
+                "reference": "cb0433f0528ecaf3088cd231cf5d1de30e907125",
                 "shasum": ""
             },
             "require": {
@@ -433,7 +433,7 @@
                 "sugarcli",
                 "sugarcrm"
             ],
-            "time": "2016-06-06 10:11:31"
+            "time": "2016-07-19 09:59:18"
         },
         {
             "name": "inetprocess/neuralyzer",

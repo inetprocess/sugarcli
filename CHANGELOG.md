@@ -1,5 +1,10 @@
 Changelog
 =========
+1.12.1
+----
+* Corrected typo in docs
+* Forgot composer update
+
 1.12
 ----
 * Bug in hooks list corrected (by updating libsugarcrm)
