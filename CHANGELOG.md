@@ -1,5 +1,10 @@
 Changelog
 =========
+1.12
+----
+* Bug in hooks list corrected (by updating libsugarcrm)
+* Composer update
+* Added a new command to clean a DB (remove deleted records, audit, trackers, orphans)
 
 1.11.1
 ----
