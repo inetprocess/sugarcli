@@ -4,8 +4,8 @@
  * SugarCli created file
  */
 
-// Relationship foreign key field to {{ moduleLeft }}
-$dictionary["{{ moduleRight }}"]["fields"]["{{ moduleLeft|singularize|lower }}_id"] = array(
+// Relationship foreign key field to {{ moduleLeft|replace({'_': ' '}) }}
+$dictionary["{{ moduleBean }}"]["fields"]["{{ moduleLeft|singularize|lower }}_id"] = array(
     // Basic foreign ID referenced field features
     'name' => '{{ moduleLeft|singularize|lower }}_id',
     'vname' => 'LBL_{{ moduleLeft|singularize|upper }}_ID',
