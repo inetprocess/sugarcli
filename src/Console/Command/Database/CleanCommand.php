@@ -172,6 +172,8 @@ class CleanCommand extends AbstractConfigOptionCommand
         if ($data === false) {
             throw new \PDOException("Can't run the query to empty audit and trackers: " . PHP_EOL . $sql);
         }
+
+        $tables = array();
         foreach ($data as $row) {
             $tables[] = $row[0];
         }
@@ -183,7 +185,7 @@ class CleanCommand extends AbstractConfigOptionCommand
     /**
      * Get all tables %_audit, job_queue and tracker%
      *
-     * @param OutputInterface $output
+     * @param InputInterface  $input
      * @param \PDO            $pdo
      */
     protected function getAuditJobQueueAndTrackersTables(InputInterface $input, \PDO $pdo)
@@ -215,7 +217,7 @@ class CleanCommand extends AbstractConfigOptionCommand
     /**
      * Get all tables activities%
      *
-     * @param OutputInterface $output
+     * @param InputInterface  $input
      * @param \PDO            $pdo
      */
     protected function getActivitiesTables(InputInterface $input, \PDO $pdo)
