@@ -1,0 +1,31 @@
+<?php
+/**
+ * @author SugarCli
+ * SugarCli created file
+ */
+
+// Relationship foreign key field to {{ moduleLeft|replace({'_': ' '}) }}
+$dictionary["{{ moduleBean }}"]["fields"]["{{ moduleLeft|singularize|lower }}_id"] = array(
+    // Basic foreign ID referenced field features
+    'name' => '{{ moduleLeft|singularize|lower }}_id',
+    'vname' => 'LBL_{{ moduleLeft|singularize|upper }}_ID',
+    'type' => 'id',
+    'dbType' => 'id',
+    'module' => '{{ moduleRight }}',
+    'table' => '{{ moduleRight|lower }}',
+    'required' => false,
+    'isnull' => true,
+    'comment' => '',
+    'help' => '',
+    // Sugar search features
+    'unified_search' => false,
+    // Sugar operational features
+    'reportable' => true,
+    'audited' => false,
+    'massupdate' => false,
+    'importable' => false,
+    'calculated' => false,
+    'merge_filter' => 'enabled',
+    'duplicate_merge' => 'disabled',
+    'hideacl' => true
+);

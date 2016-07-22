@@ -58,14 +58,10 @@ class Templater
             $this->templatesPath = $templatesPath;
         }
 
-        if ($cachePath === null) {
-            $cachePath = __DIR__ . '/../../res/code_templates/cache';
-        }
-
         // Load and setup Twig
         $twigLoader = new Twig_Loader_Filesystem($this->templatesPath);
         $this->twig = new Twig_Environment($twigLoader, array(
-            'cache' => $cachePath
+            'cache' => false
         ));
         
         // Add Twig extensions

@@ -6,23 +6,16 @@
 
 // {{ field }} field definition
 $dictionary["{{ module }}"]["fields"]["{{ field }}"] = array(
-    // Basic varchar data field features
+    // Basic int data field features
     'name' => '{{ field }}',
     'vname' => 'LBL_{{ field|upper }}',
-    'type' => 'varchar',
+    'type' => 'int',
     'required' => false,
-    'len' => 255,
-    'max_size' => 255,
-    'default' => '',
+    'default' => 0,
     'comment' => '',
     'help' => '',
     // Sugar search features
     'unified_search' => true,
-    'full_text_search' => array(
-        'enabled' => true,
-        'searchable' => true,
-        'boost' => 1.00
-    ),
     // Sugar operational features
     'reportable' => true,
     'audited' => false,

@@ -73,7 +73,7 @@ class CodeCommandsUtility
      * @param (TemplateTypeEnum) $type      the type of the specified template as an enumeration
      *                                          module - needs "module" key/value in $replacements
      *                                          field - needs "module", "field", and "type" key/value in $replacements
-     *                                          relationship - needs "left-module", "right-module", and "type" key/value
+     *                                          relationship - needs "moduleLeft", "moduleRight", and "type" key/value
      *                                              in $replacements (all relationship components)
      * @param string $sugarPath             path to a running Sugar location
      * @requires $sugarPath is valid Sugar path
@@ -143,6 +143,7 @@ class CodeCommandsUtility
 
                 // Prepare the relationship side specifics for replacements
                 $replacements['module'] = $replacements['moduleLeft'];
+                $replacements['moduleBean'] = Utils::moduleBeanName($replacements['moduleLeft']);
                 $replacements['relationship-left'] = $replacements['moduleRight'];
 
                 break;
@@ -163,6 +164,7 @@ class CodeCommandsUtility
 
                 // Prepare the relationship side specifics for replacements
                 $replacements['module'] = $replacements['moduleRight'];
+                $replacements['moduleBean'] = Utils::moduleBeanName($replacements['moduleRight']);
                 $replacements['relationship-right'] = $replacements['moduleLeft'];
 
                 break;
