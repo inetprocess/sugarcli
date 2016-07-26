@@ -185,7 +185,7 @@ class CodeCommandsUtility
 
                 // Select the related module and related field as the nondb_field value in the replacements array
                 // Two underscores (__) will delimit the module from the field
-                $replacements['nondb_field'] = $replacements['relatedModule']. '__'. $replacements['relatedField'];
+                $replacements['nondb_field'] = strtolower($replacements['relatedModule']). '__'. strtolower($replacements['relatedField']);
 
                 // Use the bean name for the module to use in replacements for new fields
                 $replacements['moduleBean'] = Utils::moduleBeanName($replacements['module']);
