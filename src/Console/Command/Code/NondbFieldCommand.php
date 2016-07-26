@@ -94,7 +94,7 @@ class NondbFieldCommand extends AbstractConfigOptionCommand
             $this->getService('sugarcrm.entrypoint')->getPath());
 
         // Output success message
-        $output->writeln('Files for custom '. $this->options['type']. ' field, '. $this->options['name']. ', for module, '. $this->options['module']. ', added.');
+        $output->writeln('Files for non-db field for module, '. $this->options['module']. ', related to field, '. $this->options['name']. ', in custom module, '. $this->options['related']. ', added.');
         
         // Everything went fine
         return 0;
