@@ -27,6 +27,7 @@ class TemplateTypeEnum
     const RELATIONSHIP = 3;
     const RELATIONSHIP_LEFT = 4;
     const RELATIONSHIP_RIGHT = 5;
+    const NONDB_FIELD = 6;
 }
 
 class Templater
@@ -150,6 +151,9 @@ class Templater
             case TemplateTypeEnum::RELATIONSHIP_RIGHT:
                 // Relationships to left module name only need changed for right module relationships
                 $typeName = 'relationship-right';
+                break;
+            case TemplateTypeEnum::NONDB_FIELD:
+                $typeName = 'nondb_field';
                 break;
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');

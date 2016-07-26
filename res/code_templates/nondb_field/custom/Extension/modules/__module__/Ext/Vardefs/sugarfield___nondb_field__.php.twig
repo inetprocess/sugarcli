@@ -1,0 +1,27 @@
+<?php
+/**
+ * @author SugarCli
+ * SugarCli created file
+ */
+
+// {{ nondb_field }} non-db field definition
+$dictionary["{{ moduleBean }}"]["fields"]["{{ nondb_field }}"] = array(
+    // Basic non-db field features
+    'name' => '{{ nondb_field }}',
+    'vname' => 'LBL_{{ nondb_field|upper }}',
+    'type' => 'varchar',
+    'source' => 'nondb',
+    'required' => false,
+    'comment' => '',
+    'help' => '',
+    // Sugar search features
+    'unified_search' => false,
+    // Sugar operational features
+    'reportable' => false,
+    'audited' => false,
+    'massupdate' => false,
+    'importable' => false,
+    'calculated' => false,
+    'merge_filter' => 'disabled',
+    'duplicate_merge' => 'disabled'
+);
