@@ -39,7 +39,8 @@ class FieldCommand extends AbstractConfigOptionCommand
         'varchar',
         'text',
         'datetime',
-        'date'
+        'date',
+        'non-db'
     );
     /**
      * Store Options values
