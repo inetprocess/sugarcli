@@ -108,6 +108,9 @@ class CodeCommandsUtility
 
                 $subTypeName = '/'. $replacements['type'];
 
+                // Use the bean name for the module to use in replacements for new fields
+                $replacements['module'] = Utils::moduleBeanName($replacements['module']);
+
                 break;
             case TemplateTypeEnum::RELATIONSHIP:
                 $typeName = 'relationship';
