@@ -17,8 +17,8 @@ $dictionary["{{ relationship }}"] = array(
             'rhs_key' => '{{ moduleLeft|singularize|lower }}_id',
             'relationship_type' => '{{ type }}',
             'join_table' => '{{ moduleRight|lower }}',
-            'join_key_lhs' => '{{ moduleLeft|singularize|lower }}_id',
-            'join_key_rhs' => 'id',
+            'join_key_lhs' => 'id',
+            'join_key_rhs' => '{{ moduleLeft|singularize|lower }}_id',
         )
     )
 );
