@@ -112,23 +112,6 @@ class CodeCommandsUtility
                 $replacements['moduleBean'] = Utils::moduleBeanName($replacements['module']);
 
                 break;
-            case TemplateTypeEnum::RELATIONSHIP:
-                $typeName = 'relationship';
-
-                // Verify required replacements
-                if (!isset($replacements['moduleLeft'])) {
-                    throw new \BadMethodCallException('"moduleLeft" must be specified in replacements array parameter');
-                } elseif (!isset($replacements['moduleRight'])) {
-                    throw new \BadMethodCallException('"moduleRight" must be specified in replacements array parameter');
-                } elseif (!isset($replacements['type'])) {
-                    throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
-                }
-
-                // Prepare the relationship name in the replacements
-                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['moduleLeft'], $replacements['moduleRight']);
-                $replacements['module'] = 'Placeholder'; // Module is never replaced in templates for this type
-
-                break;
             case TemplateTypeEnum::RELATIONSHIP_LEFT:
                 $typeName = 'relationship-left';
 

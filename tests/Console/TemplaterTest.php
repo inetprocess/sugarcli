@@ -53,21 +53,6 @@ class TemplaterTest extends \PHPUnit_Framework_TestCase
     }
 
     /*
-     * Tests replacing a placeholder and formatting template name for a relationship
-     * @see Templater::replaceTemplateName
-     */
-    public function testReplaceTemplateNameRelationship()
-    {
-        $module_name = 'relationship/custom/metadata/__relationship__MetaData.php.twig';
-        $replacement = 'Relationship_Test';
-        $expected_name = 'custom/metadata/'. $replacement. 'MetaData.php';
-
-        $actual_name = Templater::replaceTemplateName($module_name, TemplateTypeEnum::RELATIONSHIP, $replacement);
-
-        $this->assertEquals($expected_name, $actual_name);
-    }
-
-    /*
      * Tests replacing a placeholder and formatting template name for a relationship from left module
      * @see Templater::replaceTemplateName
      */

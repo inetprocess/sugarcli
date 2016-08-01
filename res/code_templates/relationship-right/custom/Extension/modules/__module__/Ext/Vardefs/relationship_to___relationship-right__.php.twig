@@ -4,6 +4,19 @@
  * SugarCli created file
  */
 
+// Relationship type definition to {{ moduleLeft|replace({'_': ' '}) }}
+$dictionary["{{ moduleBean }}"]["relationships"]["{{ relationship }}"] = array(
+    'lhs_module'=> '{{ moduleLeft }}',
+    'lhs_table'=> '{{ moduleLeft|lower }}',
+    'lhs_key' => 'id',
+    'rhs_module'=> '{{ moduleRight }}',
+    'rhs_table'=> '{{ moduleRight|lower }}',
+    'rhs_key' => '{{ moduleLeft|singularize|lower }}_id',
+    'relationship_type' => '{{ type }}',
+    'join_table' => '{{ moduleRight|lower }}',
+    'join_key_lhs' => '{{ moduleLeft|singularize|lower }}_id',
+    'join_key_rhs' => 'id'
+);
 // Relationship link field to {{ moduleLeft|replace({'_': ' '}) }}
 $dictionary["{{ moduleBean }}"]["fields"]["{{ moduleLeft|singularize|lower }}"] = array (
     'name' => '{{ moduleLeft|singularize|lower }}',

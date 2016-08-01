@@ -24,10 +24,9 @@ class TemplateTypeEnum
     // Enum definitions
     const MODULE = 1;
     const FIELD = 2;
-    const RELATIONSHIP = 3;
-    const RELATIONSHIP_LEFT = 4;
-    const RELATIONSHIP_RIGHT = 5;
-    const NONDB_FIELD = 6;
+    const RELATIONSHIP_LEFT = 3;
+    const RELATIONSHIP_RIGHT = 4;
+    const NONDB_FIELD = 5;
 }
 
 class Templater
@@ -140,9 +139,6 @@ class Templater
             case TemplateTypeEnum::FIELD:
                 $typeName = 'field';
                 $subTypeMatch = '.+?\/';
-                break;
-            case TemplateTypeEnum::RELATIONSHIP:
-                $typeName = 'relationship';
                 break;
             case TemplateTypeEnum::RELATIONSHIP_LEFT:
                 // Relationships to right module name only need changed for left module relationships

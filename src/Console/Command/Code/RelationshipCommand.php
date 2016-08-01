@@ -98,10 +98,6 @@ class RelationshipCommand extends AbstractConfigOptionCommand
         // it's own templates)
         $templateWriter = new CodeCommandsUtility($templater);
 
-        $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::RELATIONSHIP,
-            $this->getService('sugarcrm.entrypoint')->getPath());
-        $templateWriter->reset();
-
         $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::RELATIONSHIP_LEFT,
             $this->getService('sugarcrm.entrypoint')->getPath());
         $templateWriter->reset();
