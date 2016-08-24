@@ -108,22 +108,8 @@ class CodeCommandsUtility
 
                 $subTypeName = '/'. $replacements['type'];
 
-                break;
-            case TemplateTypeEnum::RELATIONSHIP:
-                $typeName = 'relationship';
-
-                // Verify required replacements
-                if (!isset($replacements['moduleLeft'])) {
-                    throw new \BadMethodCallException('"moduleLeft" must be specified in replacements array parameter');
-                } elseif (!isset($replacements['moduleRight'])) {
-                    throw new \BadMethodCallException('"moduleRight" must be specified in replacements array parameter');
-                } elseif (!isset($replacements['type'])) {
-                    throw new \BadMethodCallException('"type" must be specified in replacements array parameter');
-                }
-
-                // Prepare the relationship name in the replacements
-                $replacements['relationship'] = Utils::conventionalRelationshipName($replacements['moduleLeft'], $replacements['moduleRight']);
-                $replacements['module'] = 'Placeholder'; // Module is never replaced in templates for this type
+                // Use the bean name for the module to use in replacements for new fields
+                $replacements['moduleBean'] = Utils::moduleBeanName($replacements['module']);
 
                 break;
             case TemplateTypeEnum::RELATIONSHIP_LEFT:
@@ -168,6 +154,26 @@ class CodeCommandsUtility
                 $replacements['relationship-right'] = $replacements['moduleLeft'];
 
                 break;
+            case TemplateTypeEnum::NONDB_FIELD:
+                $typeName = 'nondb_field';
+
+                // Verify required replacements
+                if (!isset($replacements['module'])) {
+                    throw new \BadMethodCallException('"module" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['relatedModule'])) {
+                    throw new \BadMethodCallException('"relatedModule" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['relatedField'])) {
+                    throw new \BadMethodCallException('"relatedField" must be specified in replacements array parameter');
+                }
+
+                // Select the related module and related field as the nondb_field value in the replacements array
+                // Two underscores (__) will delimit the module from the field
+                $replacements['nondb_field'] = strtolower($replacements['relatedModule']). '__'. strtolower($replacements['relatedField']);
+
+                // Use the bean name for the module to use in replacements for new fields
+                $replacements['moduleBean'] = Utils::moduleBeanName($replacements['module']);
+
+                break;
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
         }
@@ -195,6 +201,7 @@ class CodeCommandsUtility
             $replacedFileName = Templater::replaceTemplateName($currentTemplateFilename, $type, $replacements[$typeName]);
 
             // For new modules, create the directory structure, otherwise, throw exception if path does not exist
+            // Non-db fields have an additional requirement that the referenced field and module also exist
             $writePath = $sugarPath. '/'. $replacedFilePath;
 
             if ($type == TemplateTypeEnum::MODULE) {
@@ -202,6 +209,16 @@ class CodeCommandsUtility
                 $this->fs->mkdir($writePath);
             } elseif (!$this->fs->exists($writePath)) {
                 throw new \DomainException('the path, '. $writePath. ', does not already exist');
+            } elseif ($type == TemplateTypeEnum::NONDB_FIELD) {
+                // Confirm that the related module and field already exist by replacing
+                $relatedCustomModulePath = $sugarPath. '/custom/Extension/modules/'. $replacements['relatedModule'];
+                $relatedCustomModuleFieldPath = $relatedCustomModulePath. '/Ext/Vardefs/sugarfield_'. $replacements['relatedField']. '.php';
+
+                if (!$this->fs->exists($relatedCustomModulePath)) {
+                    throw new \DomainException('the path for related module, '. $relatedCustomModulePath. ', does not already exist');
+                } elseif (!$this->fs->exists($relatedCustomModuleFieldPath)) {
+                    throw new \DomainException('the path for related module field, '. $relatedCustomModuleFieldPath. ', does not already exist');
+                }
             }
 
             // Create the new file with contents

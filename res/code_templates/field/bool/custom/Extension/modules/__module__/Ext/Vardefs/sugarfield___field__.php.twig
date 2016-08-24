@@ -4,14 +4,14 @@
  * SugarCli created file
  */
 
-// {{ field }} field definition (use 0 or 1 for default values)
-$dictionary["{{ module }}"]["fields"]["{{ field }}"] = array(
+// {{ field }} field definition (use 0 for default value only)
+$dictionary["{{ moduleBean }}"]["fields"]["{{ field }}"] = array(
     // Basic bool data field features
     'name' => '{{ field }}',
     'vname' => 'LBL_{{ field|upper }}',
     'type' => 'bool',
     'required' => false,
-    'default' => 1,
+    'default' => 0,
     'comment' => '',
     'help' => '',
     // Sugar search features

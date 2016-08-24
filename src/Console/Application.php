@@ -105,6 +105,7 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\Code\ModuleCommand();
         $commands[] = new \SugarCli\Console\Command\Code\FieldCommand();
         $commands[] = new \SugarCli\Console\Command\Code\RelationshipCommand();
+        $commands[] = new \SugarCli\Console\Command\Code\NondbFieldCommand();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();
         $commands[] = new \SugarCli\Console\Command\Install\CheckCommand();

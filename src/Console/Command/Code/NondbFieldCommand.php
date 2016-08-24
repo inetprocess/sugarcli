@@ -24,24 +24,9 @@ use SugarCli\Console\TemplateTypeEnum;
 use SugarCli\Utils\CodeCommandsUtility;
 use SugarCli\Utils\Utils;
 
-class FieldCommand extends AbstractConfigOptionCommand
+class NondbFieldCommand extends AbstractConfigOptionCommand
 {
     // Class members /////////////////////////////////////////////////////
-    /**
-     * Static list of available field types for a field
-     *
-     * @var array $fieldtypes
-     */
-    public static $fieldtypes = array(
-        'id',
-        'bool',
-        'int',
-        'varchar',
-        'text',
-        'datetime',
-        'date',
-        'non-db'
-    );
     /**
      * Store Options values
      *
@@ -56,26 +41,26 @@ class FieldCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         // Configure the command with its name and options
-        $this->setName('code:field')
-            ->setDescription('Add the skeleton code for a custom field')
+        $this->setName('code:nondbField')
+            ->setDescription('Add the skeleton code for a non-db field that is referenced within a related module')
             ->addConfigOptionMapping('path', 'sugarcrm.path')
             ->addOption(
                 'module',
                 'm',
                 InputOption::VALUE_REQUIRED,
-                'Module Name'
+                'Module Name for Non-DB Fields'
+            )
+            ->addOption(
+                'related',
+                'r',
+                InputOption::VALUE_REQUIRED,
+                'Related Module Name'
             )
             ->addOption(
                 'name',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'Field Name'
-            )
-            ->addOption(
-                'type',
-                't',
-                InputOption::VALUE_REQUIRED,
-                'Field Type; Available values: '. join(', ', self::$fieldtypes)
+                'Related Field Name'
             );
     }
 
@@ -94,8 +79,8 @@ class FieldCommand extends AbstractConfigOptionCommand
         $replacements = array(
             'module' => $this->options['module'],
             'moduleBase' => Utils::baseModuleName($this->options['module']),
-            'field' => $this->options['name'],
-            'type' => $this->options['type']
+            'relatedModule' => $this->options['related'],
+            'relatedField' => $this->options['name']
         );
 
         // Retrieve the templater service from app container
@@ -105,11 +90,11 @@ class FieldCommand extends AbstractConfigOptionCommand
         // Process and write the files from the templates for a field
         $templateWriter = new CodeCommandsUtility($templater);
 
-        $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::FIELD,
+        $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::NONDB_FIELD,
             $this->getService('sugarcrm.entrypoint')->getPath());
 
         // Output success message
-        $output->writeln('Files for custom '. $this->options['type']. ' field, '. $this->options['name']. ', for module, '. $this->options['module']. ', added.');
+        $output->writeln('Files for non-db field for module, '. $this->options['module']. ', related to field, '. $this->options['name']. ', in custom module, '. $this->options['related']. ', added.');
         
         // Everything went fine
         return 0;
@@ -126,25 +111,21 @@ class FieldCommand extends AbstractConfigOptionCommand
         $this->options['module'] = $input->getOption('module');
 
         if (empty($this->options['module'])) {
-            throw new \InvalidArgumentException('You must define the module\'s name');
+            throw new \InvalidArgumentException('You must define the module\'s name for the non-db fields');
         }
 
-        // Confirm that the field name exists
+        // Confirm that the related module name exists
+        $this->options['related'] = $input->getOption('related');
+
+        if (empty($this->options['related'])) {
+            throw new \InvalidArgumentException('You must define the related custom module\'s name');
+        }
+
+        // Confirm that the related field name exists
         $this->options['name'] = $input->getOption('name');
 
         if (empty($this->options['name'])) {
-            throw new \InvalidArgumentException('You must define the new field\'s name');
-        }
-
-        // Confirm that the field type is available
-        $this->options['type'] = $input->getOption('type');
-
-        if (!in_array($this->options['type'], self::$fieldtypes)) {
-            $errorMsg  = 'You must define a valid field type';
-            $errorMsg .= PHP_EOL . PHP_EOL . 'Available field types are:';
-            $errorMsg .= PHP_EOL. "\t". join(PHP_EOL. "\t", self::$fieldtypes);
-
-            throw new \InvalidArgumentException($errorMsg);
+            throw new \InvalidArgumentException('You must define the related custom field\'s name');
         }
     }
 }

@@ -24,9 +24,9 @@ class TemplateTypeEnum
     // Enum definitions
     const MODULE = 1;
     const FIELD = 2;
-    const RELATIONSHIP = 3;
-    const RELATIONSHIP_LEFT = 4;
-    const RELATIONSHIP_RIGHT = 5;
+    const RELATIONSHIP_LEFT = 3;
+    const RELATIONSHIP_RIGHT = 4;
+    const NONDB_FIELD = 5;
 }
 
 class Templater
@@ -140,9 +140,6 @@ class Templater
                 $typeName = 'field';
                 $subTypeMatch = '.+?\/';
                 break;
-            case TemplateTypeEnum::RELATIONSHIP:
-                $typeName = 'relationship';
-                break;
             case TemplateTypeEnum::RELATIONSHIP_LEFT:
                 // Relationships to right module name only need changed for left module relationships
                 $typeName = 'relationship-left';
@@ -150,6 +147,9 @@ class Templater
             case TemplateTypeEnum::RELATIONSHIP_RIGHT:
                 // Relationships to left module name only need changed for right module relationships
                 $typeName = 'relationship-right';
+                break;
+            case TemplateTypeEnum::NONDB_FIELD:
+                $typeName = 'nondb_field';
                 break;
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
