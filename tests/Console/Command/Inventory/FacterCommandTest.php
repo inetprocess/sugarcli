@@ -1,26 +1,16 @@
 <?php
 namespace SugarCli\Tests\Console\Command\Inventory;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Yaml;
+use SugarCli\Tests\Console\Command\CommandTestCase;
 
-
-use SugarCli\Console\Application;
-
-class FacterCommandTest extends \PHPUnit_Framework_TestCase
+class FacterCommandTest extends CommandTestCase
 {
+    public static $cmd_name = 'inventory:facter';
+
     public function getFakeSugarPath()
     {
         return __DIR__ . '/metadata/fake_sugar';
-    }
-
-    public function getCommandTester()
-    {
-        $app = new Application();
-        $app->configure();
-        $app->registerAllCommands();
-        $cmd = $app->find('inventory:facter');
-        return new CommandTester($cmd);
     }
 
     /**
@@ -28,7 +18,7 @@ class FacterCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testJsonFormat()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--format' => 'json',
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
@@ -43,7 +33,7 @@ class FacterCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidFormat()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(
             array(
                 '--format' => 'abc',
@@ -59,7 +49,7 @@ class FacterCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testSugarcrmOnly()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--format' => 'json',
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
@@ -76,7 +66,7 @@ class FacterCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testXmlFormat()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array('--format' => 'xml', 'source' => array('system')));
 
         $output = $cmd->getDisplay();
@@ -85,7 +75,7 @@ class FacterCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testDefaultYmlFormat()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             'source' => array('system'),
             '--custom-fact' => array('system.context:dev'),

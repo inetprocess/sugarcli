@@ -2,22 +2,13 @@
 
 namespace SugarCli\Tests\Console\Command\Code;
 
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\Console\Tester\CommandTester;
-use Psr\Log\NullLogger;
-
-use Inet\SugarCRM\Application as SugarApp;
-use Inet\SugarCRM\EntryPoint;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Filesystem\Filesystem;
-use SugarCli\Console\Application;
-use SugarCli\Tests\TestsUtil\Util;
+use SugarCli\Tests\Console\Command\CommandTestCase;
 
 /**
  * @group sugarcrm-path
  */
-class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
+class SetupComposerCommandTest extends CommandTestCase
 {
     protected static $composerJson;
     protected static $composerPhp;
@@ -51,7 +42,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNoFile()
     {
-        $cmd = Util::getTester(self::$cmd_name)->tester;
+        $cmd = $this->getCommandTester(self::$cmd_name);
 
         // remove the composer.json file and composer.php
         if (is_file(self::$composerJson)) {
@@ -85,7 +76,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonAndPhp()
     {
-        $cmd = Util::getTester(self::$cmd_name)->tester;
+        $cmd = $this->getCommandTester(self::$cmd_name);
 
         // remove the composer.json file and composer.php
         if (is_file(self::$composerJson)) {
@@ -122,7 +113,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testNoJsonButPhp()
     {
-        $cmd = Util::getTester(self::$cmd_name)->tester;
+        $cmd = $this->getCommandTester(self::$cmd_name);
 
         // remove the composer.json file and composer.php
         if (is_file(self::$composerJson)) {
@@ -146,7 +137,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonNoPhp()
     {
-        $cmd = Util::getTester(self::$cmd_name)->tester;
+        $cmd = $this->getCommandTester(self::$cmd_name);
 
         // remove the composer.json file and composer.php
         if (is_file(self::$composerPhp)) {
@@ -177,7 +168,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonPhp()
     {
-        $cmd = Util::getTester(self::$cmd_name)->tester;
+        $cmd = $this->getCommandTester(self::$cmd_name);
         file_put_contents(self::$composerJson, 'test');
         $this->assertFileExists(self::$composerJson);
         $this->assertFileExists(self::$composerPhp);
@@ -195,7 +186,7 @@ class SetupComposerCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testJsonPhpReinstall()
     {
-        $cmd = Util::getTester(self::$cmd_name)->tester;
+        $cmd = $this->getCommandTester(self::$cmd_name);
         file_put_contents(self::$composerJson, 'test');
         $this->assertFileExists(self::$composerJson);
         $this->assertFileExists(self::$composerPhp);

@@ -2,49 +2,18 @@
 
 namespace SugarCli\Tests\Console\Command\User;
 
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\StreamOutput;
-use Symfony\Component\Console\Tester\CommandTester;
-use Psr\Log\NullLogger;
-
-use Inet\SugarCRM\Application as SugarApp;
-use Inet\SugarCRM\EntryPoint;
-use SugarCli\Console\Application;
+use SugarCli\Tests\Console\Command\CommandTestCase;
 
 /**
  * @group sugarcrm-path
  */
-class ListCommandTest extends \PHPUnit_Framework_TestCase
+class ListCommandTest extends CommandTestCase
 {
-    public function getEntryPointInstance()
-    {
-        if (!EntryPoint::isCreated()) {
-            $logger = new NullLogger;
-            EntryPoint::createInstance(
-                new SugarApp($logger, getenv('SUGARCLI_SUGAR_PATH')),
-                '1'
-            );
-            $this->assertInstanceOf('Inet\SugarCRM\EntryPoint', EntryPoint::getInstance());
-        }
-        return EntryPoint::getInstance();
-    }
-
-    public function getCommandTester($cmd_name = 'user:list')
-    {
-        $app = new Application();
-        $app->configure(
-            new ArrayInput(array()),
-            new StreamOutput(fopen('php://memory', 'w', false))
-        );
-        $app->setEntryPoint($this->getEntryPointInstance());
-        $app->registerAllCommands();
-        $cmd = $app->find($cmd_name);
-        return new CommandTester($cmd);
-    }
+    public static $cmd_name = 'user:list';
 
     public function testList()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
         ));
@@ -53,7 +22,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testListOne()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--username' => 'admin',
@@ -63,7 +32,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testListOneNotFound()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--username' => 'Invalid user',
@@ -73,7 +42,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testListJson()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--format' => 'json',
@@ -83,7 +52,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testListInvalidFormat()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--format' => 'invalid format',
@@ -93,7 +62,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testRawOutput()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--format' => 'json',
@@ -112,7 +81,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testPrettyOutput()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--format' => 'json',

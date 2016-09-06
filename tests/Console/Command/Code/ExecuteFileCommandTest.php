@@ -2,18 +2,18 @@
 
 namespace SugarCli\Test\Console\Command\Code;
 
-use SugarCli\Tests\TestsUtil\Util;
+use SugarCli\Tests\Console\Command\CommandTestCase;
 
 /**
  * @group sugarcrm-path
  */
-class ExecuteFileCommandTest extends \PHPUnit_Framework_TestCase
+class ExecuteFileCommandTest extends CommandTestCase
 {
     public static $cmd_name = 'code:execute:file';
 
     public function testExecute()
     {
-        $tester = Util::getTester(self::$cmd_name)->tester;
+        $tester = $this->getCommandTester(self::$cmd_name);
         $ret = $tester->execute(array(
             'command' => 'code:execute:file',
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
@@ -24,7 +24,7 @@ class ExecuteFileCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testInvalidFile()
     {
-        $tester = Util::getTester(self::$cmd_name)->tester;
+        $tester = $this->getCommandTester(self::$cmd_name);
         $ret = $tester->execute(array(
             'command' => self::$cmd_name,
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
@@ -35,7 +35,7 @@ class ExecuteFileCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testSugarException()
     {
-        $tester = Util::getTester(self::$cmd_name)->tester;
+        $tester = $this->getCommandTester(self::$cmd_name);
         $ret = $tester->execute(array(
             'command' => self::$cmd_name,
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),

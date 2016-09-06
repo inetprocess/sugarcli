@@ -56,19 +56,6 @@ EOF;
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The "foo" option does not exist.
-     */
-    /* public function testWrongDefaultOptionsInvalidArgument() */
-    /* { */
-    /*     $cmd = new TestConfigOptionCommand('test'); */
-    /*     $reflex = new \ReflectionClass($cmd); */
-    /*     $method = $reflex->getMethod('getConfigOption'); */
-    /*     $method->setAccessible(true); */
-    /*     $method->invoke($cmd, new ArrayInput(array()), 'foo'); */
-    /* } */
-
-    /**
-     * @expectedException InvalidArgumentException
      * @expectedExceptionMessage Standard option "invalid" doesn't exists.
      */
     public function testInvalidStandardOption()
