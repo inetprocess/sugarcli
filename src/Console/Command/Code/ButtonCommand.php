@@ -40,7 +40,7 @@ class ButtonCommand extends AbstractConfigOptionCommand
     {
         $this->setName('code:button')
             ->setDescription('Add or delete a button in a module')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addOption(
                 'module',
                 'm',
@@ -79,7 +79,6 @@ class ButtonCommand extends AbstractConfigOptionCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $this->checkOptions($input);
 
         $utils = new MetadataParser($this->getService('sugarcrm.entrypoint'));
@@ -146,7 +145,7 @@ class ButtonCommand extends AbstractConfigOptionCommand
     protected function addJsToRecord(InputInterface $input, OutputInterface $output)
     {
         // identify first the record.js file
-        $recordJs = $this->getConfigOption($input, 'path');
+        $recordJs = $input->getOption('path');
         $recordJs.= "/custom/modules/{$this->options['module']}/clients/base/views/record/record.js";
         $btnName = 'btn' . ucfirst(strtolower($this->options['name']));
         $today = date('Y-m-d \a\t H:i:s');

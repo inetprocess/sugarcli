@@ -41,7 +41,6 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $relsFile = $this->getRelsOption($input);
 
         $style = new OutputFormatterStyle(null, null, array('bold'));

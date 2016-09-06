@@ -39,7 +39,7 @@ class ListCommand extends AbstractConfigOptionCommand
     {
         $this->setName('user:list')
             ->setDescription('List users of the SugarCRM instance.')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addOption(
                 'username',
                 'u',
@@ -75,8 +75,7 @@ class ListCommand extends AbstractConfigOptionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = $this->getService('logger');
-        $path = $this->getConfigOption($input, 'path');
-        $this->setSugarPath($path);
+        $path = $input->getOption('path');
         $user_name = $input->getOption('username');
         $lang = $input->getOption('lang');
         $fields = explode(',', $input->getOption('fields'));

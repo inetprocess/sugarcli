@@ -68,7 +68,6 @@ class FacterCommand extends AbstractInventoryCommand
             $all_facts['system'] = $facter->getFacts();
         }
         if (in_array('all', $source) || in_array('sugarcrm', $source)) {
-            $this->setSugarPath($this->getConfigOption($input, 'path'));
             $sugar_facter = new MultiFacterFacter(array(
                 new SugarFacter(
                     $this->getService('sugarcrm.application'),

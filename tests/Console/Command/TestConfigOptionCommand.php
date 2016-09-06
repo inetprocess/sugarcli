@@ -27,7 +27,7 @@ class TestConfigOptionCommand extends AbstractConfigOptionCommand
     {
         $path = $input->getOption('path');
         $output->writeln('path: ' . $path);
-        $url = $this->getConfigOption($input, 'url');
+        $url = $input->getOption('url');
         $output->writeln('url: ' . $url);
     }
 }

@@ -31,9 +31,9 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
     protected function getMetadataOption(InputInterface $input)
     {
         try {
-            $metadata = $this->getConfigOption($input, 'metadata-file');
+            $metadata = $input->getOption('metadata-file');
         } catch (\InvalidArgumentException $e) {
-            $metadata = $this->getConfigOption($input, 'path') . '/' . self::METADATA_PATH;
+            $metadata = $input->getOption('path') . '/' . self::METADATA_PATH;
         }
 
         return $metadata;

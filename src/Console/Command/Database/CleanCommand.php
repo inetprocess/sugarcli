@@ -32,7 +32,7 @@ class CleanCommand extends AbstractConfigOptionCommand
     {
         $this->setName('database:clean')
             ->setDescription('Remove deleted records as well as data in audit and lost records in _cstm tables')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addOption(
                 'remove-deleted',
                 null,
@@ -66,7 +66,6 @@ class CleanCommand extends AbstractConfigOptionCommand
         $stopwatch = new \Symfony\Component\Stopwatch\Stopwatch();
         $stopwatch->start('DbClean');
 
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $pdo = $this->getService('sugarcrm.pdo');
         $this->getService('sugarcrm.entrypoint'); // go to sugar folder to make sure we are in the right folder
 

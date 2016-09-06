@@ -32,13 +32,12 @@ class CheckCommand extends AbstractConfigOptionCommand
     {
         $this->setName('install:check')
             ->setDescription('Check if SugarCRM is installed and configured.')
-            ->addConfigOptionMapping('path', 'sugarcrm.path');
+            ->enableStandardOption('path');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $this->getConfigOption($input, 'path');
-        $this->setSugarPath($path);
+        $path = $input->getOption('path');
         $sugar = $this->getService('sugarcrm.application');
         if (!$sugar->isValid()) {
             $output->writeln('SugarCRM is not present in ' . $path . '.');

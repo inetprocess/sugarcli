@@ -60,7 +60,6 @@ EOH
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $logger = $this->getService('logger');
 
         $metadata_file = $this->getMetadataOption($input);

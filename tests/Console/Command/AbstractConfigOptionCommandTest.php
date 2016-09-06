@@ -2,12 +2,15 @@
 
 namespace SugarCli\Tests\Console\Command;
 
-use SugarCli\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
-use SugarCli\Tests\TestsUtil\Util;
 
 use SugarCli\Console\Config;
+use SugarCli\Console\Application;
+use SugarCli\Console\Command\InputConfigOption;
+
+use SugarCli\Tests\TestsUtil\Util;
+
 
 class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -89,5 +92,14 @@ EOF;
                 'command' => $cmd_name,
             )
         );
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The config option "test" is not mapped to a configuration parameter.
+     */
+    public function testInputConfigOptionWithoutMapping()
+    {
+        new InputConfigOption('', 'test');
     }
 }

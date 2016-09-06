@@ -41,7 +41,7 @@ class UpdateCommand extends AbstractConfigOptionCommand
         $this->setName('user:update')
             ->setAliases(array('user:create'))
             ->setDescription('Create or update a SugarCRM user.')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addArgument(
                 'username',
                 InputArgument::REQUIRED,
@@ -115,8 +115,7 @@ class UpdateCommand extends AbstractConfigOptionCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = $this->getService('logger');
-        $path = $this->getConfigOption($input, 'path');
-        $this->setSugarPath($path);
+        $path = $input->getOption('path');
         $user_name = $input->getArgument('username');
         $password = $input->getOption('password');
         $admin = $input->getOption('admin');

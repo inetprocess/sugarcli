@@ -66,9 +66,8 @@ class AgentCommand extends AbstractInventoryCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $logger = $this->getService('logger');
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
 
-        $account_name = $this->getConfigOption($input, 'account-name');
+        $account_name = $input->getOption('account-name');
 
         try {
             $client = new GClient(

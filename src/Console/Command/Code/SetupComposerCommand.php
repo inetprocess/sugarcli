@@ -33,7 +33,7 @@ class SetupComposerCommand extends AbstractConfigOptionCommand
     {
         $this->setName('code:setupcomposer')
             ->setDescription('Check that composer is setup to be used with SugarCRM')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addOption(
                 'do',
                 null,
@@ -60,8 +60,7 @@ class SetupComposerCommand extends AbstractConfigOptionCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $sugarPath = $this->getConfigOption($input, 'path');
-        $this->setSugarPath($sugarPath);
+        $sugarPath = $input->getOption('path');
 
         // first check that composer is available
         exec('/bin/which composer', $ret);

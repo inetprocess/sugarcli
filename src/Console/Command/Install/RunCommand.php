@@ -35,7 +35,7 @@ class RunCommand extends AbstractConfigOptionCommand
     {
         $this->setName('install:run')
             ->setDescription('Extract and install SugarCRM.')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addOption(
                 'url',
                 'u',
@@ -65,7 +65,6 @@ class RunCommand extends AbstractConfigOptionCommand
     }
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $force = $input->getOption('force');
         $config_si = $input->getOption('config');
         $installer = new Installer(

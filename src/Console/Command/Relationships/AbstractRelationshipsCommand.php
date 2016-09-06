@@ -30,9 +30,9 @@ abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
     protected function getRelsOption(InputInterface $input)
     {
         try {
-            $metadata = $this->getConfigOption($input, 'file');
+            $metadata = $input->getOption('file');
         } catch (\InvalidArgumentException $e) {
-            $metadata = $this->getConfigOption($input, 'path') . '/' . self::RELS_PATH;
+            $metadata = $input->getOption('path') . '/' . self::RELS_PATH;
         }
 
         return $metadata;

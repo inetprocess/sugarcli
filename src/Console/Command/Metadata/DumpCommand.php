@@ -47,7 +47,6 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $diff_opts = $this->getDiffOptions($input);

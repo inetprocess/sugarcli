@@ -109,7 +109,6 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $metadata_file = $this->getMetadataOption($input);
 
         $style = new OutputFormatterStyle(null, null, array('bold'));

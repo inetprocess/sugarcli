@@ -33,7 +33,7 @@ class ExecuteFileCommand extends AbstractConfigOptionCommand
     {
         $this->setName('code:execute:file')
             ->setDescription('Execute a php file using a SugarCRM loaded context.')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addArgument(
                 'file',
                 InputArgument::REQUIRED,
@@ -55,7 +55,6 @@ class ExecuteFileCommand extends AbstractConfigOptionCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($input->getOption('path'));
         $fs = new Filesystem();
 
         $php_file = $input->getArgument('file');

@@ -45,15 +45,6 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
         return $this->process_callbacks;
     }
 
-    /**
-     * @deprecated
-     */
-    protected function addConfigOptionMapping($name, $path)
-    {
-        $this->enableStandardOption($name);
-        return $this;
-    }
-
     protected function enableStandardOption($name)
     {
         $this->enableStandardOptions(array($name));
@@ -134,14 +125,6 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
             $callback
         ));
         return $this;
-    }
-
-    /**
-     * @deprecated
-     */
-    public function getConfigOption($input, $name)
-    {
-        return $input->getOption($name);
     }
 
     protected function getInputConfigOptions()
