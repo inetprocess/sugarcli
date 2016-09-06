@@ -40,9 +40,9 @@ abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
 
     protected function configure()
     {
-        $this->addConfigOptionMapping('path', 'sugarcrm.path')
-        ->addConfigOptionMapping('file', 'rels.file')
+        $this->enableStandardOption('path')
         ->addConfigOption(
+            'rels.file',
             'file',
             null,
             InputOption::VALUE_REQUIRED,

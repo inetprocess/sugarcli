@@ -126,7 +126,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
         $stub->setAutoExit(false);
         $stub->add(new TestCommand());
         $selfupdate_cmd = new TestCommand();
-        $selfupdate_cmd->setName('self-update');
+        $selfupdate_cmd->setName('list');
         $stub->add($selfupdate_cmd);
         $tester = new ApplicationTester($stub);
         $tester->run(array(
@@ -137,7 +137,7 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
 
         $tester = new ApplicationTester($stub);
         $tester->run(array(
-            'command' => 'self-update',
+            'command' => 'list',
         ));
         $this->assertEquals(0, $tester->getStatusCode());
         $this->assertEquals(PHP_EOL, $tester->getDisplay());

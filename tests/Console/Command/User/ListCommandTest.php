@@ -37,6 +37,7 @@ class ListCommandTest extends \PHPUnit_Framework_TestCase
             new StreamOutput(fopen('php://memory', 'w', false))
         );
         $app->setEntryPoint($this->getEntryPointInstance());
+        $app->registerAllCommands();
         $cmd = $app->find($cmd_name);
         return new CommandTester($cmd);
     }

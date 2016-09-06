@@ -49,7 +49,8 @@ class FacterCommand extends AbstractInventoryCommand
                 InputOption::VALUE_REQUIRED,
                 'Specify the output format. (json|yml|xml).',
                 'yml'
-            );
+            )
+            ->setRequiredOption('path', false);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

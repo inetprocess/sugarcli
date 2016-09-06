@@ -41,14 +41,16 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
 
     protected function configure()
     {
-        $this->addConfigOptionMapping('path', 'sugarcrm.path')
-        ->addConfigOptionMapping('metadata-file', 'metadata.file')
+        $this->enableStandardOption('path')
         ->addConfigOption(
+            'metadata.file',
             'metadata-file',
             'm',
             InputOption::VALUE_REQUIRED,
             'Path to the metadata file.' .
-            ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>'
+            ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>',
+            null,
+            false
         );
     }
 

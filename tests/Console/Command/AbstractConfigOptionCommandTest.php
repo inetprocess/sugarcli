@@ -15,13 +15,14 @@ class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
     {
         $config_path = Util::getRelativePath(__DIR__ . '/../yaml');
         $cmd_name = 'test:default';
+        $config_cmd = new TestConfigOptionCommand($cmd_name);
         $config = new Config(array($config_path . '/complete.yaml'));
         $config->load();
         $app = new Application();
         $app->configure();
         $app->setAutoExit(false);
         $app->getContainer()->set('config', $config);
-        $app->add(new TestConfigOptionCommand($cmd_name));
+        $app->add($config_cmd);
 
         $command = $app->find($cmd_name);
         $commandTester = new CommandTester($command);
@@ -55,20 +56,33 @@ EOF;
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The "foo" argument does not exist.
+     * @expectedExceptionMessage The "foo" option does not exist.
      */
-    public function testWrongDefaultOptionsInvalidArgument()
+    /* public function testWrongDefaultOptionsInvalidArgument() */
+    /* { */
+    /*     $cmd = new TestConfigOptionCommand('test'); */
+    /*     $reflex = new \ReflectionClass($cmd); */
+    /*     $method = $reflex->getMethod('getConfigOption'); */
+    /*     $method->setAccessible(true); */
+    /*     $method->invoke($cmd, new ArrayInput(array()), 'foo'); */
+    /* } */
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Standard option "invalid" doesn't exists.
+     */
+    public function testInvalidStandardOption()
     {
         $cmd = new TestConfigOptionCommand('test');
         $reflex = new \ReflectionClass($cmd);
-        $method = $reflex->getMethod('getConfigOption');
+        $method = $reflex->getMethod('enableStandardOption');
         $method->setAccessible(true);
-        $method->invoke($cmd, new ArrayInput(array()), 'foo');
+        $method->invoke($cmd, 'invalid');
     }
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The "path" option is not specified and not found in the config "sugarcrm.path"
+     * @expectedExceptionMessageRegExp /The "\w+" option is not specified and not found in the config "sugarcrm\.\w+"/
      */
     public function testWrongDefaultOptionsOptionNotFound()
     {

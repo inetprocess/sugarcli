@@ -34,6 +34,7 @@ abstract class AbstractContainerAwareCommand extends Command
 
     public function setSugarPath($path)
     {
+        return;
         $this->getContainer()->setParameter('sugarcrm.path', $path);
         $this->getContainer()->compile();
     }

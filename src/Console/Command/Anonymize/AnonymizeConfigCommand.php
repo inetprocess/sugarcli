@@ -88,7 +88,7 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
     {
         $this->setName('anonymize:config')
             ->setDescription('Generate a configuration for the Anonymizer')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOptions(array('path'))
             ->addOption(
                 'file',
                 null,

@@ -20,6 +20,7 @@ class AgentCommandTest extends \PHPUnit_Framework_TestCase
         $app = new Application();
         $app->configure();
         $app->getContainer()->set('logger', new NullLogger());
+        $app->registerAllCommands();
         $cmd = $app->find('inventory:agent');
         return new CommandTester($cmd);
     }

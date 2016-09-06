@@ -55,7 +55,7 @@ class ExecuteFileCommand extends AbstractConfigOptionCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
+        $this->setSugarPath($input->getOption('path'));
         $fs = new Filesystem();
 
         $php_file = $input->getArgument('file');

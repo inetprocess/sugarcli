@@ -32,7 +32,7 @@ abstract class AbstractInventoryCommand extends AbstractConfigOptionCommand
             InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
             'Add or override facts. Format: path.to.fact:value'
         )
-        ->addConfigOptionMapping('path', 'sugarcrm.path');
+        ->enableStandardOption('path');
     }
 
     /**

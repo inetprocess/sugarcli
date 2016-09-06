@@ -17,6 +17,7 @@ class CommandTestCase extends \PHPUnit_Framework_TestCase
             $this->application = new Application();
             $this->application->configure();
             $this->application->getContainer()->set('logger', new TestLogger());
+            $this->application->registerAllCommands();
         }
         return $this->application;
     }

@@ -18,6 +18,7 @@ class FacterCommandTest extends \PHPUnit_Framework_TestCase
     {
         $app = new Application();
         $app->configure();
+        $app->registerAllCommands();
         $cmd = $app->find('inventory:facter');
         return new CommandTester($cmd);
     }
@@ -47,6 +48,7 @@ class FacterCommandTest extends \PHPUnit_Framework_TestCase
             array(
                 '--format' => 'abc',
                 'source' => array('system'),
+                '--path' => 'invalid',
             )
         );
         $this->assertEquals(3, $cmd->getStatusCode());

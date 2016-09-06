@@ -44,6 +44,7 @@ class Util
             new StreamOutput(fopen('php://memory', 'w', false))
         );
         $app->setEntryPoint(self::getEntryPointInstance());
+        $app->registerAllCommands();
         $command = $app->find($cmd_name);
         return (object) array(
             'tester' => new CommandTester($command),

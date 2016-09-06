@@ -12,11 +12,12 @@ class TestConfigOptionCommand extends AbstractConfigOptionCommand
 {
     protected function configure()
     {
-        $this->addConfigOptionMapping('path', 'sugarcrm.path')
-            ->addConfigOptionMapping('url', 'sugarcrm.url')
+        $this->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addConfigOption(
+                'sugarcrm.url',
                 'url',
-                'u',
+                'U',
                 InputOption::VALUE_REQUIRED,
                 'Public url of SugarCRM.'
             );
@@ -24,7 +25,7 @@ class TestConfigOptionCommand extends AbstractConfigOptionCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $this->getConfigOption($input, 'path');
+        $path = $input->getOption('path');
         $output->writeln('path: ' . $path);
         $url = $this->getConfigOption($input, 'url');
         $output->writeln('url: ' . $url);

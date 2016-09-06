@@ -55,12 +55,12 @@ class AgentCommand extends AbstractInventoryCommand
                 'Password for server authentication.'
             )
             ->addConfigOption(
+                'account.name',
                 'account-name',
                 'a',
                 InputOption::VALUE_REQUIRED,
                 'Name of the account.'
-            )
-            ->addConfigOptionMapping('account-name', 'account.name');
+            );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
