@@ -64,6 +64,28 @@ class Application extends BaseApplication
         parent::__construct($name, $version);
     }
 
+    public function getHelp()
+    {
+        return parent::getHelp() . <<<'EOF'
+
+
+<comment>Configuration:</comment>
+  You can set configuration options in a <info>yaml</info> file named <info>.sugarclirc</info>.
+  SugarCli will look for a <info>.sugarclirc</info> file in any of the parent folders of the current
+  directory. The deepest file overrides the previous ones.
+
+  The following options are available:
+  <info>sugarcrm:
+      path: PATH             </info>Path to Sugarcrm relative to the configuration file<info>
+      user_id: USER_ID       </info>SugarCRM user id to impersonate when running the command<info>
+  metadata:
+      file: FILE             </info>Path to the metadata file relative to the configuration file<info>
+  account:
+      name: ACCOUNT_NAME     </info>Name of the account<info>
+  </info>
+EOF;
+    }
+
     /**
      * Load configuration files from
      * - /etc/sugarclirc

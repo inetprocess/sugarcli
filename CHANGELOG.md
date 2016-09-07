@@ -1,10 +1,11 @@
 Changelog
 =========
 
-(unreleased)
+1.13.0
 ----
 * Add option user-id for commands running in sugar.
 * Update composer packages.
+* Add help message for configuration files.
 
 1.12.1
 ----
