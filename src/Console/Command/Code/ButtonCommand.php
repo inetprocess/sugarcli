@@ -41,6 +41,7 @@ class ButtonCommand extends AbstractConfigOptionCommand
         $this->setName('code:button')
             ->setDescription('Add or delete a button in a module')
             ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addOption(
                 'module',
                 'm',

@@ -34,17 +34,11 @@ class ExecuteFileCommand extends AbstractConfigOptionCommand
         $this->setName('code:execute:file')
             ->setDescription('Execute a php file using a SugarCRM loaded context.')
             ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addArgument(
                 'file',
                 InputArgument::REQUIRED,
                 'PHP file to execute'
-            )
-            ->addOption(
-                'user-id',
-                'u',
-                InputOption::VALUE_REQUIRED,
-                'SugarCRM user id to impersonate when executing the script.',
-                '1'
             );
     }
 

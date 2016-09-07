@@ -83,11 +83,11 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 }
             ),
             'user-id' => array(
-                'sugarcrm.user-id',
+                'sugarcrm.user_id',
                 'user-id',
-                'u',
+                null,
                 InputOption::VALUE_REQUIRED,
-                'Id of SugarCRM user which will be used to execute the command.',
+                'SugarCRM user id to impersonate when running the command.',
                 '1',
                 true,
                 function ($user_id, $command) {

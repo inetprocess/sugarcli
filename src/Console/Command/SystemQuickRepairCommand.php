@@ -33,6 +33,7 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
         $this->setName('system:quickrepair')
              ->setDescription('Do a quick repair and rebuild.')
              ->enableStandardOption('path')
+             ->enableStandardOption('user-id')
              ->addOption(
                  'no-database',
                  null,

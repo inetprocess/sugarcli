@@ -88,7 +88,8 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
     {
         $this->setName('anonymize:config')
             ->setDescription('Generate a configuration for the Anonymizer')
-            ->enableStandardOptions(array('path'))
+            ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addOption(
                 'file',
                 null,

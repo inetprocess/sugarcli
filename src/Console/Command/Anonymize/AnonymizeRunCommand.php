@@ -33,6 +33,7 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
         $this->setName('anonymize:run')
             ->setDescription('Run the Anonymizer')
             ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addOption(
                 'file',
                 null,

@@ -42,6 +42,7 @@ class UpdateCommand extends AbstractConfigOptionCommand
             ->setAliases(array('user:create'))
             ->setDescription('Create or update a SugarCRM user.')
             ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addArgument(
                 'username',
                 InputArgument::REQUIRED,

@@ -140,6 +140,7 @@ class Application extends BaseApplication
              ->addMethodCall('load');
 
         ########### SugarCRM
+        $this->container->setParameter('sugarcrm.user-id', '1');
         $this->container->register('sugarcrm.application', 'Inet\SugarCRM\Application')
              ->addArgument(new Reference('logger'))
              ->addArgument('%sugarcrm.path%');
@@ -149,7 +150,7 @@ class Application extends BaseApplication
         $this->container->setDefinition('sugarcrm.entrypoint', new Definition('Inet\SugarCRM\EntryPoint'))
              ->setFactory('Inet\SugarCRM\EntryPoint::createInstance')
              ->addArgument(new Reference('sugarcrm.application'))
-             ->addArgument('1');
+             ->addArgument('%sugarcrm.user-id%');
         ## Register SugarSystem
         $this->container->register('sugarcrm.system', 'Inet\SugarCRM\System')
             ->addArgument(new Reference('sugarcrm.entrypoint'));

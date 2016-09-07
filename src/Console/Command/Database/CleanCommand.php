@@ -33,6 +33,7 @@ class CleanCommand extends AbstractConfigOptionCommand
         $this->setName('database:clean')
             ->setDescription('Remove deleted records as well as data in audit and lost records in _cstm tables')
             ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addOption(
                 'remove-deleted',
                 null,
