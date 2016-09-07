@@ -77,8 +77,8 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 null,
                 true,
                 function ($path, $command) {
-                    if (!$this->getContainer()->isFrozen()) {
-                        $this->getContainer()->setParameter('sugarcrm.path', $path);
+                    if (!$command->getContainer()->isFrozen()) {
+                        $command->getContainer()->setParameter('sugarcrm.path', $path);
                     }
                 }
             ),
@@ -91,8 +91,8 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 '1',
                 true,
                 function ($user_id, $command) {
-                    if (!$this->getContainer()->isFrozen()) {
-                        $this->getContainer()->setParameter('sugarcrm.user-id', $user_id);
+                    if (!$command->getContainer()->isFrozen()) {
+                        $command->getContainer()->setParameter('sugarcrm.user-id', $user_id);
                     }
                 }
             ),

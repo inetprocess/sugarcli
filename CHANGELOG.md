@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.1
+----
+* Fix issue with PHP 5.3
+
 1.13.0
 ----
 * Add option user-id for commands running in sugar.
