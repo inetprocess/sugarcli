@@ -1,5 +1,11 @@
 Changelog
 =========
+
+(unreleased)
+----
+* Add option user-id for commands running in sugar.
+* Update composer packages.
+
 1.12.1
 ----
 * Corrected typo in docs
