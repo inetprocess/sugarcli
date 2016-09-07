@@ -52,10 +52,10 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
              )->setHelp(
                  'This command will extract the fields list for any module of SugarCRM' . PHP_EOL .
                  'Usage: ./bin/console <info>extract:fields --module Accounts</info>'
-             )->addConfigOptionMapping(
-                 'path',
-                 'sugarcrm.path'
-             )->addOption(
+             )
+             ->enableStandardOption('path')
+             ->enableStandardOption('user-id')
+             ->addOption(
                  'module',
                  'm',
                  InputOption::VALUE_REQUIRED,
@@ -79,7 +79,6 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $ep = $this->getService('sugarcrm.entrypoint');
         $bm = new BeanManager($ep);
         $this->module = $input->getOption('module');

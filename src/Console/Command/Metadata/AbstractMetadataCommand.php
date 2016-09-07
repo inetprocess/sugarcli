@@ -31,9 +31,9 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
     protected function getMetadataOption(InputInterface $input)
     {
         try {
-            $metadata = $this->getConfigOption($input, 'metadata-file');
+            $metadata = $input->getOption('metadata-file');
         } catch (\InvalidArgumentException $e) {
-            $metadata = $this->getConfigOption($input, 'path') . '/' . self::METADATA_PATH;
+            $metadata = $input->getOption('path') . '/' . self::METADATA_PATH;
         }
 
         return $metadata;
@@ -41,14 +41,16 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
 
     protected function configure()
     {
-        $this->addConfigOptionMapping('path', 'sugarcrm.path')
-        ->addConfigOptionMapping('metadata-file', 'metadata.file')
+        $this->enableStandardOption('path')
         ->addConfigOption(
+            'metadata.file',
             'metadata-file',
             'm',
             InputOption::VALUE_REQUIRED,
             'Path to the metadata file.' .
-            ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>'
+            ' <comment>(default: "<sugar_path>/' . self::METADATA_PATH . '")</comment>',
+            null,
+            false
         );
     }
 

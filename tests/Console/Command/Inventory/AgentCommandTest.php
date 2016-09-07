@@ -1,27 +1,16 @@
 <?php
 namespace SugarCli\Tests\Console\Command\Inventory;
 
-use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Component\Yaml\Yaml;
+use SugarCli\Tests\Console\Command\CommandTestCase;
 
-use Psr\Log\NullLogger;
-
-use SugarCli\Console\Application;
-
-class AgentCommandTest extends \PHPUnit_Framework_TestCase
+class AgentCommandTest extends CommandTestCase
 {
+    public static $cmd_name = 'inventory:agent';
+
     public function getFakeSugarPath()
     {
         return __DIR__ . '/metadata/fake_sugar';
-    }
-
-    public function getCommandTester()
-    {
-        $app = new Application();
-        $app->configure();
-        $app->getContainer()->set('logger', new NullLogger());
-        $cmd = $app->find('inventory:agent');
-        return new CommandTester($cmd);
     }
 
     /**
@@ -30,7 +19,7 @@ class AgentCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testSuccess()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $ret = $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--account-name' => 'Test Agent',
@@ -49,7 +38,7 @@ class AgentCommandTest extends \PHPUnit_Framework_TestCase
      */
     public function testFailInventory()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $ret = $cmd->execute(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--account-name' => 'Test Agent',
@@ -62,7 +51,7 @@ class AgentCommandTest extends \PHPUnit_Framework_TestCase
 
     public function testFailSugar()
     {
-        $cmd = $this->getCommandTester();
+        $cmd = $this->getCommandTester(self::$cmd_name);
         $ret = $cmd->execute(array(
             '--path' => 'invalid sugar test',
             '--account-name' => 'Test Agent',

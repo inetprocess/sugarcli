@@ -37,7 +37,8 @@ class HooksListCommand extends AbstractConfigOptionCommand
     {
         $this->setName('hooks:list')
             ->setDescription('List hooks of the SugarCRM instance.')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addOption(
                 'module',
                 'm',
@@ -60,7 +61,6 @@ class HooksListCommand extends AbstractConfigOptionCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $module = $input->getOption('module');
 
         if (empty($module)) {

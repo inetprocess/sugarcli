@@ -89,9 +89,9 @@ class Application extends BaseApplication
      *
      * @return Command[] An array of default Command instances
      */
-    public function getDefaultCommands()
+    public function registerAllCommands()
     {
-        $commands = parent::getDefaultCommands();
+        /* $commands = parent::getDefaultCommands(); */
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeConfigCommand();
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeRunCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
@@ -116,7 +116,9 @@ class Application extends BaseApplication
         $commands[] = new \SugarCli\Console\Command\SelfUpdateCommand();
         $commands[] = new \SugarCli\Console\Command\User\ListCommand();
         $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
-        return $commands;
+        foreach ($commands as $command) {
+            $this->add($command);
+        }
     }
 
     public function getContainer()
@@ -138,6 +140,7 @@ class Application extends BaseApplication
              ->addMethodCall('load');
 
         ########### SugarCRM
+        $this->container->setParameter('sugarcrm.user-id', '1');
         $this->container->register('sugarcrm.application', 'Inet\SugarCRM\Application')
              ->addArgument(new Reference('logger'))
              ->addArgument('%sugarcrm.path%');
@@ -147,10 +150,11 @@ class Application extends BaseApplication
         $this->container->setDefinition('sugarcrm.entrypoint', new Definition('Inet\SugarCRM\EntryPoint'))
              ->setFactory('Inet\SugarCRM\EntryPoint::createInstance')
              ->addArgument(new Reference('sugarcrm.application'))
-             ->addArgument('1');
+             ->addArgument('%sugarcrm.user-id%');
         ## Register SugarSystem
         $this->container->register('sugarcrm.system', 'Inet\SugarCRM\System')
             ->addArgument(new Reference('sugarcrm.entrypoint'));
+
     }
 
     public function setEntryPoint(EntryPoint $entrypoint)
@@ -196,6 +200,8 @@ class Application extends BaseApplication
         // AutoExit from symfony is disabled and replaced by our own.
         parent::setAutoExit(false);
         $this->configure($input, $output);
+        # Register symfony commands once the container is set up
+        $this->registerAllCommands();
 
         $exitCode = parent::run($input, $output);
         // We passed the original run command. The shutdown function will not raise any errors.

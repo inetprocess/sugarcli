@@ -91,6 +91,7 @@ class Config implements ConfigurationInterface
                     ->children()
                         ->scalarNode('path')->cannotBeEmpty()->end()
                         ->scalarNode('url')->cannotBeEmpty()->end()
+                        ->scalarNode('user_id')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
                 ->arrayNode('metadata')

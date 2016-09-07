@@ -32,7 +32,8 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
     {
         $this->setName('anonymize:run')
             ->setDescription('Run the Anonymizer')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addOption(
                 'file',
                 null,
@@ -72,7 +73,6 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
         $stopwatch = new \Symfony\Component\Stopwatch\Stopwatch();
         $stopwatch->start('Anon');
 
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $pdo = $this->getService('sugarcrm.pdo');
         $this->getService('sugarcrm.entrypoint'); // go to sugar folder to make sure we are in the right folder
 

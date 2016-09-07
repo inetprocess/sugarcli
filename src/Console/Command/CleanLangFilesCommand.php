@@ -33,7 +33,7 @@ class CleanLangFilesCommand extends AbstractConfigOptionCommand
     {
         $this->setName('clean:langfiles')
             ->setDescription('Sort php arrays in language files to make it easier for vcs programs.')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
             ->addOption(
                 'no-sort',
                 null,
@@ -50,8 +50,7 @@ class CleanLangFilesCommand extends AbstractConfigOptionCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $this->getConfigOption($input, 'path');
-        $this->setSugarPath($path);
+        $path = $input->getOption('path');
         $sugar = $this->getService('sugarcrm.application');
         $sort = !$input->getOption('no-sort');
         $test = $input->getOption('test');

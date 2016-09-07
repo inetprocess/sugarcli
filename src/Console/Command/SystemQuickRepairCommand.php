@@ -32,7 +32,8 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
     {
         $this->setName('system:quickrepair')
              ->setDescription('Do a quick repair and rebuild.')
-             ->addConfigOptionMapping('path', 'sugarcrm.path')
+             ->enableStandardOption('path')
+             ->enableStandardOption('user-id')
              ->addOption(
                  'no-database',
                  null,
@@ -49,7 +50,6 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $sugarEP = $this->getService('sugarcrm.entrypoint');
 
         $output->writeln('<comment>Reparation</comment>: ');

@@ -2,12 +2,15 @@
 
 namespace SugarCli\Tests\Console\Command;
 
-use SugarCli\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Tester\CommandTester;
-use SugarCli\Tests\TestsUtil\Util;
 
 use SugarCli\Console\Config;
+use SugarCli\Console\Application;
+use SugarCli\Console\Command\InputConfigOption;
+
+use SugarCli\Tests\TestsUtil\Util;
+
 
 class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,13 +18,14 @@ class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
     {
         $config_path = Util::getRelativePath(__DIR__ . '/../yaml');
         $cmd_name = 'test:default';
+        $config_cmd = new TestConfigOptionCommand($cmd_name);
         $config = new Config(array($config_path . '/complete.yaml'));
         $config->load();
         $app = new Application();
         $app->configure();
         $app->setAutoExit(false);
         $app->getContainer()->set('config', $config);
-        $app->add(new TestConfigOptionCommand($cmd_name));
+        $app->add($config_cmd);
 
         $command = $app->find($cmd_name);
         $commandTester = new CommandTester($command);
@@ -55,20 +59,20 @@ EOF;
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The "foo" argument does not exist.
+     * @expectedExceptionMessage Standard option "invalid" doesn't exists.
      */
-    public function testWrongDefaultOptionsInvalidArgument()
+    public function testInvalidStandardOption()
     {
         $cmd = new TestConfigOptionCommand('test');
         $reflex = new \ReflectionClass($cmd);
-        $method = $reflex->getMethod('getConfigOption');
+        $method = $reflex->getMethod('enableStandardOption');
         $method->setAccessible(true);
-        $method->invoke($cmd, new ArrayInput(array()), 'foo');
+        $method->invoke($cmd, 'invalid');
     }
 
     /**
      * @expectedException InvalidArgumentException
-     * @expectedExceptionMessage The "path" option is not specified and not found in the config "sugarcrm.path"
+     * @expectedExceptionMessageRegExp /The "\w+" option is not specified and not found in the config "sugarcrm\.\w+"/
      */
     public function testWrongDefaultOptionsOptionNotFound()
     {
@@ -88,5 +92,14 @@ EOF;
                 'command' => $cmd_name,
             )
         );
+    }
+
+    /**
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage The config option "test" is not mapped to a configuration parameter.
+     */
+    public function testInputConfigOptionWithoutMapping()
+    {
+        new InputConfigOption('', 'test');
     }
 }

@@ -88,7 +88,8 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
     {
         $this->setName('anonymize:config')
             ->setDescription('Generate a configuration for the Anonymizer')
-            ->addConfigOptionMapping('path', 'sugarcrm.path')
+            ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
             ->addOption(
                 'file',
                 null,
@@ -110,7 +111,6 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->setSugarPath($this->getConfigOption($input, 'path'));
         $pdo = $this->getService('sugarcrm.pdo');
 
         // Get the list of fields in SugaCRM for each module, with the table name as key

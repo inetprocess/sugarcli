@@ -20,75 +20,171 @@ namespace SugarCli\Console\Command;
 
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
+use Symfony\Component\Console\Application;
+
+use SugarCli\Console\Command\InputConfigOption;
 
 abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
 {
-    protected $config_options_mapping = array();
-    protected $config_options = array();
+    protected $process_callbacks = true;
 
     public function __construct($name = null)
     {
         // Parent will call $this->configure()
         parent::__construct($name);
-        $this->addConfigOption(
-            'path',
-            'p',
-            InputOption::VALUE_REQUIRED,
-            'Path to SugarCRM installation.'
+    }
+    protected function setProcessCallbacks($do_it = true)
+    {
+        $this->process_callbacks = $do_it;
+    }
+
+    protected function shouldProcessCallbacks()
+    {
+        return $this->process_callbacks;
+    }
+
+    protected function enableStandardOption($name)
+    {
+        $this->enableStandardOptions(array($name));
+        return $this;
+    }
+
+    protected function enableStandardOptions($options_names)
+    {
+        $std_options = $this->getStandardOptions();
+        foreach ($options_names as $name) {
+            if (!array_key_exists($name, $std_options)) {
+                throw new \InvalidArgumentException(
+                    sprintf('Standard option "%s" doesn\'t exists.', $name)
+                );
+            }
+            call_user_func_array(array($this, 'addConfigOption'), $std_options[$name]);
+        }
+        return $this;
+    }
+
+    protected function getStandardOptions()
+    {
+        return array(
+            'path' => array(
+                'sugarcrm.path',
+                'path',
+                'p',
+                InputOption::VALUE_REQUIRED,
+                'Path to SugarCRM installation.',
+                null,
+                true,
+                function ($path, $command) {
+                    if (!$this->getContainer()->isFrozen()) {
+                        $this->getContainer()->setParameter('sugarcrm.path', $path);
+                    }
+                }
+            ),
+            'user-id' => array(
+                'sugarcrm.user_id',
+                'user-id',
+                null,
+                InputOption::VALUE_REQUIRED,
+                'SugarCRM user id to impersonate when running the command.',
+                '1',
+                true,
+                function ($user_id, $command) {
+                    if (!$this->getContainer()->isFrozen()) {
+                        $this->getContainer()->setParameter('sugarcrm.user-id', $user_id);
+                    }
+                }
+            ),
         );
-        $this->configureConfigOptions();
     }
 
-    protected function getConfigOptionMapping()
+    protected function setRequiredOption($name, $required = true)
     {
-        return $this->config_options_mapping;
+        $this->getDefinition()->getOption($name)->setRequired($required);
     }
 
-    protected function getConfigOptions()
-    {
-        return $this->config_options;
-    }
-
-    protected function addConfigOptionMapping($name, $path)
-    {
-        $this->config_options_mapping[$name] = $path;
-
+    protected function addConfigOption(
+        $config_path,
+        $name,
+        $shortcut = null,
+        $mode = null,
+        $description = '',
+        $default = null,
+        $required = true,
+        $callback = null
+    ) {
+        $this->getDefinition()->addOption(new InputConfigOption(
+            $config_path,
+            $name,
+            $shortcut,
+            $mode,
+            $description,
+            $default,
+            $required,
+            $callback
+        ));
         return $this;
     }
 
-    protected function addConfigOption($name, $shortcut = null, $mode = null, $description = '', $default = null)
+    protected function getInputConfigOptions()
     {
-        $this->config_options[$name] = new InputOption($name, $shortcut, $mode, $description, $default);
-
-        return $this;
+        return array_filter($this->getDefinition()->getOptions(), function ($option) {
+            return $option instanceof InputConfigOption;
+        });
     }
 
-    protected function configureConfigOptions()
+    public function setApplication(Application $application = null)
     {
-        $options = $this->getConfigOptions();
-        foreach (array_keys($this->getConfigOptionMapping()) as $name) {
-            if (isset($options[$name])) {
-                $this->getDefinition()->addOption($options[$name]);
+        parent::setApplication($application);
+        foreach ($this->getInputConfigOptions() as $option) {
+            $config_path = $option->getConfigPath();
+            $config = $this->getService('config');
+            if ($config->has($config_path)) {
+                $option->setDefault($config->get($config_path));
             }
         }
     }
 
-    protected function getConfigOption(InputInterface $input, $name)
+    protected function processCallbacks(InputInterface $input)
     {
-        $defaults = $this->getConfigOptionMapping();
-        if (!array_key_exists($name, $defaults)) {
-            throw new \InvalidArgumentException(sprintf('The "%s" argument does not exist.', $name));
+        foreach ($this->getInputConfigOptions() as $option) {
+            if (($callback = $option->getCallback()) !== null) {
+                call_user_func($callback, $input->getOption($option->getName()), $this);
+            }
         }
-        if ($input->getOption($name) !== null) {
-            return $input->getOption($name);
+        if (!$this->getContainer()->isFrozen()) {
+            $this->getContainer()->compile();
         }
-        $config = $this->getService('config');
-        if (!$config->has($defaults[$name])) {
-            throw new \InvalidArgumentException(
-                sprintf('The "%s" option is not specified and not found in the config "%s"', $name, $defaults[$name])
-            );
+    }
+
+    /**
+     * @override
+     */
+    public function run(InputInterface $input, OutputInterface $output)
+    {
+        // Parse input
+        try {
+            $this->mergeApplicationDefinition();
+            $input->bind($this->getDefinition());
+        } catch (ExceptionInterface $e) {
+            // ignore invalid options/arguments for now, we are just modifying the input.
         }
 
-        return $config->get($defaults[$name]);
+        // Validate required options
+        foreach ($this->getInputConfigOptions() as $option) {
+            if ($option->isRequired() && $input->getOption($option->getName()) === null) {
+                throw new \InvalidArgumentException(sprintf(
+                    'The "%s" option is not specified and not found in the config "%s"',
+                    $option->getName(),
+                    $option->getConfigPath()
+                ));
+            }
+        }
+        // Process callbacks from options.
+        if ($this->shouldProcessCallbacks()) {
+            $this->processCallbacks($input);
+        }
+        return parent::run($input, $output);
     }
 }

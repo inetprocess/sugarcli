@@ -78,6 +78,7 @@ class UpdateCommandTest extends DatabaseTestCase
             new StreamOutput(fopen('php://memory', 'w', false))
         );
         $app->setEntryPoint($this->getEntryPointInstance());
+        $app->registerAllCommands();
         $this->command = $app->find($cmd_name);
         return new CommandTester($this->command);
     }
