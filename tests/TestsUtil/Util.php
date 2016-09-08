@@ -18,10 +18,10 @@ class Util
     public static function getRelativePath($path)
     {
         $fs = new Filesystem();
-        return $fs->makePathRelative(
+        return rtrim($fs->makePathRelative(
             $path,
             getcwd()
-        );
+        ), '/');
     }
 
     public static function getEntryPointInstance()

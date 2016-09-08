@@ -41,7 +41,7 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $relsFile = $this->getRelsOption($input);
+        $relsFile = $input->getOption('file');
 
         $style = new OutputFormatterStyle(null, null, array('bold'));
         $output->getFormatter()->setStyle('b', $style);

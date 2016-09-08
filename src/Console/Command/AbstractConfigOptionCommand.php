@@ -76,9 +76,9 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 'Path to SugarCRM installation.',
                 null,
                 true,
-                function ($path, $command) {
+                function ($option_name, $input, $command) {
                     if (!$command->getContainer()->isFrozen()) {
-                        $command->getContainer()->setParameter('sugarcrm.path', $path);
+                        $command->getContainer()->setParameter('sugarcrm.path', $input->getOption($option_name));
                     }
                 }
             ),
@@ -90,9 +90,12 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 'SugarCRM user id to impersonate when running the command.',
                 '1',
                 true,
-                function ($user_id, $command) {
+                function ($option_name, $input, $command) {
                     if (!$command->getContainer()->isFrozen()) {
-                        $command->getContainer()->setParameter('sugarcrm.user-id', $user_id);
+                        $command->getContainer()->setParameter(
+                            'sugarcrm.user-id',
+                            $input->getOption($option_name)
+                        );
                     }
                 }
             ),
@@ -150,7 +153,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
     {
         foreach ($this->getInputConfigOptions() as $option) {
             if (($callback = $option->getCallback()) !== null) {
-                call_user_func($callback, $input->getOption($option->getName()), $this);
+                call_user_func($callback, $option->getName(), $input, $this);
             }
         }
         if (!$this->getContainer()->isFrozen()) {

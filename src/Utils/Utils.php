@@ -19,6 +19,8 @@
 namespace SugarCli\Utils;
 
 use Symfony\Component\Yaml\Dumper as YamlDumper;
+use Symfony\Component\Filesystem\Filesystem;
+use Webmozart\PathUtil\Path;
 
 /**
  * Various Utils
@@ -66,5 +68,18 @@ class Utils
         file_put_contents($outputFile, $yaml);
 
         return true;
+    }
+
+    /**
+     * Concat two path member only if the second is not absolute
+     * and make the result relative to the last parameter.
+     */
+    public static function makeConfigPathRelative($config_path, $option_path, $current_path = null)
+    {
+        $current_path = ($current_path === null)  ? getcwd() : $current_path;
+        $config_path = Path::makeAbsolute($config_path, $current_path);
+        $absolute_path = Path::makeAbsolute($option_path, $config_path);
+        $relative_path = Path::makeRelative($absolute_path, $current_path);
+        return ($relative_path === '') ? '.' : $relative_path;
     }
 }

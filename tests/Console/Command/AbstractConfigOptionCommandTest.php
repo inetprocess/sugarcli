@@ -11,7 +11,6 @@ use SugarCli\Console\Command\InputConfigOption;
 
 use SugarCli\Tests\TestsUtil\Util;
 
-
 class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
 {
     public function testDefaults()
@@ -32,7 +31,7 @@ class AbstractConfigOptionCommandTest extends \PHPUnit_Framework_TestCase
         $commandTester->execute(
             array('command' => $cmd_name)
         );
-        $sugar_path = $config_path . 'toto/';
+        $sugar_path = dirname(Util::getRelativePath(__DIR__)) . '/yaml/toto';
         $expected = <<<EOF
 path: $sugar_path
 url: titi

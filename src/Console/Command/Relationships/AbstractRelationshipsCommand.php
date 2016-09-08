@@ -18,24 +18,41 @@
 
 namespace SugarCli\Console\Command\Relationships;
 
+use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Inet\SugarCRM\Database\Relationship;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
+use SugarCli\Utils\Utils;
 
 abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
 {
     const RELS_PATH = '../db/relationships.yaml';
 
-    protected function getRelsOption(InputInterface $input)
+    protected function buildRelsPath($sugarcrm_path, $rels_path)
     {
-        try {
-            $metadata = $input->getOption('file');
-        } catch (\InvalidArgumentException $e) {
-            $metadata = $input->getOption('path') . '/' . self::RELS_PATH;
+        if ($rels_path === $this->getRelsFileDefault()) {
+            if ($sugarcrm_path !== null) {
+                $rels_path = Utils::makeConfigPathRelative($sugarcrm_path, self::RELS_PATH);
+            }
         }
+        return $rels_path;
+    }
 
-        return $metadata;
+    protected function getRelsFileDefault()
+    {
+        return '<SUGAR_PATH>/' . self::RELS_PATH;
+    }
+
+    public function setApplication(Application $application = null)
+    {
+        parent::setApplication($application);
+        $rels_option = $this->getDefinition()->getOption('file');
+        $rels_path = $this->buildRelsPath(
+            $this->getDefinition()->getOption('path')->getDefault(),
+            $rels_option->getDefault()
+        );
+        $rels_option->setDefault($rels_path);
     }
 
     protected function configure()
@@ -46,8 +63,16 @@ abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
             'file',
             null,
             InputOption::VALUE_REQUIRED,
-            'Path to the rels file.' .
-            ' <comment>(default: "<sugar_path>/' . self::RELS_PATH . '")</comment>'
+            'Path to the rels file.',
+            $this->getRelsFileDefault(),
+            false,
+            function ($option_name, $input, $command) {
+                $rels_path = $input->getOption($option_name);
+                if ($rels_path === $this->getRelsFileDefault()) {
+                    $rels_path = $this->buildRelsPath($input->getOption('path'), $rels_path);
+                    $command->getDefinition()->getOption($option_name)->setDefault($rels_path);
+                }
+            }
         );
     }
 

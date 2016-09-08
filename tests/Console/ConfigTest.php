@@ -25,7 +25,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
         $test_path = getcwd() . '/' . 'baz';
         return array(
             //set #0
-            array('conf/bar/', 'conf/foo.yaml', 'bar'),
+            array('conf/bar', 'conf/foo.yaml', 'bar'),
             //set #1
             array(Util::getRelativePath('/var/www/'), '/etc/sugarclirc', '/var/www'),
             //set #2
@@ -33,7 +33,7 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
             //set #3
             array(Util::getRelativePath('/etc/www/'), '/etc/sugarclirc', 'www'),
             //set #4
-            array('baz/', getcwd() . '/.sugarcli', 'baz'),
+            array('baz', getcwd() . '/.sugarcli', 'baz'),
         );
     }
 
@@ -142,12 +142,13 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function testGetValue()
     {
         $sugar_path = Util::getRelativePath(__DIR__ . '/yaml/../yaml/toto');
+        $relative_path = 'tests/Console/yaml/toto';
         $conf = new Config(array(__DIR__ . '/yaml/../yaml/complete.yaml'));
         $conf->load();
-        $this->assertEquals($sugar_path, $conf->get('sugarcrm.path'));
+        $this->assertEquals($relative_path, $conf->get('sugarcrm.path'));
         $this->assertEquals('titi', $conf->get('sugarcrm.url'));
         $this->assertEquals(
-            array('path' => $sugar_path, 'url' => 'titi'),
+            array('path' => $relative_path, 'url' => 'titi'),
             $conf->get('sugarcrm')
         );
 

@@ -62,7 +62,7 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $metadata_file = $this->getMetadataOption($input);
+        $metadata_file = $input->getOption('metadata-file');
 
         $diff_opts = $this->getDiffOptions($input);
 

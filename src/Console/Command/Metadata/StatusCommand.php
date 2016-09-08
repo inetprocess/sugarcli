@@ -109,7 +109,7 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $metadata_file = $this->getMetadataOption($input);
+        $metadata_file = $input->getOption('metadata-file');
 
         $style = new OutputFormatterStyle(null, null, array('bold'));
         $output->getFormatter()->setStyle('b', $style);

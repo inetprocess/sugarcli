@@ -47,7 +47,7 @@ EOH
     {
         $logger = $this->getService('logger');
 
-        $relsFile = $this->getRelsOption($input);
+        $relsFile = $input->getOption('file');
         $diffMode = $this->getDiffMode($input);
 
         try {
