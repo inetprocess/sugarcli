@@ -18,11 +18,12 @@
 
 namespace SugarCli\Console\Command;
 
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\ExceptionInterface;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
 
 use SugarCli\Console\Command\InputConfigOption;
 
@@ -76,7 +77,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 'Path to SugarCRM installation.',
                 null,
                 true,
-                function ($option_name, $input, $command) {
+                function ($option_name, InputInterface $input, Command $command) {
                     if (!$command->getContainer()->isFrozen()) {
                         $command->getContainer()->setParameter('sugarcrm.path', $input->getOption($option_name));
                     }
@@ -90,7 +91,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 'SugarCRM user id to impersonate when running the command.',
                 '1',
                 true,
-                function ($option_name, $input, $command) {
+                function ($option_name, InputInterface $input, Command $command) {
                     if (!$command->getContainer()->isFrozen()) {
                         $command->getContainer()->setParameter(
                             'sugarcrm.user-id',

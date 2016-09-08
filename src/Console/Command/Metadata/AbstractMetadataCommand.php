@@ -19,9 +19,10 @@
 namespace SugarCli\Console\Command\Metadata;
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Inet\SugarCRM\Database\Metadata;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Utils\Utils;
@@ -67,7 +68,7 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
             'Path to the metadata file',
             $this->getMetadataFileDefault(),
             false,
-            function ($option_name, $input, $command) {
+            function ($option_name, InputInterface $input, Command $command) {
                 $metadata_path = $input->getOption($option_name);
                 if ($metadata_path === $this->getMetadataFileDefault()) {
                     $metadata_path = $this->buildMetadataPath($input->getOption('path'), $metadata_path);

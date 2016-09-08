@@ -113,7 +113,6 @@ EOF;
      */
     public function registerAllCommands()
     {
-        /* $commands = parent::getDefaultCommands(); */
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeConfigCommand();
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeRunCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
@@ -244,7 +243,7 @@ EOF;
      */
     public function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
-        if ($this->isRunByRoot() and !$this->isWhitelistedForRoot($command)) {
+        if ($this->isRunByRoot() && !$this->isWhitelistedForRoot($command)) {
             $output->writeln('<error>You are not allowed to run this command as root.</error>');
             return ExitCode::EXIT_COMMAND_AS_ROOT_DENIED;
         }

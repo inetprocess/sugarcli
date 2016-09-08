@@ -19,7 +19,6 @@
 namespace SugarCli\Console\Command\Database;
 
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
-use Symfony\Component\Console\Helper\ProgressBar;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;

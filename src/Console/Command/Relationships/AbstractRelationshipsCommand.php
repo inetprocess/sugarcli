@@ -19,6 +19,7 @@
 namespace SugarCli\Console\Command\Relationships;
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Inet\SugarCRM\Database\Relationship;
@@ -66,7 +67,7 @@ abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
             'Path to the rels file.',
             $this->getRelsFileDefault(),
             false,
-            function ($option_name, $input, $command) {
+            function ($option_name, InputInterface $input, Command $command) {
                 $rels_path = $input->getOption($option_name);
                 if ($rels_path === $this->getRelsFileDefault()) {
                     $rels_path = $this->buildRelsPath($input->getOption('path'), $rels_path);
