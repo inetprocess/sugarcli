@@ -30,7 +30,7 @@ abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
 {
     const RELS_PATH = '../db/relationships.yaml';
 
-    protected function buildRelsPath($sugarcrm_path, $rels_path)
+    public function buildRelsPath($sugarcrm_path, $rels_path)
     {
         if ($rels_path === $this->getRelsFileDefault()) {
             if ($sugarcrm_path !== null) {
@@ -40,7 +40,7 @@ abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
         return $rels_path;
     }
 
-    protected function getRelsFileDefault()
+    public function getRelsFileDefault()
     {
         return '<SUGAR_PATH>/' . self::RELS_PATH;
     }

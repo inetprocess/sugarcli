@@ -31,7 +31,7 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
 {
     const METADATA_PATH = '../db/fields_meta_data.yaml';
 
-    protected function buildMetadataPath($sugarcrm_path, $metadata_path)
+    public function buildMetadataPath($sugarcrm_path, $metadata_path)
     {
         if ($metadata_path === $this->getMetadataFileDefault()) {
             if ($sugarcrm_path !== null) {
@@ -41,7 +41,7 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
         return $metadata_path;
     }
 
-    protected function getMetadataFileDefault()
+    public function getMetadataFileDefault()
     {
         return '<SUGAR_PATH>/' . self::METADATA_PATH;
     }

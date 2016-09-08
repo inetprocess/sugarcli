@@ -1,20 +1,9 @@
 Changelog
 =========
 
-1.13.4
-----
-* Fixes for php 5.3. Again...
-
-1.13.3
-----
-* Add missing library to phar build.
-
-1.13.2
+1.13.5
 ----
 * Fix issue with default path for `metadata` and `rels` commands.
-
-1.13.1
-----
 * Fix issue with PHP 5.3
 
 1.13.0
