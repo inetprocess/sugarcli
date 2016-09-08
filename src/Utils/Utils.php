@@ -19,7 +19,6 @@
 namespace SugarCli\Utils;
 
 use Symfony\Component\Yaml\Dumper as YamlDumper;
-use Symfony\Component\Filesystem\Filesystem;
 use Webmozart\PathUtil\Path;
 
 /**

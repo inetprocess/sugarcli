@@ -24,7 +24,8 @@
                 "vendor/phpoption/phpoption",
                 "vendor/psr",
                 "vendor/ramsey",
-                "vendor/symfony"
+                "vendor/symfony",
+                "vendor/webmozart"
             ],
             "exclude": [
                 "test",

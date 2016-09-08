@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.3
+----
+* Add missing library to phar build.
+
 1.13.2
 ----
 * Fix issue with default path for `metadata` and `rels` commands.
