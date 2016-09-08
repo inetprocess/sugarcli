@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.2
+----
+* Fix issue with default path for `metadata` and `rels` commands.
+
 1.13.1
 ----
 * Fix issue with PHP 5.3
