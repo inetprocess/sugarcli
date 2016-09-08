@@ -69,8 +69,8 @@ abstract class AbstractRelationshipsCommand extends AbstractConfigOptionCommand
             false,
             function ($option_name, InputInterface $input, Command $command) {
                 $rels_path = $input->getOption($option_name);
-                if ($rels_path === $this->getRelsFileDefault()) {
-                    $rels_path = $this->buildRelsPath($input->getOption('path'), $rels_path);
+                if ($rels_path === $command->getRelsFileDefault()) {
+                    $rels_path = $command->buildRelsPath($input->getOption('path'), $rels_path);
                     $command->getDefinition()->getOption($option_name)->setDefault($rels_path);
                 }
             }

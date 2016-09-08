@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.4
+----
+* Fixes for php 5.3. Again...
+
 1.13.3
 ----
 * Add missing library to phar build.

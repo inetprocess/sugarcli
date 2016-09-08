@@ -70,8 +70,8 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
             false,
             function ($option_name, InputInterface $input, Command $command) {
                 $metadata_path = $input->getOption($option_name);
-                if ($metadata_path === $this->getMetadataFileDefault()) {
-                    $metadata_path = $this->buildMetadataPath($input->getOption('path'), $metadata_path);
+                if ($metadata_path === $command->getMetadataFileDefault()) {
+                    $metadata_path = $command->buildMetadataPath($input->getOption('path'), $metadata_path);
                     $command->getDefinition()->getOption($option_name)->setDefault($metadata_path);
                 }
             }
