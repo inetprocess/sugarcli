@@ -47,29 +47,6 @@ class Utils
     }
 
     /**
-     * Generate a YAML file from an array
-     *
-     * @param array  $data
-     * @param string $outputFile
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function generateYaml(array $data, $outputFile)
-    {
-        $outputFileDir = dirname($outputFile);
-        if (!is_dir($outputFileDir)) {
-            throw new \InvalidArgumentException("$outputFileDir is not a valid directory (" . __FUNCTION__ . ')');
-        }
-
-        $dumper = new YamlDumper();
-        $dumper->setIndentation(4);
-        $yaml = $dumper->dump($data, 3);
-        file_put_contents($outputFile, $yaml);
-
-        return true;
-    }
-
-    /**
      * Concat two path member only if the second is not absolute
      * and make the result relative to the last parameter.
      */
