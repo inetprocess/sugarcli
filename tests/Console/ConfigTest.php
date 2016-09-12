@@ -113,23 +113,44 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
 
     public function yamlProvider()
     {
-        $sugar_path = Util::getRelativePath(__DIR__ . '/yaml/toto');
+        $path = Util::getRelativePath(__DIR__ . '/yaml');
         return array(
+            // Set #0
             array(array(), array( 'empty.yaml')),
+            // Set #1
             array(
                 array(
                     'sugarcrm' => array(
-                        'path' => $sugar_path,
+                        'path' => $path . '/toto',
                         'url' => 'titi',
+                    ),
+                    'metadata' => array(
+                        'file' => $path . '/meta_file',
+                    ),
+                    'rels' => array(
+                        'file' => $path . '/rels_file',
+                    ),
+                    'account' => array(
+                        'name' => 'foo',
                     ),
                 ),
                 array('complete.yaml')
             ),
+            // Set #2
             array(
                 array(
                     'sugarcrm' => array(
-                        'path' => $sugar_path,
+                        'path' => $path . '/toto',
                         'url' => 'bar',
+                    ),
+                    'metadata' => array(
+                        'file' => $path . '/meta_file',
+                    ),
+                    'rels' => array(
+                        'file' => $path . '/rels_file',
+                    ),
+                    'account' => array(
+                        'name' => 'foo',
                     ),
                 ),
                 array('complete.yaml', 'partial.yaml')

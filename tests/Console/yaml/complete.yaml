@@ -2,3 +2,9 @@
 sugarcrm:
     path: toto
     url: titi
+metadata:
+    file: meta_file
+rels:
+    file: rels_file
+account:
+    name: foo
