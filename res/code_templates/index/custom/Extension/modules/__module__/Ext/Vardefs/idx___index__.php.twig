@@ -1,0 +1,15 @@
+<?php
+/**
+ * @author SugarCli
+ * SugarCli created file
+ */
+
+// {{ index }} index definition
+$dictionary["{{ moduleBean }}"]["indices"][] = array(
+    // Basic non-db field features
+    'name' => 'idx_{{ index }}',
+    'type' => 'index',
+    'fields' => array(
+        {{ fields }}
+    )
+);

@@ -27,6 +27,7 @@ class TemplateTypeEnum
     const RELATIONSHIP_LEFT = 3;
     const RELATIONSHIP_RIGHT = 4;
     const NONDB_FIELD = 5;
+    const INDEX = 6;
 }
 
 class Templater
@@ -150,6 +151,9 @@ class Templater
                 break;
             case TemplateTypeEnum::NONDB_FIELD:
                 $typeName = 'nondb_field';
+                break;
+            case TemplateTypeEnum::INDEX:
+                $typeName = 'index';
                 break;
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
