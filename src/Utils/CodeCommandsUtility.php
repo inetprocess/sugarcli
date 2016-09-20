@@ -201,6 +201,8 @@ class CodeCommandsUtility
 
         /** @var SplFileInfo $fileTemplate */
         foreach ($this->finder as $fileTemplate) {
+            echo 'PATH: ' . $fileTemplate->getRelativePath(). PHP_EOL;
+
             // Get the template contents and perform replacement, replace placeholder in path, and create processed
             // template file in Sugar path and filename
             $currentTemplatePath = $typeName. $subTypeName. '/'. $fileTemplate->getRelativePath();
