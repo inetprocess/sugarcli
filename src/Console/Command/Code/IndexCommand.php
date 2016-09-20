@@ -87,12 +87,8 @@ class IndexCommand extends AbstractConfigOptionCommand
         /** @var Templater $templater */
         $templater = $this->getContainer()->get('templater');
 
-        $output->writeln('POST-TEMPL');
-
         // Process and write the files from the templates for a field
         $templateWriter = new CodeCommandsUtility($templater);
-
-        $output->writeln('POST-UTIL');
 
         $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::INDEX,
             $this->getService('sugarcrm.entrypoint')->getPath());
