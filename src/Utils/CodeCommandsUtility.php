@@ -194,16 +194,17 @@ class CodeCommandsUtility
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
         }
+        $logger = $this->getService('logger');
 
-        echo 'MODULE BEAN: ' . $replacements['moduleBean']. PHP_EOL;
-
+        $logger->debug('MODULE BEAN: ' . $replacements['moduleBean']. PHP_EOL);
+        
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
         // location
         $this->finder->files()->in($this->templater->getTemplatesPath(). '/'. $typeName. $subTypeName)->name('*.twig');
 
         /** @var SplFileInfo $fileTemplate */
         foreach ($this->finder as $fileTemplate) {
-            echo 'PATH: ' . $fileTemplate->getRelativePath(). PHP_EOL;
+            $logger->debug('PATH: ' . $fileTemplate->getRelativePath(). PHP_EOL);
 
             // Get the template contents and perform replacement, replace placeholder in path, and create processed
             // template file in Sugar path and filename
