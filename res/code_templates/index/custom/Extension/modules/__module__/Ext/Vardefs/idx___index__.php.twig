@@ -10,6 +10,6 @@ $dictionary["{{ moduleBean }}"]["indices"][] = array(
     'name' => 'idx_{{ index }}',
     'type' => 'index',
     'fields' => array(
-        {{ fields }}
+        '{{ fields|replace({',': '\',\''}) }}'
     )
 );

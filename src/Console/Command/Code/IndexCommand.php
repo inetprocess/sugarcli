@@ -94,7 +94,7 @@ class IndexCommand extends AbstractConfigOptionCommand
             $this->getService('sugarcrm.entrypoint')->getPath());
 
         // Output success message
-        $output->writeln('Files for index, '. $this->options['name']. ', of fields, , '. $this->options['fields']. ', in module, '. $this->options['module']. ', added.');
+        $output->writeln('Files for index, '. $this->options['name']. ', of fields, '. $this->options['fields']. ', in module, '. $this->options['module']. ', added.');
         
         // Everything went fine
         return 0;
