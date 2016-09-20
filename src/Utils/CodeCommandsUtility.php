@@ -195,6 +195,8 @@ class CodeCommandsUtility
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
         }
 
+        echo 'MODULE BEAN: ' . $replacements['moduleBean']. PHP_EOL;
+
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
         // location
         $this->finder->files()->in($this->templater->getTemplatesPath(). '/'. $typeName. $subTypeName)->name('*.twig');
