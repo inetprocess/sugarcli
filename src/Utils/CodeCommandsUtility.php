@@ -81,6 +81,9 @@ class CodeCommandsUtility
      */
     public function writeFilesFromTemplatesForType(array $replacements, $type, $sugarPath)
     {
+        $output = $this->getContainer()->get('console.output');
+        $output->writeln('STARTING');
+
         // Setup template replacement options based on type and confirm needed values are present in replacements array
         $typeName = null;
         $subTypeName = null;
@@ -194,9 +197,8 @@ class CodeCommandsUtility
             default:
                 throw new \BadMethodCallException('You must specify a valid template type, e.g., TemplateTypeEnum::MODULE');
         }
-        $output = $this->getContainer()->get('console.output');
 
-        $output->writeln('MODULE BEAN: ' . $replacements['moduleBean']. PHP_EOL);
+        $output->writeln('MODULE BEAN: ' . $replacements['moduleBean']);
 
         // Get all templates for the custom module that require parameter replacement, process, and copy to proper
         // location
@@ -204,7 +206,7 @@ class CodeCommandsUtility
 
         /** @var SplFileInfo $fileTemplate */
         foreach ($this->finder as $fileTemplate) {
-            $output->writeln('PATH: ' . $fileTemplate->getRelativePath(). PHP_EOL);
+            $output->writeln('PATH: ' . $fileTemplate->getRelativePath());
 
             // Get the template contents and perform replacement, replace placeholder in path, and create processed
             // template file in Sugar path and filename
