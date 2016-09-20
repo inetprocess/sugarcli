@@ -90,7 +90,7 @@ class IndexCommand extends AbstractConfigOptionCommand
         // Process and write the files from the templates for a field
         $templateWriter = new CodeCommandsUtility($templater);
 
-        $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::NONDB_FIELD,
+        $templateWriter->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::INDEX,
             $this->getService('sugarcrm.entrypoint')->getPath());
 
         // Output success message
