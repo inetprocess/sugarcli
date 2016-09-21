@@ -78,7 +78,6 @@ class IndexCommand extends AbstractConfigOptionCommand
         // Prepare replacement values array for template writing
         $replacements = array(
             'module' => $this->options['module'],
-            'moduleBase' => Utils::baseModuleName($this->options['module']),
             'fields' => $this->options['fields'],
             'index' => $this->options['name']
         );

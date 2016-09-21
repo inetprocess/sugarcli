@@ -4,12 +4,12 @@
  * SugarCli created file
  */
 
-// Relationship foreign key to {{ moduleLeft|replace({'_': ' '}) }} index
+// {{ index }} index definition
 $dictionary["{{ moduleBean }}"]["indices"][] = array(
     // Basic non-db field features
-    'name' => 'idx_{{ moduleLeft|singularize|lower }}_id',
+    'name' => 'idx_{{ index }}',
     'type' => 'index',
     'fields' => array(
-        '{{ moduleLeft|singularize|lower }}_id'
+        '{{ fields|replace({',': '\',\''}) }}'
     )
 );
