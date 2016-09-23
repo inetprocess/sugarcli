@@ -437,16 +437,16 @@
         },
         {
             "name": "inetprocess/neuralyzer",
-            "version": "v0.10",
+            "version": "v0.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/inetprocess/neuralyzer.git",
-                "reference": "514e888d500fbf535c2124e4699a9359030bd603"
+                "reference": "8b67b18c86f119755849bf814323ac1c9c89de9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/inetprocess/neuralyzer/zipball/514e888d500fbf535c2124e4699a9359030bd603",
-                "reference": "514e888d500fbf535c2124e4699a9359030bd603",
+                "url": "https://api.github.com/repos/inetprocess/neuralyzer/zipball/8b67b18c86f119755849bf814323ac1c9c89de9e",
+                "reference": "8b67b18c86f119755849bf814323ac1c9c89de9e",
                 "shasum": ""
             },
             "require": {
@@ -481,7 +481,7 @@
             "keywords": [
                 "anonymization"
             ],
-            "time": "2016-08-05 13:04:28"
+            "time": "2016-09-23 13:25:03"
         },
         {
             "name": "jms/metadata",
@@ -899,22 +899,30 @@
         },
         {
             "name": "psr/log",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fig/log.git",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b"
+                "reference": "5277094ed527a1c4477177d102fe4c53551953e0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fig/log/zipball/fe0936ee26643249e916849d48e3a51d5f5e278b",
-                "reference": "fe0936ee26643249e916849d48e3a51d5f5e278b",
+                "url": "https://api.github.com/repos/php-fig/log/zipball/5277094ed527a1c4477177d102fe4c53551953e0",
+                "reference": "5277094ed527a1c4477177d102fe4c53551953e0",
                 "shasum": ""
             },
+            "require": {
+                "php": ">=5.3.0"
+            },
             "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.0.x-dev"
+                }
+            },
             "autoload": {
-                "psr-0": {
-                    "Psr\\Log\\": ""
+                "psr-4": {
+                    "Psr\\Log\\": "Psr/Log/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -928,12 +936,13 @@
                 }
             ],
             "description": "Common interface for logging libraries",
+            "homepage": "https://github.com/php-fig/log",
             "keywords": [
                 "log",
                 "psr",
                 "psr-3"
             ],
-            "time": "2012-12-21 11:40:51"
+            "time": "2016-09-19 16:02:08"
         },
         {
             "name": "ramsey/array_column",

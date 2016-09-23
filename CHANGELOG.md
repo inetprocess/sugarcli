@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.13.6
+----
+* Update inetprocess/neuralyzer to v0.11. Fixes issues with database type detection.
+
 1.13.5
 ----
 * Fix issue with default path for `metadata` and `rels` commands.
