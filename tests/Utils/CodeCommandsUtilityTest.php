@@ -210,7 +210,7 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
      * Tests writing files from templates for a relationship with mocked dependencies
      * @see writeFilesFromTemplatesForType
      */
-    public function testWriteFilesFromTemplatesForNondbField() {
+    public function testWriteFilesFromTemplatesForTypeNondbField() {
         // Created mocked dependencies
         $mockTemplater = $this->getMockBuilder('SugarCli\Console\Templater')
             ->disableOriginalConstructor()
@@ -254,6 +254,56 @@ class CodeCommandsUtilityTest extends \PHPUnit_Framework_TestCase
         );
 
         $tester->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::NONDB_FIELD, '/tmp');
+    }
+
+    /*
+     * Tests writing files from templates for an index with mocked dependencies
+     * @see writeFilesFromTemplatesForType
+     */
+    public function testWriteFilesFromTemplatesForTypeIndex() {
+        // Created mocked dependencies
+        $mockTemplater = $this->getMockBuilder('SugarCli\Console\Templater')
+            ->disableOriginalConstructor()
+            ->getMock();
+        $mockFs = $this->getMockBuilder('Symfony\Component\Filesystem\Filesystem')
+            ->getMock();
+        $mockFinder = $this->getMockBuilder('Symfony\Component\Finder\Finder')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $mockFile1 = new MockSplFileInfo(array(
+            'relativePath' => __DIR__,
+            'relativePathname' => 'dummy1.php.twig',
+        ));
+        $mockFile2 = new MockSplFileInfo(array(
+            'relativePath' => __DIR__,
+            'relativePathname' => 'dummy2.php.twig',
+        ));
+        $mockFinderIterator = new ArrayIterator(array($mockFile1, $mockFile2));
+
+        // Configure mocks
+        $mockFinder->method('files')
+            ->willReturn($mockFinder);
+        $mockFinder->method('in')
+            ->willReturn($mockFinder);
+        $mockFinder->method('name')
+            ->willReturn($mockFinder);
+        $mockFinder->method('getIterator')
+            ->willReturn($mockFinderIterator);
+        $mockFs->method('exists')
+            ->willReturn(true);
+
+        // Create tester with mocks
+        $tester = new CodeCommandsUtility($mockTemplater, $mockFs, $mockFinder);
+
+        // Perform the test
+        $replacements = array(
+            'module' => 'Tester',
+            'fields' => 'test1,test2',
+            'index' => 'indexer'
+        );
+
+        $tester->writeFilesFromTemplatesForType($replacements, TemplateTypeEnum::INDEX, '/tmp');
     }
 
     /*

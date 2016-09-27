@@ -75,6 +75,7 @@ class CodeCommandsUtility
      *                                          field - needs "module", "field", and "type" key/value in $replacements
      *                                          relationship - needs "moduleLeft", "moduleRight", and "type" key/value
      *                                              in $replacements (all relationship components)
+     *                                          index - needs "module", "fields", and "index" key/value in $replacements
      * @param string $sugarPath             path to a running Sugar location
      * @requires $sugarPath is valid Sugar path
      */
@@ -171,6 +172,22 @@ class CodeCommandsUtility
                 $replacements['nondb_field'] = strtolower($replacements['relatedModule']). '__'. strtolower($replacements['relatedField']);
 
                 // Use the bean name for the module to use in replacements for new fields
+                $replacements['moduleBean'] = Utils::moduleBeanName($replacements['module']);
+
+                break;
+            case TemplateTypeEnum::INDEX:
+                $typeName = 'index';
+
+                // Verify required replacements
+                if (!isset($replacements['module'])) {
+                    throw new \BadMethodCallException('"module" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['fields'])) {
+                    throw new \BadMethodCallException('"fields" must be specified in replacements array parameter');
+                } elseif (!isset($replacements['index'])) {
+                    throw new \BadMethodCallException('"index" must be specified in replacements array parameter');
+                }
+
+                // Use the bean name for the module to use in replacements
                 $replacements['moduleBean'] = Utils::moduleBeanName($replacements['module']);
 
                 break;

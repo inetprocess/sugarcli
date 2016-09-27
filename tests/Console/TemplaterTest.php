@@ -83,6 +83,21 @@ class TemplaterTest extends \PHPUnit_Framework_TestCase
     }
 
     /*
+     * Tests replacing a placeholder and formatting template name for an index
+     * @see Templater::replaceTemplateName
+     */
+    public function testReplaceTemplateNameIndex()
+    {
+        $module_name = 'index/custom/Extension/modules/Module_Test/Ext/Vardefs/idx___index__.php.twig';
+        $replacement = 'Index_Test';
+        $expected_name = 'custom/Extension/modules/Module_Test/Ext/Vardefs/idx_'. $replacement. '.php';
+
+        $actual_name = Templater::replaceTemplateName($module_name, TemplateTypeEnum::INDEX, $replacement);
+
+        $this->assertEquals($expected_name, $actual_name);
+    }
+
+    /*
      * Tests exception missing template name
      * @see Templater::replaceTemplateName
      */
