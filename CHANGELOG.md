@@ -1,6 +1,11 @@
 Changelog
 =========
 
+unreleased
+----
+* Update Anonymize to remove more data.
+* Better code coverage and cleanup.
+
 1.13.6
 ----
 * Update inetprocess/neuralyzer to v0.11. Fixes issues with database type detection.
