@@ -1,7 +1,7 @@
 Changelog
 =========
 
-unreleased
+1.14.0
 ----
 * Add command database:export:csv.
 * Update Anonymize to remove more data.
