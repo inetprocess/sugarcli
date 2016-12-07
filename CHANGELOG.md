@@ -3,6 +3,7 @@ Changelog
 
 unreleased
 ----
+* Add command database:export:csv.
 * Update Anonymize to remove more data.
 * Better code coverage and cleanup.
 

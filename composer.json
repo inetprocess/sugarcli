@@ -18,7 +18,7 @@
         "php": ">=5.3.9",
         "ext-curl": "*",
         "ext-Reflection": "*",
-        "csanquer/colibri-csv" : "1.1.*",
+        "csanquer/colibri-csv" : "^1.1",
         "guzzle/guzzle": "~3.9",
         "inetprocess/libinventoryclient": "^1.0",
         "inetprocess/libsugarcrm": "^1.2",

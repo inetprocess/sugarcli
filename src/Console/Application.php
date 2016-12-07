@@ -120,6 +120,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Code\ExecuteFileCommand();
         $commands[] = new \SugarCli\Console\Command\Code\SetupComposerCommand();
         $commands[] = new \SugarCli\Console\Command\Database\CleanCommand();
+        $commands[] = new \SugarCli\Console\Command\Database\ExportCSV();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();
         $commands[] = new \SugarCli\Console\Command\Install\CheckCommand();
