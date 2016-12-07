@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.41.1
+----
+* Force database export to utf-8
+
 1.14.0
 ----
 * Add command database:export:csv.

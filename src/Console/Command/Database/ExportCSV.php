@@ -77,7 +77,7 @@ class ExportCSV extends AbstractContainerAwareCommand
         $my_cnf = file_get_contents(getenv('HOME') . '/.my.cnf');
         $my_cnf = preg_replace('/#.*$/m', '', $my_cnf);
         $mysql_config = parse_ini_string($my_cnf, true);
-        $dsn = 'mysql:dbname=' . $input->getArgument('database');
+        $dsn = 'mysql:charset=utf8;dbname=' . $input->getArgument('database');
         $this->db = new \PDO($dsn, $mysql_config['client']['user'], $mysql_config['client']['password']);
         $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
