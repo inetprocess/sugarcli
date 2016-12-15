@@ -1,7 +1,11 @@
 Changelog
 =========
 
-1.41.1
+1.14.2
+----
+* Fetch `host` parameter for mysql in `database:export:csv`
+
+1.14.1
 ----
 * Force database export to utf-8
 
