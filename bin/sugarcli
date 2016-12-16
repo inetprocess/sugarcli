@@ -14,6 +14,6 @@ error_reporting(error_reporting() & ~E_NOTICE & ~E_STRICT);
 
 use SugarCli\Console\Application;
 
-$app = new Application('SugarCRM command line', '@sugarcli_version@');
-$app->registerShutdownFunction();
-$app->run();
+$sugarcli_app = new Application('SugarCRM command line', '@sugarcli_version@');
+$sugarcli_app->registerShutdownFunction();
+$sugarcli_app->run();

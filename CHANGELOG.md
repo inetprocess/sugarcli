@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+----
+* Renamed global `$app` to `$sugarcli_app` for usage in custom scripts.
+
 1.14.3
 ----
 * Fix output not taking quiet and verboses options into account
