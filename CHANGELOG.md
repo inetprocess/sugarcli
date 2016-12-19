@@ -1,9 +1,10 @@
 Changelog
 =========
 
-(unreleased)
+1.14.3
 ----
 * Fix output not taking quiet and verboses options into account
+* Improve `database:export:csv` with new option and complete test coverage
 
 1.14.2
 ----

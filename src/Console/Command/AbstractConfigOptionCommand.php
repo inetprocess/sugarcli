@@ -106,6 +106,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
     protected function setRequiredOption($name, $required = true)
     {
         $this->getDefinition()->getOption($name)->setRequired($required);
+        return $this;
     }
 
     protected function addConfigOption(
