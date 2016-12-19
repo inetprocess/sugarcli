@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+----
+* Fix output not taking quiet and verboses options into account
+
 1.14.2
 ----
 * Fetch `host` parameter for mysql in `database:export:csv`

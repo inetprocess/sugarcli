@@ -225,7 +225,7 @@ EOF;
         # Register symfony commands once the container is set up
         $this->registerAllCommands();
 
-        $exitCode = parent::run($input, $output);
+        $exitCode = parent::run($input, $this->getContainer()->get('console.output'));
         // We passed the original run command. The shutdown function will not raise any errors.
         $this->runOk = true;
 
