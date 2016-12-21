@@ -1,9 +1,10 @@
 Changelog
 =========
 
-(unreleased)
+1.14.4
 ----
 * Renamed global `$app` to `$sugarcli_app` for usage in custom scripts.
+* Update dependencies.
 
 1.14.3
 ----
