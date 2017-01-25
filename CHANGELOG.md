@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.14.5
+----
+* Fix issue where `system:quickrepair` did not use `user-id` when specified
+
 1.14.4
 ----
 * Renamed global `$app` to `$sugarcli_app` for usage in custom scripts.
