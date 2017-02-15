@@ -97,10 +97,11 @@ EOF;
     {
         $paths = array();
         $cur_path = getcwd();
-        while ($cur_path != '/' && $cur_path != '.') {
-            $paths[] = $cur_path . '/.' . self::CONFIG_NAME;
+        do {
+            $paths[] = rtrim($cur_path, '/') . '/.' . self::CONFIG_NAME;
+            $previous = $cur_path;
             $cur_path = dirname($cur_path);
-        }
+        } while ($previous != $cur_path);
         $paths[] = getenv('HOME') . '/.' . self::CONFIG_NAME;
         $paths[] = '/etc/' . self::CONFIG_NAME;
         return array_reverse($paths);

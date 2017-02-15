@@ -21,12 +21,13 @@ class ApplicationTest extends \PHPUnit_Framework_TestCase
             '/etc/sugarclirc',
             getenv('HOME') . '/.sugarclirc',
         );
-        $cur_path = '';
-        foreach (explode('/', trim(getcwd(), '/')) as $part) {
-            $cur_path .= '/' . $part;
-            $expected[] = $cur_path . '/.sugarclirc';
-        }
+        $parts = explode('/', getcwd());
+        $partial = '';
+        foreach ($parts as $part) {
+            $partial .= $part . '/';
+            $expected[] = $partial . '.sugarclirc';
 
+        }
         // This also asserts for order.
         $this->assertEquals($expected, $paths);
     }

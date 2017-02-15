@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.14.6
+----
+* Fix issues with path detection on Windows
+
 1.14.5
 ----
 * Fix issue where `system:quickrepair` did not use `user-id` when specified
