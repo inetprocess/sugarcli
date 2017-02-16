@@ -8,21 +8,28 @@ stages:
 
 phpunit:
     stage: test
+    tags:
+        - sugarcli
     script:
         - composer install --quiet -o
         - bin/phpunit --color=never
 phar:
     stage: build
+    tags:
+        - sugarcli
     script:
         - composer install --no-dev --quiet -o
         - mkdir build
         - ulimit -Sn 4096
         - php -dphar.readonly=0 bin/box build
     artifacts:
+        expire_in: '5m'
         paths:
             - build/sugarcli.phar
 mirror:
     stage: publish
+    tags:
+        - sugarcli
     only:
         - master
     script:
@@ -30,8 +37,20 @@ mirror:
 
 mirror_tags:
     stage: publish
+    tags:
+        - sugarcli
     only:
         - tags
     script:
         - git push --tags git@github.com:inetprocess/sugarcli.git
 
+gitlab_release:
+    tags:
+        - docker
+    image: inetprocess/gitlab-release:latest
+    stage: publish
+    only:
+        - tags
+    script:
+        - cp build/sugarcli.phar build/sugarcli-$CI_BUILD_TAG.phar
+        - gitlab-release build/sugarcli-$CI_BUILD_TAG.phar
