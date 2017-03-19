@@ -15,6 +15,7 @@
 
 namespace SugarCli\Utils;
 
+use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -223,7 +224,11 @@ class CodeCommandsUtility
 
             if ($type == TemplateTypeEnum::MODULE) {
                 // Create the processed file path
-                $this->fs->mkdir($writePath);
+                try {
+                    $this->fs->mkdir($writePath);
+                } catch (IOException $e) {
+                    throw new \DomainException('the path, '. $writePath. ', could not be created');
+                }
             } elseif (!$this->fs->exists($writePath)) {
                 throw new \DomainException('the path, '. $writePath. ', does not already exist');
             } elseif ($type == TemplateTypeEnum::NONDB_FIELD) {
