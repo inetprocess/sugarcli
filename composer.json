@@ -9,7 +9,7 @@
   ],
   "authors": [
     {
-      "name": "Sugar Team, The New York Times",
+      "name": "Customer Care Technology Team, The New York Times",
       "email": "nytcsdev@nytimes.com",
       "role": "Fork Development Team"
     },
@@ -33,7 +33,6 @@
     "guzzle/guzzle": "~3.9",
     "inetprocess/libinventoryclient": "^1.0",
     "inetprocess/libsugarcrm": "^1.2",
-    "inetprocess/neuralyzer": "~0.6",
     "jms/serializer": "~0.16",
     "padraic/phar-updater": "^1.0",
     "symfony/config": "^2.8",
@@ -50,6 +49,7 @@
   "require-dev": {
     "phpunit/phpunit": "~4",
     "phpunit/dbunit": "~1.3",
+    "inetprocess/neuralyzer": "~0.6",
     "fabpot/php-cs-fixer": "^1.10"
   },
   "autoload": {
