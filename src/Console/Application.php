@@ -97,9 +97,7 @@ class Application extends BaseApplication
     {
         $commands = parent::getDefaultCommands();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
-        $commands[] = new \SugarCli\Console\Command\Code\ButtonCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ExecuteFileCommand();
-        $commands[] = new \SugarCli\Console\Command\Code\SetupComposerCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ModuleCommand();
         $commands[] = new \SugarCli\Console\Command\Code\FieldCommand();
         $commands[] = new \SugarCli\Console\Command\Code\RelationshipCommand();

@@ -417,44 +417,8 @@ The main command is `./sugarcli.phar code`
 
 Subcommands are:
 ```bash
-./sugarcli.phar code:setupcomposer
-./sugarcli.phar code:button
 ./sugarcli.phar code:execute:file
 ```
-
-### Install composer in custom/
-`./sugarcli.phar code:setupcomposer --path <sugarcrm_path> --do` will create a new Util to use composer's autoloader and create a composer.json file that contains, by default, libsugarcrm autoloaded for Unit Tests.
-#### Parameters
-```
-    --do                Create the files
--r, --reinstall     Reinstall the files
-    --no-quickrepair    Do not launch a Quick Repair
--p, --path=PATH     Path to SugarCRM installation.
-```
-
-
-### Create a new button in a view
-`./sugarcli.phar code:button --path <sugarcrm_path> --module <module>` will create a new button in a record view of the module <module>
-
-That command automatically add buttons, their label and the JS triggered by the button to views, from a name.
-
-The file affected are :
-* custom/Extension/modules/<module>/Ext/Language/<current_lang>.php
-* custom/modules/<module>/clients/base/views/record/record.php
-* custom/modules/<module>/clients/base/views/record/record.js
-
-#### Parameters
-```
--m, --module=MODULE   Module name.
--a, --action=ACTION   Action: "add" / "delete" [default: "add"]
-    --name=NAME       Button Name
--t, --type=TYPE       For now only "dropdown" [default: "dropdown"]
--j, --javascript      [EXPERIMENTAL] Also create the JS
--p, --path=PATH       Path to SugarCRM installation.
-```
-
-As described, the --javascript is experimental. If you don't have a record.js file that should work well, else you have to check the generated file to make sure it didn't break anything.
-
 
 ### Execute a php file from the SugarCRM context
 `./sugracli.phar code:execute:file --path <sugarcrm_path> [--user-id='1'] <test.php>` will execute the file `test.php` by loading
