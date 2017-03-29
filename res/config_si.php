@@ -51,7 +51,7 @@ $sugar_config_si['export_delimiter'] = ',';
 // $sugar_config_si['default_currency_significant_digits'] = '2';
 //
 // $sugar_config_si['default_decimal_seperator'] = ',';
-// $sugar_config_si['default_number_grouping_seperator'] = ',';
+// $sugar_config_si['default_number_grouping_seperator'] = ' ';
 //
 // $sugar_config_si['default_date_format'] = 'd/m/Y';
 // $sugar_config_si['default_time_format'] = 'H:i';
