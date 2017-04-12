@@ -96,12 +96,8 @@ class Application extends BaseApplication
     public function getDefaultCommands()
     {
         $commands = parent::getDefaultCommands();
-        $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeConfigCommand();
-        $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeRunCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
-        $commands[] = new \SugarCli\Console\Command\Code\ButtonCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ExecuteFileCommand();
-        $commands[] = new \SugarCli\Console\Command\Code\SetupComposerCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ModuleCommand();
         $commands[] = new \SugarCli\Console\Command\Code\FieldCommand();
         $commands[] = new \SugarCli\Console\Command\Code\RelationshipCommand();

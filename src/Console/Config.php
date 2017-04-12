@@ -22,6 +22,7 @@ use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Yaml\Exception\ParseException;
 use Symfony\Component\Yaml\Parser;
 
 class Config implements ConfigurationInterface
@@ -60,12 +61,16 @@ class Config implements ConfigurationInterface
         $parsed_confs = array();
         foreach ($this->config_files as $conf) {
             if (is_readable($conf)) {
-                $parsed_conf = $yaml->parse(file_get_contents($conf));
-                // Change sugarcrm.path to a relative path from the configfile and current directory.
-                if (isset($parsed_conf['sugarcrm']['path'])) {
-                    $parsed_conf['sugarcrm']['path'] = $this->getRelativePath($conf, $parsed_conf['sugarcrm']['path']);
+                try {
+                    $parsed_conf = $yaml->parse(file_get_contents($conf));
+                    // Change sugarcrm.path to a relative path from the configfile and current directory.
+                    if (isset($parsed_conf['sugarcrm']['path'])) {
+                        $parsed_conf['sugarcrm']['path'] = $this->getRelativePath($conf, $parsed_conf['sugarcrm']['path']);
+                    }
+                    $parsed_confs[] = $parsed_conf;
+                } catch (ParseException $e) {
+                    exit('Error parsing YAML configuration file!');
                 }
-                $parsed_confs[] = $parsed_conf;
             }
         }
         //Validate and merge configuration.
