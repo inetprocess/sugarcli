@@ -18,15 +18,18 @@
 
 namespace SugarCli\Console\Command;
 
+use Inet\SugarCRM\Application as SugarApp;
+use Inet\SugarCRM\System as SugarSystem;
+use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Helper\ProgressIndicator;
-use Inet\SugarCRM\System as SugarSystem;
+use Symfony\Component\Filesystem\Filesystem;
 
 class SystemQuickRepairCommand extends AbstractConfigOptionCommand
 {
     protected $messages = array();
+    const SAFE_VERSION = '7.5.0.0';
 
     protected function configure()
     {
@@ -45,19 +48,59 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
                  'f',
                  InputOption::VALUE_NONE,
                  'Really execute the SQL queries (displayed by using -d).'
+             )
+             ->addOption(
+                 'rm-cache',
+                 'r',
+                 InputOption::VALUE_NONE,
+                 'Remove the cache folder and all it\'s contents before the repair'
              );
+    }
+
+    public function isRemoveCacheSafe(SugarApp $sugar_app)
+    {
+        $version_array = $sugar_app->getVersion();
+        return version_compare($version_array['version'], self::SAFE_VERSION, '>=');
+    }
+
+    public function removeCache($sugar_app)
+    {
+        if (!$this->isRemoveCacheSafe($sugar_app)) {
+            $this->getService('logger')->warning(
+                'Your version of SugarCRM do not support safe suppression of the cache folder.'
+            );
+            return;
+        }
+
+        $fs = new Filesystem();
+        $cache_path = $sugar_app->getPath() . '/cache';
+        if ($fs->exists($cache_path)) {
+            $fs->remove($cache_path);
+        }
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $sugarEP = $this->getService('sugarcrm.entrypoint');
 
         $output->writeln('<comment>Reparation</comment>: ');
         $progress = new ProgressIndicator($output);
+
         $progress->start('Starting...');
         $progress->advance();
-        $sugarSystem = new SugarSystem($sugarEP);
+
+        $sugar_app = $this->getService('sugarcrm.application');
+        if ($input->getOption('rm-cache')) {
+            $progress->setMessage('Removing cache...');
+            $progress->advance();
+            $this->removeCache($sugar_app);
+        }
+
+        $fs = new Filesystem();
+        $fs->mkdir($sugar_app->getPath() . '/cache');
+
         $progress->setMessage('Working...');
+        $sugarEP = $this->getService('sugarcrm.entrypoint');
+        $sugarSystem = new SugarSystem($sugarEP);
         $messages = $sugarSystem->repairAll($input->getOption('force'), $input->getOption('user-id'));
         $progress->finish('<info>Repair Done.</info>');
 

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.15.0
+----
+* Add option `--rm-cache` to `system:quickrepair`
+
 1.14.6
 ----
 * Fix issues with path detection on Windows
