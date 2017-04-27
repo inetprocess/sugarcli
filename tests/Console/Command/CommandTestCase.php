@@ -44,9 +44,15 @@ class CommandTestCase extends \PHPUnit_Framework_TestCase
         return $this->application;
     }
 
-    public function getCommandTester($command_name)
+    public function getCommandTester($command_name, $input = null)
     {
         $cmd = $this->getApplication()->find($command_name);
+        if ($input !== null) {
+            $stream = fopen('php://memory', 'r+', false);
+            fputs($stream, $input);
+            rewind($stream);
+            $cmd->getHelper('question')->setInputStream($stream);
+        }
         return new CommandTester($cmd);
     }
 }

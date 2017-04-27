@@ -21,12 +21,14 @@ namespace SugarCli\Console;
 class ExitCode
 {
     // SugarCli errors [0-10]
+    const EXIT_SUCCESS = 0;
     const EXIT_UNKNOWN_ERROR = 1;
     const EXIT_STATUS_MODIFICATIONS = 2;
     const EXIT_FORMAT_ERROR = 3;
     const EXIT_INVENTORY_ERROR = 4;
     const EXIT_FILE_NOT_FOUND = 5;
     const EXIT_COMMAND_AS_ROOT_DENIED = 6;
+    const EXIT_DENIED_CONFIRMATION = 7;
 
     // Sugar installer errors [11-20]
     const EXIT_NOT_EXTRACTED = 11;

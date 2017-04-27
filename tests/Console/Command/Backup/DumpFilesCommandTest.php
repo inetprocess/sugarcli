@@ -154,7 +154,6 @@ class DumpFilesCommandTest extends CommandTestCase
             '--destination-dir' => __DIR__ . '/backup dir',
         ), $args));
         $this->assertEquals(0, $ret);
-        $matches = array();
         preg_match('/^SugarCRM files backed up in archive \'(.*)\'.*$/', $cmd->getDisplay(), $matches);
         $archive_file = $matches[1];
         $this->assertFileExists($archive_file);
@@ -169,5 +168,149 @@ class DumpFilesCommandTest extends CommandTestCase
         sort($tar_list);
         unlink($archive_file);
         $this->assertEquals($expected, implode("\n", $tar_list));
+    }
+
+    public function testInvalidDu()
+    {
+        $reflex = new \ReflectionClass('SugarCli\Console\Command\Backup\DumpFilesCommand');
+        $prop = $reflex->getProperty('du_bin');
+        $prop->setAccessible(true);
+        $old_val = $prop->getValue();
+        $prop->setValue('invalid cmd');
+
+        $cmd = $this->getCommandTester(self::$cmd_name);
+        $ret = $cmd->execute(array(
+            '--path' => __DIR__.'/fake sugar',
+            '--prefix' => 'test',
+            '--dry-run' => null,
+        ));
+        $prop->setValue($old_val);
+        $this->assertEquals(0, $ret);
+        $this->assertEquals(
+            '[warning] Command `du` not available. Unable to test size of backup.' .PHP_EOL,
+            $this->getApplication()->getContainer()->get('logger')->getLines()
+        );
+
+    }
+
+    public function bigDirProvider()
+    {
+        return array(
+            // Test case 0
+            array(
+                7,
+                '[warning] Cache directory "%a" is huge with a size of 1MB.'
+                . ' You should consider ignoring this folder with `--ignore-cache`.',
+                'Dump files anyway ? [y/N]Backup not run',
+                'no',
+                '-1',
+                null,
+            ),
+            // Test case 1
+            array(
+                7,
+                '[warning] Upload directory "%a" is huge with a size of 1MB.'
+                . ' You should consider ignoring this folder with `--ignore-upload`.',
+                'Dump files anyway ? [y/N]Backup not run',
+                'no',
+                null,
+                '-1',
+            ),
+            // Test case 2
+            array(
+                7,
+                '[warning] Cache directory "%a" is huge with a size of 1MB.'
+                . ' You should consider ignoring this folder with `--ignore-cache`.'
+                . "\n"
+                . '[warning] Upload directory "%a" is huge with a size of 1MB.'
+                . ' You should consider ignoring this folder with `--ignore-upload`.',
+                'Dump files anyway ? [y/N]Backup not run',
+                'no',
+                '-1',
+                '-1',
+            ),
+            // Test case 3
+            array(
+                0,
+                '[warning] Cache directory "%a" is huge with a size of 1MB.'
+                . ' You should consider ignoring this folder with `--ignore-cache`.'
+                . "\n"
+                . '[warning] Upload directory "%a" is huge with a size of 1MB.'
+                . ' You should consider ignoring this folder with `--ignore-upload`.',
+                "Dump files anyway ? [y/N]'tar' '--create'%a",
+                'yes',
+                '-1',
+                '-1',
+            ),
+            // Test case 4
+            array(
+                0,
+                '',
+                "'tar' '--create'%a",
+                '',
+                '-1',
+                '-1',
+                array('-C' => null, '-U' => null),
+            ),
+            // Test case 5
+            array(
+                0,
+                '',
+                "'tar' '--create'%a",
+                null,
+                '-1',
+                '-1',
+                array('--no-interaction' => null),
+            ),
+        );
+    }
+
+    /**
+     * @dataProvider bigDirProvider
+     */
+    public function testBigDir(
+        $expect_ret,
+        $expect_log,
+        $expect_out,
+        $input,
+        $cache_size,
+        $upload_size,
+        $args = array()
+    ) {
+        $reflex = new \ReflectionClass('SugarCli\Console\Command\Backup\DumpFilesCommand');
+        $prop_cache = $reflex->getProperty('cache_dir_max_size');
+        $prop_cache->setAccessible(true);
+        $old_cache = $prop_cache->getValue();
+        if ($cache_size != null) {
+            $prop_cache->setValue($cache_size);
+        }
+        $prop_upload = $reflex->getProperty('upload_dir_max_size');
+        $prop_upload->setAccessible(true);
+        $old_upload = $prop_upload->getValue();
+        if ($upload_size != null) {
+            $prop_upload->setValue($upload_size);
+        }
+
+        $logger = $this->getApplication()->getContainer()->get('logger');
+        $cmd = $this->getCommandTester(self::$cmd_name, $input);
+        $ret = $cmd->execute(array_merge(
+            array(
+                '--path' => __DIR__.'/fake sugar',
+                '--prefix' => 'test',
+                '--dry-run' => null,
+            ),
+            $args
+        ));
+        $prop_cache->setValue($old_cache);
+        $prop_upload->setValue($old_upload);
+        $this->assertEquals($expect_ret, $ret);
+        $this->assertStringMatchesFormat(
+            $expect_log,
+            $logger->getLines()
+        );
+        $this->assertStringMatchesFormat(
+            $expect_out,
+            $cmd->getDisplay()
+        );
     }
 }
