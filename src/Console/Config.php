@@ -110,6 +110,11 @@ class Config implements ConfigurationInterface
                         ->scalarNode('name')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
+                ->arrayNode('backup')
+                    ->children()
+                        ->scalarNode('prefix')->cannotBeEmpty()->end()
+                    ->end()
+                ->end()
             ->end()
         ->end();
 

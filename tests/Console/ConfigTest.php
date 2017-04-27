@@ -133,6 +133,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                     'account' => array(
                         'name' => 'foo',
                     ),
+                    'backup' => array(
+                        'prefix' => 'Toto',
+                    ),
                 ),
                 array('complete.yaml')
             ),
@@ -151,6 +154,9 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
                     ),
                     'account' => array(
                         'name' => 'foo',
+                    ),
+                    'backup' => array(
+                        'prefix' => 'Toto',
                     ),
                 ),
                 array('complete.yaml', 'partial.yaml')

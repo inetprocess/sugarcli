@@ -8,3 +8,5 @@ rels:
     file: rels_file
 account:
     name: foo
+backup:
+    prefix: Toto
