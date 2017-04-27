@@ -1,6 +1,10 @@
 Changelog
 =========
 
+(unreleased)
+----
+* Add command `backup:dump:files`
+
 1.15.0
 ----
 * Add option `--rm-cache` to `system:quickrepair`
