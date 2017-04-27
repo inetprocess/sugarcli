@@ -127,48 +127,19 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
         return $warn;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function buildTarProcess(InputInterface $input, $archive_fullpath)
     {
-        // Check compression arg
-        $compression = $input->getOption('compression');
-        if (!array_key_exists($compression, self::$compression_formats)) {
-            throw new \InvalidArgumentException("Invalid compression format '{$compression}'.");
-        }
-        // Check sugar path
-        $sugar_app = $this->getService('sugarcrm.application');
-        $sugar_path = $input->getOption('path');
-        if (!$sugar_app->isValid()) {
-            $output->writeln("<error>No SugarCRM instance found in '{$sugar_path}'.</error>");
-            return ExitCode::EXIT_NOT_EXTRACTED;
-        }
-
         // Calculate various paths
-        $sugar_pathinfo = pathinfo(realpath($sugar_path));
+        $sugar_pathinfo = pathinfo(realpath($input->getOption('path')));
         $sugar_parent_dir = $sugar_pathinfo['dirname'];
         $sugar_basename = $sugar_pathinfo['basename'];
-        $archive_name = $input->getOption('prefix') . '_' . date('Y-m-d_H-i')
-            . '.tar' . self::$compression_formats[$compression];
-        $archive_path = $input->getOption('destination-dir');
-        $archive_fullpath = $archive_path . '/' . $archive_name;
-
-        // Check sugar dir size
-        if ($input->isInteractive()
-            && !$input->getOption('no-interaction')
-            && $this->warnForDirectorySize($input, $output, $sugar_path)) {
-            $q_helper = $this->getHelper('question');
-            $q = new ConfirmationQuestion('Dump files anyway ? [y/N]', false, '/^y/i');
-            if (!$q_helper->ask($input, $output, $q)) {
-                $output->writeln('Backup not run');
-                return ExitCode::EXIT_DENIED_CONFIRMATION;
-            }
-        }
 
         // Create tar command
         $tar_args = array(
             '--create',
             '--file=' . $archive_fullpath,
             '--directory=' . $sugar_parent_dir,
-            '--' . $compression,
+            '--' . $input->getOption('compression'),
         );
         if ($input->getOption('ignore-cache')) {
             $tar_args = array_merge($tar_args, array(
@@ -190,14 +161,52 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
         $tar_cmd_builder->setPrefix('tar');
         $tar_cmd_builder->setArguments($tar_args);
 
+        return $tar_cmd_builder->getProcess();
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output)
+    {
+        // Check compression arg
+        $compression = $input->getOption('compression');
+        if (!array_key_exists($compression, self::$compression_formats)) {
+            throw new \InvalidArgumentException("Invalid compression format '{$compression}'.");
+        }
+        // Check sugar path
+        $sugar_app = $this->getService('sugarcrm.application');
+        $sugar_path = $input->getOption('path');
+        if (!$sugar_app->isValid()) {
+            $output->writeln("<error>No SugarCRM instance found in '{$sugar_path}'.</error>");
+            return ExitCode::EXIT_NOT_EXTRACTED;
+        }
+
+        // Check sugar dir size
+        if ($input->isInteractive()
+            && !$input->getOption('no-interaction')
+            && $this->warnForDirectorySize($input, $output, $sugar_path)) {
+            $q_helper = $this->getHelper('question');
+            $q = new ConfirmationQuestion('Dump files anyway ? [y/N]', false, '/^y/i');
+            if (!$q_helper->ask($input, $output, $q)) {
+                $output->writeln('Backup not run');
+                return ExitCode::EXIT_DENIED_CONFIRMATION;
+            }
+        }
+
+        $archive_name = $input->getOption('prefix') . '_'
+            . gethostname() . '_'
+            . date('Y-m-d_H-i')
+            . '.tar' . self::$compression_formats[$compression];
+        $archive_path = $input->getOption('destination-dir');
+        $archive_fullpath = $archive_path . '/' . $archive_name;
+
+        $tar_proc = $this->buildTarProcess($input, $archive_fullpath);
+
         // Execute tar command
         if ($input->getOption('dry-run')) {
             // Print tar command and exit
-            $output->writeln($tar_cmd_builder->getProcess()->getCommandLine());
+            $output->writeln($tar_proc->getCommandLine());
             return ExitCode::EXIT_SUCCESS;
         }
         $helper = $this->getHelper('process');
-        $tar_proc = $tar_cmd_builder->getProcess();
         $helper->mustRun($output, $tar_proc);
         $output->writeln("SugarCRM files backed up in archive '$archive_fullpath'");
     }
