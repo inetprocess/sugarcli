@@ -47,7 +47,8 @@ class DumpFilesCommandTest extends CommandTestCase
             array($prefix . "'--gzip' '--exclude' '$base/cache' '$base'", array('-C' => null)),
             // Test case 5
             array(
-                $prefix . "'--gzip' '--exclude' '$base/upload/????????-????-????-????-????????????*' '$base'",
+                $prefix . "'--gzip' '--exclude' '$base/upload/????????-????-????-????-????????????*'"
+                . " '--exclude' '*-restore' '$base'",
                 array('-U' => null),
             ),
         );
@@ -97,6 +98,7 @@ class DumpFilesCommandTest extends CommandTestCase
                     'fake sugar/sugar_version.php',
                     'fake sugar/upload/0340741c-f9e5-11e6-8f65-720c59d7f345.jpeg',
                     'fake sugar/upload/0340741c-f9e5-11e6-8f65-720c59d7f43c',
+                    'fake sugar/upload/upgrades/test-restore/foo',
                     'fake sugar/upload/upload_file',
                 )),
                 array(),
@@ -109,6 +111,7 @@ class DumpFilesCommandTest extends CommandTestCase
                     'fake sugar/sugar_version.php',
                     'fake sugar/upload/0340741c-f9e5-11e6-8f65-720c59d7f345.jpeg',
                     'fake sugar/upload/0340741c-f9e5-11e6-8f65-720c59d7f43c',
+                    'fake sugar/upload/upgrades/test-restore/foo',
                     'fake sugar/upload/upload_file',
                 )),
                 array('-C' => null),
@@ -120,6 +123,7 @@ class DumpFilesCommandTest extends CommandTestCase
                     'fake sugar/ok space/cache/ok_cache_file',
                     'fake sugar/ok space/ok_file',
                     'fake sugar/sugar_version.php',
+                    'fake sugar/upload/upgrades/',
                     'fake sugar/upload/upload_file',
                 )),
                 array('-U' => null),
@@ -130,6 +134,7 @@ class DumpFilesCommandTest extends CommandTestCase
                     'fake sugar/ok space/cache/ok_cache_file',
                     'fake sugar/ok space/ok_file',
                     'fake sugar/sugar_version.php',
+                    'fake sugar/upload/upgrades/',
                     'fake sugar/upload/upload_file',
                 )),
                 array('-C' => null, '-U' => null),

@@ -49,7 +49,7 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
                 'ignore-upload',
                 'U',
                 InputOption::VALUE_NONE,
-                'Ignore files in upload/ folder'
+                'Ignore files in upload/ folder and `*-restore`'
             )
             ->addOption(
                 'dry-run',
@@ -106,6 +106,8 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
             $tar_args = array_merge($tar_args, array(
                 '--exclude',
                 $sugar_basename . '/upload/????????-????-????-????-????????????*',
+                '--exclude',
+                '*-restore',
             ));
         }
         $tar_args[] = $sugar_basename;
