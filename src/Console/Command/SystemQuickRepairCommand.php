@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 
 class SystemQuickRepairCommand extends AbstractConfigOptionCommand
 {
@@ -79,6 +80,18 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
         }
     }
 
+    public function removeExtDirectories($sugar_app)
+    {
+        $finder = new Finder();
+        $finder->directories()
+            ->in($sugar_app->getPath() . '/custom/application')
+            ->in($sugar_app->getPath() . '/custom/modules/*')
+            ->depth('== 0')
+            ->name('Ext');
+        $fs = new Filesystem();
+        $fs->remove($finder);
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
 
@@ -93,6 +106,9 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
             $progress->setMessage('Removing cache...');
             $progress->advance();
             $this->removeCache($sugar_app);
+            $progress->setMessage('Removing Ext directories...');
+            $progress->advance();
+            $this->removeExtDirectories($sugar_app);
         }
 
         $fs = new Filesystem();
@@ -115,7 +131,7 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
 
         $output->writeln(PHP_EOL . '<comment>Database Messages</comment>: ');
         // We have something to sync
-        if (strpos($messages[1], 'Database tables are synced with vardefs') !== 0) {
+        if (strpos($messages[1], translate('LBL_REPAIR_DATABASE_SYNCED', 'Administration')) !== 0) {
             if ($input->getOption('force') === false) {
                 $output->writeln($messages[1]);
                 $output->writeln(PHP_EOL . '<error>You need to use --force to run the queries</error>');
