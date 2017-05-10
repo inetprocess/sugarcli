@@ -115,7 +115,7 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
 
         $output->writeln(PHP_EOL . '<comment>Database Messages</comment>: ');
         // We have something to sync
-        if (strpos($messages[1], 'Database tables are synced with vardefs') !== 0) {
+        if (strpos($messages[1], translate('LBL_REPAIR_DATABASE_SYNCED', 'Administration')) !== 0) {
             if ($input->getOption('force') === false) {
                 $output->writeln($messages[1]);
                 $output->writeln(PHP_EOL . '<error>You need to use --force to run the queries</error>');

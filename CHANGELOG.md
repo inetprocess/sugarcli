@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.15.1
+----
+* Fix message in `system:quickrepair` if Sugar was not using English as the default language
+
 1.15.0
 ----
 * Add option `--rm-cache` to `system:quickrepair`
