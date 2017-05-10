@@ -117,6 +117,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeConfigCommand();
         $commands[] = new \SugarCli\Console\Command\Anonymize\AnonymizeRunCommand();
         $commands[] = new \SugarCli\Console\Command\Backup\DumpFilesCommand();
+        $commands[] = new \SugarCli\Console\Command\Backup\RestoreFilesCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ButtonCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ExecuteFileCommand();
