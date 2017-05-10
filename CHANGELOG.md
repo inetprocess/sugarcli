@@ -4,6 +4,8 @@ Changelog
 1.15.1
 ----
 * Fix message in `system:quickrepair` if Sugar was not using English as the default language
+* Option `-r` of `system:quickrepair` also remove `custom/modules/*/Ext` compiled folders.
+  This should help in case a plugin or some files are brutally removed.
 
 1.15.0
 ----
