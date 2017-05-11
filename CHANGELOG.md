@@ -4,6 +4,8 @@ Changelog
 (unreleased)
 ----
 * Add command `backup:dump:files`
+* Add command `backup:restore:files`
+
 1.15.1
 ----
 * Fix message in `system:quickrepair` if Sugar was not using English as the default language

@@ -67,19 +67,6 @@ class RestoreFilesCommandTest extends CommandTestCase
             ));
     }
 
-    public function testExistingSugar()
-    {
-        $cmd = $this->getCommandTester(self::$cmd_name);
-        $ret = $cmd->execute(array(
-                '--path' => $this->getSugarPath(),
-                '--archive' => __DIR__,
-                '--compression' => 'gzip',
-                '--dry-run' => null,
-            ));
-        $this->assertEquals(1, $ret);
-        $this->assertStringMatchesFormat('SugarCRM instance found in %a', rtrim($cmd->getDisplay(), "\n"));
-    }
-
     public function commandLineProvider()
     {
         $prefix = "'tar' '--extract' '--strip-components=1' '--file=".$this->getArchiveFile()."'"
@@ -109,25 +96,69 @@ class RestoreFilesCommandTest extends CommandTestCase
 
     public function testExtract()
     {
-        $extract_dir = __DIR__. '/extract dir';
+        $extract_dir = __DIR__. '/extract dir/';
+        $extract_orig_dir = __DIR__.'/extract dir.orig';
         $fs = new Filesystem();
         //Setup
-        $fs->remove($extract_dir);
+        $fs->remove(array($extract_dir, $extract_orig_dir));
         $this->assertFileNotExists($extract_dir);
+        $this->assertFileNotExists($extract_orig_dir);
+        $fs->mkdir($extract_dir);
+        $fs->touch($extract_dir . '/test');
+        $this->assertFileExists($extract_dir);
+        $this->assertFileExists($extract_dir.'/test');
 
         //Execute
         $cmd = $this->getCommandTester(self::$cmd_name);
-        $ret = $cmd->execute(array_merge(array(
+        $ret = $cmd->execute(array(
             '--path' => $extract_dir,
             '--archive' => $this->getArchiveFile(),
-        ), array()));
+        ));
         $this->assertEquals(0, $ret);
         /* $this->assertStringMatchesFormat($expected_cmd, rtrim($cmd->getDisplay(), "\n")); */
         $this->assertFileExists($extract_dir);
         $this->assertFileExists($extract_dir . '/sugar_version.php');
+        $this->assertFileNotExists($extract_dir . '/test');
+        $this->assertFileExists($extract_orig_dir);
+        $this->assertFileExists($extract_orig_dir.'/test');
 
         // Cleanup
-        $fs->remove($extract_dir);
+        $fs->remove(array($extract_dir, $extract_orig_dir));
         $this->assertFileNotExists($extract_dir);
+        $this->assertFileNotExists($extract_orig_dir);
+    }
+
+    public function testOverwrite()
+    {
+        $extract_dir = __DIR__. '/extract dir/';
+        $extract_orig_dir = __DIR__.'/extract dir.orig';
+        $fs = new Filesystem();
+        //Setup
+        $fs->remove(array($extract_dir, $extract_orig_dir));
+        $this->assertFileNotExists($extract_dir);
+        $this->assertFileNotExists($extract_orig_dir);
+        $fs->mkdir($extract_dir);
+        $fs->touch($extract_dir . '/test');
+        $this->assertFileExists($extract_dir);
+        $this->assertFileExists($extract_dir.'/test');
+
+        //Execute
+        $cmd = $this->getCommandTester(self::$cmd_name);
+        $ret = $cmd->execute(array(
+            '--path' => $extract_dir,
+            '--archive' => $this->getArchiveFile(),
+            '--overwrite' => null,
+        ));
+        $this->assertEquals(0, $ret);
+        /* $this->assertStringMatchesFormat($expected_cmd, rtrim($cmd->getDisplay(), "\n")); */
+        $this->assertFileExists($extract_dir);
+        $this->assertFileExists($extract_dir . '/sugar_version.php');
+        $this->assertFileExists($extract_dir . '/test');
+        $this->assertFileNotExists($extract_orig_dir);
+
+        // Cleanup
+        $fs->remove(array($extract_dir, $extract_orig_dir));
+        $this->assertFileNotExists($extract_dir);
+        $this->assertFileNotExists($extract_orig_dir);
     }
 }

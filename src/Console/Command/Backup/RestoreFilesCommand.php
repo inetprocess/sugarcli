@@ -55,6 +55,12 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
                 . ' Valid values are ({$compression_values})."
             )
             ->addOption(
+                'overwrite',
+                null,
+                InputOption::VALUE_NONE,
+                'Overwrite files in place if it already exists.'
+            )
+            ->addOption(
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
@@ -100,13 +106,7 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
 
         $compression = $this->getCompression($input, $archive_path);
 
-        // Check sugar path
-        $sugar_app = $this->getService('sugarcrm.application');
         $sugar_path = $input->getOption('path');
-        if ($sugar_app->isValid()) {
-            $output->writeln("<error>SugarCRM instance found in '{$sugar_path}'. Will not overwrite it.</error>");
-            return ExitCode::EXIT_UNKNOWN_ERROR;
-        }
 
         $tar_args = array(
             'tar',
@@ -124,6 +124,9 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
             // Print tar command and exit
             $output->writeln($tar_proc->getCommandLine());
             return ExitCode::EXIT_SUCCESS;
+        }
+        if ($fs->exists($sugar_path) && !$input->getOption('overwrite')) {
+            $fs->rename($sugar_path, rtrim($sugar_path, '/') . '.orig');
         }
         $fs->mkdir($sugar_path, 0750);
         $helper = $this->getHelper('process');
