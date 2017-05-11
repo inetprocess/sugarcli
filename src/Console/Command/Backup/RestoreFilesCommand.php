@@ -83,8 +83,8 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
         // Check compression arg
         $compression = $input->getOption('compression');
         if ($compression == null) {
-            $path_info = pathinfo($archive_path);
-            $compression = $this->guessCompression($path_info['extension']);
+            $path_info = new \SplFileInfo($archive_path);
+            $compression = $this->guessCompression($path_info->getExtension());
             if ($compression == null) {
                 throw new \InvalidArgumentException(
                     "Could not guess compression. Please set the --compression option."
