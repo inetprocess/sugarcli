@@ -116,8 +116,7 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
             '--directory=' . $sugar_path,
             '--' . $compression,
         );
-        $tar_cmd_builder = new ProcessBuilder($tar_args);
-        $tar_proc = $tar_cmd_builder->getProcess();
+        $tar_proc = ProcessBuilder::create($tar_args)->getProcess();
 
         // Execute tar command
         if ($input->getOption('dry-run')) {
@@ -126,7 +125,9 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
             return ExitCode::EXIT_SUCCESS;
         }
         if ($fs->exists($sugar_path) && !$input->getOption('overwrite')) {
-            $fs->rename($sugar_path, rtrim($sugar_path, '/') . '.orig');
+            $orig_path = rtrim($sugar_path, '/') . '.orig';
+            $fs->rename($sugar_path, $orig_path);
+            $output->writeln("Exiting files have been moved to '$orig_path'");
         }
         $fs->mkdir($sugar_path, 0750);
         $helper = $this->getHelper('process');

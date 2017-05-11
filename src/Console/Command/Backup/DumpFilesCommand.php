@@ -52,16 +52,16 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
                 'gzip'
             )
             ->addOption(
-                'ignore-upload',
-                'U',
-                InputOption::VALUE_NONE,
-                'Ignore files in upload/ folder and `*-restore`'
-            )
-            ->addOption(
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
                 'Do not run the command only print the tar command'
+            )
+            ->addOption(
+                'ignore-upload',
+                'U',
+                InputOption::VALUE_NONE,
+                'Ignore files in upload/ folder and `*-restore`'
             )
             ->addOption(
                 'ignore-cache',
@@ -136,6 +136,7 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
 
         // Create tar command
         $tar_args = array(
+            'tar',
             '--create',
             '--file=' . $archive_fullpath,
             '--directory=' . $sugar_parent_dir,
@@ -157,11 +158,7 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
         }
         $tar_args[] = $sugar_basename;
 
-        $tar_cmd_builder = new ProcessBuilder();
-        $tar_cmd_builder->setPrefix('tar');
-        $tar_cmd_builder->setArguments($tar_args);
-
-        return $tar_cmd_builder->getProcess();
+        return ProcessBuilder::create($tar_args)->getProcess();
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -192,8 +189,8 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
         }
 
         $archive_name = $input->getOption('prefix') . '_'
-            . gethostname() . '_'
-            . date('Y-m-d_H-i')
+            . gethostname() . '@'
+            . date('Y-m-d_H-i-s')
             . '.tar' . self::$compression_formats[$compression];
         $archive_path = $input->getOption('destination-dir');
         $archive_fullpath = $archive_path . '/' . $archive_name;
