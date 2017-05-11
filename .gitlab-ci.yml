@@ -12,7 +12,7 @@ phpunit:
         - sugarcli
     script:
         - composer install --quiet -o
-        - bin/phpunit --color=never
+        - php -dzend_extension=/usr/lib/php5/20100525/xdebug.so bin/phpunit --color=never
 phar:
     stage: build
     tags:
