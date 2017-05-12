@@ -84,14 +84,25 @@ EOPHP;
 
     public function commandLineProvider()
     {
+        $db_name = getenv('SUGARCLI_DB_NAME');
         $prefix = "'mysqldump' '--defaults-file=/tmp/php%a%c%c'"
            . " '--events' '--routines' '--single-transaction' '--opt' '--force'"
-           . " '".getenv('SUGARCLI_DB_NAME') ."' | ";
+           . " '$db_name'";
         return array(
             // Test case 1
-            array($prefix . "'gzip' > '%a.sql.gz'", array()),
+            array($prefix . " | 'gzip' > '%a.sql.gz'", array()),
             // Test case 2
-            array($prefix . "'bzip2' > '%a.sql.bz2'", array('-c' => 'bzip2')),
+            array($prefix . " | 'bzip2' > '%a.sql.bz2'", array('-c' => 'bzip2')),
+            // Test case 3
+            array(
+                $prefix . " '--ignore-table=$db_name.users' '--ignore-table=$db_name.config' | 'gzip' > '%a.sql.gz'",
+                array('-T' => array('users', 'config'))
+            ),
+            // Test case 4
+            array(
+                $prefix . " '--ignore-table=$db_name.activities' %a | 'gzip' > '%a.sql.gz'",
+                array('-D' => null)
+            ),
         );
     }
 

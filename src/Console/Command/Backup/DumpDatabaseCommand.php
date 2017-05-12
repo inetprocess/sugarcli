@@ -20,6 +20,20 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
         'bzip2' => '.bz2',
     );
 
+    protected static $dev_ignored_tables = array(
+        'activities',
+        'activities_users',
+        'fts_queue',
+        'inbound_email',
+        'job_queue',
+        'outbound_email',
+        'tracker',
+        'tracker_perf',
+        'tracker_queries',
+        'tracker_sessions',
+        'tracker_tracker_queries',
+    );
+
     protected function configure()
     {
         $compression_values = implode('|', array_keys(self::$compression_formats));
@@ -55,6 +69,19 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
                 InputOption::VALUE_NONE,
                 'Do not run the command only print the tar command'
             )
+            ->addOption(
+                'ignore-table',
+                'T',
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Tables to ignore.',
+                array()
+            )
+            ->addOption(
+                'ignore-for-dev',
+                'D',
+                InputOption::VALUE_NONE,
+                'Ignore tables not useful for a dev environement'
+            )
             ;
     }
 
@@ -78,6 +105,37 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
         file_put_contents($config_file, implode("\n", $conf));
     }
 
+    protected function buildMysqldumpCommand(InputInterface $input)
+    {
+        // Create temporary file to store mysql credentials
+        $meta_data = stream_get_meta_data(tmpfile());
+        $config_file = $meta_data['uri'];
+        // Get SugarCRM Config
+        $sugar_config = $this->getService('sugarcrm.application')->getSugarConfig();
+        $dbconfig = $sugar_config['dbconfig'];
+        $this->writeConfigFile($config_file, $dbconfig);
+        $db_name = $dbconfig['db_name'];
+
+        $mysqldump_args = array(
+            'mysqldump',
+            "--defaults-file=$config_file",
+            '--events',
+            '--routines',
+            '--single-transaction',
+            '--opt',
+            '--force',
+            $db_name,
+        );
+        $ignore_tables = $input->getOption('ignore-table');
+        if ($input->getOption('ignore-for-dev')) {
+            $ignore_tables = array_unique(array_merge($ignore_tables, self::$dev_ignored_tables));
+        }
+        foreach ($ignore_tables as $table) {
+            $mysqldump_args[] = "--ignore-table={$db_name}.$table";
+        }
+        return ProcessBuilder::create($mysqldump_args)->getProcess();
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Check compression arg
@@ -93,13 +151,6 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
             return ExitCode::EXIT_NOT_EXTRACTED;
         }
 
-        $config_h = tmpfile();
-        $meta_data = stream_get_meta_data($config_h);
-        $config_file = $meta_data['uri'];
-
-        $sugar_config = $sugar_app->getSugarConfig();
-        $dbconfig = $sugar_config['dbconfig'];
-
         $dump_name = $input->getOption('prefix') . '_'
             . gethostname() . '@'
             . date('Y-m-d_H-i-s')
@@ -107,26 +158,13 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
         $dump_path = $input->getOption('destination-dir');
         $dump_fullpath = $dump_path . '/' . $dump_name;
 
-        $mysqldump_args = array(
-            'mysqldump',
-            "--defaults-file=$config_file",
-            '--events',
-            '--routines',
-            '--single-transaction',
-            '--opt',
-            '--force',
-            $dbconfig['db_name'],
-        );
-
-        $mysqldump_proc = ProcessBuilder::create($mysqldump_args)->getProcess();
+        $mysqldump_proc = $this->buildMysqldumpCommand($input);
         // Append | gzip > dumpname
         $mysqldump_proc->setCommandLine(implode(' ', array(
             $mysqldump_proc->getCommandLine(),
             '|', ProcessUtils::escapeArgument($compression),
             '>', ProcessUtils::escapeArgument($dump_fullpath),
         )));
-
-        $this->writeConfigFile($config_file, $dbconfig);
 
         // Execute mysqldump command
         if ($input->getOption('dry-run')) {
