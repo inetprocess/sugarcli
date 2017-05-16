@@ -38,7 +38,7 @@ class AgentCommand extends AbstractInventoryCommand
     {
         parent::configure();
         $this->setName('inventory:agent')
-            ->setDescription('Gather facts and send report to Inventory server.')
+            ->setDescription('Gather facts and send report to Inventory server')
             ->addArgument(
                 'server',
                 InputArgument::REQUIRED,

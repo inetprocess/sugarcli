@@ -20,7 +20,7 @@ class ExportCSV extends Command
     protected function configure()
     {
         $this->setName('database:export:csv')
-            ->setDescription('Export mysql tables as csv files.')
+            ->setDescription('Export mysql tables as csv files')
             ->addArgument(
                 'database',
                 InputArgument::REQUIRED,

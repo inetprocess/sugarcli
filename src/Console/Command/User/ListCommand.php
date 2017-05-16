@@ -38,7 +38,7 @@ class ListCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('user:list')
-            ->setDescription('List users of the SugarCRM instance.')
+            ->setDescription('List users of the SugarCRM instance')
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addOption(

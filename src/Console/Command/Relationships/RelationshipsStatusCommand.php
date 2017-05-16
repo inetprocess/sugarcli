@@ -31,7 +31,7 @@ class RelationshipsStatusCommand extends AbstractRelationshipsCommand
     {
         parent::configure();
         $this->setName('rels:status')
-            ->setDescription('Show the state of the relationships table compared to the dump file.')
+            ->setDescription('Show the state of the relationships table compared to the dump file')
             ->setHelp(<<<EOH
 EOH
             );

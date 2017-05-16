@@ -31,7 +31,7 @@ class RelationshipsLoadCommand extends AbstractRelationshipsCommand
     {
         parent::configure();
         $this->setName('rels:loadfromfile')
-            ->setDescription('Load the contents of the table relationships from a file.')
+            ->setDescription('Load the contents of the table relationships from a file')
             ->setHelp(<<<EOH
 This command modify the database based on a dump file.
 Will not do anything by default. Use --force to actually

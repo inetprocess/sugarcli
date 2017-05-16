@@ -32,7 +32,7 @@ class CleanLangFilesCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('clean:langfiles')
-            ->setDescription('Sort php arrays in language files to make it easier for vcs programs.')
+            ->setDescription('Sort php arrays in language files to make it easier for vcs programs')
             ->enableStandardOption('path')
             ->addOption(
                 'no-sort',

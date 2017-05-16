@@ -34,7 +34,7 @@ class RunCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('install:run')
-            ->setDescription('Extract and install SugarCRM.')
+            ->setDescription('Extract and install SugarCRM')
             ->enableStandardOption('path')
             ->addOption(
                 'url',

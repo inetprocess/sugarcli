@@ -31,7 +31,7 @@ class CheckCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('install:check')
-            ->setDescription('Check if SugarCRM is installed and configured.')
+            ->setDescription('Check if SugarCRM is installed and configured')
             ->enableStandardOption('path');
     }
 

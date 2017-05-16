@@ -26,7 +26,7 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
     {
         $compression_values = implode('|', array_keys(self::$compression_formats));
         $this->setName('backup:dump:files')
-            ->setDescription('Create a backup archive of SugarCRM files.')
+            ->setDescription('Create a backup archive of SugarCRM files')
             ->enableStandardOption('path')
             ->addOption(
                 'destination-dir',

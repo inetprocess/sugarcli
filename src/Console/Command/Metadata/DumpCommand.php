@@ -30,7 +30,7 @@ class DumpCommand extends AbstractMetadataCommand
     {
         parent::configure();
         $this->setName('metadata:dumptofile')
-            ->setDescription('Dump the contents of the table fields_meta_data for db migrations.')
+            ->setDescription('Dump the contents of the table fields_meta_data for db migrations')
             ->setHelp(<<<EOH
 Manage the of the dump file based on the fields_meta_data table.
 EOH

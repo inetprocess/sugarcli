@@ -31,7 +31,7 @@ class ExecuteFileCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('code:execute:file')
-            ->setDescription('Execute a php file using a SugarCRM loaded context.')
+            ->setDescription('Execute a php file using a SugarCRM loaded context')
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addArgument(

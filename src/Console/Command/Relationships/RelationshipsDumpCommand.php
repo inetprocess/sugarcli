@@ -30,7 +30,7 @@ class RelationshipsDumpCommand extends AbstractRelationshipsCommand
     {
         parent::configure();
         $this->setName('rels:dumptofile')
-            ->setDescription('Dump the contents of the table relationships for db migrations.')
+            ->setDescription('Dump the contents of the table relationships for db migrations')
             ->setHelp(<<<EOH
 Manage the of the dump file based on the relationships table.
 EOH

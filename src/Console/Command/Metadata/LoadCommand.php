@@ -31,7 +31,7 @@ class LoadCommand extends AbstractMetadataCommand
     {
         parent::configure();
         $this->setName('metadata:loadfromfile')
-            ->setDescription('Load the contents of the table fields_meta_data from a file.')
+            ->setDescription('Load the contents of the table fields_meta_data from a file')
             ->setHelp(<<<EOH
 This command modify the database based on a dump file.
 Will not do anything by default. Use --force to actually

@@ -31,7 +31,7 @@ class StatusCommand extends AbstractMetadataCommand
     {
         parent::configure();
         $this->setName('metadata:status')
-            ->setDescription('Show the state of the fields_meta_data table compared to the dump file.')
+            ->setDescription('Show the state of the fields_meta_data table compared to the dump file')
             ->setHelp(<<<EOH
 EOH
             );

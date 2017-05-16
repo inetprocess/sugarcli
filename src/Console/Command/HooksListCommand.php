@@ -36,7 +36,7 @@ class HooksListCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('hooks:list')
-            ->setDescription('List hooks of the SugarCRM instance.')
+            ->setDescription('List hooks of the SugarCRM instance')
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addOption(

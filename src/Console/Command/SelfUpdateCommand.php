@@ -32,7 +32,7 @@ class SelfUpdateCommand extends Command
     {
         $this->setName('self-update')
             ->setAliases(array('selfupdate'))
-            ->setDescription('Update the <info>sugarcli.phar</info> with the latest stable version.')
+            ->setDescription('Update the <info>sugarcli.phar</info> with the latest stable version')
             ->addOption(
                 'rollback',
                 'r',
