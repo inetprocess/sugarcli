@@ -4,6 +4,7 @@ namespace SugarCli\Console\Command\Backup;
 
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\ExitCode;
+use SugarCli\Utils\Utils;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -33,6 +34,8 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
         'tracker_sessions',
         'tracker_tracker_queries',
     );
+
+    protected $temp_file;
 
     protected function configure()
     {
@@ -85,40 +88,17 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
             ;
     }
 
-    protected function writeConfigFile($config_file, $dbconfig)
-    {
-        if ($dbconfig['db_type'] != 'mysql') {
-            throw new \InvalidArgumentException("Database of type '{$dbconfig['db_type']}' is not supported");
-        }
-        $conf[] = "[mysqldump]";
-        $params = array(
-            'db_user_name' => 'user',
-            'db_password' => 'password',
-            'db_host_name' => 'host',
-            'db_port' => 'port',
-        );
-        foreach ($params as $sugar_param => $mysql_param) {
-            if (!empty($dbconfig[$sugar_param])) {
-                $conf[] = implode("=", array($mysql_param, $dbconfig[$sugar_param]));
-            }
-        }
-        file_put_contents($config_file, implode("\n", $conf));
-    }
-
     protected function buildMysqldumpCommand(InputInterface $input)
     {
-        // Create temporary file to store mysql credentials
-        $meta_data = stream_get_meta_data(tmpfile());
-        $config_file = $meta_data['uri'];
         // Get SugarCRM Config
-        $sugar_config = $this->getService('sugarcrm.application')->getSugarConfig();
-        $dbconfig = $sugar_config['dbconfig'];
-        $this->writeConfigFile($config_file, $dbconfig);
-        $db_name = $dbconfig['db_name'];
+        $sugar_app = $this->getService('sugarcrm.application');
+        $this->temp_file = Utils::createTempMySQLDefaultFileFromSugarConfig($sugar_app);
+        $sugar_config = $sugar_app->getSugarConfig();
+        $db_name = $sugar_config['dbconfig']['db_name'];
 
         $mysqldump_args = array(
             'mysqldump',
-            "--defaults-file=$config_file",
+            "--defaults-file=" . $this->temp_file->getPathname(),
             '--events',
             '--routines',
             '--single-transaction',

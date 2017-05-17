@@ -85,7 +85,7 @@ EOPHP;
     public function commandLineProvider()
     {
         $db_name = getenv('SUGARCLI_DB_NAME');
-        $prefix = "'mysqldump' '--defaults-file=/tmp/php%a%c%c'"
+        $prefix = "'mysqldump' '--defaults-file=/tmp/sugarcli_mysql_defaults.cnf.%a%c%c'"
            . " '--events' '--routines' '--single-transaction' '--opt' '--force'"
            . " '$db_name'";
         return array(

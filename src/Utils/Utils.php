@@ -20,6 +20,7 @@ namespace SugarCli\Utils;
 
 use Symfony\Component\Yaml\Dumper as YamlDumper;
 use Webmozart\PathUtil\Path;
+use Inet\SugarCRM\Application as SugarApp;
 
 /**
  * Various Utils
@@ -57,5 +58,33 @@ class Utils
         $absolute_path = Path::makeAbsolute($option_path, $config_path);
         $relative_path = Path::makeRelative($absolute_path, $current_path);
         return ($relative_path === '') ? '.' : $relative_path;
+    }
+
+
+    /**
+     * Create a temprorary file with database credentials from sugarcrm application.
+     * For use with mysql* commands parameter --defaults-file
+     * @return SplFileInfo Temp file is deleted when the object is deleted.
+     */
+    public static function createTempMySQLDefaultFileFromSugarConfig(SugarApp $sugar_app)
+    {
+        $sugar_config = $sugar_app->getSugarConfig();
+        $dbconfig = $sugar_config['dbconfig'];
+        if ($dbconfig['db_type'] != 'mysql') {
+            throw new \InvalidArgumentException("Database of type '{$dbconfig['db_type']}' is not supported");
+        }
+        $conf[] = "[mysql]";
+        $params = array(
+            'db_user_name' => 'user',
+            'db_password' => 'password',
+            'db_host_name' => 'host',
+            'db_port' => 'port',
+        );
+        foreach ($params as $sugar_param => $mysql_param) {
+            if (!empty($dbconfig[$sugar_param])) {
+                $conf[] = implode("=", array($mysql_param, $dbconfig[$sugar_param]));
+            }
+        }
+        return new TempFile('sugarcli_mysql_defaults.cnf.', implode("\n", $conf));
     }
 }

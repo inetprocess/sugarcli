@@ -35,13 +35,6 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
             ->setDescription('Restore files from a previous backup')
             ->enableStandardOption('path')
             ->addOption(
-                'source-dir',
-                's',
-                InputOption::VALUE_REQUIRED,
-                'Source folder archives can be found',
-                getenv('HOME') . '/backup'
-            )
-            ->addOption(
                 'archive',
                 'a',
                 InputOption::VALUE_REQUIRED,
@@ -55,16 +48,16 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
                 . ' Valid values are ({$compression_values})."
             )
             ->addOption(
-                'overwrite',
-                null,
-                InputOption::VALUE_NONE,
-                'Overwrite files in place if it already exists.'
-            )
-            ->addOption(
                 'dry-run',
                 null,
                 InputOption::VALUE_NONE,
                 'Do not run the command only print the tar command'
+            )
+            ->addOption(
+                'overwrite',
+                null,
+                InputOption::VALUE_NONE,
+                'Overwrite files in place if it already exists.'
             );
     }
 
