@@ -4,6 +4,7 @@ namespace SugarCli\Console\Command\Backup;
 
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\ExitCode;
+use SugarCli\Console\Command\Backup\Common;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -30,10 +31,9 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
 
     protected function configure()
     {
-        $compression_values = implode('|', array_keys(self::$compression_formats));
+        Common::addCommonRestoreOptions($this, self::$compression_formats);
         $this->setName('backup:restore:files')
             ->setDescription('Restore files from a previous backup')
-            ->enableStandardOption('path')
             ->addOption(
                 'archive',
                 'a',
@@ -41,52 +41,11 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
                 'Dump file to extract'
             )
             ->addOption(
-                'compression',
-                'c',
-                InputOption::VALUE_REQUIRED,
-                "Set the compression algorithm. By default it is guessed from file extention.'
-                . ' Valid values are ({$compression_values})."
-            )
-            ->addOption(
-                'dry-run',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not run the command only print the tar command'
-            )
-            ->addOption(
                 'overwrite',
                 null,
                 InputOption::VALUE_NONE,
                 'Overwrite files in place if it already exists.'
             );
-    }
-
-    public function guessCompression($extension)
-    {
-        foreach (self::$compression_formats as $format => $format_exts) {
-            if (in_array($extension, $format_exts)) {
-                return $format;
-            }
-        }
-        return null;
-    }
-
-    public function getCompression(InputInterface $input, $archive_path)
-    {
-        // Check compression arg
-        $compression = $input->getOption('compression');
-        if ($compression == null) {
-            $path_info = new \SplFileInfo($archive_path);
-            $compression = $this->guessCompression($path_info->getExtension());
-            if ($compression == null) {
-                throw new \InvalidArgumentException(
-                    "Could not guess compression. Please set the --compression option."
-                );
-            }
-        } elseif (!array_key_exists($compression, self::$compression_formats)) {
-            throw new \InvalidArgumentException("Invalid compression format '{$compression}'.");
-        }
-        return $compression;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -97,7 +56,7 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
             throw new \InvalidArgumentException('Archive file "' . $archive_path . '" not found');
         }
 
-        $compression = $this->getCompression($input, $archive_path);
+        $compression = Common::getCompression($input, $archive_path, self::$compression_formats);
 
         $sugar_path = $input->getOption('path');
 

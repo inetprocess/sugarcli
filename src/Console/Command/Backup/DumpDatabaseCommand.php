@@ -4,6 +4,7 @@ namespace SugarCli\Console\Command\Backup;
 
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\ExitCode;
+use SugarCli\Console\Command\Backup\Common;
 use SugarCli\Utils\Utils;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -39,39 +40,9 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
 
     protected function configure()
     {
-        $compression_values = implode('|', array_keys(self::$compression_formats));
+        Common::addCommonDumpOptions($this, self::$compression_formats);
         $this->setName('backup:dump:database')
             ->setDescription('Create a backup file of SugarCRM database')
-            ->enableStandardOption('path')
-            ->addOption(
-                'destination-dir',
-                'd',
-                InputOption::VALUE_REQUIRED,
-                'Destination folder for the achive',
-                getenv('HOME') . '/backup'
-            )
-            ->addConfigOption(
-                'backup.prefix',
-                'prefix',
-                'P',
-                InputOption::VALUE_REQUIRED,
-                'Prepend to the archive name',
-                null,
-                true
-            )
-            ->addOption(
-                'compression',
-                'c',
-                InputOption::VALUE_REQUIRED,
-                "Set the compression algorithm. Valid values are ({$compression_values}).",
-                'gzip'
-            )
-            ->addOption(
-                'dry-run',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not run the command only print the tar command'
-            )
             ->addOption(
                 'ignore-table',
                 'T',

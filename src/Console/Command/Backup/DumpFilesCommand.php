@@ -10,6 +10,7 @@ use Symfony\Component\Process\Exception\ProcessFailedException;
 use Symfony\Component\Process\ProcessBuilder;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\ExitCode;
+use SugarCli\Console\Command\Backup\Common;
 
 class DumpFilesCommand extends AbstractConfigOptionCommand
 {
@@ -24,39 +25,9 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
 
     protected function configure()
     {
-        $compression_values = implode('|', array_keys(self::$compression_formats));
+        Common::addCommonDumpOptions($this, self::$compression_formats);
         $this->setName('backup:dump:files')
             ->setDescription('Create a backup archive of SugarCRM files')
-            ->enableStandardOption('path')
-            ->addOption(
-                'destination-dir',
-                'd',
-                InputOption::VALUE_REQUIRED,
-                'Destination folder for the achive',
-                getenv('HOME') . '/backup'
-            )
-            ->addConfigOption(
-                'backup.prefix',
-                'prefix',
-                'P',
-                InputOption::VALUE_REQUIRED,
-                'Prepend to the archive name',
-                null,
-                true
-            )
-            ->addOption(
-                'compression',
-                'c',
-                InputOption::VALUE_REQUIRED,
-                "Set the compression algorithm. Valid values are ({$compression_values}).",
-                'gzip'
-            )
-            ->addOption(
-                'dry-run',
-                null,
-                InputOption::VALUE_NONE,
-                'Do not run the command only print the tar command'
-            )
             ->addOption(
                 'ignore-upload',
                 'U',

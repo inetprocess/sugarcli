@@ -46,13 +46,13 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
         return $this->process_callbacks;
     }
 
-    protected function enableStandardOption($name)
+    public function enableStandardOption($name)
     {
         $this->enableStandardOptions(array($name));
         return $this;
     }
 
-    protected function enableStandardOptions($options_names)
+    public function enableStandardOptions($options_names)
     {
         $std_options = $this->getStandardOptions();
         foreach ($options_names as $name) {
@@ -66,7 +66,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
         return $this;
     }
 
-    protected function getStandardOptions()
+    public function getStandardOptions()
     {
         return array(
             'path' => array(
@@ -103,13 +103,13 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
         );
     }
 
-    protected function setRequiredOption($name, $required = true)
+    public function setRequiredOption($name, $required = true)
     {
         $this->getDefinition()->getOption($name)->setRequired($required);
         return $this;
     }
 
-    protected function addConfigOption(
+    public function addConfigOption(
         $config_path,
         $name,
         $shortcut = null,
