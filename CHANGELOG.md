@@ -7,6 +7,7 @@ Changelog
 * Add command `backup:dump:database`
 * Add command `backup:dump:files`
 * Add command `backup:restore:files`
+* Add command `backup:restore:database`
 
 1.15.1
 ----

@@ -70,6 +70,7 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
         $mysqldump_args = array(
             'mysqldump',
             "--defaults-file=" . $this->temp_file->getPathname(),
+            '--default-character-set=utf8',
             '--events',
             '--routines',
             '--single-transaction',

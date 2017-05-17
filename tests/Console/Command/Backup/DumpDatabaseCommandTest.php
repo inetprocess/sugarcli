@@ -86,6 +86,7 @@ EOPHP;
     {
         $db_name = getenv('SUGARCLI_DB_NAME');
         $prefix = "'mysqldump' '--defaults-file=/tmp/sugarcli_mysql_defaults.cnf.%a%c%c'"
+           . " '--default-character-set=utf8'"
            . " '--events' '--routines' '--single-transaction' '--opt' '--force'"
            . " '$db_name'";
         return array(
