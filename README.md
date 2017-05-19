@@ -14,8 +14,14 @@ Or clone this git repository and use `./bin/sugarcli`.
 
 
 # Building
-Clone the git repository and run `php -dphar.readonly=0 bin/compile`.
-It will build the `sugarcli.phar` at the top of the git project.
+Clone the git repository and run
+```sh
+composer install --no-dev --quiet -o
+mkdir build
+ulimit -Sn 4096
+php -dphar.readonly=0 bin/box build
+```
+It will build the `sugarcli.phar`  Phar archive in the `build` folder.
 
 
 # Configuration
@@ -30,8 +36,12 @@ Command line parameters will override these configurations.
 ```yaml
 ---
 sugarcrm:
-    path: path/to/sugar
-    url: http://external.url
+    path: PATH          #Path to Sugarcrm relative to the configuration file
+    user_id: USER_ID    #SugarCRM user id to impersonate when running the command
+metadata:
+    file: FILE          #Path to the metadata file relative to the configuration file
+account:
+    name: ACCOUNT_NAME  #Name of the account
 ```
 
 
@@ -565,3 +575,4 @@ Done in 0.42 sec (consuming 40.5Mb)
 
 ....
 ```
+

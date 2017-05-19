@@ -34,6 +34,12 @@ class GetConfigCommand extends Command
     {
         $this->setName('install:config:get')
             ->setDescription('Write a default config_si.php file in the current folder')
+            ->setHelp(<<<EOF
+This provides default settings for the installer.
+You will need to complete some required parameters like database information, usernames and passwords.
+Required fields are in the form <info><VALUE></info>.
+EOF
+            )
             ->addOption(
                 'config',
                 'c',

@@ -43,6 +43,7 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
         Common::addCommonDumpOptions($this, self::$compression_formats);
         $this->setName('backup:dump:database')
             ->setDescription('Create a backup file of SugarCRM database')
+            ->setHelp($this->getDescription() . PHP_EOL . 'Creates a compressed tar archive')
             ->addOption(
                 'ignore-table',
                 'T',

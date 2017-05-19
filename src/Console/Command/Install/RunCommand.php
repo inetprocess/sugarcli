@@ -35,6 +35,20 @@ class RunCommand extends AbstractConfigOptionCommand
     {
         $this->setName('install:run')
             ->setDescription('Extract and install SugarCRM')
+            ->setHelp(<<<EOF
+You need to specify an installation path and the public url for your sugar installation.
+The installer will extract a SugarCRM installation package named <info>sugar.zip</info>
+or specified with the <info>--source</info> option.
+It will use the <info>--config</info> option to use for the installation.
+<comment>Examples:</comment>
+<info>
+./sugarcli.phar install:config:get
+nano config_si.php
+./sugarcli.phar install:run -v ~/www/sugar7 http://myserver.example.org/sugar7 --source ~/sugar_package/SugarPro-Full-7.2.2.1.zip
+</info>
+Use <info>-v</info> or <info>-vv</info> to add more verbose output.
+EOF
+            )
             ->enableStandardOption('path')
             ->addOption(
                 'url',
