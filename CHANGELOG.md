@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.15.2
+----
+* Fix issue with `--remove-cache` option if `custom/application` did not exist
+
 1.15.1
 ----
 * Fix message in `system:quickrepair` if Sugar was not using English as the default language
