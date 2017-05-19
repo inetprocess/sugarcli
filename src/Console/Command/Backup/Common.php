@@ -80,8 +80,8 @@ class Common
                 'compression',
                 'c',
                 InputOption::VALUE_REQUIRED,
-                "Set the compression algorithm. By default it is guessed from file extention.'
-                . ' Valid values are ({$compression_values})."
+                "Set the compression algorithm. By default it is guessed from file extention."
+                . " Valid values are ({$compression_values})."
             )
             ->addOption(
                 'dry-run',
