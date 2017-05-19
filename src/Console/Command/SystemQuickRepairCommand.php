@@ -82,12 +82,15 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
 
     public function removeExtDirectories($sugar_app)
     {
+        // Find folders:
+        //   custom/application/Ext
+        //   custom/modules/*/Ext
         $finder = new Finder();
         $finder->directories()
-            ->in($sugar_app->getPath() . '/custom/application')
-            ->in($sugar_app->getPath() . '/custom/modules/*')
-            ->depth('== 0')
-            ->name('Ext');
+            ->in($sugar_app->getPath())
+            ->path('@^custom/application/Ext$@')
+            ->path('@^custom/modules/[^/]+/Ext$@')
+            ;
         $fs = new Filesystem();
         $fs->remove($finder);
     }

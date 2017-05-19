@@ -8,6 +8,9 @@ Changelog
 * Add command `backup:dump:files`
 * Add command `backup:restore:files`
 * Add command `backup:restore:database`
+1.15.2
+----
+* Fix issue with `--remove-cache` option if `custom/application` did not exist
 
 1.15.1
 ----
