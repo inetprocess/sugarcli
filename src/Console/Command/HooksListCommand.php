@@ -24,6 +24,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableCell;
 use Symfony\Component\Console\Helper\TableSeparator;
+use Symfony\Component\Filesystem\Filesystem;
 use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\LogicHook;
 use SugarCli\Utils\Utils;
@@ -58,7 +59,7 @@ EOHELP
             )
             ->addOption(
                 'compact',
-                null,
+                'c',
                 InputOption::VALUE_NONE,
                 'Activate compact mode output'
             );
@@ -78,10 +79,12 @@ EOHELP
             throw new \InvalidArgumentException('You must define the module with --module');
         }
 
+        $output->writeln("<comment>Hooks definition for $module</comment>");
+
         $table = new Table($output);
         $headers = $this->generateTableHeaders($module, $input->getOption('compact'));
         $table->setHeaders($headers);
-        $table->setRows($this->generateTableRows($module, $input->getOption('compact'), count($headers[1])));
+        $table->setRows($this->generateTableRows($module, $input->getOption('compact'), count($headers)));
         $table->render();
     }
 
@@ -94,15 +97,11 @@ EOHELP
      */
     protected function generateTableHeaders($module, $compact)
     {
-        $colsName = array('Weight', 'Description', 'File', 'Class', 'Method', 'Defined In');
+        $colsName = array('Weight', 'Description', 'File', 'Class::Method', 'Defined In');
         if ($compact) {
             $colsName = array('Weight', 'Description', 'Method');
         }
-
-        $title = new TableCell("<comment>Hooks definition for $module</comment>", array('colspan' => count($colsName)));
-        $headers = array(array($title), $colsName);
-
-        return $headers;
+        return $colsName;
     }
 
     /**
@@ -116,9 +115,10 @@ EOHELP
      */
     protected function generateTableRows($module, $compact, $numCols)
     {
-        $validModules = array_keys($this->getService('sugarcrm.entrypoint')->getBeansList());
+        $entryPoint = $this->getService('sugarcrm.entrypoint');
+        $validModules = array_keys($entryPoint->getBeansList());
         try {
-            $logicHook = new LogicHook($this->getService('sugarcrm.entrypoint'));
+            $logicHook = new LogicHook($entryPoint);
             $hooksList = $logicHook->getModuleHooks($module);
         } catch (BeanNotFoundException $e) {
             $msg = "Unknown module '$module'. Valid modules are:" . PHP_EOL;
@@ -150,6 +150,17 @@ EOHELP
                     unset($hook['File']);
                     unset($hook['Class']);
                     unset($hook['Defined In']);
+                } else {
+                    if (class_exists('ReflectionClass') && empty($hook['File'])) {
+                        $reflex = new \ReflectionClass($hook['Class']);
+                        $fs = new Filesystem();
+                        $hook['File'] = rtrim($fs->makePathRelative(
+                            $reflex->getFileName(),
+                            $entryPoint->getPath()
+                        ), '/');
+                    }
+                    $hook = array_values($hook);
+                    array_splice($hook, 3, 2, $hook[3] . '::' . $hook[4]);
                 }
 
                 $tableData[] = array_values($hook);
