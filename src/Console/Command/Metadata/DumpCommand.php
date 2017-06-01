@@ -30,15 +30,26 @@ class DumpCommand extends AbstractMetadataCommand
     {
         parent::configure();
         $this->setName('metadata:dumptofile')
-            ->setDescription('Dump the contents of the table fields_meta_data for db migrations')
+            ->setDescription('Dump the contents of the table <info>fields_meta_data</info>'
+                .' in a reference file to track modifications')
             ->setHelp(<<<EOH
-Manage the of the dump file based on the fields_meta_data table.
+Update the reference YAML file based on the <info>fields_meta_data</info>. This file should be managed with a VCS.
+You can filter which modification you whish to apply with the options <info>--add,--del,--update</info> or by setting
+the fields name after the options.
+
+<comment>Examples:</comment>
+Write to the file only new fields present in the database:
+    <info>sugarcli metadata:dumptofile --add --force</info>
+Delete fields in the file which are not present in the database:
+    <info>sugarcli metadata:dumptofile --del --force</info>
+Only apply modifications for the status_c field in the Accounts module:
+    <info>sugarcli metadata:dumptofile Accounts.status_c</info>
 EOH
             );
         $descriptions = array(
-            'add' => 'Add new fields from the DB to the definition file.',
-            'del' => 'Delete fields not present in the DB from the metadata file.',
-            'update' => 'Update the metadata file for modified fields in the DB.'
+            'add' => 'Add new fields from the DB to the definition file',
+            'del' => 'Delete fields not present in the DB from the metadata file',
+            'update' => 'Update the metadata file for modified fields in the DB'
         );
         $this->setDiffOptions($descriptions);
     }

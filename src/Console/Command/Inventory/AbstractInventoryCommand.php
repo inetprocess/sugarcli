@@ -30,7 +30,7 @@ abstract class AbstractInventoryCommand extends AbstractConfigOptionCommand
             'custom-fact',
             'F',
             InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-            'Add or override facts. Format: path.to.fact:value'
+            'Add or override facts <comment>Format: path.to.fact:value</comment>'
         )
         ->enableStandardOption('path');
     }

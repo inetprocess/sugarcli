@@ -38,38 +38,38 @@ class ListCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('user:list')
-            ->setDescription('List users of the SugarCRM instance')
+            ->setDescription('List users in the SugarCRM instance')
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addOption(
                 'username',
                 'u',
                 InputOption::VALUE_REQUIRED,
-                'Login of the user.'
+                'List only this user'
             )
             ->addOption(
                 'format',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                'Output format. (text|json|yml|xml)',
+                'Output format <comment>(text|json|yml|xml)</comment>',
                 'text'
             )->addOption(
                 'fields',
                 'F',
                 InputOption::VALUE_REQUIRED,
-                'List of comma separated field name.',
+                'Comma sperated list of fields to display',
                 'id,user_name,is_admin,status,first_name,last_name'
             )->addOption(
                 'lang',
                 'l',
                 InputOption::VALUE_REQUIRED,
-                'Lang for display.',
+                'Language used to display',
                 'en_us'
             )->addOption(
                 'raw',
                 'r',
                 InputOption::VALUE_NONE,
-                'Display raw data.'
+                'Show raw data, no language conversion is done'
             );
     }
 

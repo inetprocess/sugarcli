@@ -74,7 +74,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 'path',
                 'p',
                 InputOption::VALUE_REQUIRED,
-                'Path to SugarCRM installation.',
+                'Path to SugarCRM installation',
                 null,
                 true,
                 function ($option_name, InputInterface $input, Command $command) {
@@ -88,7 +88,7 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 'user-id',
                 null,
                 InputOption::VALUE_REQUIRED,
-                'SugarCRM user id to impersonate when running the command.',
+                'SugarCRM user id to impersonate when running the command',
                 '1',
                 true,
                 function ($option_name, InputInterface $input, Command $command) {

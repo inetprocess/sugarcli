@@ -18,11 +18,17 @@ function formatString($string)
     if (!is_string($string)) {
         return $string;
     }
+
     $mapping = array(
         '<comment>' => '**',
         '</comment>' => '**',
         '<info>' => '`',
         '</info>' => '`',
+    );
+    $string = preg_replace(
+        '@\n*<info>\n*([^<]+\n[^<]+)\n*</info>\n*@',
+        PHP_EOL.'```'.PHP_EOL.'$1'.PHP_EOL.'```'.PHP_EOL,
+        $string
     );
     return str_replace(array_keys($mapping), array_values($mapping), $string);
 }
@@ -75,8 +81,8 @@ function formatOption($name, $definition)
 function formatCommands($commands)
 {
     foreach ($commands as $command) {
-        print("`{$command['name']}`\n");
-        print(str_repeat('-', strlen($command['name'])+2) . "\n\n");
+        print("{$command['name']}\n");
+        print(str_repeat('-', strlen($command['name'])) . "\n\n");
         print($command['description']."\n\n");
         print("**Usage**: ".implode("\n", array_map(function ($usage) {
             return "`$usage`";

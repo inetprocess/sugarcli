@@ -32,6 +32,12 @@ class CheckCommand extends AbstractConfigOptionCommand
     {
         $this->setName('install:check')
             ->setDescription('Check if SugarCRM is installed and configured')
+            ->setHelp(<<<'EOHELP'
+Check if SugarCRM is installed and configured.
+Return code is <info>11</info> if Sugar is not extracted.
+Return code is <info>12</info> if Sugar is not installed.
+EOHELP
+            )
             ->enableStandardOption('path');
     }
 

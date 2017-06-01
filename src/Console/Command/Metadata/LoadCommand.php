@@ -31,29 +31,38 @@ class LoadCommand extends AbstractMetadataCommand
     {
         parent::configure();
         $this->setName('metadata:loadfromfile')
-            ->setDescription('Load the contents of the table fields_meta_data from a file')
+            ->setDescription('Load into the table <info>fields_meta_data</info> contents from a reference file')
             ->setHelp(<<<EOH
-This command modify the database based on a dump file.
-Will not do anything by default. Use --force to actually
-execute sql queries to impact the database.
+Update the <info>fields_meta_data</info> table to reflect the data in the reference YAML file.
+Will not do anything by default. Use <info>--force</info> to actually execute sql queries to impact the database.
+You can filter which modification you whish to apply with the options <info>--add,--del,--update</info> or by setting
+the fields name after the options.
+
+<comment>Examples:</comment>
+Load only new fields:
+    <info>sugarcli metadata:loadfromfile --add --force</info>
+Only delete fields which are not present in the reference file:
+    <info>sugarcli metadata:loadfromfile --del --force</info>
+Only apply modifications for the <info>status_c</info> field in the <info>Accounts</info> module:
+    <info>sugarcli metadata:loadfromfile Accounts.status_c</info>
 EOH
             )
             ->addOption(
                 'sql',
                 's',
                 InputOption::VALUE_NONE,
-                'Print the sql queries that would have been executed.'
+                'Print the sql queries that would have been executed'
             )
             ->addOption(
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Really execute the SQL queries to modify the database.'
+                'Really execute the SQL queries to modify the database'
             );
         $descriptions = array(
-            'add' => 'Add new fields from the file to the DB.',
-            'del' => 'Delete fields not present in the metadata file from the DB.',
-            'update' => 'Update the DB for modified fields in metadata file.'
+            'add' => 'Add new fields from the file to the DB',
+            'del' => 'Delete fields not present in the metadata file from the DB',
+            'update' => 'Update the DB for modified fields in metadata file'
         );
         $this->setDiffOptions($descriptions);
     }

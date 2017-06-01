@@ -36,7 +36,13 @@ class FacterCommand extends AbstractInventoryCommand
     {
         parent::configure();
         $this->setName('inventory:facter')
-            ->setDescription('Get facts from system and a Sugar instance')
+            ->setDescription('Get facts from the system and a Sugar instance')
+            ->setHelp(<<<'EOHELP'
+Output various informations about the system and the sugarcrm instance.
+
+Use the <info>--format</info> option to specify your prefered output format.
+EOHELP
+            )
             ->addArgument(
                 'source',
                 InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
@@ -47,7 +53,7 @@ class FacterCommand extends AbstractInventoryCommand
                 'format',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                'Specify the output format. (json|yml|xml).',
+                'Specify the output format <comment>(json|yml|xml)</comment>',
                 'yml'
             )
             ->setRequiredOption('path', false);

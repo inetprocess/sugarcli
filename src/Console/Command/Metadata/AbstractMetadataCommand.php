@@ -101,7 +101,7 @@ abstract class AbstractMetadataCommand extends AbstractConfigOptionCommand
         ->addArgument(
             'fields',
             InputArgument::IS_ARRAY | InputArgument::OPTIONAL,
-            'Filter the command to only apply to this list of fields.'
+            'Filter the command to only apply to this list of fields'
         );
     }
 

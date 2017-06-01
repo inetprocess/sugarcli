@@ -41,60 +41,73 @@ class UpdateCommand extends AbstractConfigOptionCommand
         $this->setName('user:update')
             ->setAliases(array('user:create'))
             ->setDescription('Create or update a SugarCRM user')
+            ->setHelp(<<<'EOHELP'
+Create or update a SugarCRM user.
+Option <info>--password</info> should be avoided as the password would be kept in shell history.
+
+<comment>Examples:</comment>
+Create a new admin user:
+    <info>sugarcli user:create -f John -l Doe --ask-password --admin yes jdoe</info>
+Alternative:
+    <info>sugarcli user:update --create -f John -l Doe --ask-password --admin yes jdoe</info>
+Disable a user:
+    <info>sugarcli user:update --active no jdoe</info>
+EOHELP
+            )
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addArgument(
                 'username',
                 InputArgument::REQUIRED,
-                'Login of the user.'
+                'Login of the user'
             )
             ->addOption(
                 'create',
                 'c',
                 InputOption::VALUE_NONE,
-                'Create the user instead of updating it. Optional if called with users:create.'
+                'Create the user instead of updating it, optional if called with <info>user:create</info>'
             )
             ->addOption(
                 'first-name',
                 'f',
                 InputOption::VALUE_REQUIRED,
-                'First name of the user.'
+                'Set first name'
             )
             ->addOption(
                 'last-name',
                 'l',
                 InputOption::VALUE_REQUIRED,
-                'Last name of the user.'
+                'Set last name'
             )
             ->addOption(
                 'password',
                 'P',
                 InputOption::VALUE_REQUIRED,
-                'Password of the user. [UNSAFE]'
+                'Set password <comment>[UNSAFE use <info>--ask-password</info> instead]</comment>'
             )
             ->addOption(
                 'ask-password',
                 null,
                 InputOption::VALUE_NONE,
-                'Ask for user password.'
+                'Ask for password on stdin'
             )
             ->addOption(
                 'email',
                 'e',
                 InputOption::VALUE_REQUIRED,
-                'Principal email address of the user.'
+                'Set principal email address'
             )
             ->addOption(
                 'admin',
                 'a',
                 InputOption::VALUE_REQUIRED,
-                'Make the user administrator. <comment>[yes/no]</comment>'
+                'Set as administrator <comment>[yes|no]</comment>'
             )
             ->addOption(
                 'active',
                 'A',
                 InputOption::VALUE_REQUIRED,
-                'Make the user active. <comment>[yes/no]</comment>'
+                'Set as active <comment>[yes|no]</comment>'
             );
     }
 

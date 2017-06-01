@@ -42,11 +42,11 @@ or specified with the <info>--source</info> option.
 It will use the <info>--config</info> option to use for the installation.
 <comment>Examples:</comment>
 <info>
-./sugarcli.phar install:config:get
-nano config_si.php
-./sugarcli.phar install:run -v ~/www/sugar7 http://myserver.example.org/sugar7 --source ~/sugar_package/SugarPro-Full-7.2.2.1.zip
+    sugarcli install:config:get
+    nano config_si.php
+    sugarcli install:run -v ~/www/sugar7 http://myserver.example.org/sugar7 --source ~/package/SugarPro-Full-7.2.2.1.zip
 </info>
-Use <info>-v</info> or <info>-vv</info> to add more verbose output.
+Use <info>-v</info> or <info>-vv</info> to make the output more verbose.
 EOF
             )
             ->enableStandardOption('path')
@@ -54,26 +54,26 @@ EOF
                 'url',
                 'u',
                 InputOption::VALUE_REQUIRED,
-                '<comment>[DEPRECATED]</comment> This option does nothing and is only kept for backward compatibility.'
+                '<comment>[DEPRECATED]</comment> This option does nothing and is only kept for backward compatibility'
             )
             ->addOption(
                 'force',
                 'f',
                 InputOption::VALUE_NONE,
-                'Force installer to remove target directory if present.'
+                'Force the installer to remove the target directory if present'
             )
             ->addOption(
                 'source',
                 's',
                 InputOption::VALUE_REQUIRED,
-                'Path to SugarCRM installation package.',
+                'Path to SugarCRM installation package',
                 'sugar.zip'
             )
             ->addOption(
                 'config',
                 'c',
                 InputOption::VALUE_REQUIRED,
-                'PHP file to use as configuration for the installation.',
+                'PHP file to use as configuration for the installation',
                 'config_si.php'
             );
     }

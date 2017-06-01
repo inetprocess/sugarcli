@@ -31,8 +31,13 @@ class StatusCommand extends AbstractMetadataCommand
     {
         parent::configure();
         $this->setName('metadata:status')
-            ->setDescription('Show the state of the fields_meta_data table compared to the dump file')
+            ->setDescription('Show the state of the <info>fields_meta_data</info> table compared to a reference file')
             ->setHelp(<<<EOH
+Compare the contents of the <info>fields_meta_data</info> table with a YAML reference file.
+This file should be managed with a version control software (VCS) to keep the various versions.
+
+Use the commands <info>metadata:loadfromfile</info> or <info>metadata:dumptofile</info> to update the database
+or the reference file.
 EOH
             );
     }

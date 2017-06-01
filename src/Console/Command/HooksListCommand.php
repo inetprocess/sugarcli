@@ -37,19 +37,30 @@ class HooksListCommand extends AbstractConfigOptionCommand
     {
         $this->setName('hooks:list')
             ->setDescription('List hooks of the SugarCRM instance')
+            ->setHelp(<<<EOHELP
+List the hooks defined for the module. For each hook display the following information:
+
+* <comment>Weight</comment>\tOrder of execution
+* <comment>Description</comment>\tShort description
+* <comment>File</comment>\tFile containing the source code for the hook
+* <comment>Class</comment>\tPHP Class name
+* <comment>Method</comment>\tMethod called when the hook is triggered
+* <comment>Defined In</comment>\tFile where the hook is configured
+EOHELP
+            )
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addOption(
                 'module',
                 'm',
                 InputOption::VALUE_REQUIRED,
-                "Module's name."
+                "List hooks from this module"
             )
             ->addOption(
                 'compact',
                 null,
                 InputOption::VALUE_NONE,
-                'Activate compact mode'
+                'Activate compact mode output'
             );
     }
 

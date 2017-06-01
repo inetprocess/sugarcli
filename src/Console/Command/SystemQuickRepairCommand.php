@@ -36,19 +36,31 @@ class SystemQuickRepairCommand extends AbstractConfigOptionCommand
     {
         $this->setName('system:quickrepair')
              ->setDescription('Do a quick repair and rebuild')
+             ->setHelp(<<<'EOHELP'
+Execute a quick repair and rebuild. Use this command to apply modifications done to the source files.
+By default it will print the SQL queries SugarCRM has generated to update the database, use <info>--force</info>
+to execute thoses queries. You should also use <info>--force</info> after an update to the <info>fields_meta_data</info>
+with the <info>metadata:loadfromfile</info> command.
+
+Sometimes after some deep files modifications like VCS branch changes, the cache is obsolete
+and you will get an error when you try to repair. In this case use the <info>--rm-cache</info> option to delete
+the cache folder and compiled files from the Extension framework, namely <info>custom/application/Ext</info>
+and <info>custom/modules/*/Ext</info>.
+EOHELP
+             )
              ->enableStandardOption('path')
              ->enableStandardOption('user-id')
              ->addOption(
                  'no-database',
                  null,
                  InputOption::VALUE_NONE,
-                 'Do not manage database changes.'
+                 'Do not check for database changes'
              )
              ->addOption(
                  'force',
                  'f',
                  InputOption::VALUE_NONE,
-                 'Really execute the SQL queries (displayed by using -d).'
+                 'Really execute the SQL queries (displayed by using -d)'
              )
              ->addOption(
                  'rm-cache',

@@ -38,28 +38,32 @@ class AgentCommand extends AbstractInventoryCommand
     {
         parent::configure();
         $this->setName('inventory:agent')
-            ->setDescription('Gather facts and send report to Inventory server')
+            ->setDescription('Gather facts and sends a report to an Inventory server')
+            ->setHelp(<<<'EOHELP'
+Sends all facts gathered on the system and the SugarCRM instance to an Inventory server.
+EOHELP
+            )
             ->addArgument(
                 'server',
                 InputArgument::REQUIRED,
-                'Url of the inventory server.'
+                'Url of the inventory server'
             )
             ->addArgument(
                 'username',
                 InputArgument::REQUIRED,
-                'Username for server authentication.'
+                'Username for server authentication'
             )
             ->addArgument(
                 'password',
                 InputArgument::REQUIRED,
-                'Password for server authentication.'
+                'Password for server authentication'
             )
             ->addConfigOption(
                 'account.name',
                 'account-name',
                 'a',
                 InputOption::VALUE_REQUIRED,
-                'Name of the account.'
+                'Name of the account'
             );
     }
 

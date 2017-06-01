@@ -32,19 +32,26 @@ class CleanLangFilesCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('clean:langfiles')
-            ->setDescription('Sort php arrays in language files to make it easier for vcs programs')
+            ->setDescription('Sort and clean PHP arrays in language files to make it easier for vcs programs')
+            ->setHelp(<<<'EOTXT'
+Sort and clean PHP arrays in language files for dropdown lists.
+Makes it easier for VCS programs to track real changes and avoid conflicts.
+It is recommended to have a clean working directory before executing this command.
+EOTXT
+            )
             ->enableStandardOption('path')
             ->addOption(
                 'no-sort',
                 null,
                 InputOption::VALUE_NONE,
-                'Do not sort the files contents. It will still remove duplicates. Useful for testing.'
+                'Do not sort the files contents. It will still remove duplicates. Useful for testing'
             )
             ->addOption(
                 'test',
                 't',
                 InputOption::VALUE_NONE,
-                'Try to rewrite the files without modifying the contents. Imply --no-sort.'
+                'Try to rewrite the files without modifying the contents, imply <info>--no-sort</info>,'
+                . ' useful to make sure the parsing is working correctly'
             );
     }
 
