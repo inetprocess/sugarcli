@@ -81,9 +81,9 @@ class DumpCommandTest extends MetadataTestCase
     }
 
 
-    public function testFailure()
+    public function testUnknownDir()
     {
-        $test_dump_yaml = __DIR__ . '/metadata_unknwown_dir/new_file.yaml';
+        $test_dump_yaml = __DIR__ . '/metadata_unknown_dir/new_file.yaml';
         $logger = $this->app->getContainer()->get('logger');
         $cmd = $this->app->find('metadata:dump');
         $tester = new CommandTester($cmd);
@@ -95,11 +95,12 @@ class DumpCommandTest extends MetadataTestCase
             )
         );
 
-        $expected_log = '[error] An error occured while dumping the metadata.' . PHP_EOL;
-        $expected_log .= '[error] Unable to dump metadata file to ' . $test_dump_yaml . ".\n";
-
-        $this->assertEquals($expected_log, $logger->getLines());
-        $this->assertEquals(20, $ret);
+        $this->assertEquals('', $logger->getLines());
+        $this->assertEquals(0, $ret);
+        $this->assertFileExists($test_dump_yaml);
+        $fs = new Filesystem();
+        $fs->remove(dirname($test_dump_yaml));
+        $this->assertFileNotExists(dirname($test_dump_yaml));
 
     }
 }

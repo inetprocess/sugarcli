@@ -120,7 +120,7 @@ EOH
         $output->getFormatter()->setStyle('b', $style);
 
         if (!is_readable($metadata_file)) {
-            $logger->error("Unable to access metadata file {$metadata_file}.");
+            $logger->warning("Unable to access metadata file {$metadata_file}.");
             $output->writeln('');
             $output->writeln("Use \"{$this->getProgramName()} metadata:dump\" first to dump the current table state.");
 

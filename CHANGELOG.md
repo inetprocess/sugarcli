@@ -9,6 +9,7 @@ Changelog
 * Add command `backup:restore:files`
 * Add command `backup:restore:database`
 * Reworked display of `hooks:list`
+* Create directory for metadata file
 
 1.15.2
 ----

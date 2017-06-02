@@ -20,6 +20,7 @@ namespace SugarCli\Console\Command\Metadata;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Inet\SugarCRM\Database\Metadata;
 use Inet\SugarCRM\Exception\SugarException;
 use SugarCli\Console\ExitCode;
@@ -77,6 +78,11 @@ EOH
             );
             $logger->info('Fields metadata loaded from DB.');
 
+            $fs = new Filesystem();
+            $base_dir = dirname($metadata_file);
+            if (!$fs->exists($base_dir)) {
+                $fs->mkdir($base_dir);
+            }
             $meta->writeFile($diff_res);
             $output->writeln("Updated file $metadata_file.");
         } catch (SugarException $e) {

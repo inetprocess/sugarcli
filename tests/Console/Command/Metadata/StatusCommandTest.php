@@ -75,7 +75,7 @@ class StatusCommandTest extends MetadataTestCase
             )
         );
 
-        $expected_log = '[error] Unable to access metadata file ' . $this->getYamlFilename('unknown_file') . ".\n";
+        $expected_log = '[warning] Unable to access metadata file ' . $this->getYamlFilename('unknown_file') . ".\n";
         $this->assertEquals($expected_log, $logger->getLines());
         $this->assertEquals(21, $ret);
 
