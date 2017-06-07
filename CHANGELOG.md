@@ -11,6 +11,10 @@ Changelog
 * Reworked display of `hooks:list`
 * Create directory for metadata file
 
+1.15.3
+----
+* Update libsugarcrm to 1.2.8 for compatibility with SugarCRM 7.9.0.0
+
 1.15.2
 ----
 * Fix issue with `--remove-cache` option if `custom/application` did not exist
