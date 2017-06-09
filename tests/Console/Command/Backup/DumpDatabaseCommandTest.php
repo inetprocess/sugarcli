@@ -126,6 +126,8 @@ EOPHP;
     public function testFull()
     {
         $cmd = $this->getCommandTester(self::$cmd_name);
+        $date = '2017-01-01 00:00:00';
+        $this->getApplication()->find(self::$cmd_name)->setDateTime(new \DateTime($date));
         $ret = $cmd->execute(array_merge(array(
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--prefix' => 'phpunit',
@@ -138,6 +140,6 @@ EOPHP;
         $this->assertEquals(realpath($this->getBackupDir()), realpath(dirname($dump_name)));
         unlink($dump_name);
         $this->assertFileNotExists($dump_name);
-        $this->assertStringMatchesFormat('phpunit_%a@%a.sql.gz', basename($dump_name));
+        $this->assertStringMatchesFormat('phpunit_%a@2017-01-01_00-00-00.sql.gz', basename($dump_name));
     }
 }

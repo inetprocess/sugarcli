@@ -27,11 +27,24 @@ class CompoundCommand extends Command
         );
         $cmd->mergeApplicationDefinition();
         foreach ($cmd->getDefinition()->getOptions() as $opt_name => $def) {
-            $args['--'.$opt_name] = $input->getOption($opt_name);
+            if ($input->hasParameterOption('--'.$opt_name)
+                || $input->hasParameterOption('-' . $def->getShortcut())
+            ) {
+                $args['--'.$opt_name] = $input->getOption($opt_name);
+            }
         }
+        $this->beforeCommandRun($cmd, $input, $output, $args);
         $cmd_input = new ArrayInput($args);
         $cmd_input->setInteractive($input->isInteractive());
+        try {
+            $cmd_input->bind($cmd->getDefinition());
+        } catch (ExceptionInterface $e) {
+        }
         return $cmd->run($cmd_input, $output);
+    }
+
+    protected function beforeCommandRun(Command $cmd, InputInterface $input, OutputInterface $output, array &$args)
+    {
     }
 
     protected function getSubCommands()

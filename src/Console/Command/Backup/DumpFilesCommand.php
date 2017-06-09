@@ -23,6 +23,21 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
     protected static $cache_dir_max_size = 200;
     protected static $upload_dir_max_size = 512;
 
+    protected $datetime;
+
+    public function getDateTime()
+    {
+        if ($this->datetime == null) {
+            $this->datetime = new \DateTime();
+        }
+        return $this->datetime;
+    }
+
+    public function setDateTime(\DateTime $datetime)
+    {
+        $this->datetime = $datetime;
+    }
+
     protected function configure()
     {
         Common::addCommonDumpOptions($this, self::$compression_formats);
@@ -161,7 +176,7 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
 
         $archive_name = $input->getOption('prefix') . '_'
             . gethostname() . '@'
-            . date('Y-m-d_H-i-s')
+            . $this->getDateTime()->format('Y-m-d_H-i-s')
             . '.tar' . self::$compression_formats[$compression];
         $archive_path = $input->getOption('destination-dir');
         $archive_fullpath = $archive_path . '/' . $archive_name;

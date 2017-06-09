@@ -38,6 +38,21 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
 
     protected $temp_file;
 
+    protected $datetime;
+
+    public function getDateTime()
+    {
+        if ($this->datetime == null) {
+            $this->datetime = new \DateTime();
+        }
+        return $this->datetime;
+    }
+
+    public function setDateTime(\DateTime $datetime)
+    {
+        $this->datetime = $datetime;
+    }
+
     protected function configure()
     {
         Common::addCommonDumpOptions($this, self::$compression_formats);
@@ -106,7 +121,7 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
 
         $dump_name = $input->getOption('prefix') . '_'
             . gethostname() . '@'
-            . date('Y-m-d_H-i-s')
+            . $this->getDateTime()->format('Y-m-d_H-i-s')
             . '.sql' . self::$compression_formats[$compression];
         $dump_path = $input->getOption('destination-dir');
         $dump_fullpath = $dump_path . '/' . $dump_name;

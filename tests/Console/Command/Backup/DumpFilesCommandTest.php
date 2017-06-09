@@ -34,7 +34,7 @@ class DumpFilesCommandTest extends CommandTestCase
 
     public function commandLineProvider()
     {
-        $prefix = "'tar' '--create' '--file=%a' '--directory=".__DIR__."' ";
+        $prefix = "'tar' '--create' '--file=%a@2017-01-01_00-00-00.%a' '--directory=".__DIR__."' ";
         $base = 'fake sugar';
         return array(
             // Test case 1
@@ -60,6 +60,8 @@ class DumpFilesCommandTest extends CommandTestCase
     public function testCommandLine($expected_cmd, $args)
     {
         $cmd = $this->getCommandTester(self::$cmd_name);
+        $date = new \DateTime('2017-01-01 00:00:00');
+        $this->getApplication()->find(self::$cmd_name)->setDateTime($date);
         $ret = $cmd->execute(array_merge(array(
             '--path' => __DIR__.'/fake sugar',
             '--prefix' => 'test',

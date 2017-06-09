@@ -59,7 +59,7 @@ class CompoundCommandTest extends \PHPUnit_Framework_TestCase
             '--first-opt' => null,
             '--common' => null,
             '--second-opt' => null,
-            '-v' => null,
+            '--verbose' => true,
         ));
         $this->assertEquals(0, $ret);
         $expected_output = <<<EOF

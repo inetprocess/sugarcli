@@ -8,6 +8,7 @@ Changelog
 * Add command `backup:dump:files`
 * Add command `backup:restore:files`
 * Add command `backup:restore:database`
+* Add command `backup:restore:all`
 * Reworked display of `hooks:list`
 * Create directory for metadata file
 * Improved built-in documentation which now generate USAGE.md

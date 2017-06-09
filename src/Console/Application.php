@@ -121,6 +121,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Backup\DumpAllCommand();
         $commands[] = new \SugarCli\Console\Command\Backup\RestoreFilesCommand();
         $commands[] = new \SugarCli\Console\Command\Backup\RestoreDatabaseCommand();
+        $commands[] = new \SugarCli\Console\Command\Backup\RestoreAllCommand();
         $commands[] = new \SugarCli\Console\Command\CleanLangFilesCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ButtonCommand();
         $commands[] = new \SugarCli\Console\Command\Code\ExecuteFileCommand();
