@@ -40,13 +40,27 @@ class ButtonCommand extends AbstractConfigOptionCommand
     {
         $this->setName('code:button')
             ->setDescription('Add or delete a button in a module')
+            ->setHelp(<<<EOHELP
+Creates a new button in the record view menu for the module.
+Automatically add buttons, their label and the JS triggered by the button to views, from a name.
+
+The affected files are:
+* <info>custom/Extension/modules/<module>/Ext/Language/<current_lang>.php</info>
+* <info>custom/modules/<module>/clients/base/views/record/record.php</info>
+* <info>custom/modules/<module>/clients/base/views/record/record.js</info>
+
+The <info>--javascript</info> is experimental. If you do not already have a <info>record.js</info> file
+that should work well, else you have to check the generated file to make sure it didn't break anything.
+
+EOHELP
+            )
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addOption(
                 'module',
                 'm',
                 InputOption::VALUE_REQUIRED,
-                'Module name.'
+                'Module name'
             )->addOption(
                 'action',
                 'a',
@@ -55,7 +69,7 @@ class ButtonCommand extends AbstractConfigOptionCommand
                 'add'
             )->addOption(
                 'name',
-                null,
+                'b',
                 InputOption::VALUE_REQUIRED,
                 'Button Name'
             )->addOption(
@@ -68,7 +82,7 @@ class ButtonCommand extends AbstractConfigOptionCommand
                 'javascript',
                 'j',
                 InputOption::VALUE_NONE,
-                '[EXPERIMENTAL] Also create the JS'
+                '<comment>[EXPERIMENTAL]</comment> Also create the JS'
             );
     }
 

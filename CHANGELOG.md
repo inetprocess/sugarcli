@@ -10,6 +10,7 @@ Changelog
 * Add command `backup:restore:database`
 * Reworked display of `hooks:list`
 * Create directory for metadata file
+* Improved built-in documentation which now generate USAGE.md
 
 1.15.3
 ----

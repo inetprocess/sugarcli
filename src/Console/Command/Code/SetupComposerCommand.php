@@ -33,6 +33,11 @@ class SetupComposerCommand extends AbstractConfigOptionCommand
     {
         $this->setName('code:setupcomposer')
             ->setDescription('Check that composer is setup to be used with SugarCRM')
+            ->setHelp(<<<EOHELP
+Create a new Util to use composer's autoloader and create a composer.json file
+that contains, by default, libsugarcrm autoloaded for Unit Tests.
+EOHELP
+            )
             ->enableStandardOption('path')
             ->addOption(
                 'do',

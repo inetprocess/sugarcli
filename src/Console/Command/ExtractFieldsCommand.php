@@ -46,12 +46,14 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
     {
         // First command : Test the DB Connexion
         $this->setName('extract:fields')
-             ->setDescription(
-                 'Create a CSV that contains fields and relationships definition for any module
-                         defined by --module to SugarCRM'
-             )->setHelp(
-                 'This command will extract the fields list for any module of SugarCRM' . PHP_EOL .
-                 'Usage: ./bin/console <info>extract:fields --module Accounts</info>'
+            ->setDescription('Export fields and relationships definitions to CSV files')
+            ->setHelp(<<<EOHELP
+Extract all fields and relationships defined for a module with their parameters (label, dropdown list, dbType, ...)
+and write the data to 2 CSV files.
+
+<comment>Example:</comment>
+    <info>sugarcli extract:fields --module Accounts</info>
+EOHELP
              )
              ->enableStandardOption('path')
              ->enableStandardOption('user-id')
@@ -59,13 +61,13 @@ class ExtractFieldsCommand extends AbstractConfigOptionCommand
                  'module',
                  'm',
                  InputOption::VALUE_REQUIRED,
-                 "Module's name."
+                 "Module's name"
              )->addOption(
                  'lang',
                  null,
                  InputOption::VALUE_REQUIRED,
                  'SugarCRM Language',
-                 'fr_FR'
+                 'en_us'
              );
     }
 

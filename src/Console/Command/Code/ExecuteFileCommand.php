@@ -32,6 +32,12 @@ class ExecuteFileCommand extends AbstractConfigOptionCommand
     {
         $this->setName('code:execute:file')
             ->setDescription('Execute a php file using a SugarCRM loaded context')
+            ->setHelp(<<<EOHELP
+Execute a PHP file after first loading the sugarcrm environment. The script can directly use the classes
+and database from sugar. You can also set the <info>--user-id</info> from the command line to have another user
+than the default administrator.
+EOHELP
+            )
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addArgument(

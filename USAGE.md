@@ -150,31 +150,79 @@ anonymize:config
 
 Generate a configuration for the Anonymizer
 
-**Usage**: `anonymize:config [-p|--path PATH] [--user-id USER-ID] [--file FILE] [--ignore-table IGNORE-TABLE] [--ignore-field IGNORE-FIELD]`
+**Usage**: `anonymize:config [-p|--path PATH] [--user-id USER-ID] [-f|--file FILE] [-T|--ignore-table IGNORE-TABLE] [-F|--ignore-field IGNORE-FIELD]`
 
+Generate a full yaml configuration file for all tables found in the SugarCRM instance database.
+It guesses the transformations to apply based on the SugarCRM metadata.
+* **Dropdown:** Get the list of values from the vardefs
+* **Known column name:** Uses the right generation method (example .*_city = city)
+* **DB type:** Exemple: varchar = sentence
+
+To actually anonymize the data, run the `anonymize:run` command with the generated configuration file
+You can also modify the file for your need before running the command.
+
+**Example:**
+```
+guesser_version: 1.0.0
+entities:
+    accounts:
+        cols:
+            name: { method: company }
+            description: { method: sentence, params: [20] }
+            facebook: { method: url }
+            twitter: { method: url }
+            googleplus: { method: url }
+            account_type: { method: randomElement, params: [['', Analyst, Competitor, Customer, Integrator]] }
+            industry: { method: randomElement, params: [['', Apparel, Banking, Biotechnology, Chemicals]] }
+            annual_revenue: { method: randomNumber, params: [4] }
+            phone_fax: { method: phoneNumber }
+            billing_address_street: { method: streetAddress }
+            billing_address_city: { method: city }
+            billing_address_state: { method: state }
+            billing_address_postalcode: { method: postcode }
+            billing_address_country: { method: country }
+            rating: { method: sentence, params: [8] }
+            phone_office: { method: phoneNumber }
+            phone_alternate: { method: phoneNumber }
+            website: { method: url }
+....
+
+```
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
-* `    --file=FILE`	Path to the configuration file **[default: `../db/anonymization.yml`]**
-* `    --ignore-table=IGNORE-TABLE`	Table to ignore. Can be repeated **(multiple values allowed)**
-* `    --ignore-field=IGNORE-FIELD`	Field to ignore. Can be repeated **(multiple values allowed)**
+* `-f, --file=FILE`	Output configuration to this file **[default: `../db/anonymization.yml`]**
+* `-T, --ignore-table=IGNORE-TABLE`	Table to ignore **(multiple values allowed)**
+* `-F, --ignore-field=IGNORE-FIELD`	Field to ignore **(multiple values allowed)**
 
 anonymize:run
 -------------
 
 Run the Anonymizer
 
-**Usage**: `anonymize:run [-p|--path PATH] [--user-id USER-ID] [--file FILE] [--force] [--remove-deleted] [--clean-cstm] [--sql] [--table TABLE]`
+**Usage**: `anonymize:run [-p|--path PATH] [--user-id USER-ID] [-f|--file FILE] [--force] [--remove-deleted] [--clean-cstm] [--sql] [-t|--table TABLE]`
+
+Run the anonymization process base on the configuration file that can be generated
+with `anonymize:config`.
+
+**Be careful this command will overwrite the data directly in the database.**
+
+This command is useful to anonymize the data before giving the database to a developer or partner because:
+* It connects directly to the SugarCRM DB
+* It is able to generate a configuration file automatically, without destroying the system tables
+  (config / relationships, etc...)
+* It uses [Faker](https://github.com/fzaninotto/Faker) to generate a data that looks *almost* real
+
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
-* `    --file=FILE`	Path to the configuration file **[default: `../db/anonymization.yml`]**
+* `-f, --file=FILE`	Path to the configuration file **[default: `../db/anonymization.yml`]**
 * `    --force`	Run the queries
-* `    --remove-deleted`	Remove all records with deleted = 1. Won't be launched if --force is not set
-* `    --clean-cstm`	Clean all records in _cstm that are not in the main table. Won't be launched if --force is not set
-* `    --sql`	Display the SQL of UPDATE queries
-* `    --table=TABLE`	Anonymize only that table (repeat for multiple values) **(multiple values allowed)**
+* `    --remove-deleted`	Remove all records with `deleted = 1`, requires `--force` to be set
+* `    --clean-cstm`	Clean all records in _cstm that are not in the main table, requires `--force` to be set
+* `    --sql`	Display the SQL queries that would be run
+* `-t, --table=TABLE`	Anonymize only that table **(multiple values allowed)**
 
 backup:dump:all
 ---------------
@@ -278,16 +326,28 @@ code:button
 
 Add or delete a button in a module
 
-**Usage**: `code:button [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [-a|--action ACTION] [--name NAME] [-t|--type TYPE] [-j|--javascript]`
+**Usage**: `code:button [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [-a|--action ACTION] [-b|--name NAME] [-t|--type TYPE] [-j|--javascript]`
+
+Creates a new button in the record view menu for the module.
+Automatically add buttons, their label and the JS triggered by the button to views, from a name.
+
+The affected files are:
+* `custom/Extension/modules/<module>/Ext/Language/<current_lang>.php`
+* `custom/modules/<module>/clients/base/views/record/record.php`
+* `custom/modules/<module>/clients/base/views/record/record.js`
+
+The `--javascript` is experimental. If you do not already have a `record.js` file
+that should work well, else you have to check the generated file to make sure it didn't break anything.
+
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
-* `-m, --module=MODULE`	Module name.
+* `-m, --module=MODULE`	Module name
 * `-a, --action=ACTION`	Action: "add" / "delete" **[default: `add`]**
-* `    --name=NAME`	Button Name
+* `-b, --name=NAME`	Button Name
 * `-t, --type=TYPE`	For now only "dropdown" **[default: `dropdown`]**
-* `-j, --javascript`	[EXPERIMENTAL] Also create the JS
+* `-j, --javascript`	**[EXPERIMENTAL]** Also create the JS
 
 code:execute:file
 -----------------
@@ -295,6 +355,10 @@ code:execute:file
 Execute a php file using a SugarCRM loaded context
 
 **Usage**: `code:execute:file [-p|--path PATH] [--user-id USER-ID] [--] <file>`
+
+Execute a PHP file after first loading the sugarcrm environment. The script can directly use the classes
+and database from sugar. You can also set the `--user-id` from the command line to have another user
+than the default administrator.
 
 ### Arguments
 * `file`	PHP file to execute
@@ -309,6 +373,9 @@ code:setupcomposer
 Check that composer is setup to be used with SugarCRM
 
 **Usage**: `code:setupcomposer [-p|--path PATH] [--do] [-r|--reinstall] [--no-quickrepair]`
+
+Create a new Util to use composer's autoloader and create a composer.json file
+that contains, by default, libsugarcrm autoloaded for Unit Tests.
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation
@@ -360,26 +427,28 @@ Export mysql tables as csv files
 extract:fields
 --------------
 
-Create a CSV that contains fields and relationships definition for any module
-                         defined by --module to SugarCRM
+Export fields and relationships definitions to CSV files
 
 **Usage**: `extract:fields [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [--lang LANG]`
 
-This command will extract the fields list for any module of SugarCRM
-Usage: ./bin/console `extract:fields --module Accounts`
+Extract all fields and relationships defined for a module with their parameters (label, dropdown list, dbType, ...)
+and write the data to 2 CSV files.
+
+**Example:**
+    `sugarcli extract:fields --module Accounts`
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
-* `-m, --module=MODULE`	Module's name.
-* `    --lang=LANG`	SugarCRM Language **[default: `fr_FR`]**
+* `-m, --module=MODULE`	Module's name
+* `    --lang=LANG`	SugarCRM Language **[default: `en_us`]**
 
 hooks:list
 ----------
 
 List hooks of the SugarCRM instance
 
-**Usage**: `hooks:list [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [--compact]`
+**Usage**: `hooks:list [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [-c|--compact]`
 
 List the hooks defined for the module. For each hook display the following information:
 
@@ -394,7 +463,7 @@ List the hooks defined for the module. For each hook display the following infor
 * `-p, --path=PATH`	Path to SugarCRM installation
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
 * `-m, --module=MODULE`	List hooks from this module
-* `    --compact`	Activate compact mode output
+* `-c, --compact`	Activate compact mode output
 
 install:check
 -------------

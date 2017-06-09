@@ -32,11 +32,25 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
     {
         $this->setName('anonymize:run')
             ->setDescription('Run the Anonymizer')
+            ->setHelp(<<<EOHELP
+Run the anonymization process base on the configuration file that can be generated
+with <info>anonymize:config</info>.
+
+<comment>Be careful this command will overwrite the data directly in the database.</comment>
+
+This command is useful to anonymize the data before giving the database to a developer or partner because:
+* It connects directly to the SugarCRM DB
+* It is able to generate a configuration file automatically, without destroying the system tables
+  (config / relationships, etc...)
+* It uses [Faker](https://github.com/fzaninotto/Faker) to generate a data that looks *almost* real
+
+EOHELP
+            )
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addOption(
                 'file',
-                null,
+                'f',
                 InputOption::VALUE_REQUIRED,
                 'Path to the configuration file',
                 '../db/anonymization.yml'
@@ -49,22 +63,22 @@ class AnonymizeRunCommand extends AbstractConfigOptionCommand
                 'remove-deleted',
                 null,
                 InputOption::VALUE_NONE,
-                "Remove all records with deleted = 1. Won't be launched if --force is not set"
+                "Remove all records with <info>deleted = 1</info>, requires <info>--force</info> to be set"
             )->addOption(
                 'clean-cstm',
                 null,
                 InputOption::VALUE_NONE,
-                "Clean all records in _cstm that are not in the main table. Won't be launched if --force is not set"
+                "Clean all records in _cstm that are not in the main table, requires <info>--force</info> to be set"
             )->addOption(
                 'sql',
                 null,
                 InputOption::VALUE_NONE,
-                'Display the SQL of UPDATE queries'
+                'Display the SQL queries that would be run'
             )->addOption(
                 'table',
-                null,
+                't',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Anonymize only that table (repeat for multiple values)'
+                'Anonymize only that table'
             );
     }
 

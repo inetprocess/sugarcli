@@ -91,24 +91,62 @@ class AnonymizeConfigCommand extends AbstractConfigOptionCommand
     {
         $this->setName('anonymize:config')
             ->setDescription('Generate a configuration for the Anonymizer')
+            ->setHelp(<<<EOHELP
+Generate a full yaml configuration file for all tables found in the SugarCRM instance database.
+It guesses the transformations to apply based on the SugarCRM metadata.
+* <comment>Dropdown:</comment> Get the list of values from the vardefs
+* <comment>Known column name:</comment> Uses the right generation method (example .*_city = city)
+* <comment>DB type:</comment> Exemple: varchar = sentence
+
+To actually anonymize the data, run the <info>anonymize:run</info> command with the generated configuration file
+You can also modify the file for your need before running the command.
+
+<comment>Example:</comment>
+<info>
+guesser_version: 1.0.0
+entities:
+    accounts:
+        cols:
+            name: { method: company }
+            description: { method: sentence, params: [20] }
+            facebook: { method: url }
+            twitter: { method: url }
+            googleplus: { method: url }
+            account_type: { method: randomElement, params: [['', Analyst, Competitor, Customer, Integrator]] }
+            industry: { method: randomElement, params: [['', Apparel, Banking, Biotechnology, Chemicals]] }
+            annual_revenue: { method: randomNumber, params: [4] }
+            phone_fax: { method: phoneNumber }
+            billing_address_street: { method: streetAddress }
+            billing_address_city: { method: city }
+            billing_address_state: { method: state }
+            billing_address_postalcode: { method: postcode }
+            billing_address_country: { method: country }
+            rating: { method: sentence, params: [8] }
+            phone_office: { method: phoneNumber }
+            phone_alternate: { method: phoneNumber }
+            website: { method: url }
+....
+</info>
+EOHELP
+            )
             ->enableStandardOption('path')
             ->enableStandardOption('user-id')
             ->addOption(
                 'file',
-                null,
+                'f',
                 InputOption::VALUE_REQUIRED,
-                'Path to the configuration file',
+                'Output configuration to this file',
                 '../db/anonymization.yml'
             )->addOption(
                 'ignore-table',
-                null,
+                'T',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Table to ignore. Can be repeated'
+                'Table to ignore'
             )->addOption(
                 'ignore-field',
-                null,
+                'F',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
-                'Field to ignore. Can be repeated'
+                'Field to ignore'
             );
     }
 
