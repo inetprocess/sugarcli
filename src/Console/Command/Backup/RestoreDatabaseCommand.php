@@ -95,6 +95,9 @@ class RestoreDatabaseCommand extends AbstractConfigOptionCommand
             $output->writeln($mysql_proc->getCommandLine());
             return ExitCode::EXIT_SUCCESS;
         }
+        // Run in bash to have the pipefail error
+        $mysql_proc->setInput($mysql_proc->getCommandLine());
+        $mysql_proc->setCommandLine('/bin/bash -o pipefail -o xtrace');
         $helper = $this->getHelper('process');
         $helper->mustRun($output, $mysql_proc);
         $output->writeln("SugarCRM data loaded into database");

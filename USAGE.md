@@ -240,6 +240,7 @@ See help of commands `backup:dump:database` and `backup:dump:files` for more inf
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
+* `    --keep-defaults-file`	Do not delete the credantials file after completion
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
 * `-D, --ignore-for-dev`	Ignore tables not useful for a dev environement
 * `-U, --ignore-upload`	Ignore files in upload/ folder and `*-restore`
@@ -250,7 +251,7 @@ backup:dump:database
 
 Create a backup file of SugarCRM database
 
-**Usage**: `backup:dump:database [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [-T|--ignore-table IGNORE-TABLE] [-D|--ignore-for-dev]`
+**Usage**: `backup:dump:database [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [--keep-defaults-file] [-T|--ignore-table IGNORE-TABLE] [-D|--ignore-for-dev]`
 
 Backup the SugarCRM database in to a compressed SQL dump.
 The prefix can be set in the configuration file `.sugarclirc` like this:
@@ -279,6 +280,7 @@ The tables not dumped with `--ignore-for-dev` are:
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
+* `    --keep-defaults-file`	Do not delete the credantials file after completion
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
 * `-D, --ignore-for-dev`	Ignore tables not useful for a dev environement
 

@@ -81,6 +81,12 @@ EOHELP
                 )
             )
             ->addOption(
+                'keep-defaults-file',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not delete the credantials file after completion'
+            )
+            ->addOption(
                 'ignore-table',
                 'T',
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
@@ -101,6 +107,7 @@ EOHELP
         // Get SugarCRM Config
         $sugar_app = $this->getService('sugarcrm.application');
         $this->temp_file = Utils::createTempMySQLDefaultFileFromSugarConfig($sugar_app);
+        $this->temp_file->setUnlinkOnDestruct(!$input->getOption('keep-defaults-file'));
         $sugar_config = $sugar_app->getSugarConfig();
         $db_name = $sugar_config['dbconfig']['db_name'];
 
@@ -161,6 +168,9 @@ EOHELP
             $output->writeln($mysqldump_proc->getCommandLine());
             return ExitCode::EXIT_SUCCESS;
         }
+        // Run in bash to have the pipefail error
+        $mysqldump_proc->setInput($mysqldump_proc->getCommandLine());
+        $mysqldump_proc->setCommandLine('/bin/bash -o pipefail -o xtrace');
         $helper = $this->getHelper('process');
         $helper->mustRun($output, $mysqldump_proc);
         $output->writeln("SugarCRM database backed up in file '$dump_fullpath'");

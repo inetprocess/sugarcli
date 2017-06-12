@@ -1,6 +1,12 @@
 Changelog
 =========
 
+1.16.1
+----
+* Error in piped commands are now catched
+* Add option to keep credentials file after the command
+* Fix wrong generation of mysql defaults file
+
 1.16.0
 ----
 * Add command `backup:dump:all`

@@ -17,6 +17,8 @@ namespace SugarCli\Utils;
 
 class TempFile extends \SplFileInfo
 {
+    protected $unlink_on_destruct = true;
+
     public function __construct($prefix = 'php', $content = null, $dir = null)
     {
         if ($dir === null) {
@@ -29,9 +31,19 @@ class TempFile extends \SplFileInfo
         parent::__construct($filename);
     }
 
+    public function getUnlinkOnDestruct()
+    {
+        return $this->unlink_on_destruct;
+    }
+
+    public function setUnlinkOnDestruct($unlink = true)
+    {
+        $this->unlink_on_destruct = $unlink;
+    }
+
     public function __destruct()
     {
-        if (file_exists($this->getPathname())) {
+        if ($this->getUnlinkOnDestruct() && file_exists($this->getPathname())) {
             unlink($this->getPathname());
         }
     }

@@ -82,6 +82,27 @@ EOPHP;
             ));
     }
 
+    /**
+     * @expectedException Symfony\Component\Process\Exception\ProcessFailedException
+     * @expectedExceptionMessage The command "/bin/bash -o pipefail -o xtrace" failed.
+     */
+    public function testPipeFailure()
+    {
+        $config = array(
+            'dbconfig' => array(
+                'db_type' => 'mysql',
+                'db_username' => 'unknown',
+                'db_password' => 'unknown',
+            ),
+        );
+        $this->setUpFakeDBSugar($config);
+        $ret = $this->getCommandTester(self::$cmd_name)
+            ->execute(array(
+                '--path' => $this->getSugarPath(),
+                '--prefix' => 'test',
+            ));
+    }
+
     public function commandLineProvider()
     {
         $db_name = getenv('SUGARCLI_DB_NAME');

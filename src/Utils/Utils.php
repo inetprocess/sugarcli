@@ -73,7 +73,7 @@ class Utils
         if ($dbconfig['db_type'] != 'mysql') {
             throw new \InvalidArgumentException("Database of type '{$dbconfig['db_type']}' is not supported");
         }
-        $conf[] = "[mysql]";
+        $conf[] = "[client]";
         $params = array(
             'db_user_name' => 'user',
             'db_password' => 'password',

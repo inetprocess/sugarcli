@@ -70,6 +70,20 @@ class RestoreRestoreCommandTest extends CommandTestCase
             ));
     }
 
+    /**
+     * @expectedException Symfony\Component\Process\Exception\ProcessFailedException
+     * @expectedExceptionMessage The command "/bin/bash -o pipefail -o xtrace" failed.
+     */
+    public function testPipeFailure()
+    {
+        $ret = $this->getCommandTester(self::$cmd_name)
+            ->execute(array(
+                '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+                '--archive' => __FILE__,
+                '--compression' => 'gzip',
+            ));
+    }
+
     public function commandLineProvider()
     {
         $prefix = "'--stdout' '--decompress' '" . $this->getArchiveFile() . "' | "
