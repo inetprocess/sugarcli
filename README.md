@@ -2,7 +2,7 @@
 SugarCli is a command line tool to install and manage SugarCRM installations.
 
 
-# Installing
+# Install
 Get the latest phar archive at `https://getsugarcli.inetprocess.fr/sugarcli.phar`. Allow the execution and run it.
 ```
 wget 'https://getsugarcli.inetprocess.fr/sugarcli.phar'
@@ -13,7 +13,7 @@ chmod +x ./sugarcli.phar
 Or clone this git repository and use `./bin/sugarcli`.
 
 
-# Building
+# Build
 Clone the git repository and run
 ```sh
 composer install --no-dev --quiet -o
@@ -42,6 +42,8 @@ metadata:
     file: FILE          #Path to the metadata file relative to the configuration file
 account:
     name: ACCOUNT_NAME  #Name of the account
+backup:
+    prefix: PREFIX      #Prefix to prepend to name of archive file when creating backups
 ```
 
 

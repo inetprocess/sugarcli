@@ -16,6 +16,7 @@ Commands list
 * [backup:dump:all](#backupdumpall)
 * [backup:dump:database](#backupdumpdatabase)
 * [backup:dump:files](#backupdumpfiles)
+* [backup:restore:all](#backuprestoreall)
 * [backup:restore:database](#backuprestoredatabase)
 * [backup:restore:files](#backuprestorefiles)
 
@@ -189,8 +190,8 @@ entities:
 
 ```
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-f, --file=FILE`	Output configuration to this file **[default: `../db/anonymization.yml`]**
 * `-T, --ignore-table=IGNORE-TABLE`	Table to ignore **(multiple values allowed)**
 * `-F, --ignore-field=IGNORE-FIELD`	Field to ignore **(multiple values allowed)**
@@ -215,8 +216,8 @@ This command is useful to anonymize the data before giving the database to a dev
 
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-f, --file=FILE`	Path to the configuration file **[default: `../db/anonymization.yml`]**
 * `    --force`	Run the queries
 * `    --remove-deleted`	Remove all records with `deleted = 1`, requires `--force` to be set
@@ -231,16 +232,18 @@ Create backups of files and database of SugarCRM
 
 **Usage**: ``
 
+See help of commands `backup:dump:database` and `backup:dump:files` for more information.
+
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
-* `-P, --prefix=PREFIX`	Prepend to the archive name
+* `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
-* `-U, --ignore-upload`	Ignore files in upload/ folder and `*-restore`
-* `-C, --ignore-cache`	Ignore cache folder
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
 * `-D, --ignore-for-dev`	Ignore tables not useful for a dev environement
+* `-U, --ignore-upload`	Ignore files in upload/ folder and `*-restore`
+* `-C, --ignore-cache`	Ignore cache folder
 
 backup:dump:database
 --------------------
@@ -249,13 +252,31 @@ Create a backup file of SugarCRM database
 
 **Usage**: `backup:dump:database [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [-T|--ignore-table IGNORE-TABLE] [-D|--ignore-for-dev]`
 
-Create a backup file of SugarCRM database
-Creates a compressed tar archive
+Backup the SugarCRM database in to a compressed SQL dump.
+The prefix can be set in the configuration file `.sugarclirc` like this:
+```
+backup:
+    prefix: my_prefix
+
+```
+The tables not dumped with `--ignore-for-dev` are:
+* `activities`
+* `activities_users`
+* `fts_queue`
+* `inbound_email`
+* `job_queue`
+* `outbound_email`
+* `tracker`
+* `tracker_perf`
+* `tracker_queries`
+* `tracker_sessions`
+* `tracker_tracker_queries`
+
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
-* `-P, --prefix=PREFIX`	Prepend to the archive name
+* `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
@@ -268,14 +289,40 @@ Create a backup archive of SugarCRM files
 
 **Usage**: `backup:dump:files [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [-U|--ignore-upload] [-C|--ignore-cache]`
 
+Backup the SugarCRM files in to a compressed tar archive.
+
+The prefix can be set in the configuration file `.sugarclirc` like this:
+```
+backup:
+    prefix: my_prefix
+
+```
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
-* `-P, --prefix=PREFIX`	Prepend to the archive name
+* `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
 * `-U, --ignore-upload`	Ignore files in upload/ folder and `*-restore`
 * `-C, --ignore-cache`	Ignore cache folder
+
+backup:restore:all
+------------------
+
+Restore both the database and files of a SugarCRM instance
+
+**Usage**: ``
+
+Restore a complete SugarCRM instance from archive files.
+The `--archive` file must point to the files dump and the database dump must start with the same name.
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-c, --compression=COMPRESSION`	Set the compression algorithm. By default it is guessed from file extention. Valid values are (gzip|bzip2).
+* `    --dry-run`	Do not run the command only print the tar command
+* `-a, --archive=ARCHIVE`	Dump file to extract
+* `    --overwrite`	Overwrite files in place if it already exists.
+* `-f, --force`	Force import even errors are encountered
 
 backup:restore:database
 -----------------------
@@ -285,7 +332,7 @@ Restore a database from a previous backup
 **Usage**: `backup:restore:database [-p|--path PATH] [-c|--compression COMPRESSION] [--dry-run] [-a|--archive ARCHIVE] [-f|--force]`
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. By default it is guessed from file extention. Valid values are (gzip|bzip2).
 * `    --dry-run`	Do not run the command only print the tar command
 * `-a, --archive=ARCHIVE`	Dump file to extract
@@ -299,7 +346,7 @@ Restore files from a previous backup
 **Usage**: `backup:restore:files [-p|--path PATH] [-c|--compression COMPRESSION] [--dry-run] [-a|--archive ARCHIVE] [--overwrite]`
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. By default it is guessed from file extention. Valid values are (gzip|bzip2).
 * `    --dry-run`	Do not run the command only print the tar command
 * `-a, --archive=ARCHIVE`	Dump file to extract
@@ -317,7 +364,7 @@ Makes it easier for VCS programs to track real changes and avoid conflicts.
 It is recommended to have a clean working directory before executing this command.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --no-sort`	Do not sort the files contents. It will still remove duplicates. Useful for testing
 * `-t, --test`	Try to rewrite the files without modifying the contents, imply `--no-sort`, useful to make sure the parsing is working correctly
 
@@ -341,8 +388,8 @@ that should work well, else you have to check the generated file to make sure it
 
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-m, --module=MODULE`	Module name
 * `-a, --action=ACTION`	Action: "add" / "delete" **[default: `add`]**
 * `-b, --name=NAME`	Button Name
@@ -364,8 +411,8 @@ than the default administrator.
 * `file`	PHP file to execute
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 
 code:setupcomposer
 ------------------
@@ -378,7 +425,7 @@ Create a new Util to use composer's autoloader and create a composer.json file
 that contains, by default, libsugarcrm autoloaded for Unit Tests.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --do`	Create the files
 * `-r, --reinstall`	Reinstall the files
 * `    --no-quickrepair`	Do not launch a Quick Repair
@@ -391,8 +438,8 @@ Remove deleted records as well as data in audit and lost records in _cstm tables
 **Usage**: `database:clean [-p|--path PATH] [--user-id USER-ID] [--remove-deleted] [--clean-cstm] [--clean-history] [--clean-activities] [--table TABLE]`
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `    --remove-deleted`	Remove all records with deleted = 1. Won't be launched if --force is not set
 * `    --clean-cstm`	Clean all records in _cstm that are not in the main table. Won't be launched if --force is not set
 * `    --clean-history`	Clean *_audit, job_queue and trackers
@@ -410,7 +457,7 @@ Export mysql tables as csv files
 * `database`	Database to use for the export.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --no-sugar`	Do not use sugar database credentials
 * `-u, --db-user=DB-USER`	Database user name.
 * `-P, --db-password=DB-PASSWORD`	Database password.
@@ -438,8 +485,8 @@ and write the data to 2 CSV files.
     `sugarcli extract:fields --module Accounts`
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-m, --module=MODULE`	Module's name
 * `    --lang=LANG`	SugarCRM Language **[default: `en_us`]**
 
@@ -460,8 +507,8 @@ List the hooks defined for the module. For each hook display the following infor
 * **Defined In**	File where the hook is configured
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-m, --module=MODULE`	List hooks from this module
 * `-c, --compact`	Activate compact mode output
 
@@ -477,7 +524,7 @@ Return code is `11` if Sugar is not extracted.
 Return code is `12` if Sugar is not installed.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 
 install:config:get
 ------------------
@@ -515,7 +562,7 @@ It will use the `--config` option to use for the installation.
 Use `-v` or `-vv` to make the output more verbose.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-u, --url=URL`	**[DEPRECATED]** This option does nothing and is only kept for backward compatibility
 * `-f, --force`	Force the installer to remove the target directory if present
 * `-s, --source=SOURCE`	Path to SugarCRM installation package **[default: `sugar.zip`]**
@@ -537,8 +584,8 @@ Sends all facts gathered on the system and the SugarCRM instance to an Inventory
 
 ### Options
 * `-F, --custom-fact=CUSTOM-FACT`	Add or override facts **Format: path.to.fact:value** **(multiple values allowed)**
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `-a, --account-name=ACCOUNT-NAME`	Name of the account
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-a, --account-name=ACCOUNT-NAME`	Name of the account **[config: account.name]**
 
 inventory:facter
 ----------------
@@ -556,7 +603,7 @@ Use the `--format` option to specify your prefered output format.
 
 ### Options
 * `-F, --custom-fact=CUSTOM-FACT`	Add or override facts **Format: path.to.fact:value** **(multiple values allowed)**
-* `-p, --path=PATH`	Path to SugarCRM installation
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-f, --format=FORMAT`	Specify the output format **(json|yml|xml)** **[default: `yml`]**
 
 metadata:dumptofile
@@ -582,8 +629,8 @@ Only apply modifications for the status_c field in the Accounts module:
 * `fields`	Filter the command to only apply to this list of fields
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `-m, --metadata-file=METADATA-FILE`	Path to the metadata file **[default: `<SUGAR_PATH>/../db/fields_meta_data.yaml`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --metadata-file=METADATA-FILE`	Path to the metadata file **[config: metadata.file]** **[default: `<SUGAR_PATH>/../db/fields_meta_data.yaml`]**
 * `-a, --add`	Add new fields from the DB to the definition file
 * `-d, --del`	Delete fields not present in the DB from the metadata file
 * `-u, --update`	Update the metadata file for modified fields in the DB
@@ -612,8 +659,8 @@ Only apply modifications for the `status_c` field in the `Accounts` module:
 * `fields`	Filter the command to only apply to this list of fields
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `-m, --metadata-file=METADATA-FILE`	Path to the metadata file **[default: `<SUGAR_PATH>/../db/fields_meta_data.yaml`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --metadata-file=METADATA-FILE`	Path to the metadata file **[config: metadata.file]** **[default: `<SUGAR_PATH>/../db/fields_meta_data.yaml`]**
 * `-s, --sql`	Print the sql queries that would have been executed
 * `-f, --force`	Really execute the SQL queries to modify the database
 * `-a, --add`	Add new fields from the file to the DB
@@ -634,8 +681,8 @@ Use the commands `metadata:loadfromfile` or `metadata:dumptofile` to update the 
 or the reference file.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `-m, --metadata-file=METADATA-FILE`	Path to the metadata file **[default: `<SUGAR_PATH>/../db/fields_meta_data.yaml`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --metadata-file=METADATA-FILE`	Path to the metadata file **[config: metadata.file]** **[default: `<SUGAR_PATH>/../db/fields_meta_data.yaml`]**
 
 rels:dumptofile
 ---------------
@@ -647,8 +694,8 @@ Dump the contents of the table relationships for db migrations
 Manage the of the dump file based on the relationships table.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --file=FILE`	Path to the rels file. **[default: `<SUGAR_PATH>/../db/relationships.yaml`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --file=FILE`	Path to the rels file. **[config: rels.file]** **[default: `<SUGAR_PATH>/../db/relationships.yaml`]**
 * `-a, --add`	Add new relationships from the DB to the definition file.
 * `-d, --del`	Delete relationships not present in the DB
 * `-u, --update`	Update the relationships in the DB.
@@ -665,8 +712,8 @@ Will not do anything by default. Use --force to actually
 execute sql queries to impact the database.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --file=FILE`	Path to the rels file. **[default: `<SUGAR_PATH>/../db/relationships.yaml`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --file=FILE`	Path to the rels file. **[config: rels.file]** **[default: `<SUGAR_PATH>/../db/relationships.yaml`]**
 * `-s, --sql`	Print the sql queries that would have been executed.
 * `-f, --force`	Really execute the SQL queries to modify the database.
 * `-a, --add`	Add new fields from the file to the DB.
@@ -681,8 +728,8 @@ Show the state of the relationships table compared to the dump file
 **Usage**: `rels:status [-p|--path PATH] [--file FILE]`
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --file=FILE`	Path to the rels file. **[default: `<SUGAR_PATH>/../db/relationships.yaml`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --file=FILE`	Path to the rels file. **[config: rels.file]** **[default: `<SUGAR_PATH>/../db/relationships.yaml`]**
 
 system:quickrepair
 ------------------
@@ -702,8 +749,8 @@ the cache folder and compiled files from the Extension framework, namely `custom
 and `custom/modules/*/Ext`.
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `    --no-database`	Do not check for database changes
 * `-f, --force`	Really execute the SQL queries (displayed by using -d)
 * `-r, --rm-cache`	Remove the cache folder and all it's contents before the repair
@@ -716,8 +763,8 @@ List users in the SugarCRM instance
 **Usage**: `user:list [-p|--path PATH] [--user-id USER-ID] [-u|--username USERNAME] [-f|--format FORMAT] [-F|--fields FIELDS] [-l|--lang LANG] [-r|--raw]`
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-u, --username=USERNAME`	List only this user
 * `-f, --format=FORMAT`	Output format **(text|json|yml|xml)** **[default: `text`]**
 * `-F, --fields=FIELDS`	Comma sperated list of fields to display **[default: `id,user_name,is_admin,status,first_name,last_name`]**
@@ -747,8 +794,8 @@ Disable a user:
 * `username`	Login of the user
 
 ### Options
-* `-p, --path=PATH`	Path to SugarCRM installation
-* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[default: `1`]**
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-c, --create`	Create the user instead of updating it, optional if called with `user:create`
 * `-f, --first-name=FIRST-NAME`	Set first name
 * `-l, --last-name=LAST-NAME`	Set last name

@@ -82,6 +82,8 @@ class Application extends BaseApplication
       file: FILE             </info>Path to the metadata file relative to the configuration file<info>
   account:
       name: ACCOUNT_NAME     </info>Name of the account<info>
+  backup:
+      prefix: PREFIX         </info>Prefix to prepend to name of archive file when creating backups</info>
   </info>
 EOF;
     }

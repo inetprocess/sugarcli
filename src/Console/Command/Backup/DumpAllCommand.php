@@ -15,6 +15,10 @@ class DumpAllCommand extends CompoundCommand
     {
         $this->setName('backup:dump:all')
             ->setDescription('Create backups of files and database of SugarCRM')
+            ->setHelp(<<<EOHELP
+See help of commands <info>backup:dump:database</info> and <info>backup:dump:files</info> for more information.
+EOHELP
+            )
             ->setSubCommands(array(
                 'backup:dump:database',
                 'backup:dump:files',

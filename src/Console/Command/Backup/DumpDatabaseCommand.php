@@ -58,7 +58,28 @@ class DumpDatabaseCommand extends AbstractConfigOptionCommand
         Common::addCommonDumpOptions($this, self::$compression_formats);
         $this->setName('backup:dump:database')
             ->setDescription('Create a backup file of SugarCRM database')
-            ->setHelp($this->getDescription() . PHP_EOL . 'Creates a compressed tar archive')
+            ->setHelp(
+                <<<EOHELP
+Backup the SugarCRM database in to a compressed SQL dump.
+The prefix can be set in the configuration file <info>.sugarclirc</info> like this:
+<info>
+backup:
+    prefix: my_prefix
+</info>
+
+The tables not dumped with <info>--ignore-for-dev</info> are:
+
+EOHELP
+                . implode(
+                    '',
+                    array_map(
+                        function ($table) {
+                            return '* <info>' . $table . '</info>' . PHP_EOL;
+                        },
+                        self::$dev_ignored_tables
+                    )
+                )
+            )
             ->addOption(
                 'ignore-table',
                 'T',

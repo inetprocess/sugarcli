@@ -43,6 +43,17 @@ class DumpFilesCommand extends AbstractConfigOptionCommand
         Common::addCommonDumpOptions($this, self::$compression_formats);
         $this->setName('backup:dump:files')
             ->setDescription('Create a backup archive of SugarCRM files')
+            ->setHelp(
+                <<<EOHELP
+Backup the SugarCRM files in to a compressed tar archive.
+
+The prefix can be set in the configuration file <info>.sugarclirc</info> like this:
+<info>
+backup:
+    prefix: my_prefix
+</info>
+EOHELP
+            )
             ->addOption(
                 'ignore-upload',
                 'U',

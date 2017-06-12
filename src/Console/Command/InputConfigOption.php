@@ -46,6 +46,11 @@ class InputConfigOption extends InputOption
         return $this->callback;
     }
 
+    public function getDescription()
+    {
+        return parent::getDescription() . ' <comment>[config: ' . $this->getConfigPath() . ']</comment>';
+    }
+
     public function __construct(
         $config_path,
         $name,
