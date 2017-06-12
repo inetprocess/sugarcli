@@ -1,7 +1,7 @@
 Changelog
 =========
 
-(unreleased)
+1.16.0
 ----
 * Add command `backup:dump:all`
 * Add command `backup:dump:database`
