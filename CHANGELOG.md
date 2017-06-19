@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.16.3
+----
+* Fix issue with deprecation of `padraic/humbug_get_contents` and `self:update` command
+
 1.16.2
 ----
 * Protect mysql values in defaults file

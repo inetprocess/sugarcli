@@ -33,7 +33,8 @@
         "symfony/process": "^2.8",
         "symfony/stopwatch": "^2.8",
         "symfony/yaml": "^2.8",
-        "webmozart/path-util": "^2.3"
+        "webmozart/path-util": "^2.3",
+        "padraic/humbug_get_contents": "1.0.4"
     },
     "require-dev": {
         "phpunit/phpunit": "~4",
