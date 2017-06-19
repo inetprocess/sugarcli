@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.16.2
+----
+* Protect mysql values in defaults file
+
 1.16.1
 ----
 * Error in piped commands are now catched

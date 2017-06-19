@@ -82,7 +82,7 @@ class Utils
         );
         foreach ($params as $sugar_param => $mysql_param) {
             if (!empty($dbconfig[$sugar_param])) {
-                $conf[] = implode("=", array($mysql_param, $dbconfig[$sugar_param]));
+                $conf[] = sprintf("%s='%s'", $mysql_param, $dbconfig[$sugar_param]);
             }
         }
         return new TempFile('sugarcli_mysql_defaults.cnf.', implode("\n", $conf));
