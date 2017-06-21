@@ -82,6 +82,7 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
             $output->writeln("Exiting files have been moved to '$orig_path'");
         }
         $fs->mkdir($sugar_path, 0750);
+        $tar_proc->setTimeout(0);
         $helper = $this->getHelper('process');
         $helper->mustRun($output, $tar_proc);
         $output->writeln("SugarCRM files extracted to '$sugar_path'");

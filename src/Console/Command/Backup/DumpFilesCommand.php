@@ -200,6 +200,7 @@ EOHELP
             $output->writeln($tar_proc->getCommandLine());
             return ExitCode::EXIT_SUCCESS;
         }
+        $tar_proc->setTimeout(0);
         $helper = $this->getHelper('process');
         $helper->mustRun($output, $tar_proc);
         $output->writeln("SugarCRM files backed up in archive '$archive_fullpath'");

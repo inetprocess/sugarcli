@@ -1,6 +1,11 @@
 Changelog
 =========
 
+1.16.4
+----
+* Fix missing exception in pdo connection for `database:export:csv`
+* Disable timeout for `backup:*` commands
+
 1.16.3
 ----
 * Fix issue with deprecation of `padraic/humbug_get_contents` and `self:update` command

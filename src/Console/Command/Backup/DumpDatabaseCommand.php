@@ -171,6 +171,7 @@ EOHELP
         // Run in bash to have the pipefail error
         $mysqldump_proc->setInput($mysqldump_proc->getCommandLine());
         $mysqldump_proc->setCommandLine('/bin/bash -o pipefail -o xtrace');
+        $mysqldump_proc->setTimeout(0);
         $helper = $this->getHelper('process');
         $helper->mustRun($output, $mysqldump_proc);
         $output->writeln("SugarCRM database backed up in file '$dump_fullpath'");
