@@ -159,13 +159,12 @@ class ExportCSV extends Command
                 . $input->getOption('path') . '.'
             );
             $this->db = $this->getService('sugarcrm.pdo');
-            return;
         } else {
             $db_config = $this->getDBParameters($input);
             $logger->info('Connecting to the DB with the following parameters: ' .$db_config['dsn']);
             $this->db = new \PDO($db_config['dsn'], $db_config['user'], $db_config['password']);
-            $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
         }
+        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
 
     protected function listTables()
