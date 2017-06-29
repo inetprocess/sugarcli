@@ -53,9 +53,15 @@ class Config implements ConfigurationInterface
     {
         $yaml = new Parser();
         $parsed_confs = array();
+        $found_files = array();
         foreach ($this->config_files as $conf) {
             if (is_readable($conf)) {
-                $parsed_conf = $yaml->parse(file_get_contents($conf));
+                $found_files[] = $conf;
+                try {
+                    $parsed_conf = $yaml->parse(file_get_contents($conf));
+                } catch (\Exception $e) {
+                    throw new \RuntimeException('Unable to read configuration file "'.$conf.'"', 0, $e);
+                }
                 // Change sugarcrm.path to a relative path from the configfile and current directory.
                 if (isset($parsed_conf['sugarcrm']['path'])) {
                     $parsed_conf['sugarcrm']['path'] = $this->getRelativePath($conf, $parsed_conf['sugarcrm']['path']);
@@ -70,9 +76,18 @@ class Config implements ConfigurationInterface
             }
         }
         //Validate and merge configuration.
-        $processor = new Processor();
-        $this->config_data = $processor->processConfiguration($this, $parsed_confs);
-        $this->loaded = true;
+        try {
+            $processor = new Processor();
+            $this->config_data = $processor->processConfiguration($this, $parsed_confs);
+            $this->loaded = true;
+        } catch (\Exception $e) {
+            $msg = 'Error while parsing the configuration files. Please check the syntax.';
+            $msg .= "\n \nIncluded configuration files:";
+            foreach ($found_files as $f) {
+                $msg .= "\n * ".$f;
+            }
+            throw new \RuntimeException($msg, 0, $e);
+        }
     }
 
     public function isLoaded()
@@ -86,7 +101,7 @@ class Config implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $tree_builder = new TreeBuilder();
-        $tree_builder->root('sugarcli')
+        $tree_builder->root('ROOT')
             ->children()
                 ->arrayNode('sugarcrm')
                     ->children()

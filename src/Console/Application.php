@@ -206,15 +206,21 @@ EOF;
                 $message .= 'Catched output:' . PHP_EOL . $ob_out;
             }
             $e = new \RuntimeException($message);
-            $output = $app->getContainer()->get('console.output');
-            if ($output instanceof ConsoleOutputInterface) {
-                $app->renderException($e, $output->getErrorOutput());
-            } else {
-                $app->renderException($e, $output);
-            }
-            // Used to get 100% coverage on unit tests.
-            defined('PHPUNIT_SUGARCLI_TESTSUITE') || exit(ExitCode::EXIT_UNKNOWN_ERROR);
+            $app->exitWithException($e);
         }
+    }
+
+    public function exitWithException(\Exception $e)
+    {
+        $this->runOk = true;
+        $output = $this->getContainer()->get('console.output');
+        if ($output instanceof ConsoleOutputInterface) {
+            $this->renderException($e, $output->getErrorOutput());
+        } else {
+            $this->renderException($e, $output);
+        }
+        // Used to get 100% coverage on unit tests.
+        defined('PHPUNIT_SUGARCLI_TESTSUITE') || exit(ExitCode::EXIT_UNKNOWN_ERROR);
     }
 
     /**

@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.16.5
+----
+* Better error messages on configuration errors
+
 1.16.4
 ----
 * Fix missing exception in pdo connection for `database:export:csv`
