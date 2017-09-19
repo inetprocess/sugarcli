@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.16.6
+----
+* Update dependencies. Fixes from inetprocess/neuralizer
+
 1.16.5
 ----
 * Better error messages on configuration errors
