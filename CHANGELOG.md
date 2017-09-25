@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.16.7
+----
+* Update inetprocess/neuralizer
+
 1.16.6
 ----
 * Update dependencies. Fixes from inetprocess/neuralizer

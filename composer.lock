@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3c5d84bf67622870eb728dcd3b9bb4d",
+    "content-hash": "bfae5372ed4767b0c6738bc8629187db",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
@@ -186,6 +186,54 @@
                 "parser"
             ],
             "time": "2014-09-09T13:34:57+00:00"
+        },
+        {
+            "name": "edyan/neuralyzer",
+            "version": "v0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/edyan/neuralyzer.git",
+                "reference": "52021ed144cc399e92d95b00adb154855f0602a3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/edyan/neuralyzer/zipball/52021ed144cc399e92d95b00adb154855f0602a3",
+                "reference": "52021ed144cc399e92d95b00adb154855f0602a3",
+                "shasum": ""
+            },
+            "require": {
+                "fzaninotto/faker": "@stable",
+                "php": ">=5.3",
+                "symfony/config": "~2",
+                "symfony/console": "^2.8",
+                "symfony/stopwatch": "^2.8",
+                "symfony/yaml": "~2"
+            },
+            "require-dev": {
+                "phpunit/dbunit": "~1.3",
+                "phpunit/phpunit": "~4.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Inet\\Neuralyzer\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "Emmanuel Dyan",
+                    "email": "emmanuel.dyan@inetprocess.com"
+                }
+            ],
+            "description": "Library and CLI for Data anonymization",
+            "keywords": [
+                "anonymization"
+            ],
+            "time": "2017-09-25T09:57:49+00:00"
         },
         {
             "name": "fzaninotto/faker",
@@ -435,55 +483,6 @@
                 "sugarcrm"
             ],
             "time": "2017-06-07T15:04:23+00:00"
-        },
-        {
-            "name": "inetprocess/neuralyzer",
-            "version": "v0.13",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/edyan/neuralyzer.git",
-                "reference": "b5d2eb85e9144c0ac03bc99e1114cdbafe01cfb6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/edyan/neuralyzer/zipball/b5d2eb85e9144c0ac03bc99e1114cdbafe01cfb6",
-                "reference": "b5d2eb85e9144c0ac03bc99e1114cdbafe01cfb6",
-                "shasum": ""
-            },
-            "require": {
-                "fzaninotto/faker": "@stable",
-                "php": ">=5.3",
-                "symfony/config": "~2",
-                "symfony/console": "^2.8",
-                "symfony/stopwatch": "^2.8",
-                "symfony/yaml": "~2"
-            },
-            "require-dev": {
-                "phpunit/dbunit": "~1.3",
-                "phpunit/phpunit": "~4.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Inet\\Neuralyzer\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0"
-            ],
-            "authors": [
-                {
-                    "name": "Emmanuel Dyan",
-                    "email": "emmanuel.dyan@inetprocess.com"
-                }
-            ],
-            "description": "Library and CLI for Data anonymization",
-            "keywords": [
-                "anonymization"
-            ],
-            "abandoned": "edyan/neuralyzer",
-            "time": "2017-09-19T10:36:53+00:00"
         },
         {
             "name": "jms/metadata",
