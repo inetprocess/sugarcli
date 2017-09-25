@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.16.8
+----
+* Add vendor/edyan to phar build
+
 1.16.7
 ----
 * Update inetprocess/neuralizer

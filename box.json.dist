@@ -14,6 +14,7 @@
                 "vendor/composer",
                 "vendor/csanquer",
                 "vendor/doctrine",
+                "vendor/edyan",
                 "vendor/fzaninotto",
                 "vendor/guzzle",
                 "vendor/inetprocess",
