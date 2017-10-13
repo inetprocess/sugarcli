@@ -16,10 +16,11 @@
  * @link http://www.inetprocess.com
  */
 
-namespace SugarCli\Console\Command;
+namespace SugarCli\Console\Command\System;
 
 use Inet\SugarCRM\Application as SugarApp;
 use Inet\SugarCRM\System as SugarSystem;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -27,7 +28,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class SystemQuickRepairCommand extends AbstractConfigOptionCommand
+class QuickRepairCommand extends AbstractConfigOptionCommand
 {
     protected $messages = array();
     const SAFE_VERSION = '7.5.0.0';

@@ -1,6 +1,6 @@
 <?php
 
-namespace SugarCli\Tests\Console\Command;
+namespace SugarCli\Tests\Console\Command\System;
 
 use Inet\SugarCRM\Application as SugarApp;
 use SugarCli\Console\Command\SystemQuickRepairCommand;
@@ -12,7 +12,7 @@ use Symfony\Component\Filesystem\Filesystem;
 /**
  * @group sugarcrm-path
  */
-class SystemQuickRepairCommandTest extends CommandTestCase
+class QuickRepairCommandTest extends CommandTestCase
 {
 
     public function testOldSugar()
