@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.17.0
+----
+* Add `system:maintenance` command
+
 1.16.8
 ----
 * Add vendor/edyan to phar build

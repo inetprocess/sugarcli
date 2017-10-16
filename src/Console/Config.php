@@ -130,6 +130,15 @@ class Config implements ConfigurationInterface
                         ->scalarNode('prefix')->cannotBeEmpty()->end()
                     ->end()
                 ->end()
+                ->arrayNode('maintenance')
+                    ->children()
+                        ->scalarNode('page')->cannotBeEmpty()->end()
+                        ->arrayNode('allowed_ips')
+                            ->requiresAtLeastOneElement()
+                            ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
             ->end()
         ->end();
 

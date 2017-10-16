@@ -10,3 +10,8 @@ account:
     name: foo
 backup:
     prefix: Toto
+maintenance:
+    page: foo
+    allowed_ips:
+        - '10.8.9.9'
+        - '10.5.*'

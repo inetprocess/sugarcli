@@ -114,51 +114,44 @@ class ConfigTest extends \PHPUnit_Framework_TestCase
     public function yamlProvider()
     {
         $path = Util::getRelativePath(__DIR__ . '/yaml');
+        $complete_expected = array(
+            'sugarcrm' => array(
+                'path' => $path . '/toto',
+                'url' => 'titi',
+            ),
+            'metadata' => array(
+                'file' => $path . '/meta_file',
+            ),
+            'rels' => array(
+                'file' => $path . '/rels_file',
+            ),
+            'account' => array(
+                'name' => 'foo',
+            ),
+            'backup' => array(
+                'prefix' => 'Toto',
+            ),
+            'maintenance' => array(
+                'page' => 'foo',
+                'allowed_ips' => array(
+                    '10.8.9.9',
+                    '10.5.*',
+                ),
+            ),
+        );
+        $complete_override = $complete_expected;
+        $complete_override['sugarcrm']['url'] = 'bar';
         return array(
             // Set #0
             array(array(), array( 'empty.yaml')),
             // Set #1
             array(
-                array(
-                    'sugarcrm' => array(
-                        'path' => $path . '/toto',
-                        'url' => 'titi',
-                    ),
-                    'metadata' => array(
-                        'file' => $path . '/meta_file',
-                    ),
-                    'rels' => array(
-                        'file' => $path . '/rels_file',
-                    ),
-                    'account' => array(
-                        'name' => 'foo',
-                    ),
-                    'backup' => array(
-                        'prefix' => 'Toto',
-                    ),
-                ),
+                $complete_expected,
                 array('complete.yaml')
             ),
-            // Set #2
+            // Set #2, override parameters from complete
             array(
-                array(
-                    'sugarcrm' => array(
-                        'path' => $path . '/toto',
-                        'url' => 'bar',
-                    ),
-                    'metadata' => array(
-                        'file' => $path . '/meta_file',
-                    ),
-                    'rels' => array(
-                        'file' => $path . '/rels_file',
-                    ),
-                    'account' => array(
-                        'name' => 'foo',
-                    ),
-                    'backup' => array(
-                        'prefix' => 'Toto',
-                    ),
-                ),
+                $complete_override,
                 array('complete.yaml', 'partial.yaml')
             ),
         );

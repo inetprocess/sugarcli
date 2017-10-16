@@ -68,6 +68,7 @@ Commands list
 
 **system:**
 
+* [system:maintenance](#systemmaintenance)
 * [system:quickrepair](#systemquickrepair)
 
 **user:**
@@ -732,6 +733,21 @@ Show the state of the relationships table compared to the dump file
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --file=FILE`	Path to the rels file. **[config: rels.file]** **[default: `<SUGAR_PATH>/../db/relationships.yaml`]**
+
+system:maintenance
+------------------
+
+Disallow access to the CRM and show a maintenance page
+
+**Usage**: `system:maintenance [-p|--path PATH] [-a|--allowed-ip ALLOWED-IP] [-P|--page PAGE] [--] <action>`
+
+### Arguments
+* `action`	Set the maintenance page on or off **(on|off)**
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-a, --allowed-ip=ALLOWED-IP`	Ip allowed to bypass the maintenance page **[config: maintenance.allowed_ips]** **(multiple values allowed)**
+* `-P, --page=PAGE`	Page file or content to display for the maintenance **[config: maintenance.page]** **[default: `DEFAULT_PAGE`]**
 
 system:quickrepair
 ------------------

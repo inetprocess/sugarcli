@@ -36,14 +36,20 @@ Command line parameters will override these configurations.
 ```yaml
 ---
 sugarcrm:
-    path: PATH          #Path to Sugarcrm relative to the configuration file
-    user_id: USER_ID    #SugarCRM user id to impersonate when running the command
+    path: PATH              #Path to Sugarcrm relative to the configuration file
+    user_id: USER_ID        #SugarCRM user id to impersonate when running the command
 metadata:
-    file: FILE          #Path to the metadata file relative to the configuration file
+    file: FILE              #Path to the metadata file relative to the configuration file
 account:
-    name: ACCOUNT_NAME  #Name of the account
+    name: ACCOUNT_NAME      #Name of the account
 backup:
-    prefix: PREFIX      #Prefix to prepend to name of archive file when creating backups
+    prefix: PREFIX          #Prefix to prepend to name of archive file when creating backups
+maintenance:
+    page: FILE or CONTENT   #File name or content of maintenance page
+    allowed_ips:            #List of ips allowed to by-pass the maintenance page
+        - IP1
+        - IP2
+        - ...
 ```
 
 
@@ -65,3 +71,7 @@ __Available groups__:
 * sugarcrm-path
 * sugarcrm-url
 
+## Generate USAGE.md command documentation
+```
+bin/sugarcli list --format json | php bin/format_help.php  >| USAGE.md
+```
