@@ -5,6 +5,7 @@ namespace SugarCli\Console\Command\Backup;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Command\Command;
+use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
 class Common
 {
@@ -36,7 +37,7 @@ class Common
         return $compression;
     }
 
-    public static function addCommonDumpOptions(Command $cmd, $compression_formats)
+    public static function addCommonDumpOptions(AbstractConfigOptionCommand $cmd, $compression_formats)
     {
         $compression_values = implode('|', array_keys($compression_formats));
         $cmd->enableStandardOption('path')
@@ -72,7 +73,7 @@ class Common
             ;
     }
 
-    public static function addCommonRestoreOptions(Command $cmd, $compression_formats)
+    public static function addCommonRestoreOptions(AbstractConfigOptionCommand $cmd, $compression_formats)
     {
         $compression_values = implode('|', array_keys($compression_formats));
         $cmd->enableStandardOption('path')

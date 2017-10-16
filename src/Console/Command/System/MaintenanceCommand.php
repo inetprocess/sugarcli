@@ -109,7 +109,7 @@ EOF;
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $action = strtolower($input->getArgument('action'));
-        if ($action !== 'on' and $action !== 'off') {
+        if ($action !== 'on' && $action !== 'off') {
             throw new \InvalidArgumentException("Unknown action argument '$action'. Possible values are 'on' or 'off'");
         }
         $path = $input->getOption('path');

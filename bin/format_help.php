@@ -2,7 +2,6 @@
 
 require_once(__DIR__ . '/../vendor/autoload.php');
 
-/* var_export($help); */
 $default_options = array(
     'help',
     'quiet',
