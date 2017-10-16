@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.17.1
+----
+* Make the `system:maintenance` command accept file instead of content
+
 1.17.0
 ----
 * Add `system:maintenance` command

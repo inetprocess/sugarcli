@@ -82,6 +82,10 @@ EOHELP
 
     protected function generateHtaccessConfig($page, array $ips)
     {
+        # Max path length on linux is 4096. Bigger than can only be page content
+        if (count($page) <= 4096 && is_file($page)) {
+            $page = file_get_contents($page);
+        }
         $escaped_page = str_replace(
             array("\r", "\n", '"'),
             array('', "\\\n", "'"),

@@ -130,4 +130,21 @@ class MaintenanceCommandTest extends CommandTestCase
         $this->assertFileExists($this->getHtaccessPath());
         $this->assertEquals($content, file_get_contents($this->getHtaccessPath()));
     }
+
+    public function testPageFromFile()
+    {
+        $page_path = __DIR__.'/page.html';
+        file_put_contents($page_path, "foobar\n");
+        $ret = $this->getCommandTester('system:maintenance')
+            ->execute(array(
+                '--path' => __DIR__.'/fake_sugar',
+                '--page' => $page_path,
+                'action' => 'on',
+            ));
+
+        $this->assertHtaccessMatches('%afoobar%a');
+        $fs = new Filesystem();
+        $fs->remove($page_path);
+        $this->assertFileNotExists($page_path);
+    }
 }
