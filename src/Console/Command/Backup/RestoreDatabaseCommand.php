@@ -42,6 +42,12 @@ class RestoreDatabaseCommand extends AbstractConfigOptionCommand
                 InputOption::VALUE_NONE,
                 'Force import even errors are encountered'
             )
+            ->addOption(
+                'no-skip-definer',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not remove the DEFINER attribute from sql dump'
+            )
             ;
     }
 
@@ -66,6 +72,27 @@ class RestoreDatabaseCommand extends AbstractConfigOptionCommand
         return ProcessBuilder::create($mysql_args)->getProcess();
     }
 
+    protected function buildPipedCommands($input, $compression, $archive_path)
+    {
+
+        $cmd = ProcessBuilder::create(array(
+            $compression,
+            '--stdout',
+            '--decompress',
+            $archive_path,
+        ))->getProcess()
+          ->getCommandLine();
+
+        if (!$input->getOption('no-skip-definer')) {
+            $cmd .= ' | ' . Common::SED_CMD_REMOVE_DEFINER;
+        }
+
+        $mysql_proc = $this->buildMysqlCommand($input);
+        $cmd .= ' | ' . $mysql_proc->getCommandLine();
+        $mysql_proc->setCommandLine($cmd);
+        return $mysql_proc;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $fs = new Filesystem();
@@ -76,18 +103,7 @@ class RestoreDatabaseCommand extends AbstractConfigOptionCommand
 
         $compression = Common::getCompression($input, $archive_path, self::$compression_formats);
 
-        $uncompress_proc = ProcessBuilder::create(array(
-            $compression,
-            '--stdout',
-            '--decompress',
-            $archive_path,
-        ))->getProcess();
-        $mysql_proc = $this->buildMysqlCommand($input);
-        $mysql_proc->setCommandLine(implode(' ', array(
-            $uncompress_proc->getCommandLine(),
-            '|',
-            $mysql_proc->getCommandLine(),
-        )));
+        $mysql_proc = $this->buildPipedCommands($input, $compression, $archive_path);
 
         // Execute mysql command
         if ($input->getOption('dry-run')) {

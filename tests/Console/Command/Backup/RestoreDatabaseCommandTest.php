@@ -108,6 +108,7 @@ class RestoreRestoreCommandTest extends CommandTestCase
             '--path' => getenv('SUGARCLI_SUGAR_PATH'),
             '--archive' => $this->getArchiveFile(),
             '--dry-run' => null,
+            '--no-skip-definer' => null,
         ), $args));
         $this->assertEquals(0, $ret);
         $this->assertStringMatchesFormat($expected_cmd, rtrim($cmd->getDisplay(), "\n"));

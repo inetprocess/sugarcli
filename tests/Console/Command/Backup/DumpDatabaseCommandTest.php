@@ -139,6 +139,7 @@ EOPHP;
             '--prefix' => 'test',
             '--destination-dir' => $this->getBackupDir(),
             '--dry-run' => null,
+            '--no-skip-definer' => null,
         ), $args));
         $this->assertEquals(0, $ret);
         $this->assertStringMatchesFormat($expected_cmd, rtrim($cmd->getDisplay(), "\n"));

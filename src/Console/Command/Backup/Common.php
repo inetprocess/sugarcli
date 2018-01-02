@@ -9,6 +9,14 @@ use SugarCli\Console\Command\AbstractConfigOptionCommand;
 
 class Common
 {
+    /**
+     * Sed command to remove DEFINER in sql dump
+     * This is case sensitive for speed of execution
+     */
+    const SED_CMD_REMOVE_DEFINER = <<<'EOCMD'
+sed -E -e '/DEFINER/ s;(/\*![[:digit:]]+[[:space:]]*)?DEFINER[[:space:]]*=[[:space:]]*[^[:space:]]+\@[^[:space:]]+([[:space:]]*SQL[[:space:]]SECURITY[[:space:]]DEFINER[[:space:]]*)?([[:space:]]*\*/)?;;g'
+EOCMD;
+
     public static function guessCompression($extension, array $compression_formats)
     {
         foreach ($compression_formats as $format => $format_exts) {

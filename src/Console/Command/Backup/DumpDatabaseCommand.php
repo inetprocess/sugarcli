@@ -81,6 +81,12 @@ EOHELP
                 )
             )
             ->addOption(
+                'no-skip-definer',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not remove the DEFINER attribute from sql dump'
+            )
+            ->addOption(
                 'keep-defaults-file',
                 null,
                 InputOption::VALUE_NONE,
@@ -132,6 +138,19 @@ EOHELP
         return ProcessBuilder::create($mysqldump_args)->getProcess();
     }
 
+    protected function buildPipedCommands($input, $compression, $dump_fullpath)
+    {
+        $mysqldump_proc = $this->buildMysqldumpCommand($input);
+        $cmd = $mysqldump_proc->getCommandLine();
+        if (!$input->getOption('no-skip-definer')) {
+            $cmd .= ' | ' . Common::SED_CMD_REMOVE_DEFINER;
+        }
+        $cmd .= ' | ' . ProcessUtils::escapeArgument($compression);
+        $cmd .= ' > ' . ProcessUtils::escapeArgument($dump_fullpath);
+        $mysqldump_proc->setCommandLine($cmd);
+        return $mysqldump_proc;
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         // Check compression arg
@@ -154,13 +173,7 @@ EOHELP
         $dump_path = $input->getOption('destination-dir');
         $dump_fullpath = $dump_path . '/' . $dump_name;
 
-        $mysqldump_proc = $this->buildMysqldumpCommand($input);
-        // Append | gzip > dumpname
-        $mysqldump_proc->setCommandLine(implode(' ', array(
-            $mysqldump_proc->getCommandLine(),
-            '|', ProcessUtils::escapeArgument($compression),
-            '>', ProcessUtils::escapeArgument($dump_fullpath),
-        )));
+        $mysqldump_proc = $this->buildPipedCommands($input, $compression, $dump_fullpath);
 
         // Execute mysqldump command
         if ($input->getOption('dry-run')) {

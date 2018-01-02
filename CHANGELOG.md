@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.17.2
+----
+* Remove DEFINER in sql dump on backup or restore
+
 1.17.1
 ----
 * Make the `system:maintenance` command accept file instead of content

@@ -241,6 +241,7 @@ See help of commands `backup:dump:database` and `backup:dump:files` for more inf
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
+* `    --no-skip-definer`	Do not remove the DEFINER attribute from sql dump
 * `    --keep-defaults-file`	Do not delete the credantials file after completion
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
 * `-D, --ignore-for-dev`	Ignore tables not useful for a dev environement
@@ -252,7 +253,7 @@ backup:dump:database
 
 Create a backup file of SugarCRM database
 
-**Usage**: `backup:dump:database [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [--keep-defaults-file] [-T|--ignore-table IGNORE-TABLE] [-D|--ignore-for-dev]`
+**Usage**: `backup:dump:database [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [--no-skip-definer] [--keep-defaults-file] [-T|--ignore-table IGNORE-TABLE] [-D|--ignore-for-dev]`
 
 Backup the SugarCRM database in to a compressed SQL dump.
 The prefix can be set in the configuration file `.sugarclirc` like this:
@@ -281,6 +282,7 @@ The tables not dumped with `--ignore-for-dev` are:
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
+* `    --no-skip-definer`	Do not remove the DEFINER attribute from sql dump
 * `    --keep-defaults-file`	Do not delete the credantials file after completion
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
 * `-D, --ignore-for-dev`	Ignore tables not useful for a dev environement
@@ -326,13 +328,14 @@ The `--archive` file must point to the files dump and the database dump must sta
 * `-a, --archive=ARCHIVE`	Dump file to extract
 * `    --overwrite`	Overwrite files in place if it already exists.
 * `-f, --force`	Force import even errors are encountered
+* `    --no-skip-definer`	Do not remove the DEFINER attribute from sql dump
 
 backup:restore:database
 -----------------------
 
 Restore a database from a previous backup
 
-**Usage**: `backup:restore:database [-p|--path PATH] [-c|--compression COMPRESSION] [--dry-run] [-a|--archive ARCHIVE] [-f|--force]`
+**Usage**: `backup:restore:database [-p|--path PATH] [-c|--compression COMPRESSION] [--dry-run] [-a|--archive ARCHIVE] [-f|--force] [--no-skip-definer]`
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
@@ -340,6 +343,7 @@ Restore a database from a previous backup
 * `    --dry-run`	Do not run the command only print the tar command
 * `-a, --archive=ARCHIVE`	Dump file to extract
 * `-f, --force`	Force import even errors are encountered
+* `    --no-skip-definer`	Do not remove the DEFINER attribute from sql dump
 
 backup:restore:files
 --------------------
@@ -746,8 +750,8 @@ Disallow access to the CRM and show a maintenance page
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-a, --allowed-ip=ALLOWED-IP`	Ip allowed to bypass the maintenance page **[config: maintenance.allowed_ips]** **(multiple values allowed)**
-* `-P, --page=PAGE`	Page file or content to display for the maintenance **[config: maintenance.page]** **[default: `DEFAULT_PAGE`]**
+* `-a, --allowed-ip=ALLOWED-IP`	Ip allowed to bypass the maintenance page **[config: maintenance.allowed_ips]** **[default: `80.12.91.6`]** **(multiple values allowed)**
+* `-P, --page=PAGE`	Page file or content to display for the maintenance **[config: maintenance.page]** **[default: `/etc/sugarcli_maintenance_page.html`]**
 
 system:quickrepair
 ------------------
