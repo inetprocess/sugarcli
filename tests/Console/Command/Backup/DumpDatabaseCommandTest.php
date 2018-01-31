@@ -164,4 +164,50 @@ EOPHP;
         $this->assertFileNotExists($dump_name);
         $this->assertStringMatchesFormat('phpunit_%a@2017-01-01_00-00-00.sql.gz', basename($dump_name));
     }
+
+    public function testFullPhp()
+    {
+        $cmd = $this->getCommandTester(self::$cmd_name);
+        $date = '2017-01-01 00:00:00';
+        $this->getApplication()->find(self::$cmd_name)->setDateTime(new \DateTime($date));
+        $ret = $cmd->execute(array_merge(array(
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            '--prefix' => 'phpunit',
+            '--pure-php' => true,
+            '--destination-dir' => $this->getBackupDir(),
+        ), array()));
+        $this->assertEquals(0, $ret);
+        $this->assertEquals(1, preg_match('/^.*file \'(.*)\'$/', $cmd->getDisplay(), $matches));
+        $dump_name = $matches[1];
+        $this->assertFileExists($dump_name);
+        $this->assertEquals(realpath($this->getBackupDir()), realpath(dirname($dump_name)));
+        unlink($dump_name);
+        $this->assertFileNotExists($dump_name);
+        $this->assertStringMatchesFormat('phpunit_%a@2017-01-01_00-00-00.sql.gz', basename($dump_name));
+    }
+
+    public function testFullCommandNotAvailable()
+    {
+        $env_path = getenv('PATH');
+        putenv('PATH=');
+        $cmd = $this->getCommandTester(self::$cmd_name);
+        $date = '2017-01-01 00:00:00';
+        $this->getApplication()->find(self::$cmd_name)->setDateTime(new \DateTime($date));
+        $ret = $cmd->execute(array_merge(array(
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            '--prefix' => 'phpunit',
+            '--destination-dir' => $this->getBackupDir(),
+        ), array()));
+        $this->assertEquals(0, $ret);
+        $this->assertContains('Command mysqldump not found', $cmd->getDisplay());
+        $this->assertContains('Some commands where not found, using pure php to execute dump', $cmd->getDisplay());
+        $this->assertEquals(1, preg_match('/^.*file \'(.*)\'$/m', $cmd->getDisplay(), $matches));
+        $dump_name = $matches[1];
+        $this->assertFileExists($dump_name);
+        $this->assertEquals(realpath($this->getBackupDir()), realpath(dirname($dump_name)));
+        unlink($dump_name);
+        $this->assertFileNotExists($dump_name);
+        $this->assertStringMatchesFormat('phpunit_%a@2017-01-01_00-00-00.sql.gz', basename($dump_name));
+        putenv("PATH=$env_path");
+    }
 }

@@ -17,6 +17,7 @@
                 "vendor/edyan",
                 "vendor/fzaninotto",
                 "vendor/guzzle",
+                "vendor/ifsnop",
                 "vendor/inetprocess",
                 "vendor/jms",
                 "vendor/linfo",

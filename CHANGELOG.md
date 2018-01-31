@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.17.3
+----
+* Add support for pure php SQL dump
+
 1.17.2
 ----
 * Remove DEFINER in sql dump on backup or restore

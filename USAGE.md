@@ -245,6 +245,7 @@ See help of commands `backup:dump:database` and `backup:dump:files` for more inf
 * `    --keep-defaults-file`	Do not delete the credantials file after completion
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
 * `-D, --ignore-for-dev`	Ignore tables not useful for a dev environement
+* `    --pure-php`	Do not use external command `mysqldump` to dump the database. This is less reliable but allows to dump when the commands are not available like inside a docker container.
 * `-U, --ignore-upload`	Ignore files in upload/ folder and `*-restore`
 * `-C, --ignore-cache`	Ignore cache folder
 
@@ -253,7 +254,7 @@ backup:dump:database
 
 Create a backup file of SugarCRM database
 
-**Usage**: `backup:dump:database [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [--no-skip-definer] [--keep-defaults-file] [-T|--ignore-table IGNORE-TABLE] [-D|--ignore-for-dev]`
+**Usage**: `backup:dump:database [-p|--path PATH] [-d|--destination-dir DESTINATION-DIR] [-P|--prefix PREFIX] [-c|--compression COMPRESSION] [--dry-run] [--no-skip-definer] [--keep-defaults-file] [-T|--ignore-table IGNORE-TABLE] [-D|--ignore-for-dev] [--pure-php]`
 
 Backup the SugarCRM database in to a compressed SQL dump.
 The prefix can be set in the configuration file `.sugarclirc` like this:
@@ -286,6 +287,7 @@ The tables not dumped with `--ignore-for-dev` are:
 * `    --keep-defaults-file`	Do not delete the credantials file after completion
 * `-T, --ignore-table=IGNORE-TABLE`	Tables to ignore. **(multiple values allowed)**
 * `-D, --ignore-for-dev`	Ignore tables not useful for a dev environement
+* `    --pure-php`	Do not use external command `mysqldump` to dump the database. This is less reliable but allows to dump when the commands are not available like inside a docker container.
 
 backup:dump:files
 -----------------

@@ -14,6 +14,12 @@
         }
     ],
     "minimum-stability": "stable",
+    "repositories": [
+        {
+            "type": "github",
+            "url": "https://github.com/rsauvatinet/mysqldump-php"
+        }
+    ],
     "require": {
         "php": ">=5.3.9",
         "ext-curl": "*",
@@ -34,7 +40,8 @@
         "symfony/stopwatch": "^2.8",
         "symfony/yaml": "^2.8",
         "webmozart/path-util": "^2.3",
-        "padraic/humbug_get_contents": "1.0.4"
+        "padraic/humbug_get_contents": "1.0.4",
+        "ifsnop/mysqldump-php": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4",

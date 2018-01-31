@@ -2,6 +2,8 @@
 
 namespace SugarCli\Console\Command\Backup;
 
+use Ifsnop\Mysqldump\Mysqldump;
+use Inet\SugarCRM\Database\SugarPDO;
 use SugarCli\Console\Command\AbstractConfigOptionCommand;
 use SugarCli\Console\ExitCode;
 use SugarCli\Console\Command\Backup\Common;
@@ -12,6 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Process\Exception\ProcessFailedException;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Process\ProcessBuilder;
 use Symfony\Component\Process\ProcessUtils;
 
@@ -105,6 +108,14 @@ EOHELP
                 InputOption::VALUE_NONE,
                 'Ignore tables not useful for a dev environement'
             )
+            ->addOption(
+                'pure-php',
+                null,
+                InputOption::VALUE_NONE,
+                'Do not use external command `mysqldump` to dump the database.'.PHP_EOL
+                .'This is less reliable but allows to dump when the commands are not available'.PHP_EOL
+                .'like inside a docker container.'
+            )
             ;
     }
 
@@ -128,14 +139,20 @@ EOHELP
             '--force',
             $db_name,
         );
-        $ignore_tables = $input->getOption('ignore-table');
-        if ($input->getOption('ignore-for-dev')) {
-            $ignore_tables = array_unique(array_merge($ignore_tables, self::$dev_ignored_tables));
-        }
+        $ignore_tables = $this->getIgnoreTables($input);
         foreach ($ignore_tables as $table) {
             $mysqldump_args[] = "--ignore-table={$db_name}.$table";
         }
         return ProcessBuilder::create($mysqldump_args)->getProcess();
+    }
+
+    protected function getIgnoreTables($input)
+    {
+        $ignore_tables = $input->getOption('ignore-table');
+        if ($input->getOption('ignore-for-dev')) {
+            $ignore_tables = array_unique(array_merge($ignore_tables, self::$dev_ignored_tables));
+        }
+        return $ignore_tables;
     }
 
     protected function buildPipedCommands($input, $compression, $dump_fullpath)
@@ -149,6 +166,54 @@ EOHELP
         $cmd .= ' > ' . ProcessUtils::escapeArgument($dump_fullpath);
         $mysqldump_proc->setCommandLine($cmd);
         return $mysqldump_proc;
+    }
+
+    protected function areCommandsAvailable(array $command_list, OutputInterface $output)
+    {
+        foreach ($command_list as $command) {
+            try {
+                $proc = new Process("command -v '$command'");
+                $proc->disableOutput();
+                $proc->mustRun();
+            } catch (ProcessFailedException $e) {
+                $output->writeln("<comment>Command $command not found</comment>");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    protected function dumpUsingPurePhp($input, $compression, $dump_fullpath)
+    {
+        $dump_settings = array(
+            // --opt equivalent
+            'add-drop-table' => true,
+            'disable-keys' => true,
+            'extended-insert' => true,
+            'lock-tables' => true,
+
+            // sugarcli usage
+            'events' => true,
+            'routines' => true,
+            'single-transaction' => true,
+            'skip-definer' => !$input->getOption('no-skip-definer'),
+            'compress' => $compression,
+            'exclude-tables' => $this->getIgnoreTables($input),
+        );
+        $pdo_params = SugarPDO::getPdoParams($this->getService('sugarcrm.application'));
+        $dump = new Mysqldump($pdo_params['dsn'], $pdo_params['username'], $pdo_params['password'], $dump_settings);
+        $dump->start($dump_fullpath);
+    }
+
+    protected function dumpUsingMysqldump($input, $output, $compression, $dump_fullpath)
+    {
+        // Run in bash to have the pipefail error
+        $mysqldump_proc = $this->buildPipedCommands($input, $compression, $dump_fullpath);
+        $mysqldump_proc->setInput($mysqldump_proc->getCommandLine());
+        $mysqldump_proc->setCommandLine('/bin/bash -o pipefail -o xtrace');
+        $mysqldump_proc->setTimeout(0);
+        $helper = $this->getHelper('process');
+        $helper->mustRun($output, $mysqldump_proc);
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -173,20 +238,26 @@ EOHELP
         $dump_path = $input->getOption('destination-dir');
         $dump_fullpath = $dump_path . '/' . $dump_name;
 
-        $mysqldump_proc = $this->buildPipedCommands($input, $compression, $dump_fullpath);
 
         // Execute mysqldump command
         if ($input->getOption('dry-run')) {
             // Print mysql command and exit
+            $mysqldump_proc = $this->buildPipedCommands($input, $compression, $dump_fullpath);
             $output->writeln($mysqldump_proc->getCommandLine());
             return ExitCode::EXIT_SUCCESS;
         }
-        // Run in bash to have the pipefail error
-        $mysqldump_proc->setInput($mysqldump_proc->getCommandLine());
-        $mysqldump_proc->setCommandLine('/bin/bash -o pipefail -o xtrace');
-        $mysqldump_proc->setTimeout(0);
-        $helper = $this->getHelper('process');
-        $helper->mustRun($output, $mysqldump_proc);
+
+        if (!$input->getOption('pure-php')) {
+            if ($this->areCommandsAvailable(array('mysqldump', 'sed', $compression), $output)) {
+                $this->dumpUsingMysqldump($input, $output, $compression, $dump_fullpath);
+            } else {
+                $output->writeln('<comment>Some commands where not found, using pure php to execute dump</comment>');
+                $this->dumpUsingPurePhp($input, $compression, $dump_fullpath);
+            }
+        } else {
+            $this->dumpUsingPurePhp($input, $compression, $dump_fullpath);
+        }
+
         $output->writeln("SugarCRM database backed up in file '$dump_fullpath'");
     }
 }
