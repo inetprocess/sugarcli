@@ -149,11 +149,8 @@ EOHELP
             $options[$key] = $value;
         }
         $writer = new CsvWriter($options);
-        /* $writer->open(fopen('php://stdout', 'wb')); */
-        /* $writer->open($output->getStream()); */
         $writer->createTempStream();
         $hooksDef = $this->fetchHookData($module);
-        $printHeader = true;
         foreach ($hooksDef as $hookType => $hooksList) {
             foreach ($hooksList as $hook) {
                 $writer->writeRow(array_merge(
