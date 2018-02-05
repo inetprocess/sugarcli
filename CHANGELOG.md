@@ -1,6 +1,10 @@
 Changelog
 =========
 
+unreleased
+----
+* Add csv format for hook:list command
+
 1.17.3
 ----
 * Add support for pure php SQL dump

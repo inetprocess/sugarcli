@@ -504,7 +504,7 @@ hooks:list
 
 List hooks of the SugarCRM instance
 
-**Usage**: `hooks:list [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [-c|--compact]`
+**Usage**: `hooks:list [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [-f|--format FORMAT] [-c|--compact] [-C|--csv-option CSV-OPTION]`
 
 List the hooks defined for the module. For each hook display the following information:
 
@@ -519,7 +519,9 @@ List the hooks defined for the module. For each hook display the following infor
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-m, --module=MODULE`	List hooks from this module
+* `-f, --format=FORMAT`	Specify the output format **(text|csv)** **[default: `text`]**
 * `-c, --compact`	Activate compact mode output
+* `-C, --csv-option=CSV-OPTION`	Specify option for csv export. Ex: -C 'delimiter=,' **(multiple values allowed)**
 
 install:check
 -------------

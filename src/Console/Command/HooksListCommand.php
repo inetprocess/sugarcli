@@ -18,16 +18,18 @@
 
 namespace SugarCli\Console\Command;
 
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableCell;
-use Symfony\Component\Console\Helper\TableSeparator;
-use Symfony\Component\Filesystem\Filesystem;
+use CSanquer\ColibriCsv\CsvWriter;
+use CSanquer\ColibriCsv\Dialect;
 use Inet\SugarCRM\Exception\BeanNotFoundException;
 use Inet\SugarCRM\LogicHook;
 use SugarCli\Utils\Utils;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableCell;
+use Symfony\Component\Console\Helper\TableSeparator;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
 class HooksListCommand extends AbstractConfigOptionCommand
 {
@@ -58,10 +60,24 @@ EOHELP
                 "List hooks from this module"
             )
             ->addOption(
+                'format',
+                'f',
+                InputOption::VALUE_REQUIRED,
+                'Specify the output format <comment>(text|csv)</comment>',
+                'text'
+            )
+            ->addOption(
                 'compact',
                 'c',
                 InputOption::VALUE_NONE,
                 'Activate compact mode output'
+            )
+            ->addOption(
+                'csv-option',
+                'C',
+                InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
+                'Specify option for csv export. '
+                . "Ex: -C 'delimiter=,'"
             );
     }
 
@@ -74,11 +90,85 @@ EOHELP
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $module = $input->getOption('module');
-
         if (empty($module)) {
             throw new \InvalidArgumentException('You must define the module with --module');
         }
 
+        switch($input->getOption('format')) {
+            case 'text':
+                $this->printTextTable($input, $output);
+                break;
+            case 'csv':
+                $this->printCsv($input, $output);
+                break;
+            default:
+                throw new \InvalidArgumentException('Format argument not recognized. Available values are <text|csv>');
+        }
+    }
+
+    protected function fetchHookData($module)
+    {
+        $entryPoint = $this->getService('sugarcrm.entrypoint');
+        $validModules = array_keys($entryPoint->getBeansList());
+        try {
+            $logicHook = new LogicHook($entryPoint);
+            $hooksData = $logicHook->getModuleHooks($module);
+        } catch (BeanNotFoundException $e) {
+            $msg = "Unknown module '$module'. Valid modules are:" . PHP_EOL;
+            $msg.= '    - ' . implode(PHP_EOL . '    - ', $validModules);
+            throw new \InvalidArgumentException($msg);
+        }
+        // Try to fetch file if a namespaced class is specified
+        if (class_exists('ReflectionClass')) {
+            $fs = new Filesystem();
+            foreach ($hooksData as $hookType => $hooksList) {
+                foreach ($hooksList as $hookIdx => $hook) {
+                    if (empty($hook['File'])) {
+                        $reflex = new \ReflectionClass($hook['Class']);
+                        $hooksData[$hookType][$hookIdx]['File'] = rtrim($fs->makePathRelative(
+                            $reflex->getFileName(),
+                            $entryPoint->getPath()
+                        ), '/');
+                    }
+                }
+            }
+        }
+        return $hooksData;
+    }
+
+    protected function printCsv(InputInterface $input, OutputInterface $output)
+    {
+        $module = $input->getOption('module');
+        $options = array(
+            'encoding' => 'UTF-8',
+            'first_row_header' => true,
+            'delimiter' => ',',
+        );
+        foreach ($input->getOption('csv-option') as $option) {
+            list($key, $value) = explode('=', $option);
+            $options[$key] = $value;
+        }
+        $writer = new CsvWriter($options);
+        /* $writer->open(fopen('php://stdout', 'wb')); */
+        /* $writer->open($output->getStream()); */
+        $writer->createTempStream();
+        $hooksDef = $this->fetchHookData($module);
+        $printHeader = true;
+        foreach ($hooksDef as $hookType => $hooksList) {
+            foreach ($hooksList as $hook) {
+                $writer->writeRow(array_merge(
+                    array('Type' => $hookType),
+                    $hook
+                ));
+            }
+        }
+        $output->write($writer->getFileContent());
+        $writer->close();
+    }
+
+    protected function printTextTable(InputInterface $input, OutputInterface $output)
+    {
+        $module = $input->getOption('module');
         $output->writeln("<comment>Hooks definition for $module</comment>");
 
         $table = new Table($output);
@@ -115,16 +205,7 @@ EOHELP
      */
     protected function generateTableRows($module, $compact, $numCols)
     {
-        $entryPoint = $this->getService('sugarcrm.entrypoint');
-        $validModules = array_keys($entryPoint->getBeansList());
-        try {
-            $logicHook = new LogicHook($entryPoint);
-            $hooksList = $logicHook->getModuleHooks($module);
-        } catch (BeanNotFoundException $e) {
-            $msg = "Unknown module '$module'. Valid modules are:" . PHP_EOL;
-            $msg.= '    - ' . implode(PHP_EOL . '    - ', $validModules);
-            throw new \InvalidArgumentException($msg);
-        }
+        $hooksList = $this->fetchHookData($module);
 
         $tableData = array();
         if (empty($hooksList)) {
@@ -133,6 +214,7 @@ EOHELP
             );
         }
 
+        $logicHook = new LogicHook($this->getService('sugarcrm.entrypoint'));
         $hooksComs = $logicHook->getModulesLogicHooksDef();
         $procHooks = 0;
         $nbHooks = count($hooksList);
@@ -151,18 +233,9 @@ EOHELP
                     unset($hook['Class']);
                     unset($hook['Defined In']);
                 } else {
-                    if (class_exists('ReflectionClass') && empty($hook['File'])) {
-                        $reflex = new \ReflectionClass($hook['Class']);
-                        $fs = new Filesystem();
-                        $hook['File'] = rtrim($fs->makePathRelative(
-                            $reflex->getFileName(),
-                            $entryPoint->getPath()
-                        ), '/');
-                    }
                     $hook = array_values($hook);
                     array_splice($hook, 3, 2, $hook[3] . '::' . $hook[4]);
                 }
-
                 $tableData[] = array_values($hook);
             }
 

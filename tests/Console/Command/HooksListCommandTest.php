@@ -36,6 +36,20 @@ class HooksListCommandTest extends CommandTestCase
         ));
     }
 
+    /** Define a wrong format: exception thrown
+     * @expectedException InvalidArgumentException
+     * @expectedExceptionMessage Format argument not recognized
+     */
+    public function testListWrongFormat()
+    {
+        $cmd = $this->getCommandTester(self::$cmd_name);
+        $cmd->execute(array(
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            '--module' => 'Accounts',
+            '--format' => 'foo',
+        ));
+    }
+
     public function testListHookRightModule()
     {
         $cmd = $this->getCommandTester(self::$cmd_name);
@@ -78,5 +92,20 @@ class HooksListCommandTest extends CommandTestCase
         $msg = 'Check that your Sugar instance has no Hooks for Leads';
         $this->assertContains('Hooks definition for Leads', $output, $msg);
         $this->assertContains('No Hooks for that module', $output, $msg);
+    }
+
+    public function testListHookCsv()
+    {
+        $cmd = $this->getCommandTester(self::$cmd_name);
+        $cmd->execute(array(
+            '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            '--module' => 'Opportunities',
+            '--format' => 'csv',
+            '--csv-option' => array('delimiter=;'),
+        ));
+        $output = $cmd->getDisplay();
+        $this->assertEquals(0, $cmd->getStatusCode());
+        $msg = 'Check that your Sugar instance has the default Hook before_relationship_update for Opportunities';
+        $this->assertContains('before_save;', $output, $msg);
     }
 }
