@@ -34,6 +34,7 @@ Commands list
 
 * [database:clean](#databaseclean)
 * [database:export:csv](#databaseexportcsv)
+* [database:massupdate](#databasemassupdate)
 
 **extract:**
 
@@ -479,6 +480,21 @@ Export mysql tables as csv files
 * `-I, --input-file=INPUT-FILE`	Export the query read from this file instead of tables.
 * `-O, --output-file=OUTPUT-FILE`	When exporting a query, specify this fully qualified file name.
 * `-c, --csv-option=CSV-OPTION`	Specify option for csv export. Ex: -c 'delimiter=,' **(multiple values allowed)**
+
+database:massupdate
+-------------------
+
+Update all records in a module. Optionally set fields (Not implemented yet)
+
+**Usage**: `database:massupdate [-p|--path PATH] [--user-id USER-ID] [-m|--module MODULE] [-u|--update-modified-by]`
+
+Note: by default date_modified is not updated but seconds can be reset to `00`
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
+* `-m, --module=MODULE`	Save records from this module
+* `-u, --update-modified-by`	By default fields `modified_user_id` and `date_modified` are not updated. This option let SugarCRM update those fields
 
 extract:fields
 --------------

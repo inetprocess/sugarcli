@@ -1,8 +1,9 @@
 Changelog
 =========
 
-unreleased
+1.18.0
 ----
+* Add command `database:massupdate`
 * Update dependencies
 * Add csv format for hook:list command
 
