@@ -81,7 +81,6 @@ class MassUpdateCommandTest extends CommandTestCase
         $account = $result[0];
 
         $this->assertEquals('1', $account['modified_user_id']);
-        /* $this->assertEquals(gmdate('Y-m-d H:i:s'), $account['date_modified']); */
 
         $cmd = $this->getCommandTester(self::$cmd_name);
         $cmd->execute(array(
