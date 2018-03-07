@@ -3,6 +3,7 @@ Changelog
 
 unreleased
 ----
+* Update dependencies
 * Add csv format for hook:list command
 
 1.17.3
