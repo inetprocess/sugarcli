@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.18.1
+----
+* Do not stop on exceptions for `database:massupdate`
+
 1.18.0
 ----
 * Add command `database:massupdate`

@@ -70,6 +70,11 @@ class MassUpdateCommand extends AbstractConfigOptionCommand
         }
 
         /**
+         * Disable ActivityStream for performance
+         */
+        $this->getService('sugarcrm.system')->disableActivity();
+
+        /**
          * Build query
          */
         $query = new \SugarQuery();
@@ -87,11 +92,20 @@ class MassUpdateCommand extends AbstractConfigOptionCommand
         $progress->start();
         $iter = new SugarQueryIterator($query, array('encode' => false, 'use_cache' => false));
         foreach ($iter as $id => $bean) {
-            if (!$input->getOption('update-modified-by')) {
-                $bean->update_date_modified = false;
-                $bean->update_modified_by = false;
+            try {
+                if (!$input->getOption('update-modified-by')) {
+                    $bean->update_date_modified = false;
+                    $bean->update_modified_by = false;
+                }
+                $bean->save();
+            } catch (\Exception $e) {
+                $output->writeln();
+                if ($output instanceof ConsoleOutputInterface) {
+                    $this->getApplication()->renderException($e, $output->getErrorOutput());
+                } else {
+                    $this->getApplication()->renderException($e, $output);
+                }
             }
-            $bean->save();
             $progress->advance();
         }
 
