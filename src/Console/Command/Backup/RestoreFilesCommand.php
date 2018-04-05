@@ -79,7 +79,7 @@ class RestoreFilesCommand extends AbstractConfigOptionCommand
         if ($fs->exists($sugar_path) && !$input->getOption('overwrite')) {
             $orig_path = rtrim($sugar_path, '/') . '.orig';
             $fs->rename($sugar_path, $orig_path);
-            $output->writeln("Exiting files have been moved to '$orig_path'");
+            $output->writeln("Existing files have been moved to '$orig_path'");
         }
         $fs->mkdir($sugar_path, 0750);
         $tar_proc->setTimeout(0);
