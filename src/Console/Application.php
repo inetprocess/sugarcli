@@ -141,6 +141,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Metadata\DumpCommand();
         $commands[] = new \SugarCli\Console\Command\Metadata\LoadCommand();
         $commands[] = new \SugarCli\Console\Command\Metadata\StatusCommand();
+        $commands[] = new \SugarCli\Console\Command\Package\ScanCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsDumpCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsStatusCommand();

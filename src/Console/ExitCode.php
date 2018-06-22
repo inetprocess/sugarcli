@@ -42,4 +42,5 @@ class ExitCode
     const EXIT_USER_NOT_FOUND = 22;
     const EXIT_UNKNOWN_BEAN_TYPE = 23;
     const EXIT_RELS_NOT_FOUND = 24;
+    const EXIT_PACKAGE_SCAN_ERROR = 25;
 }
