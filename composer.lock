@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "12dbabc907d69105c2118941e9f94067",
+    "content-hash": "dd6008a65a7662d6ed68d69b16010321",
     "packages": [
         {
             "name": "csanquer/colibri-csv",
@@ -386,12 +386,12 @@
             "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/rsauvatinet/mysqldump-php.git",
+                "url": "https://github.com/remisauvat/mysqldump-php.git",
                 "reference": "96adecd8cdab05941eb0fc623447b21a2f4eb6a5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rsauvatinet/mysqldump-php/zipball/96adecd8cdab05941eb0fc623447b21a2f4eb6a5",
+                "url": "https://api.github.com/repos/remisauvat/mysqldump-php/zipball/96adecd8cdab05941eb0fc623447b21a2f4eb6a5",
                 "reference": "96adecd8cdab05941eb0fc623447b21a2f4eb6a5",
                 "shasum": ""
             },
@@ -1439,6 +1439,61 @@
             "time": "2018-02-11T16:53:59+00:00"
         },
         {
+            "name": "symfony/polyfill-ctype",
+            "version": "v1.8.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/polyfill-ctype.git",
+                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/polyfill-ctype/zipball/7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
+                "reference": "7cc359f1b7b80fc25ed7796be7d96adc9b354bae",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.3"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Polyfill\\Ctype\\": ""
+                },
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Gert de Pagter",
+                    "email": "BackEndTea@gmail.com"
+                }
+            ],
+            "description": "Symfony polyfill for ctype functions",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "compatibility",
+                "ctype",
+                "polyfill",
+                "portable"
+            ],
+            "time": "2018-04-30T19:57:29+00:00"
+        },
+        {
             "name": "symfony/polyfill-mbstring",
             "version": "v1.7.0",
             "source": {
@@ -1545,6 +1600,67 @@
             "description": "Symfony Process Component",
             "homepage": "https://symfony.com",
             "time": "2018-02-12T17:44:58+00:00"
+        },
+        {
+            "name": "symfony/property-access",
+            "version": "v2.8.43",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/property-access.git",
+                "reference": "fe8dcf292aafee2684a1b496a240fc74c2541627"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/property-access/zipball/fe8dcf292aafee2684a1b496a240fc74c2541627",
+                "reference": "fe8dcf292aafee2684a1b496a240fc74c2541627",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9",
+                "symfony/polyfill-ctype": "~1.8"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.8-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\PropertyAccess\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Symfony PropertyAccess Component",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "access",
+                "array",
+                "extraction",
+                "index",
+                "injection",
+                "object",
+                "property",
+                "property path",
+                "reflection"
+            ],
+            "time": "2018-05-01T22:52:40+00:00"
         },
         {
             "name": "symfony/stopwatch",

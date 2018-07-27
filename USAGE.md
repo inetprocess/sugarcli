@@ -61,6 +61,11 @@ Commands list
 * [metadata:loadfromfile](#metadataloadfromfile)
 * [metadata:status](#metadatastatus)
 
+**package:**
+
+* [package:build](#packagebuild)
+* [package:scan](#packagescan)
+
 **rels:**
 
 * [rels:dumptofile](#relsdumptofile)
@@ -710,6 +715,36 @@ or the reference file.
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `-m, --metadata-file=METADATA-FILE`	Path to the metadata file **[config: metadata.file]** **[default: `<SUGAR_PATH>/../db/fields_meta_data.yaml`]**
+
+package:build
+-------------
+
+Build a SugarCRM package from a package project
+
+**Usage**: `package:build [--project-dir PROJECT-DIR] [--force-version FORCE-VERSION] [-d|--target-dir TARGET-DIR]`
+
+Build a package using a manifest file
+
+### Options
+* `    --project-dir=PROJECT-DIR`	Root path of the package project. Normaly where the manifest.php is present **[config: package.project_path]**
+* `    --force-version=FORCE-VERSION`	Use this version instead of the default generated one
+* `-d, --target-dir=TARGET-DIR`	Directory where the zip file will be built, relative to the project-dir **[default: `build`]**
+
+package:scan
+------------
+
+Scan a package for SugarCRM Cloud compatibility
+
+**Usage**: `package:scan [-p|--path PATH] [--user-id USER-ID] [--] <package>`
+
+Use the SugarCRM package scanner to find incompatibilities with SugarCRM Cloud hosting.
+
+### Arguments
+* `package`	Package file to scan
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 
 rels:dumptofile
 ---------------

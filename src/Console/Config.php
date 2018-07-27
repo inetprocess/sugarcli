@@ -21,6 +21,7 @@ namespace SugarCli\Console;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Yaml\Parser;
 use Webmozart\PathUtil\Path;
 use SugarCli\Utils\Utils;
@@ -46,6 +47,15 @@ class Config implements ConfigurationInterface
         return Utils::makeConfigPathRelative($conf_path, $sugar_path);
     }
 
+    public function setRelativePath(&$parsed_conf, $conf_path, $value_path)
+    {
+        $array_access = PropertyAccess::createPropertyAccessor();
+        $value = $array_access->getValue($parsed_conf, $value_path);
+        if (!empty($value)) {
+            $array_access->setValue($parsed_conf, $value_path, $this->getRelativePath($conf_path, $value));
+        }
+    }
+
     /**
      * Read configuration files and merge them in an array.
      */
@@ -59,19 +69,17 @@ class Config implements ConfigurationInterface
                 $found_files[] = $conf;
                 try {
                     $parsed_conf = $yaml->parse(file_get_contents($conf));
+                    if (empty($parsed_conf)) {
+                        continue;
+                    }
                 } catch (\Exception $e) {
                     throw new \RuntimeException('Unable to read configuration file "'.$conf.'"', 0, $e);
                 }
                 // Change sugarcrm.path to a relative path from the configfile and current directory.
-                if (isset($parsed_conf['sugarcrm']['path'])) {
-                    $parsed_conf['sugarcrm']['path'] = $this->getRelativePath($conf, $parsed_conf['sugarcrm']['path']);
-                }
-                if (isset($parsed_conf['metadata']['file'])) {
-                    $parsed_conf['metadata']['file'] = $this->getRelativePath($conf, $parsed_conf['metadata']['file']);
-                }
-                if (isset($parsed_conf['rels']['file'])) {
-                    $parsed_conf['rels']['file'] = $this->getRelativePath($conf, $parsed_conf['rels']['file']);
-                }
+                $this->setRelativePath($parsed_conf, $conf, '[sugarcrm][path]');
+                $this->setRelativePath($parsed_conf, $conf, '[metadata][file]');
+                $this->setRelativePath($parsed_conf, $conf, '[rels][file]');
+                $this->setRelativePath($parsed_conf, $conf, '[package][project_path]');
                 $parsed_confs[] = $parsed_conf;
             }
         }
@@ -136,6 +144,14 @@ class Config implements ConfigurationInterface
                         ->arrayNode('allowed_ips')
                             ->requiresAtLeastOneElement()
                             ->prototype('scalar')->end()
+                        ->end()
+                    ->end()
+                ->end()
+                ->arrayNode('package')
+                    ->children()
+                        ->scalarNode('project_path')->cannotBeEmpty()->end()
+                        ->arrayNode('ignore')
+                            ->prototype('scalar') ->end()
                         ->end()
                     ->end()
                 ->end()

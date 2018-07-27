@@ -141,6 +141,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Metadata\DumpCommand();
         $commands[] = new \SugarCli\Console\Command\Metadata\LoadCommand();
         $commands[] = new \SugarCli\Console\Command\Metadata\StatusCommand();
+        $commands[] = new \SugarCli\Console\Command\Package\BuildCommand();
         $commands[] = new \SugarCli\Console\Command\Package\ScanCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsDumpCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
@@ -175,6 +176,7 @@ EOF;
 
         ########### SugarCRM
         $this->container->setParameter('sugarcrm.user-id', '1');
+        $this->container->setParameter('sugarcrm.path', null);
         $this->container->register('sugarcrm.application', 'Inet\SugarCRM\Application')
              ->addArgument(new Reference('logger'))
              ->addArgument('%sugarcrm.path%');
