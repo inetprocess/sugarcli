@@ -39,12 +39,12 @@ EOHELP
              ->enableStandardOption('user-id')
              ->addOption(
                  'id',
-                 'id',
+                 'i',
                  InputOption::VALUE_REQUIRED,
                  'Sugar Job Id'
              )->addOption(
                 'target',
-                'target',
+                't',
                 InputOption::VALUE_REQUIRED,
                 'Sugar Job Name'
             );
@@ -67,7 +67,7 @@ EOHELP
             $scheduler = \BeanFactory::getBean('Schedulers', $sugarId);
             if(is_null($scheduler->id)){
                 throw new \InvalidArgumentException(sprintf(
-                    'Record with id "%s" is not exist in sugarCRM',
+                    'Record with id "%s" does not exist in sugarCRM',
                     $sugarId
                 ));
             }
