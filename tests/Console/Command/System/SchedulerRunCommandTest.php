@@ -3,11 +3,8 @@
 namespace SugarCli\Tests\Console\Command\System;
 
 use Inet\SugarCRM\Application as SugarApp;
-use SugarCli\Console\Command\SystemQuickRepairCommand;
 use SugarCli\Tests\Console\Command\CommandTestCase;
-use SugarCli\Tests\TestsUtil\TestLogger;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Filesystem\Filesystem;
 use Inet\SugarCRM\Database\SugarPDO;
 use Psr\Log\NullLogger;
 
