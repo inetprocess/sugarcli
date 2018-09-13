@@ -37,6 +37,25 @@ class SchedulerRunCommandTest extends CommandTestCase
     }
 
     /**
+     * If send to many options you have to receive error
+     * @expectedException \InvalidArgumentException
+     * @expectedExceptionMessage Specify a job name or id
+     * @group errors
+     */
+    public function testTooFewOptions()
+    {
+        $cmd = $this->getCommandTester('system:scheduler:run');
+
+        $result = $cmd->execute(
+            array(
+                '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+            ),
+            array('verbosity' => OutputInterface::VERBOSITY_VERBOSE)
+        );
+
+    }
+
+    /**
      * If set sugar id which is not exist in sugar you have to receive error
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage Record with id "sugarId" does not exist in sugarCRM

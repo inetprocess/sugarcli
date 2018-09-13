@@ -30,9 +30,15 @@ class SchedulerRunCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('system:scheduler:run')
-             ->setDescription('Run schedulers')
+             ->setDescription('Run planned scheduler or a scheduler function or class')
              ->setHelp(<<<'EOHELP'
-Run schedulers
+Run planned scheduler or a scheduler function or class.
+
+You must specify a target or scheduler id but not both.
+
+<info>--target</info> format:
+    * function: <comment>function::cleanJobQueue</comment>
+    * class: <comment>class::\NameSpace\Scheduler\SchedulerJob</comment>
 EOHELP
              )
              ->enableStandardOption('path')
@@ -41,13 +47,13 @@ EOHELP
                  'id',
                  'i',
                  InputOption::VALUE_REQUIRED,
-                 'Sugar Job Id'
+                 'SugarCRM ID of a scheduler configured in the admin zone'
              )->addOption(
-                'target',
-                't',
-                InputOption::VALUE_REQUIRED,
-                'Sugar Job Name'
-            );
+                 'target',
+                 't',
+                 InputOption::VALUE_REQUIRED,
+                 'Execute a defined function or class scheduler'
+             );
     }
 
     /**
@@ -63,9 +69,9 @@ EOHELP
 
         $this->checkParams($sugarId, $target);
 
-        if(!empty($sugarId)){
+        if (!empty($sugarId)) {
             $scheduler = \BeanFactory::getBean('Schedulers', $sugarId);
-            if(is_null($scheduler->id)){
+            if (is_null($scheduler->id)) {
                 throw new \InvalidArgumentException(sprintf(
                     'Record with id "%s" does not exist in sugarCRM',
                     $sugarId
@@ -74,7 +80,7 @@ EOHELP
             $this->runScheduler($scheduler->job);
         }
 
-        if(!empty($target)){
+        if (!empty($target)) {
             $this->runScheduler($target);
         }
 
@@ -84,14 +90,15 @@ EOHELP
      * @param $sugarId
      * @param $target
      */
-    protected function checkParams($sugarId, $target){
-        if(is_null($sugarId) && is_null($target)){
+    protected function checkParams($sugarId, $target)
+    {
+        if (is_null($sugarId) && is_null($target)) {
             throw new \InvalidArgumentException(sprintf(
-                'Specify job name or id'
+                'Specify a job name or id'
             ));
         }
 
-        if(!empty($sugarId) && !empty($target)){
+        if (!empty($sugarId) && !empty($target)) {
             throw new \InvalidArgumentException(sprintf(
                 'You can\'t specify job name and id together'
             ));
@@ -102,7 +109,8 @@ EOHELP
      * Run single scheduler
      * @param $target
      */
-    protected function runScheduler($target){
+    protected function runScheduler($target)
+    {
         $this->getService('sugarcrm.entrypoint');
 
         $job = new \SchedulersJob();
