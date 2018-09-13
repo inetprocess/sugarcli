@@ -149,6 +149,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\SelfUpdateCommand();
         $commands[] = new \SugarCli\Console\Command\System\MaintenanceCommand();
         $commands[] = new \SugarCli\Console\Command\System\QuickRepairCommand();
+        $commands[] = new \SugarCli\Console\Command\System\SchedulerRunCommand();
         $commands[] = new \SugarCli\Console\Command\User\ListCommand();
         $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
         foreach ($commands as $command) {

@@ -76,6 +76,7 @@ Commands list
 
 * [system:maintenance](#systemmaintenance)
 * [system:quickrepair](#systemquickrepair)
+* [system:scheduler:run](#systemschedulerrun)
 
 **user:**
 
@@ -831,6 +832,27 @@ and `custom/modules/*/Ext`.
 * `    --no-database`	Do not check for database changes
 * `-f, --force`	Really execute the SQL queries (displayed by using -d)
 * `-r, --rm-cache`	Remove the cache folder and all it's contents before the repair
+
+system:scheduler:run
+--------------------
+
+Run planned scheduler or a scheduler function or class
+
+**Usage**: `system:scheduler:run [-p|--path PATH] [--user-id USER-ID] [-i|--id ID] [-t|--target TARGET]`
+
+Run planned scheduler or a scheduler function or class.
+
+You must specify a target or scheduler id but not both.
+
+`--target` format:
+    * function: **function::cleanJobQueue**
+    * class: **class::\NameSpace\Scheduler\SchedulerJob**
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
+* `-i, --id=ID`	SugarCRM ID of a scheduler configured in the admin zone
+* `-t, --target=TARGET`	Execute a defined function or class scheduler
 
 user:list
 ---------

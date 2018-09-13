@@ -1,6 +1,10 @@
 Changelog
 =========
 
+1.18.2
+----
+* Add `system:scheduler:run` to run scheduler jobs
+
 1.18.1
 ----
 * Do not stop on exceptions for `database:massupdate`
