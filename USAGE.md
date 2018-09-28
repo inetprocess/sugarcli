@@ -838,7 +838,7 @@ system:scheduler:run
 
 Run planned scheduler or a scheduler function or class
 
-**Usage**: `system:scheduler:run [-p|--path PATH] [--user-id USER-ID] [-i|--id ID] [-t|--target TARGET]`
+**Usage**: `system:scheduler:run [-p|--path PATH] [--user-id USER-ID] [-i|--id ID] [-t|--target TARGET] [-d|--data DATA]`
 
 Run planned scheduler or a scheduler function or class.
 
@@ -847,12 +847,15 @@ You must specify a target or scheduler id but not both.
 `--target` format:
     * function: **function::cleanJobQueue**
     * class: **class::\NameSpace\Scheduler\SchedulerJob**
+`--data` format: must be a string value. You can encode data as json if necessary.
+    * --data '{\"key\":\"value\"}'
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 * `-i, --id=ID`	SugarCRM ID of a scheduler configured in the admin zone
 * `-t, --target=TARGET`	Execute a defined function or class scheduler
+* `-d, --data=DATA`	Set custom data to pass to the scheduler
 
 user:list
 ---------

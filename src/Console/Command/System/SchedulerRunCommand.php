@@ -39,8 +39,8 @@ You must specify a target or scheduler id but not both.
 <info>--target</info> format:
     * function: <comment>function::cleanJobQueue</comment>
     * class: <comment>class::\NameSpace\Scheduler\SchedulerJob</comment>
-<info>--data</info> format:
-    * --data '{\"key\":\"value\"}' for send array
+<info>--data</info> format: must be a string value. You can encode data as json if necessary.
+    * --data '{\"key\":\"value\"}'
 EOHELP
             )
             ->enableStandardOption('path')
@@ -59,7 +59,7 @@ EOHELP
                 'data',
                 'd',
                 InputOption::VALUE_REQUIRED,
-                'Set specify custom data to pass to the scheduler '
+                'Set custom data to pass to the scheduler'
             );
     }
 

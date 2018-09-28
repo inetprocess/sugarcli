@@ -1,6 +1,10 @@
 Changelog
 =========
 
+unreleased
+----
+* Add `--data` option to `system:scheduler:run`
+
 1.18.2
 ----
 * Add `system:scheduler:run` to run scheduler jobs
