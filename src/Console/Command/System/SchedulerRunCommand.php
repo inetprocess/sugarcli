@@ -30,8 +30,8 @@ class SchedulerRunCommand extends AbstractConfigOptionCommand
     protected function configure()
     {
         $this->setName('system:scheduler:run')
-             ->setDescription('Run planned scheduler or a scheduler function or class')
-             ->setHelp(<<<'EOHELP'
+            ->setDescription('Run planned scheduler or a scheduler function or class')
+            ->setHelp(<<<'EOHELP'
 Run planned scheduler or a scheduler function or class.
 
 You must specify a target or scheduler id but not both.
@@ -39,21 +39,28 @@ You must specify a target or scheduler id but not both.
 <info>--target</info> format:
     * function: <comment>function::cleanJobQueue</comment>
     * class: <comment>class::\NameSpace\Scheduler\SchedulerJob</comment>
+<info>--data</info> format:
+    * --data '{\"key\":\"value\"}' for send array
 EOHELP
-             )
-             ->enableStandardOption('path')
-             ->enableStandardOption('user-id')
-             ->addOption(
-                 'id',
-                 'i',
-                 InputOption::VALUE_REQUIRED,
-                 'SugarCRM ID of a scheduler configured in the admin zone'
-             )->addOption(
-                 'target',
-                 't',
-                 InputOption::VALUE_REQUIRED,
-                 'Execute a defined function or class scheduler'
-             );
+            )
+            ->enableStandardOption('path')
+            ->enableStandardOption('user-id')
+            ->addOption(
+                'id',
+                'i',
+                InputOption::VALUE_REQUIRED,
+                'SugarCRM ID of a scheduler configured in the admin zone'
+            )->addOption(
+                'target',
+                't',
+                InputOption::VALUE_REQUIRED,
+                'Execute a defined function or class scheduler'
+            )->addOption(
+                'data',
+                'd',
+                InputOption::VALUE_REQUIRED,
+                'Set specify custom data to pass to the scheduler '
+            );
     }
 
     /**
@@ -66,6 +73,7 @@ EOHELP
 
         $sugarId = $input->getOption('id');
         $target = $input->getOption('target');
+        $data = $input->getOption('data');
 
         $this->checkParams($sugarId, $target);
 
@@ -77,11 +85,11 @@ EOHELP
                     $sugarId
                 ));
             }
-            $this->runScheduler($scheduler->job);
+            $this->runScheduler($scheduler->job, $data);
         }
 
         if (!empty($target)) {
-            $this->runScheduler($target);
+            $this->runScheduler($target, $data);
         }
 
     }
@@ -109,14 +117,16 @@ EOHELP
      * Run single scheduler
      * @param $target
      */
-    protected function runScheduler($target)
+    protected function runScheduler($target, $data)
     {
         $this->getService('sugarcrm.entrypoint');
 
         $job = new \SchedulersJob();
         $job->target = $target;
+        $job->data = $data;
         $job->assigned_user_id = $GLOBALS['current_user']->id;
 
         $job->runJob();
     }
+
 }
