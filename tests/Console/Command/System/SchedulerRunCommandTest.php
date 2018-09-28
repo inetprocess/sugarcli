@@ -14,6 +14,7 @@ use Psr\Log\NullLogger;
 class SchedulerRunCommandTest extends CommandTestCase
 {
     protected $sugarJobName = 'function::cleanJobQueue';
+    protected $sugarJobName2 = 'class::SugarJobUpdateOpportunities';
 
     /**
      * If send to many options you have to receive error
@@ -108,7 +109,7 @@ class SchedulerRunCommandTest extends CommandTestCase
     {
         $sugarId = $this->getTestSchedulerSugarId();
 
-        if(empty($sugarId)){
+        if (empty($sugarId)) {
             return true;
         }
 
@@ -127,6 +128,31 @@ class SchedulerRunCommandTest extends CommandTestCase
         $countTestJobQueueRecord = $this->getCountTestJobQueueRecord();
 
         $this->assertEquals(0, $countTestJobQueueRecord);
+    }
+
+    /**
+     * Correct run with option - target and custom data
+     * @group correct
+     */
+    public function testCorrectRunWithTargetAndData()
+    {
+
+        $oppId = $this->createTestOpportunityRecord();
+
+        $cmd = $this->getCommandTester('system:scheduler:run');
+
+        $result = $cmd->execute(
+            array(
+                '--path' => getenv('SUGARCLI_SUGAR_PATH'),
+                '--target' => $this->sugarJobName2,
+                '--data' => "[{\"id\":\"$oppId\"}]"
+            ),
+            array('verbosity' => OutputInterface::VERBOSITY_VERBOSE)
+        );
+
+        $countTestOpportunityRecord = $this->getCountTestOpportunityRecord($oppId);
+
+        $this->assertEquals(0, $countTestOpportunityRecord);
     }
 
     /**
@@ -155,13 +181,41 @@ class SchedulerRunCommandTest extends CommandTestCase
         return count($result);
     }
 
-    private function getTestSchedulerSugarId(){
+    /**
+     * Creates test record in Opportunity
+     */
+    private function createTestOpportunityRecord()
+    {
+        $id = time();
+        $sql = "INSERT INTO `opportunities` (`id`, `name`, `deleted`, `date_entered`, `date_modified`) VALUES
+('$id', 'JustForTest', 0, '1970-01-01 00:00:01', '1970-01-01 00:00:01')";
+        $pdo = new SugarPDO(new SugarApp(new NullLogger(), getenv('SUGARCLI_SUGAR_PATH')));
+        $pdo->query($sql);
+        return $id;
+    }
+
+    /**
+     * Checks if just created opportunity was changed
+     * @return int
+     */
+    private function getCountTestOpportunityRecord($id)
+    {
+        $sql = "SELECT `id` FROM `opportunities` WHERE `id`='$id' AND `date_modified`='1970-01-01 00:00:01' AND `deleted`=0";
+        $pdo = new SugarPDO(new SugarApp(new NullLogger(), getenv('SUGARCLI_SUGAR_PATH')));
+        $query = $pdo->prepare($sql);
+        $query->execute();
+        $result = $query->fetchAll(\PDO::FETCH_ASSOC);
+        return count($result);
+    }
+
+    private function getTestSchedulerSugarId()
+    {
         $sql = "SELECT `id` FROM `schedulers` WHERE `job`='$this->sugarJobName' AND `deleted`=0";
         $pdo = new SugarPDO(new SugarApp(new NullLogger(), getenv('SUGARCLI_SUGAR_PATH')));
         $query = $pdo->prepare($sql);
         $query->execute();
         $result = $query->fetch(\PDO::FETCH_ASSOC);
-        if(!empty($result)){
+        if (!empty($result)) {
             return $result['id'];
         }
         return '';
