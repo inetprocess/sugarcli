@@ -5,9 +5,11 @@ SugarCli is a command line tool to install and manage SugarCRM installations.
 # Install
 Get the latest phar archive at `https://getsugarcli.inetprocess.fr/sugarcli.phar`. Allow the execution and run it.
 ```
+cd /usr/local/bin/
 wget 'https://getsugarcli.inetprocess.fr/sugarcli.phar'
 chmod +x ./sugarcli.phar
-./sugarcli.phar
+mv sugarcli.phar sugarcli
+sugarcli help
 ```
 
 Or clone this git repository and use `./bin/sugarcli`.
