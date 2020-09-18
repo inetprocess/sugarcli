@@ -152,6 +152,9 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\System\SchedulerRunCommand();
         $commands[] = new \SugarCli\Console\Command\User\ListCommand();
         $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
+        $commands[] = new \SugarCli\Console\Command\CustomTables\CleanCommand();
+        $commands[] = new \SugarCli\Console\Command\CustomTables\StatusCommand();
+
         foreach ($commands as $command) {
             $this->add($command);
         }
