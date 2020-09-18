@@ -84,6 +84,8 @@ class Application extends BaseApplication
       name: ACCOUNT_NAME     </info>Name of the account<info>
   backup:
       prefix: PREFIX         </info>Prefix to prepend to name of archive file when creating backups</info>
+  plugins:
+      file: FILE             </info>Path to the metadata file relative to the configuration file<info>
   </info>
 EOF;
     }
@@ -154,6 +156,9 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
         $commands[] = new \SugarCli\Console\Command\CustomTables\CleanCommand();
         $commands[] = new \SugarCli\Console\Command\CustomTables\StatusCommand();
+        $commands[] = new \SugarCli\Console\Command\Plugins\DumpCommand();
+        $commands[] = new \SugarCli\Console\Command\Plugins\LoadCommand();
+        $commands[] = new \SugarCli\Console\Command\Plugins\StatusCommand();
 
         foreach ($commands as $command) {
             $this->add($command);

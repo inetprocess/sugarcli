@@ -66,6 +66,12 @@ Commands list
 * [package:build](#packagebuild)
 * [package:scan](#packagescan)
 
+**plugins:**
+
+* [plugins:dumptofile](#pluginsdumptofile)
+* [plugins:loadfromfile](#pluginsloadfromfile)
+* [plugins:status](#pluginsstatus)
+
 **rels:**
 
 * [rels:dumptofile](#relsdumptofile)
@@ -244,7 +250,7 @@ See help of commands `backup:dump:database` and `backup:dump:files` for more inf
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
+* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/uspaun/backup`]**
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
@@ -286,7 +292,7 @@ The tables not dumped with `--ignore-for-dev` are:
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
+* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/uspaun/backup`]**
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
@@ -313,7 +319,7 @@ backup:
 ```
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
+* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/uspaun/backup`]**
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
@@ -747,6 +753,82 @@ Use the SugarCRM package scanner to find incompatibilities with SugarCRM Cloud h
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
 
+plugins:dumptofile
+------------------
+
+Dump the contents of the table `upgrade_history` in a reference file to track modifications
+
+**Usage**: `plugins:dumptofile [-p|--path PATH] [-m|--plugins-file PLUGINS-FILE] [-a|--add] [-d|--del] [-u|--update] [--] [<plugins>]...`
+
+Update the reference YAML file based on the `upgrade_history`. This file should be managed with a VCS.
+You can filter which modification you whish to apply with the options `--add,--del,--update` or by setting
+the plugins name after the options.
+
+**Examples:**
+Write to the file only new plugins present in the database:
+    `sugarcli plugins:dumptofile --add --force`
+Delete plugins in the file which are not present in the database:
+    `sugarcli plugins:dumptofile --del --force`
+Only apply modifications for the status_c plugin in the Accounts module:
+    `sugarcli plugins:dumptofile Accounts.status_c`
+
+### Arguments
+* `plugins`	Filter the command to only apply to this list of plugins
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --plugins-file=PLUGINS-FILE`	Path to the plugins file **[config: plugins.file]** **[default: `<SUGAR_PATH>/../db/plugins.yaml`]**
+* `-a, --add`	Add new plugins from the DB to the definition file
+* `-d, --del`	Delete plugins not present in the DB from the plugins file
+* `-u, --update`	Update the plugins file for modified plugins in the DB
+
+plugins:loadfromfile
+--------------------
+
+Load into the table `upgrade_history` contents from a reference file
+
+**Usage**: `plugins:loadfromfile [-p|--path PATH] [-m|--plugins-file PLUGINS-FILE] [-s|--sql] [-f|--force] [-a|--add] [-d|--del] [-u|--update] [--] [<plugins>]...`
+
+Update the `upgrade_history` table to reflect the data in the reference YAML file.
+Will not do anything by default. Use `--force` to actually execute sql queries to impact the database.
+You can filter which modification you whish to apply with the options `--add,--del,--update` or by setting
+the plugins name after the options.
+
+**Examples:**
+Load only new plugins:
+    `sugarcli plugins:loadfromfile --add --force`
+Only delete plugins which are not present in the reference file:
+    `sugarcli plugins:loadfromfile --del --force`
+
+### Arguments
+* `plugins`	Filter the command to only apply to this list of plugins
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --plugins-file=PLUGINS-FILE`	Path to the plugins file **[config: plugins.file]** **[default: `<SUGAR_PATH>/../db/plugins.yaml`]**
+* `-s, --sql`	Print the sql queries that would have been executed
+* `-f, --force`	Really execute the SQL queries to modify the database
+* `-a, --add`	Add new plugins from the file to the DB
+* `-d, --del`	Delete plugins not present in the plugins file from the DB
+* `-u, --update`	Update the DB for modified plugins in plugins file
+
+plugins:status
+--------------
+
+Show the state of the `upgrade_history` table compared to a reference file
+
+**Usage**: `plugins:status [-p|--path PATH] [-m|--plugins-file PLUGINS-FILE]`
+
+Compare the contents of the `upgrade_history` table with a YAML reference file.
+This file should be managed with a version control software (VCS) to keep the various versions.
+
+Use the commands `plugins:loadfromfile` or `plugins:dumptofile` to update the database
+or the reference file.
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --plugins-file=PLUGINS-FILE`	Path to the plugins file **[config: plugins.file]** **[default: `<SUGAR_PATH>/../db/plugins.yaml`]**
+
 rels:dumptofile
 ---------------
 
@@ -806,8 +888,8 @@ Disallow access to the CRM and show a maintenance page
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-a, --allowed-ip=ALLOWED-IP`	Ip allowed to bypass the maintenance page **[config: maintenance.allowed_ips]** **[default: `80.12.91.6`]** **(multiple values allowed)**
-* `-P, --page=PAGE`	Page file or content to display for the maintenance **[config: maintenance.page]** **[default: `/etc/sugarcli_maintenance_page.html`]**
+* `-a, --allowed-ip=ALLOWED-IP`	Ip allowed to bypass the maintenance page **[config: maintenance.allowed_ips]** **(multiple values allowed)**
+* `-P, --page=PAGE`	Page file or content to display for the maintenance **[config: maintenance.page]** **[default: `DEFAULT_PAGE`]**
 
 system:quickrepair
 ------------------
