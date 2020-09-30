@@ -457,7 +457,7 @@ database:clean
 
 Remove deleted records as well as data in audit and lost records in _cstm tables
 
-**Usage**: `database:clean [-p|--path PATH] [--user-id USER-ID] [--remove-deleted] [--clean-cstm] [--clean-history] [--clean-activities] [--table TABLE]`
+**Usage**: `database:clean [-p|--path PATH] [--user-id USER-ID] [--remove-deleted] [--clean-cstm] [--clean-history] [--clean-activities]  [--clean-fields] [--table TABLE]`
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
@@ -466,6 +466,22 @@ Remove deleted records as well as data in audit and lost records in _cstm tables
 * `    --clean-cstm`	Clean all records in _cstm that are not in the main table. Won't be launched if --force is not set
 * `    --clean-history`	Clean *_audit, job_queue and trackers
 * `    --clean-activities`	Clean activities_* and trackers
+* `    --clean-fields`	Remove fields from *_cstm table if they are not in fields_meta_data table
+* `    --table=TABLE`	Clean only that table (repeat for multiple values) **(multiple values allowed)**
+
+database:metadata:status
+--------------
+
+Compare the contents of the fields_meta_data table with *_cstm tables.
+Show the state of the fields_meta_data table compared to a reference file
+Use the commands database:clean --custom-fields to update the database.
+
+**Usage**: `database:metadata:status [-p|--path PATH] [--user-id USER-ID] [--force] [--table TABLE]`
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
+* `    --force`	Show status for all the fields
 * `    --table=TABLE`	Clean only that table (repeat for multiple values) **(multiple values allowed)**
 
 database:export:csv
