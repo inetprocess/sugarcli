@@ -8,8 +8,8 @@ stages:
 
 phpunit:
     stage: test
-    tags:
-        - sugarcli
+#    tags:
+#        - sugarcli
     script:
         - composer install --quiet -o
         - php-5.3 bin/phpunit
