@@ -32,7 +32,7 @@ stages:
 mirror:
     stage: publish
     tags:
-        - sugarcli
+        - docker
     only:
         - master
     script:
@@ -41,7 +41,7 @@ mirror:
 mirror_tags:
     stage: publish
     tags:
-        - sugarcli
+        - docker
     only:
         - tags
     script:
