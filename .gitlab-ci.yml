@@ -29,23 +29,23 @@ stages:
 #        expire_in: '1w'
 #        paths:
 #            - build/sugarcli.phar
-mirror:
-    stage: publish
-    tags:
-        - docker
-    only:
-        - master
-    script:
-        - git push git@github.com:inetprocess/sugarcli.git HEAD:master
+#mirror:
+#    stage: publish
+#    tags:
+#        - docker
+#    only:
+#        - master
+#    script:
+#        - git push git@github.com:inetprocess/sugarcli.git HEAD:master
 
-mirror_tags:
-    stage: publish
-    tags:
-        - docker
-    only:
-        - tags
-    script:
-        - git push --tags git@github.com:inetprocess/sugarcli.git
+#mirror_tags:
+#    stage: publish
+#    tags:
+#        - docker
+#    only:
+#        - tags
+#    script:
+#        - git push --tags git@github.com:inetprocess/sugarcli.git
 
 gitlab_release:
     tags:
