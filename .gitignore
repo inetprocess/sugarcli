@@ -7,14 +7,14 @@
 /phpunit.xml
 /reports/*
 # Build
-/build
+#/build
 
 # Composer
 /composer.phar
 /vendor
 
 # Binaries
-/sugarcli.phar
+#/sugarcli.phar
 
 /test
 
