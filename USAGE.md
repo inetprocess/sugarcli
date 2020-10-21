@@ -66,6 +66,12 @@ Commands list
 * [package:build](#packagebuild)
 * [package:scan](#packagescan)
 
+**plugins:**
+
+* [plugins:dumptofile](#pluginsdumptofile)
+* [plugins:loadfromfile](#pluginsloadfromfile)
+* [plugins:status](#pluginsstatus)
+
 **rels:**
 
 * [rels:dumptofile](#relsdumptofile)
@@ -451,7 +457,7 @@ database:clean
 
 Remove deleted records as well as data in audit and lost records in _cstm tables
 
-**Usage**: `database:clean [-p|--path PATH] [--user-id USER-ID] [--remove-deleted] [--clean-cstm] [--clean-history] [--clean-activities] [--table TABLE]`
+**Usage**: `database:clean [-p|--path PATH] [--user-id USER-ID] [--remove-deleted] [--clean-cstm] [--clean-history] [--clean-activities]  [--clean-fields] [--table TABLE]`
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
@@ -460,6 +466,22 @@ Remove deleted records as well as data in audit and lost records in _cstm tables
 * `    --clean-cstm`	Clean all records in _cstm that are not in the main table. Won't be launched if --force is not set
 * `    --clean-history`	Clean *_audit, job_queue and trackers
 * `    --clean-activities`	Clean activities_* and trackers
+* `    --clean-fields`	Remove fields from *_cstm table if they are not in fields_meta_data table
+* `    --table=TABLE`	Clean only that table (repeat for multiple values) **(multiple values allowed)**
+
+database:metadata:status
+--------------
+
+Compare the contents of the fields_meta_data table with *_cstm tables.
+Show the state of the fields_meta_data table compared to a reference file
+Use the commands database:clean --custom-fields to update the database.
+
+**Usage**: `database:metadata:status [-p|--path PATH] [--user-id USER-ID] [--force] [--table TABLE]`
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
+* `    --force`	Show status for all the fields
 * `    --table=TABLE`	Clean only that table (repeat for multiple values) **(multiple values allowed)**
 
 database:export:csv
@@ -746,6 +768,82 @@ Use the SugarCRM package scanner to find incompatibilities with SugarCRM Cloud h
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
 * `    --user-id=USER-ID`	SugarCRM user id to impersonate when running the command **[config: sugarcrm.user_id]** **[default: `1`]**
+
+plugins:dumptofile
+------------------
+
+Dump the contents of the table `upgrade_history` in a reference file to track modifications
+
+**Usage**: `plugins:dumptofile [-p|--path PATH] [-m|--plugins-file PLUGINS-FILE] [-a|--add] [-d|--del] [-u|--update] [--] [<plugins>]...`
+
+Update the reference YAML file based on the `upgrade_history`. This file should be managed with a VCS.
+You can filter which modification you whish to apply with the options `--add,--del,--update` or by setting
+the plugins name after the options.
+
+**Examples:**
+Write to the file only new plugins present in the database:
+    `sugarcli plugins:dumptofile --add --force`
+Delete plugins in the file which are not present in the database:
+    `sugarcli plugins:dumptofile --del --force`
+Only apply modifications for the status_c plugin in the Accounts module:
+    `sugarcli plugins:dumptofile Accounts.status_c`
+
+### Arguments
+* `plugins`	Filter the command to only apply to this list of plugins
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --plugins-file=PLUGINS-FILE`	Path to the plugins file **[config: plugins.file]** **[default: `<SUGAR_PATH>/../db/plugins.yaml`]**
+* `-a, --add`	Add new plugins from the DB to the definition file
+* `-d, --del`	Delete plugins not present in the DB from the plugins file
+* `-u, --update`	Update the plugins file for modified plugins in the DB
+
+plugins:loadfromfile
+--------------------
+
+Load into the table `upgrade_history` contents from a reference file
+
+**Usage**: `plugins:loadfromfile [-p|--path PATH] [-m|--plugins-file PLUGINS-FILE] [-s|--sql] [-f|--force] [-a|--add] [-d|--del] [-u|--update] [--] [<plugins>]...`
+
+Update the `upgrade_history` table to reflect the data in the reference YAML file.
+Will not do anything by default. Use `--force` to actually execute sql queries to impact the database.
+You can filter which modification you whish to apply with the options `--add,--del,--update` or by setting
+the plugins name after the options.
+
+**Examples:**
+Load only new plugins:
+    `sugarcli plugins:loadfromfile --add --force`
+Only delete plugins which are not present in the reference file:
+    `sugarcli plugins:loadfromfile --del --force`
+
+### Arguments
+* `plugins`	Filter the command to only apply to this list of plugins
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --plugins-file=PLUGINS-FILE`	Path to the plugins file **[config: plugins.file]** **[default: `<SUGAR_PATH>/../db/plugins.yaml`]**
+* `-s, --sql`	Print the sql queries that would have been executed
+* `-f, --force`	Really execute the SQL queries to modify the database
+* `-a, --add`	Add new plugins from the file to the DB
+* `-d, --del`	Delete plugins not present in the plugins file from the DB
+* `-u, --update`	Update the DB for modified plugins in plugins file
+
+plugins:status
+--------------
+
+Show the state of the `upgrade_history` table compared to a reference file
+
+**Usage**: `plugins:status [-p|--path PATH] [-m|--plugins-file PLUGINS-FILE]`
+
+Compare the contents of the `upgrade_history` table with a YAML reference file.
+This file should be managed with a version control software (VCS) to keep the various versions.
+
+Use the commands `plugins:loadfromfile` or `plugins:dumptofile` to update the database
+or the reference file.
+
+### Options
+* `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
+* `-m, --plugins-file=PLUGINS-FILE`	Path to the plugins file **[config: plugins.file]** **[default: `<SUGAR_PATH>/../db/plugins.yaml`]**
 
 rels:dumptofile
 ---------------
