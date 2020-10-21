@@ -244,7 +244,7 @@ See help of commands `backup:dump:database` and `backup:dump:files` for more inf
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
+* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/rfremont/backup`]**
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
@@ -286,7 +286,7 @@ The tables not dumped with `--ignore-for-dev` are:
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
+* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/rfremont/backup`]**
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
@@ -313,7 +313,7 @@ backup:
 ```
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/sugarcli/backup`]**
+* `-d, --destination-dir=DESTINATION-DIR`	Destination folder for the achive **[default: `/home/rfremont/backup`]**
 * `-P, --prefix=PREFIX`	Prepend to the archive name **[config: backup.prefix]**
 * `-c, --compression=COMPRESSION`	Set the compression algorithm. Valid values are (gzip|bzip2). **[default: `gzip`]**
 * `    --dry-run`	Do not run the command only print the tar command
@@ -806,8 +806,8 @@ Disallow access to the CRM and show a maintenance page
 
 ### Options
 * `-p, --path=PATH`	Path to SugarCRM installation **[config: sugarcrm.path]**
-* `-a, --allowed-ip=ALLOWED-IP`	Ip allowed to bypass the maintenance page **[config: maintenance.allowed_ips]** **[default: `80.12.91.6`]** **(multiple values allowed)**
-* `-P, --page=PAGE`	Page file or content to display for the maintenance **[config: maintenance.page]** **[default: `/etc/sugarcli_maintenance_page.html`]**
+* `-a, --allowed-ip=ALLOWED-IP`	Ip allowed to bypass the maintenance page **[config: maintenance.allowed_ips]** **(multiple values allowed)**
+* `-P, --page=PAGE`	Page file or content to display for the maintenance **[config: maintenance.page]** **[default: `DEFAULT_PAGE`]**
 
 system:quickrepair
 ------------------
