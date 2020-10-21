@@ -5,9 +5,9 @@
  * PHP Version 5.3 -> 5.4
  * SugarCRM Versions 6.5 - 7.6
  *
- * @author Rémi Sauvat
+ * @author Vitaliy Volkivskiy
  * @author Emmanuel Dyan
- * @copyright 2005-2015 iNet Process
+ * @copyright 2005-2020 iNet Process
  *
  * @package inetprocess/sugarcrm
  *
@@ -24,7 +24,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-class CleanCommand extends AbstractConfigOptionCommand
+class CleanCommand extends AbstractDatabaseCommand
 {
 
     protected function configure()
@@ -58,9 +58,21 @@ class CleanCommand extends AbstractConfigOptionCommand
                 null,
                 InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY,
                 'Clean only that table (repeat for multiple values)'
+            )->addOption(
+                'clean-fields',
+                null,
+                InputOption::VALUE_NONE,
+                "Remove fields from *_cstm table if they are not in fields_meta_data table"
             );
     }
 
+    /**
+     * Main command entry point
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @throws \InvalidArgumentException
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $stopwatch = new \Symfony\Component\Stopwatch\Stopwatch();
@@ -70,7 +82,8 @@ class CleanCommand extends AbstractConfigOptionCommand
         $this->getService('sugarcrm.entrypoint'); // go to sugar folder to make sure we are in the right folder
 
         if ($input->getOption('remove-deleted') === false && $input->getOption('clean-cstm') === false
-          && $input->getOption('clean-history') === false && $input->getOption('clean-activities') === false) {
+          && $input->getOption('clean-history') === false && $input->getOption('clean-activities') === false
+          && $input->getOption('clean-fields') === false) {
             $msg = 'You need to set at least --remove-deleted or --clean-xxxxxx';
             throw new \InvalidArgumentException($msg);
         }
@@ -111,6 +124,10 @@ class CleanCommand extends AbstractConfigOptionCommand
             }
         }
 
+        if ($input->getOption('clean-fields') === true) {
+            $tables = $input->getOption('table');
+            $this->cleanFields($pdo, $output, $tables);
+        }
 
         // Get memory and execution time information
         $event = $stopwatch->stop('DbClean');
@@ -120,18 +137,6 @@ class CleanCommand extends AbstractConfigOptionCommand
 
         // Final message
         $output->writeln(PHP_EOL . "<comment>Done in $time (consuming {$memory}Mb)</comment>");
-    }
-
-    /**
-     * Get the current DB Name
-     *
-     * @param \PDO $pdo
-     *
-     * @return string
-     */
-    protected function getDb(\PDO $pdo)
-    {
-        return $pdo->query('SELECT DATABASE()')->fetchColumn();
     }
 
     /**
@@ -294,5 +299,38 @@ class CleanCommand extends AbstractConfigOptionCommand
             return false;
         }
         $output->writeln('');
+    }
+
+    /**
+     * Delete fields which are not presented in <info>fields_meta_data</info> table with data from <module_name>_cstm tables.
+     *
+     * @param \PDO $pdo
+     * @param OutputInterface $output
+     * @param type $tables
+     * @throws \InvalidArgumentException
+     */
+    protected function cleanFields(\PDO $pdo, OutputInterface $output, $tables)
+    {
+        $tables = $this->unsetIncorrectModules($output, $tables);
+
+        if (empty($tables)) {
+            $msg = 'You need to set at least one correct table in "--table" parameter';
+            throw new \InvalidArgumentException($msg);
+        }
+
+        $diff = $this->getFieldsDifference($tables);
+
+        foreach ($diff as $module => $fieldsNames) {
+            $cstmName = $module. '_cstm';
+            if (empty($fieldsNames)) {
+                $output->writeln("<info>No superflouous fields detected in $cstmName table</info>");
+                continue;
+            }
+
+            foreach ($fieldsNames as $fieldName) {
+                $pdo->query("ALTER TABLE $cstmName DROP $fieldName");
+            }
+            $output->writeln("<info>Superflouous fields removed from $cstmName</info>");
+        }
     }
 }

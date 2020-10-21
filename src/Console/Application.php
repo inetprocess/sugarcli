@@ -84,6 +84,8 @@ class Application extends BaseApplication
       name: ACCOUNT_NAME     </info>Name of the account<info>
   backup:
       prefix: PREFIX         </info>Prefix to prepend to name of archive file when creating backups</info>
+  plugins:
+      file: FILE             </info>Path to the metadata file relative to the configuration file<info>
   </info>
 EOF;
     }
@@ -131,6 +133,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Database\CleanCommand();
         $commands[] = new \SugarCli\Console\Command\Database\ExportCSV();
         $commands[] = new \SugarCli\Console\Command\Database\MassUpdateCommand();
+        $commands[] = new \SugarCli\Console\Command\Database\StatusCommand();
         $commands[] = new \SugarCli\Console\Command\ExtractFieldsCommand();
         $commands[] = new \SugarCli\Console\Command\HooksListCommand();
         $commands[] = new \SugarCli\Console\Command\Install\CheckCommand();
@@ -152,6 +155,10 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\System\SchedulerRunCommand();
         $commands[] = new \SugarCli\Console\Command\User\ListCommand();
         $commands[] = new \SugarCli\Console\Command\User\UpdateCommand();
+        $commands[] = new \SugarCli\Console\Command\Plugins\DumpCommand();
+        $commands[] = new \SugarCli\Console\Command\Plugins\LoadCommand();
+        $commands[] = new \SugarCli\Console\Command\Plugins\StatusCommand();
+
         foreach ($commands as $command) {
             $this->add($command);
         }
