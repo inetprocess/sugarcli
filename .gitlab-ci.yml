@@ -2,8 +2,8 @@
 # Push to github on success.
 
 stages:
-    - test
-    - build
+#    - test
+#    - build
     - publish
 
 phpunit:
