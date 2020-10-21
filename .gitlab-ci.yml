@@ -6,29 +6,29 @@ stages:
 #    - build
     - publish
 
-phpunit:
-    stage: test
+#phpunit:
+#    stage: test
 #    tags:
 #        - sugarcli
-    script:
-        - composer install --quiet -o
-        - php-5.3 bin/phpunit
-        - php-5.5 bin/phpunit
-        - php-5.6 bin/phpunit
-        - php -dzend_extension=/usr/lib/php5/20100525/xdebug.so bin/phpunit --color=never
-phar:
-    stage: build
-    tags:
-        - sugarcli
-    script:
-        - composer install --no-dev --quiet -o
-        - mkdir build
-        - ulimit -Sn 4096
-        - php -dphar.readonly=0 bin/box build
-    artifacts:
-        expire_in: '1w'
-        paths:
-            - build/sugarcli.phar
+#    script:
+#        - composer install --quiet -o
+#        - php-5.3 bin/phpunit
+#        - php-5.5 bin/phpunit
+#        - php-5.6 bin/phpunit
+#        - php -dzend_extension=/usr/lib/php5/20100525/xdebug.so bin/phpunit --color=never
+#phar:
+#    stage: build
+#    tags:
+#        - sugarcli
+#    script:
+#        - composer install --no-dev --quiet -o
+#        - mkdir build
+#        - ulimit -Sn 4096
+#        - php -dphar.readonly=0 bin/box build
+#    artifacts:
+#        expire_in: '1w'
+#        paths:
+#            - build/sugarcli.phar
 mirror:
     stage: publish
     tags:
