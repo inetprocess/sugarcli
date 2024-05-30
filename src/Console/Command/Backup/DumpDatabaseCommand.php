@@ -135,9 +135,12 @@ EOHELP
             '--events',
             '--routines',
             '--single-transaction',
+            '--skip-lock-tables',
             '--opt',
             '--force',
-            '--lock-tables',
+            '--set-gtid-purged=OFF',
+            '--disable-keys',
+            '--add-drop-table',
             $db_name,
         );
         $ignore_tables = $this->getIgnoreTables($input);
