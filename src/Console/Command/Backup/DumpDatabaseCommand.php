@@ -137,6 +137,7 @@ EOHELP
             '--single-transaction',
             '--opt',
             '--force',
+            '--lock-tables',
             $db_name,
         );
         $ignore_tables = $this->getIgnoreTables($input);
