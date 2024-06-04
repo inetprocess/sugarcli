@@ -152,8 +152,8 @@ EOHELP
         $command = implode(' ', array_map('escapeshellarg', $mysqldump_args));
         $full_command = "$command | sed -E -e '/DEFINER/ s;(/\*![[:digit:]]+[[:space:]]*)?DEFINER[[:space:]]*=[[:space:]]*[^[:space:]]+\\@[^[:space:]]+([[:space:]]*SQL[[:space:]]SECURITY[[:space:]]DEFINER[[:space:]]*)?([[:space:]]*\\*/)?;;g' | gzip";
 
-
-        return ProcessBuilder::create($mysqldump_args)->getProcess();
+        // Return the process
+        return ProcessBuilder::create($full_command)->setShellCommandline(true)->getProcess();
     }
 
     protected function getIgnoreTables($input)
