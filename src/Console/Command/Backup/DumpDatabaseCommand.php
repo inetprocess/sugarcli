@@ -147,6 +147,12 @@ EOHELP
         foreach ($ignore_tables as $table) {
             $mysqldump_args[] = "--ignore-table={$db_name}.$table";
         }
+
+        // Combine mysqldump, sed, and gzip commands
+        $command = implode(' ', array_map('escapeshellarg', $mysqldump_args));
+        $full_command = "$command | sed -E -e '/DEFINER/ s;(/\*![[:digit:]]+[[:space:]]*)?DEFINER[[:space:]]*=[[:space:]]*[^[:space:]]+\\@[^[:space:]]+([[:space:]]*SQL[[:space:]]SECURITY[[:space:]]DEFINER[[:space:]]*)?([[:space:]]*\\*/)?;;g' | gzip";
+
+
         return ProcessBuilder::create($mysqldump_args)->getProcess();
     }
 
