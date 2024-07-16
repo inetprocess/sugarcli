@@ -135,13 +135,12 @@ EOHELP
             '--default-character-set=utf8',
             '--events',
             '--routines',
-            '--single-transaction',
-            '--lock-tables ', // ensure tables are locked
+            '--lock-tables',
             '--opt',
             '--force',
             '--set-gtid-purged=OFF',
             '--disable-keys',
-            '--add-drop-table',                     
+            '--add-drop-table',
             $db_name,
         ];
     
