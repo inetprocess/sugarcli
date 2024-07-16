@@ -127,7 +127,7 @@ EOHELP
         $this->temp_file->setUnlinkOnDestruct(!$input->getOption('keep-defaults-file'));
         $sugar_config = $sugar_app->getSugarConfig();
         $db_name = $sugar_config['dbconfig']['db_name'];
-
+    
         // Build mysqldump command arguments
         $mysqldump_args = [
             'mysqldump',
@@ -136,35 +136,35 @@ EOHELP
             '--events',
             '--routines',
             '--single-transaction',
-            '--skip-lock-tables', // ensure tables are not locked
+            '--lock-tables ', // ensure tables are locked
             '--opt',
             '--force',
             '--set-gtid-purged=OFF',
             '--disable-keys',
-            '--add-drop-table',
+            '--add-drop-table',                     
             $db_name,
         ];
-
+    
         // Add tables to ignore
         $ignore_tables = $this->getIgnoreTables($input);
         foreach ($ignore_tables as $table) {
             $mysqldump_args[] = "--ignore-table={$db_name}.$table";
         }
-
+    
         // Define the output file path
         $timestamp = date('Y-m-d_H-i-s');
         $output_file = "../backup/prefix_ip-172-30-15-218.anett.localeu-west-3.compute.internal@$timestamp.sql.gz";
         $output_dir = dirname($output_file);
-
+    
         // Ensure the output directory exists
         if (!is_dir($output_dir)) {
             mkdir($output_dir, 0755, true);
         }
-
+    
         // Combine mysqldump, sed, and gzip commands
         $mysqldump_command = implode(' ', array_map('escapeshellarg', $mysqldump_args));
         $full_command = "$mysqldump_command | sed -E -e '/DEFINER/ s;(/\*![[:digit:]]+[[:space:]]*)?DEFINER[[:space:]]*=[[:space:]]*[^[:space:]]+\\@[^[:space:]]+([[:space:]]*SQL[[:space:]]SECURITY[[:space:]]DEFINER[[:space:]]*)?([[:space:]]*\\*/)?;;g' | gzip > " . escapeshellarg($output_file);
-
+    
         // Create and return the process
         return new Process($full_command);
     }
