@@ -138,7 +138,6 @@ EOHELP
             '--lock-tables',
             '--opt',
             '--force',
-            '--set-gtid-purged=OFF',
             '--disable-keys',
             '--add-drop-table',
             $db_name,
