@@ -140,6 +140,7 @@ EOHELP
             '--force',
             '--disable-keys',
             '--add-drop-table',
+            '--no-tablespaces',
             $db_name,
         ];
     
