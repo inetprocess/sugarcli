@@ -25,6 +25,21 @@ php -dphar.readonly=0 bin/box build
 ```
 It will build the `sugarcli.phar`  Phar archive in the `build` folder.
 
+## Creating a new phar file and release it as a new version
+```
+Draft a new release with a new tag and publish this release
+Create a pull request, update the readme version with the latest release version. 
+Add the latest phar file to this pull request as well.
+Merge the pull request
+On local do, git checkout master
+git pull
+Verify the latest tag using the command: git describe --tag --always HEAD
+The output should contain the latest tag
+Navigate to the latest release from browser
+Edit the release and upload the latest phar file to this release. Publish it.
+Install the latest phar file from this release link.
+Check sugarcli version. It should be set to the latest release version.
+```
 
 # Configuration
 You can save some configurations options in different location. The latter one will override the previous one:
@@ -77,3 +92,4 @@ __Available groups__:
 ```
 bin/sugarcli list --format json | php bin/format_help.php  >| USAGE.md
 ```
+
