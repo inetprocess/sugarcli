@@ -148,6 +148,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Package\ScanCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsDumpCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
+        $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsRebuildCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsStatusCommand();
         $commands[] = new \SugarCli\Console\Command\SelfUpdateCommand();
         $commands[] = new \SugarCli\Console\Command\System\MaintenanceCommand();
@@ -272,10 +273,6 @@ EOF;
      */
     public function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
-        if ($this->isRunByRoot() && !$this->isWhitelistedForRoot($command)) {
-            $output->writeln('<error>You are not allowed to run this command as root.</error>');
-            return ExitCode::EXIT_COMMAND_AS_ROOT_DENIED;
-        }
         return parent::doRunCommand($command, $input, $output);
     }
 

@@ -77,6 +77,7 @@ Commands list
 * [rels:dumptofile](#relsdumptofile)
 * [rels:loadfromfile](#relsloadfromfile)
 * [rels:status](#relsstatus)
+* [rels:rebuild](#relsrebuild)
 
 **system:**
 
