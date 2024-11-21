@@ -149,6 +149,7 @@ EOF;
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsDumpCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsLoadCommand();
         $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsStatusCommand();
+        $commands[] = new \SugarCli\Console\Command\Relationships\RelationshipsRebuildCommand();
         $commands[] = new \SugarCli\Console\Command\SelfUpdateCommand();
         $commands[] = new \SugarCli\Console\Command\System\MaintenanceCommand();
         $commands[] = new \SugarCli\Console\Command\System\QuickRepairCommand();
