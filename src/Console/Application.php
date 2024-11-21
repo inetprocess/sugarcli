@@ -273,10 +273,6 @@ EOF;
      */
     public function doRunCommand(Command $command, InputInterface $input, OutputInterface $output)
     {
-        if ($this->isRunByRoot() && !$this->isWhitelistedForRoot($command)) {
-            $output->writeln('<error>You are not allowed to run this command as root.</error>');
-            return ExitCode::EXIT_COMMAND_AS_ROOT_DENIED;
-        }
         return parent::doRunCommand($command, $input, $output);
     }
 
