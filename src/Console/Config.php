@@ -108,8 +108,9 @@ class Config implements ConfigurationInterface
      */
     public function getConfigTreeBuilder()
     {
-        $tree_builder = new TreeBuilder();
-        $tree_builder->root('ROOT')
+        $tree_builder = new TreeBuilder('ROOT');
+        $rootNode = $tree_builder->getRootNode();
+        $rootNode
             ->children()
                 ->arrayNode('sugarcrm')
                     ->children()

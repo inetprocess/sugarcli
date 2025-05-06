@@ -78,9 +78,9 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 null,
                 true,
                 function ($option_name, InputInterface $input, AbstractContainerAwareCommand $command) {
-                    if (!$command->getContainer()->isFrozen()) {
-                        $command->getContainer()->setParameter('sugarcrm.path', $input->getOption($option_name));
-                    }
+                    //if (!$command->getContainer()->isFrozen()) {
+                    //    $command->getContainer()->setParameter('sugarcrm.path', $input->getOption($option_name));
+                    //}
                 }
             ),
             'user-id' => array(
@@ -92,12 +92,12 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 '1',
                 true,
                 function ($option_name, InputInterface $input, AbstractContainerAwareCommand $command) {
-                    if (!$command->getContainer()->isFrozen()) {
-                        $command->getContainer()->setParameter(
-                            'sugarcrm.user-id',
-                            $input->getOption($option_name)
-                        );
-                    }
+                    //if (!$command->getContainer()->isFrozen()) {
+                    //    $command->getContainer()->setParameter(
+                    //        'sugarcrm.user-id',
+                    //        $input->getOption($option_name)
+                    //    );
+                    //}
                 }
             ),
         );
@@ -158,9 +158,9 @@ abstract class AbstractConfigOptionCommand extends AbstractContainerAwareCommand
                 call_user_func($callback, $option->getName(), $input, $this);
             }
         }
-        if (!$this->getContainer()->isFrozen()) {
-            $this->getContainer()->compile();
-        }
+        //if (!$this->getContainer()->isFrozen()) {
+        //    $this->getContainer()->compile();
+        //}
     }
 
     /**
