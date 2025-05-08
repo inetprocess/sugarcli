@@ -22,6 +22,8 @@ composer install --no-dev --quiet -o
 mkdir build
 ulimit -Sn 4096
 php -dphar.readonly=0 bin/box build
+# For PHP8+ You will need to use bin/box8 and updates box.dist.json, pushed in 1.25.8 branch
+php -dphar.readonly=0 bin/box8 compile
 ```
 It will build the `sugarcli.phar`  Phar archive in the `build` folder.
 

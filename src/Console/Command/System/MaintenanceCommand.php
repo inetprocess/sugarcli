@@ -96,7 +96,7 @@ EOHELP
 # This section is manage automatically by `sugarcli system:maintenance` command.
 # Do not modify manually or remove the comments.
 
-ErrorDocument 503 "${escaped_page}"
+ErrorDocument 503 $escaped_page
 
 RewriteEngine On
 

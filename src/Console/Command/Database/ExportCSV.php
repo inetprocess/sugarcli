@@ -211,7 +211,7 @@ class ExportCSV extends Command
     protected function exportTable($output_dir, $table_name)
     {
         $filename = $output_dir . '/' . $table_name . '.csv';
-        $results = $this->db->query("SELECT * FROM `${table_name}`");
+        $results = $this->db->query("SELECT * FROM " . $table_name);
         $this->exportQueryResult($results, $filename);
     }
 
